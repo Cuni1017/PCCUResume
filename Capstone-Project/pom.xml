@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>Capstone-Project</artifactId>
+    <artifactId>back-end</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Capstone-Project</name>
     <description>Capstone-Project</description>
