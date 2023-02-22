@@ -3,10 +3,7 @@ package com.example.demo.auth;
 import com.example.demo.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -40,6 +37,7 @@ public class RegisterController {
     return ResponseEntity.ok(service.authenticate(request));
   }
   @PostMapping("/login")
+  @CrossOrigin("http://localhost:8080")
   public ResponseEntity<AuthenticationResponse> login(
           @RequestBody AuthenticationRequest request
   ) {
