@@ -13,9 +13,9 @@ import jakarta.persistence.Table;
         @Column(name = "user_username")
         String user_username;
         @Column(name = "user_password")
-        String password;
+        String user_password;
         @Column(name = "user_level")
-        Integer level;
+        Integer user_level;
 
         public String getUser_id() {
             return user_id;
@@ -33,19 +33,19 @@ import jakarta.persistence.Table;
             this.user_username = user_username;
         }
 
-        public String getPassword() {
-            return password;
+        public String getUser_password() {
+            return user_password;
         }
 
-        public void setPassword(String password) {
-            this.password = password;
+        public void setUser_password(String user_password) {
+            this.user_password = user_password;
         }
 
-        public Integer getLevel() {
-            return level;
+        public Integer getUser_level() {
+            return user_level;
         }
 
-        public void setLevel(Integer level) {
-            this.level = level;
+        public void setUser_level(Integer user_level) {
+            this.user_level = user_level;
         }
     }
