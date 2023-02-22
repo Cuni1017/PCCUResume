@@ -37,7 +37,6 @@ public class RegisterController {
     return ResponseEntity.ok(service.authenticate(request));
   }
   @PostMapping("/login")
-  @CrossOrigin("http://localhost:8080")
   public ResponseEntity<AuthenticationResponse> login(
           @RequestBody AuthenticationRequest request
   ) {
