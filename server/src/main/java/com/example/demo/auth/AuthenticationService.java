@@ -82,9 +82,6 @@ public User register(RegisterRequest request) {
 }
     public User sendEmail(RegisterRequest request) {
 
-        if(!userRepository.findByUsername(request.getStudentUsername()).isEmpty()){
-            throw  new userNotFoundException("這帳號被註冊過了");
-        }
         var student = studentBuilder(request);
         var user    = userBuilder(request);
         var savedUser = userRepository.save(user);

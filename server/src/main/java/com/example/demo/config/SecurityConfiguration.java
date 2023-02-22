@@ -42,8 +42,8 @@ public class SecurityConfiguration {
         .logout()
         .logoutUrl("/api/v1/auth/logout")
         .addLogoutHandler(logoutHandler)
-        .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext())
-            .and()
+        .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext());
+
 
 
 
@@ -53,11 +53,13 @@ public class SecurityConfiguration {
   }
   @Bean
   public WebMvcConfigurer crosConfigure(){
+
     return new WebMvcConfigurer(){
+      @Override
       public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedMethods("*")
-                .allowedOrigins("http://localhost:5173");
+                .allowedMethods("GET", "POST", "PUT", "DELETE")
+                .allowedOrigins("/*");
       }
     };
   }
