@@ -29,18 +29,26 @@ public class SecurityConfiguration {
         .csrf()
         .disable()
         .authorizeHttpRequests()
-        .requestMatchers("/api/v1/auth/**")
-          .permitAll()
+//        .requestMatchers("/api/v1/auth/**")
+//          .permitAll()
+            .requestMatchers("/register/**")
+
+            .permitAll()
+            .requestMatchers("/students/**")
+            .permitAll()
         .anyRequest()
           .authenticated()
         .and()
           .sessionManagement()
           .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
+            .formLogin()
+            .loginPage("/login")
+            .and()
         .authenticationProvider(authenticationProvider)
         .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
         .logout()
-        .logoutUrl("/api/v1/auth/logout")
+        .logoutUrl("/logout")
         .addLogoutHandler(logoutHandler)
         .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext());
 
@@ -59,7 +67,7 @@ public class SecurityConfiguration {
       public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
-                .allowedOrigins("/*");
+                .allowedOrigins("*");
       }
     };
   }
