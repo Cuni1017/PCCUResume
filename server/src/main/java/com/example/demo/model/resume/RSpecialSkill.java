@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "cv_special_skill")
+@Table(name = "r_special_skill")
 public class RSpecialSkill {
     @Id
     @Column(name = "id")
@@ -26,7 +26,8 @@ public class RSpecialSkill {
     public String talk;
     @Column(name = "special")
     public String special;
+
     @ManyToOne
-    @JoinColumn(name = "r_special_skill_id")
+    @JoinColumn(name = "id",insertable = false,updatable = false)
     public Resume resume;
 }

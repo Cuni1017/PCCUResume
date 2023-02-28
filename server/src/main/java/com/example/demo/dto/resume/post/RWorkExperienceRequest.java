@@ -1,4 +1,4 @@
-package com.example.demo.request;
+package com.example.demo.dto.resume.post;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class checkEmailRequest {
-    private String validMsg;
-    private String inputMsg;
+public class RWorkExperienceRequest {
+    private String test;
 }

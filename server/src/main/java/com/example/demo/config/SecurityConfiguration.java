@@ -31,19 +31,22 @@ public class SecurityConfiguration {
         .authorizeHttpRequests()
 //        .requestMatchers("/api/v1/auth/**")
 //          .permitAll()
-            .requestMatchers("/register/**")
 
-            .permitAll()
-            .requestMatchers("/students/**")
-            .permitAll()
-        .anyRequest()
+            .requestMatchers(
+                    "/**"
+//                            "/register/**",
+//                            "/swagger-ui/**",
+//                            "/students/**"
+                    )
+              .permitAll()
+            .anyRequest()
           .authenticated()
         .and()
           .sessionManagement()
           .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and()
-            .formLogin()
-            .loginPage("/login")
+//        .and()
+//            .formLogin()
+//            .loginPage("/login")
             .and()
         .authenticationProvider(authenticationProvider)
         .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

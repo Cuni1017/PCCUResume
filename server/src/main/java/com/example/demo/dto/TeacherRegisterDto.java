@@ -1,7 +1,5 @@
-package com.example.demo.request;
+package com.example.demo.dto;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TeacherRegisterRequest {
+public class TeacherRegisterDto {
 
     private String teacherId;
 

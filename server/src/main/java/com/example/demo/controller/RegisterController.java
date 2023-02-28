@@ -3,12 +3,9 @@ package com.example.demo.controller;
 import com.example.demo.dao.CompanyRepository;
 import com.example.demo.dao.StudentRepository;
 import com.example.demo.dao.TeacherRepository;
-import com.example.demo.model.Company;
-import com.example.demo.model.Teacher;
-import com.example.demo.request.*;
+import com.example.demo.dto.*;
 import com.example.demo.service.RegisterService;
 import com.example.demo.auth.StudentRegisterRequest;
-import com.example.demo.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +26,7 @@ public class RegisterController {
 //  ) {
 //    return ResponseEntity.ok(service.register(request));
 //  }
-@GetMapping("/test")
+@GetMapping("/students/test")
 public ResponseEntity<String> test1(
 ) {
   return ResponseEntity.ok("test");
@@ -47,33 +44,33 @@ public ResponseEntity<String> test(
   }
   @PostMapping("/register/student/{studentId}/checkemail")
   public ResponseEntity<String> checkStudentEmail(
-          @RequestBody checkEmailRequest request,
+          @RequestBody checkEmailDto request,
           @PathVariable String studentId
   ) {
     return ResponseEntity.ok(registerService.checkEmail(studentId,studentRepository,request));
   }
   @PostMapping("/register/company")
   public ResponseEntity<String> companyRegister(
-          @RequestBody CompanyRegisterRequest request
+          @RequestBody CompanyRegisterDto request
   ) {
     return ResponseEntity.ok(registerService.companyRegister(request));
   }
   @PostMapping("/register/company/{companyId}/checkemail")
   public ResponseEntity<String> checkCompanyEmail(
-          @RequestBody checkEmailRequest request,
+          @RequestBody checkEmailDto request,
           @PathVariable String companyId
   ) {
     return ResponseEntity.ok(registerService.checkEmail(companyId,companyRepository,request));
   }
   @PostMapping("/register/teacher")
   public ResponseEntity<String> teacherRegister(
-          @RequestBody TeacherRegisterRequest request
+          @RequestBody TeacherRegisterDto request
   ) {
     return ResponseEntity.ok(registerService.teacherRegister(request));
   }
   @PostMapping("/register/teacher/{teacherId}/checkemail")
   public ResponseEntity<String> checkTeacherEmail(
-          @RequestBody checkEmailRequest request,
+          @RequestBody checkEmailDto request,
           @PathVariable String teacherId
   ) {
     return ResponseEntity.ok(registerService.checkEmail(teacherId,teacherRepository,request));

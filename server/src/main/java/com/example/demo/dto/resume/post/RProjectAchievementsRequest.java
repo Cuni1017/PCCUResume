@@ -1,4 +1,4 @@
-package com.example.demo.request.resume.post;
+package com.example.demo.dto.resume.post;
 
 public class RProjectAchievementsRequest {
 }

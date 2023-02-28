@@ -16,4 +16,6 @@ public class StudentRegisterRequest {
   private String studentName;
   private String studentEmail;
 
+  private String pccuId;
+
 }

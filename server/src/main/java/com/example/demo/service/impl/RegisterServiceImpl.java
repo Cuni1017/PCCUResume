@@ -6,10 +6,9 @@ import com.example.demo.dao.*;
 import com.example.demo.error.MailException;
 import com.example.demo.error.userNotFoundException;
 import com.example.demo.model.*;
-import com.example.demo.request.*;
+import com.example.demo.dto.*;
 import com.example.demo.service.JwtService;
 import com.example.demo.service.RegisterService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -34,7 +33,7 @@ public class RegisterServiceImpl implements RegisterService {
   private final JwtService jwtService;
   private final AuthenticationManager authenticationManager;
   private final JavaMailSender mailSender;
-    public String checkEmail(String studentId,JpaRepository jpaRepository,checkEmailRequest request) {
+    public String checkEmail(String studentId, JpaRepository jpaRepository, checkEmailDto request) {
         if(request.getInputMsg().equals(request.getValidMsg())){
             return "驗證成功";
         }else{
@@ -69,7 +68,7 @@ public class RegisterServiceImpl implements RegisterService {
         return random;
     }
 
-    public String companyRegister(CompanyRegisterRequest request) {
+    public String companyRegister(CompanyRegisterDto request) {
         if(!companyRepository.findByCompanyUsername(request.getCompanyUsername()).isEmpty()){
             throw  new userNotFoundException("這帳號被註冊過了");
         }
@@ -94,7 +93,7 @@ public class RegisterServiceImpl implements RegisterService {
         return random;
     }
 
-    public String teacherRegister(TeacherRegisterRequest request) {
+    public String teacherRegister(TeacherRegisterDto request) {
         if(!teacherRepository.findByTeacherUsername(request.getTeacherUsername()).isEmpty()){
             throw  new userNotFoundException("這帳號被註冊過了");
         }
@@ -148,7 +147,7 @@ public class RegisterServiceImpl implements RegisterService {
                 .build();
         return student;
     }
-    private Company companyBuilder(CompanyRegisterRequest request){
+    private Company companyBuilder(CompanyRegisterDto request){
         String companyId = getId(companyRepository,"Company");
         var company = Company.builder()
                 .companyId(companyId)
@@ -164,7 +163,7 @@ public class RegisterServiceImpl implements RegisterService {
                 .build();
         return company;
     }
-    private Teacher teacherBuilder(TeacherRegisterRequest request){
+    private Teacher teacherBuilder(TeacherRegisterDto request){
         String teacherId = getId(teacherRepository,"Teacher");
         Teacher teacher = Teacher
                 .builder()

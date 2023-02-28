@@ -11,20 +11,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "cv_work_hope")
+@Table(name = "r_work_hope")
 public class RWorkHope {
     @Id
     @Column(name = "id")
-    String id;
+    public String id;
     @Column(name = "user_id")
     public String userId;
     @Column(name = "resume_id")
     public String resumeId;
     @Column(name = "type")
-    String type;
+    public String type;
     @Column(name = "date")
-    String date;
-    @ManyToOne
-    @JoinColumn(name = "r_work_hope_id")
+    public String date;
+    @OneToOne
+    @JoinColumn(name = "id",insertable = false,updatable = false)
     public Resume resume;
 }

@@ -13,7 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "cv_project_achievements")
+@Table(name = "r_project_achievements")
 public class RProjectAchievements {
     @Id
     @Column(name = "id")
@@ -33,7 +33,7 @@ public class RProjectAchievements {
     @Column(name = "url")
     public String url;
     @ManyToOne
-    @JoinColumn(name = "r_project_achievements_id")
+    @JoinColumn(name = "id",insertable = false,updatable = false)
     public Resume resume;
 
 }

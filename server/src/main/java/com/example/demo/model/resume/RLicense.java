@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "cv_license")
+@Table(name = "r_license")
 public class RLicense {
     @Id
     @Column(name = "id")
@@ -23,6 +23,6 @@ public class RLicense {
     @Column(name = "name")
     public String name;
     @ManyToOne
-    @JoinColumn(name = "r_license_id ")
+    @JoinColumn(name = "id ",insertable = false,updatable = false)
     public Resume resume;
 }

@@ -1,6 +1,6 @@
-package com.example.demo.request;
+package com.example.demo.dto;
 
-public class SendEmailRequest {
+public class SendEmailDto {
     private String studentValidMsg;
     private String studentEmail;
 }

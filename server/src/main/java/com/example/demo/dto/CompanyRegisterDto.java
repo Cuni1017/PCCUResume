@@ -1,4 +1,4 @@
-package com.example.demo.request;
+package com.example.demo.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CompanyRegisterRequest {
+public class CompanyRegisterDto {
     private String companyName;
     private String companyTitle;
     private String companyUsername;

@@ -7,10 +7,9 @@ import com.example.demo.error.userNotFoundException;
 import com.example.demo.model.Token;
 import com.example.demo.model.TokenType;
 import com.example.demo.model.User;
-import com.example.demo.request.AuthenticationRequest;
+import com.example.demo.dto.AuthenticationDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import com.example.demo.service.*;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,7 +20,7 @@ public class LoginService {
 
     private final TokenRepository tokenRepository;
 
-    public AuthenticationResponse login(AuthenticationRequest request) {
+    public AuthenticationResponse login(AuthenticationDto request) {
         User user_data = userRepository.findByUsername(request.getUsername()).orElseThrow(() -> new userNotFoundException("查無帳號"));
         BCryptPasswordEncoder bcryptPasswordEncoder = new BCryptPasswordEncoder();
         boolean isPasswordMatche = bcryptPasswordEncoder.matches(request.getPassword(), user_data.getPassword());

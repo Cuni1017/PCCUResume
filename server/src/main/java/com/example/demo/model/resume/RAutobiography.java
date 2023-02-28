@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "cv_autobiography")
+@Table(name = "r_autobiography")
 public class RAutobiography {
     @Id
     @Column(name = "id")
@@ -24,9 +24,9 @@ public class RAutobiography {
     public String chineseAutobiography;
     @Column(name = "english_autobiography")
     public String englishAutobiography;
-
-    @ManyToOne
-    @JoinColumn(name = "r_autobiography_id")
+    @OneToOne
+    @JoinColumn(name = "id",insertable = false,updatable = false)
     public Resume resume;
+
 
 }
