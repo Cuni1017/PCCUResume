@@ -33,10 +33,11 @@ public class SecurityConfiguration {
 //          .permitAll()
 
             .requestMatchers(
-                    "/**"
-//                            "/register/**",
-//                            "/swagger-ui/**",
-//                            "/students/**"
+
+                            "/register/**",
+                            "/login",
+                            "/swagger-ui/**",
+                            "/students/**"
                     )
               .permitAll()
             .anyRequest()
@@ -44,10 +45,10 @@ public class SecurityConfiguration {
         .and()
           .sessionManagement()
           .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//        .and()
+        .and()
 //            .formLogin()
 //            .loginPage("/login")
-            .and()
+//            .and()
         .authenticationProvider(authenticationProvider)
         .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
         .logout()
