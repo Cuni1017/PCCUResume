@@ -1,21 +1,42 @@
 "use client";
 
-import * as React from "react";
+import React, { useState } from "react";
 import IdentityPicker from "./components/IdentityPicker";
+import RegisterForm from "./components/RegisterForm";
 import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepButton from "@mui/material/StepButton";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import { FormData } from "./components/RegisterForm";
 
 const steps = ["選擇身分", "輸入資訊", "查收驗證碼"];
 
 const RegisterPage = () => {
-  const [identity, setIdentity] = React.useState<null | string>(null);
+  const [identity, setIdentity] = useState<null | string>(null);
+  const [formData, setFormData] = useState<FormData>({
+    username: "",
+    password: "",
+    name: "",
+    email: "",
 
-  const [activeStep, setActiveStep] = React.useState(0);
-  const [completed, setCompleted] = React.useState<{
+    pccuId: "",
+
+    teacherId: "",
+
+    companyName: "",
+    companyTitle: "",
+    companyNumber: "",
+    companyCounty: "台北市",
+    companyDistrict: "中正區",
+    companyAddress: "",
+  });
+
+  console.log(formData);
+
+  const [activeStep, setActiveStep] = useState(0);
+  const [completed, setCompleted] = useState<{
     [k: number]: boolean;
   }>({});
 
@@ -67,12 +88,16 @@ const RegisterPage = () => {
 
   // const ImageWidth = ;
 
-  console.log(identity);
+  let completedStep: number = 0;
+  if (identity) completedStep++;
 
   return (
-    <div className="mt-10 h-[650px] flex flex-col items-center pt-10">
-      <Box sx={{ width: "90%" }}>
-        <Stepper nonLinear activeStep={activeStep}>
+    <div className="mt-10 min-h-[650px] flex flex-col items-center pt-10">
+      <Box
+        sx={{ width: "90%", height: "100%" }}
+        className="flex flex-col min-h-[650px]"
+      >
+        <Stepper activeStep={completedStep}>
           {steps.map((label, index) => (
             <Step key={label} completed={completed[index]}>
               <StepButton color="inherit" onClick={handleStep(index)}>
@@ -81,7 +106,7 @@ const RegisterPage = () => {
             </Step>
           ))}
         </Stepper>
-        <div>
+        <div className="grow">
           {allStepsCompleted() ? (
             <React.Fragment>
               <Typography sx={{ mt: 2, mb: 1 }}>
@@ -94,44 +119,23 @@ const RegisterPage = () => {
             </React.Fragment>
           ) : (
             <React.Fragment>
-              <Typography sx={{ mt: 2, mb: 1, py: 1 }}>
+              {/* <Typography sx={{ mt: 2, mb: 1, py: 1 }}>
                 Step {activeStep + 1}
-              </Typography>
+              </Typography> */}
               {activeStep === 0 ? (
                 <IdentityPicker
                   setIdentity={setIdentity}
                   handleNext={handleNext}
+                  handleComplete={handleComplete}
                 />
               ) : null}
-              <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-                <Button
-                  color="inherit"
-                  disabled={activeStep === 0}
-                  onClick={handleBack}
-                  sx={{ mr: 1 }}
-                >
-                  Back
-                </Button>
-                <Box sx={{ flex: "1 1 auto" }} />
-                <Button onClick={handleNext} sx={{ mr: 1 }}>
-                  Next
-                </Button>
-                {activeStep !== steps.length &&
-                  (completed[activeStep] ? (
-                    <Typography
-                      variant="caption"
-                      sx={{ display: "inline-block" }}
-                    >
-                      Step {activeStep + 1} already completed
-                    </Typography>
-                  ) : (
-                    <Button onClick={handleComplete}>
-                      {completedSteps() === totalSteps() - 1
-                        ? "Finish"
-                        : "Complete Step"}
-                    </Button>
-                  ))}
-              </Box>
+              {activeStep === 1 ? (
+                <RegisterForm
+                  identity={identity}
+                  formData={formData}
+                  setFormData={setFormData}
+                />
+              ) : null}
             </React.Fragment>
           )}
         </div>

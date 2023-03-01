@@ -2,7 +2,6 @@ import React from "react";
 
 const JobPage = (props: any) => {
   const { params, searchParams } = props;
-  console.log(params);
 
   return (
     <div>
