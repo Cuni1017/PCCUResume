@@ -5,7 +5,9 @@ import com.example.demo.dto.resume.post.*;
 import com.example.demo.model.resume.RLicense;
 import com.example.demo.service.ResumeService;
 
+import jdk.jshell.Snippet;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,19 +15,24 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class ResumeController {
     private final ResumeService resumeService;
-//    @GetMapping("/students/{studentId}/resume")
-//    public ResponseEntity<Object> findAllByRsume(
-//            @RequestBody ResumeRequest resumeRequest,
-//            @PathVariable String studentId
-//    ) {
-//        return ResponseEntity.ok(.createBasicResume(request));
-//    }
+    @GetMapping("/students/{studentId}/resume")
+    public ResponseEntity<Object> findAllResumeById(
+            @PathVariable String studentId
+    ) {
+        if(resumeService.findAllResumeById(studentId) == null){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }else{
+            return ResponseEntity.ok(resumeService.findAllResumeById(studentId));
+        }
+
+    }
 
     @PostMapping("/students/{studentId}/resume")
     public ResponseEntity<Object> writeBasicResume(
             @RequestBody ResumeRequest request,
             @PathVariable String studentId
     ) {
+
         return ResponseEntity.ok(resumeService.createBasicResume(request,studentId));
     }
     @PutMapping("/students/{studentId}/resume/{resumeId}/work-hope/{workHopeId}")

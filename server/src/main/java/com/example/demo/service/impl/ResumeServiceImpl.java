@@ -226,6 +226,13 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
+    public Object findAllResumeById(String studentId) {
+        Optional s =resumeRepository.findAllResume();
+        return s.get();
+
+    }
+
+    @Override
     public Object editWorkHope(RWorkHopeRequest request, String studentId,String resumeId, String workHopeId) {
         RWorkHope rWorkHope =RWorkHope.builder()
                 .resumeId(resumeId)
