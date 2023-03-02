@@ -1,6 +1,5 @@
 package com.example.demo.dto.resume.post;
 
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,10 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RWorkExperienceRequest {
-
+public class RlicenseRequest {
     public String name;
-
-    public String department;
-    public String companyName;
 }
