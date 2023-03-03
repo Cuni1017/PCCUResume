@@ -3,6 +3,7 @@ import { FormControl, MenuItem, TextField } from "@mui/material";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import TaiwanPostalCode from "./data/TaiwanPostalCode.json";
+import Grid from "@mui/material/Unstable_Grid2"; //v2
 
 interface Props {
   county: keyof typeof TaiwanPostalCode;
@@ -21,41 +22,53 @@ const AddressPicker = (props: Props) => {
   const cityData = TaiwanPostalCode[county];
   const districts = Object.keys(cityData);
 
+  const textfieldWidth = "100%";
+  const textFiledMaxWidth = { sm: "300px", md: "380px" };
+  const sx = { width: textfieldWidth, maxWidth: textFiledMaxWidth };
+
+  const selectGridSpacing = { xs: 12, sm: 6 };
+
   return (
     <>
-      <FormControl size="small" sx={{ width: "100%", maxWidth: "400px" }}>
-        <InputLabel id="city-lable">縣市</InputLabel>
-        <Select
-          labelId="city-label"
-          value={county}
-          name="companyCounty"
-          label="city"
-          onChange={handleSelectChange}
-        >
-          {getCityOptions(cities)}
-        </Select>
-      </FormControl>
-      <FormControl size="small" sx={{ width: "100%", maxWidth: "400px" }}>
-        <InputLabel id="district-lable">鄉/鎮/市/區</InputLabel>
-        <Select
-          labelId="district-label"
-          value={district}
-          name="companyDistrict"
-          label="district"
-          onChange={handleSelectChange}
-        >
-          {getDistrictOptions(districts)}
-        </Select>
-      </FormControl>
-      <TextField
-        label="地址"
-        name="companyAddress"
-        value={address}
-        onChange={handleTextChange}
-        variant="outlined"
-        size="small"
-        fullWidth
-      />
+      <Grid {...selectGridSpacing}>
+        <FormControl size="small" fullWidth>
+          <InputLabel id="city-lable">縣市</InputLabel>
+          <Select
+            labelId="city-label"
+            value={county}
+            name="companyCounty"
+            label="city"
+            onChange={handleSelectChange}
+          >
+            {getCityOptions(cities)}
+          </Select>
+        </FormControl>
+      </Grid>
+      <Grid {...selectGridSpacing}>
+        <FormControl size="small" fullWidth>
+          <InputLabel id="district-lable">鄉/鎮/市/區</InputLabel>
+          <Select
+            labelId="district-label"
+            value={district}
+            name="companyDistrict"
+            label="district"
+            onChange={handleSelectChange}
+          >
+            {getDistrictOptions(districts)}
+          </Select>
+        </FormControl>
+      </Grid>
+      <Grid xs={12}>
+        <TextField
+          label="地址"
+          name="companyAddress"
+          value={address}
+          onChange={handleTextChange}
+          variant="outlined"
+          size="small"
+          fullWidth
+        />
+      </Grid>
     </>
   );
 };

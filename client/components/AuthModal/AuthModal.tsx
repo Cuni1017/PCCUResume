@@ -35,7 +35,7 @@ export default function AuthModal({ isSignin }: { isSignin: boolean }) {
     loading: false,
     error: null,
   });
-  const { signin, signup } = useAuth();
+  const { signin } = useAuth();
 
   const renderedContent = (signinContent: string, signupContent: string) => {
     return isSignin ? signinContent : signupContent;
@@ -60,7 +60,7 @@ export default function AuthModal({ isSignin }: { isSignin: boolean }) {
   };
 
   return (
-    <div>
+    <>
       <Button variant={isSignin ? "text" : "contained"} onClick={handleOpen}>
         {renderedContent("登入", "註冊")}
       </Button>
@@ -90,6 +90,6 @@ export default function AuthModal({ isSignin }: { isSignin: boolean }) {
           </div>
         </Box>
       </Modal>
-    </div>
+    </>
   );
 }

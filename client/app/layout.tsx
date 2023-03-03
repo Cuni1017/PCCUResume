@@ -58,18 +58,18 @@ export const metadata = {
 
 export default function RootLayout({
   children,
-  session,
 }: {
   children: React.ReactNode;
-  session: any;
 }) {
   return (
     <html lang="en">
       <body>
-        <LayoutWrapper session={session}>
-          <div className="bg-gray-100 min-h-screen w-screen font-sans">
+        <LayoutWrapper>
+          <div className="bg-gray-100 min-h-screen w-screen min-w-[320px] font-sans">
             <Navbar />
-            <main className="max-w-screen-xl m-auto bg-white">{children}</main>
+            <main className="max-w-screen-md lg:max-w-screen-lg m-auto">
+              {children}
+            </main>
           </div>
         </LayoutWrapper>
         <script dangerouslySetInnerHTML={{ __html }} />

@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import IdentityPicker from "./components/IdentityPicker";
 import RegisterForm from "./components/RegisterForm";
+import ValidateForm from "./components/ValidateForm";
 import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
@@ -10,10 +11,12 @@ import StepButton from "@mui/material/StepButton";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { FormData } from "./components/RegisterForm";
+import { useAuth } from "@/hooks/useAuth";
 
 const steps = ["選擇身分", "輸入資訊", "查收驗證碼"];
 
 const RegisterPage = () => {
+  const { signup, isFetching } = useAuth();
   const [identity, setIdentity] = useState<null | string>(null);
   const [formData, setFormData] = useState<FormData>({
     username: "",
@@ -33,12 +36,20 @@ const RegisterPage = () => {
     companyAddress: "",
   });
 
-  console.log(formData);
+  const handleSubmit = () => {
+    if (!identity) return;
+    signup({ ...formData, identity, handleNext, handleComplete });
+  };
+
+  // console.log(formData);
 
   const [activeStep, setActiveStep] = useState(0);
   const [completed, setCompleted] = useState<{
     [k: number]: boolean;
   }>({});
+
+  // console.log(activeStep);
+  // console.log(completed);
 
   const totalSteps = () => {
     return steps.length;
@@ -86,18 +97,10 @@ const RegisterPage = () => {
     setCompleted({});
   };
 
-  // const ImageWidth = ;
-
-  let completedStep: number = 0;
-  if (identity) completedStep++;
-
   return (
-    <div className="mt-10 min-h-[650px] flex flex-col items-center pt-10">
-      <Box
-        sx={{ width: "90%", height: "100%" }}
-        className="flex flex-col min-h-[650px]"
-      >
-        <Stepper activeStep={completedStep}>
+    <div className="mt-10 min-h-[650px] flex flex-col items-center pt-10 bg-white">
+      <div className="flex flex-col w-[90%] min-h-[600px]">
+        <Stepper activeStep={activeStep}>
           {steps.map((label, index) => (
             <Step key={label} completed={completed[index]}>
               <StepButton color="inherit" onClick={handleStep(index)}>
@@ -106,40 +109,56 @@ const RegisterPage = () => {
             </Step>
           ))}
         </Stepper>
-        <div className="grow">
-          {allStepsCompleted() ? (
-            <React.Fragment>
-              <Typography sx={{ mt: 2, mb: 1 }}>
-                All steps completed - you&apos;re finished
-              </Typography>
-              <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-                <Box sx={{ flex: "1 1 auto" }} />
-                <Button onClick={handleReset}>Reset</Button>
-              </Box>
-            </React.Fragment>
-          ) : (
-            <React.Fragment>
-              {/* <Typography sx={{ mt: 2, mb: 1, py: 1 }}>
+        <div className="grow h-full">
+          <div className="h-auto sm:h-[600px]">
+            {allStepsCompleted() ? (
+              <React.Fragment>
+                <Typography sx={{ mt: 2, mb: 1 }}>
+                  All steps completed - you&apos;re finished
+                </Typography>
+                <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+                  <Box sx={{ flex: "1 1 auto" }} />
+                  <Button onClick={handleReset}>Reset</Button>
+                </Box>
+              </React.Fragment>
+            ) : (
+              <React.Fragment>
+                {/* <Typography sx={{ mt: 2, mb: 1, py: 1 }}>
                 Step {activeStep + 1}
               </Typography> */}
-              {activeStep === 0 ? (
-                <IdentityPicker
-                  setIdentity={setIdentity}
-                  handleNext={handleNext}
-                  handleComplete={handleComplete}
-                />
-              ) : null}
-              {activeStep === 1 ? (
-                <RegisterForm
-                  identity={identity}
-                  formData={formData}
-                  setFormData={setFormData}
-                />
-              ) : null}
-            </React.Fragment>
-          )}
+                {activeStep === 0 ? (
+                  <IdentityPicker
+                    setIdentity={setIdentity}
+                    handleNext={handleNext}
+                    handleComplete={handleComplete}
+                  />
+                ) : null}
+                {activeStep === 1 ? (
+                  <RegisterForm
+                    identity={identity}
+                    formData={formData}
+                    setFormData={setFormData}
+                    handleSubmit={handleSubmit}
+                    isFetching={isFetching}
+                  />
+                ) : null}
+                {activeStep === 2 ? <ValidateForm /> : null}
+                {/* <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+                <Button
+                  color="inherit"
+                  disabled={activeStep === 0}
+                  onClick={handleBack}
+                  sx={{ mr: 1 }}
+                >
+                  返回
+                </Button>
+                <Box sx={{ flex: "1 1 auto" }} />
+              </Box> */}
+              </React.Fragment>
+            )}
+          </div>
         </div>
-      </Box>
+      </div>
     </div>
   );
 };

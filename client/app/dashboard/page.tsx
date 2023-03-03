@@ -1,6 +1,7 @@
 import React from "react";
 
-const DashboardPage = () => {
+const DashboardPage = (props: any) => {
+  // console.log(props);
   return <div>Dashboard</div>;
 };
 

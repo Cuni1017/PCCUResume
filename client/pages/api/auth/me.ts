@@ -22,7 +22,11 @@ export default async function handler(
 
   // 驗證JWT
 
-  // const res = axiosInstance.get("/api/auth/me");
+  // try {
+  //   const response = axiosInstance.get(`/user/${}`);
+  // } catch (error) {
+  //   console.log(error);
+  // }
 
   return res.status(200).json({ ...payload });
 }
