@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useState, useCallback } from "react";
 import { Button, CircularProgress, TextField } from "@mui/material";
 import { axiosInstanceNext } from "@/axiosInstance.ts";
 import { FormData } from "./RegisterForm";
@@ -6,13 +6,18 @@ import { FormData } from "./RegisterForm";
 const ValidateForm = ({
   formData,
   setFormData,
+  handleNext,
+  handleComplete,
 }: {
   formData: FormData;
   setFormData: React.Dispatch<React.SetStateAction<FormData>>;
+  handleNext: () => void;
+  handleComplete: () => void;
 }) => {
   const [CAPTCHA, setCAPTCHA] = useState("");
   const [resendTime, setResendTime] = useState(0);
   const [sending, setSending] = useState(false);
+  const [sendTimes, setSendTimes] = useState(0); //至少寄一次才可以按提交
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -22,32 +27,46 @@ const ValidateForm = ({
       setFormData({ ...formData, email: e.target.value });
   };
 
-  const handleSend = async () => {
+  const setResendTimeFn = useCallback(() => {
     const waitTime = 60;
-    try {
-      setSending(true);
-      await new Promise((resolve, reject) => {
-        setTimeout(() => {
-          return resolve("hello");
-        }, 5 * 1000);
-      });
-      await axiosInstanceNext.post("/emailValidate", { email: formData.email });
-    } catch (error) {
-      console.log(error);
-    }
-    setSending(false);
     setResendTime(waitTime);
     const resendInterval = setInterval(() => {
       setResendTime((prev) => prev - 1);
     }, 1000);
     setTimeout(() => clearInterval(resendInterval), waitTime * 1000);
+  }, []);
+
+  const handleSend = async () => {
+    setSendTimes((prev) => prev + 1);
+    setSending(true);
+    try {
+      const response = await axiosInstanceNext.post("/api/auth/emailValidate", {
+        email: formData.email,
+      });
+      alert(response.data.message);
+      setResendTimeFn();
+    } catch (error) {
+      alert("要求寄送失敗");
+      console.log(error);
+    }
+    setSending(false);
   };
 
-  const handleSubmit = () => {
-    axiosInstanceNext.post("/emailValidate", {
-      email: formData.email,
-      CAPTCHA,
-    });
+  const handleSubmit = async () => {
+    try {
+      const response = await axiosInstanceNext.post("/api/auth/emailValidate", {
+        email: formData.email,
+        CAPTCHA,
+      });
+      console.log(response);
+      if (response.status === 200) {
+        handleNext();
+        handleComplete();
+      }
+    } catch (error) {
+      alert("驗證碼錯誤");
+      console.log(error);
+    }
   };
 
   const sendMailBtnContent = () => {
@@ -76,13 +95,16 @@ const ValidateForm = ({
             name="CAPTCHA"
             value={CAPTCHA}
             onChange={handleChange}
+            disabled={sendTimes === 0}
             sx={{ width: "100%", maxWidth: "385px" }}
           />
           <Button
             variant="contained"
             color="info"
             onClick={handleSend}
-            disabled={resendTime !== 0 || sending}
+            disabled={
+              resendTime !== 0 || sending || !formData.email.includes(".com")
+            }
             sx={{ width: "100%", maxWidth: "115px" }}
           >
             {sendMailBtnContent()}
@@ -97,7 +119,11 @@ const ValidateForm = ({
         onClick={handleSubmit}
         variant="contained"
         className="mt-auto mb-10"
-        disabled={CAPTCHA.length < 6 || !formData.email.includes(".com")}
+        disabled={
+          CAPTCHA.length < 6 ||
+          !formData.email.includes(".com") ||
+          sendTimes === 0
+        }
       >
         提交
       </Button>

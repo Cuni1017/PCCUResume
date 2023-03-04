@@ -36,13 +36,13 @@ public class ResumeController {
 
         return ResponseEntity.ok(resumeService.createBasicResume(request,studentId));
     }
-    @PostMapping("/students/{studentId}/resume")
-    public ResponseEntity<Object> writeBasicResume(
-            @PathVariable String studentId
-    ) {
-
-//        return ResponseEntity.ok(resumeService.chooseResume(studentId));
-    }
+//    @PostMapping("/students/{studentId}/resume")
+//    public ResponseEntity<Object> writeBasicResume(
+//            @PathVariable String studentId
+//    ) {
+//
+////        return ResponseEntity.ok(resumeService.chooseResume(studentId));
+//    }
     @PutMapping("/students/{studentId}/resume/{resumeId}/work-hope/{workHopeId}")
     public ResponseEntity<Object> editWorkHope(
             @RequestBody RWorkHopeRequest request,

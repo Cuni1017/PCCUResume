@@ -28,10 +28,18 @@ interface Props {
   identity: string | null;
   handleSubmit: () => void;
   isFetching: boolean;
+  handleBack: () => void;
 }
 
 const RegisterForm = (props: Props) => {
-  const { formData, setFormData, identity, handleSubmit, isFetching } = props;
+  const {
+    formData,
+    setFormData,
+    identity,
+    handleSubmit,
+    isFetching,
+    handleBack,
+  } = props;
 
   let formTitle = "";
   let formInputs: {
@@ -141,7 +149,12 @@ const RegisterForm = (props: Props) => {
 
   return (
     <div className="mt-10 flex flex-col h-full">
-      <h1 className="m-5">請輸入資訊</h1>
+      <div className="flex items-center">
+        <h1 className="m-5">請輸入資訊</h1>
+        <Button variant="contained" onClick={handleBack} className="ml-auto">
+          重新選擇身分
+        </Button>
+      </div>
       <p className="text-center text-xl font-bold">{formTitle}</p>
       <div className="w-full">
         {/* <div className="flex flex-wrap gap-5 justify-center"> */}
