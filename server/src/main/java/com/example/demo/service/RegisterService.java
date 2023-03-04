@@ -7,7 +7,7 @@ import com.example.demo.dto.checkEmailDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RegisterService {
-    String checkEmail(String studentId, JpaRepository jpaRepository, checkEmailDto request);
+    //String checkEmail(String studentId, JpaRepository jpaRepository, checkEmailDto request);
     String studentRegister(StudentRegisterRequest request);
     String companyRegister(CompanyRegisterDto request);
     String teacherRegister(TeacherRegisterDto request);

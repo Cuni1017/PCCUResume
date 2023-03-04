@@ -15,9 +15,10 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class ResumeController {
     private final ResumeService resumeService;
-    @GetMapping("/students/{studentId}/resume")
+    @GetMapping("/students/{studentId}/resume/{resumeId}")
     public ResponseEntity<Object> findAllResumeById(
             @PathVariable String studentId
+
     ) {
         if(resumeService.findAllResumeById(studentId) == null){
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

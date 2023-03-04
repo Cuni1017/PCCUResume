@@ -15,6 +15,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -33,22 +34,22 @@ public class RegisterServiceImpl implements RegisterService {
   private final JwtService jwtService;
   private final AuthenticationManager authenticationManager;
   private final JavaMailSender mailSender;
-    public String checkEmail(String usertId, JpaRepository jpaRepository, checkEmailDto request) {
-        if(request.getInputMsg().equals(request.getValidMsg())){
-            User user = userRepository.findById(usertId).orElseThrow();
-            if(user.getId().startsWith("S")){
-                user.setRole(Role.STUDENT);
-            } else if (user.getId().startsWith("C")) {
-                user.setRole(Role.COMPANY);
-            }
-            user.setIsValid(1);
-            userRepository.updateRoleById(user.getIsValid(),user.getRole(),usertId);
-            return "驗證成功";
-        }else{
-
-            throw new userNotFoundException("驗證失敗");
-        }
-    }
+//    public String checkEmail(String usertId, JpaRepository jpaRepository, checkEmailDto request) {
+//        if(request.getInputMsg().equals(request.getValidMsg())){
+//            User user = userRepository.findById(usertId).orElseThrow();
+//            if(user.getId().startsWith("S")){
+//                user.setRole(Role.STUDENT);
+//            } else if (user.getId().startsWith("C")) {
+//                user.setRole(Role.COMPANY);
+//            }
+//            user.setIsValid(1);
+//            userRepository.updateRoleById(user.getIsValid(),user.getRole(),usertId);
+//            return "驗證成功";
+//        }else{
+//
+//            throw new userNotFoundException("驗證失敗");
+//        }
+//    }
     public String studentRegister(StudentRegisterRequest request) {
 
         if(!userRepository.findByUsername(request.getStudentUsername()).isEmpty()){
@@ -61,13 +62,13 @@ public class RegisterServiceImpl implements RegisterService {
                 .username(request.getStudentUsername())
                 .email(request.getStudentEmail())
                 .password(passwordEncoder.encode(request.getStudentPassword()))
-                .role(Role.USER)
-                .isValid(0)
+                .role(Role.STUDENT)
+                .isValid(1)
                 .build();
         userRepository.save(user);
         studentRepository.save(student);
-        String  random = sendEmail(user.getEmail());
-        return random;
+
+        return "儲存成功";
     }
 
     public String companyRegister(CompanyRegisterDto request) {
@@ -82,14 +83,13 @@ public class RegisterServiceImpl implements RegisterService {
                 .username(request.getCompanyUsername())
                 .email(request.getCompanyEmail())
                 .password(passwordEncoder.encode(request.getCompanyPassword()))
-                .role(Role.USER)
+                .role(Role.COMPANY)
                 .isValid(0)
                 .build();
 
         userRepository.save(user);
         companyRepository.save(company);
-        String  random = sendEmail(user.getEmail());
-        return random;
+        return "儲存成功";
     }
 
     public String teacherRegister(TeacherRegisterDto request) {
@@ -103,18 +103,20 @@ public class RegisterServiceImpl implements RegisterService {
                 .username(request.getTeacherUsername())
                 .email(request.getTeacherEmail())
                 .password(passwordEncoder.encode(request.getTeacherPassword()))
-                .role(Role.USER)
+                .role(Role.TEACHER)
                 .isValid(0)
                 .build();
 
         userRepository.save(user);
         teacherRepository.save(teacher);
-        String  random = sendEmail(user.getEmail());
-        return random;
+        return "儲存成功";
     }
 
     public String sendEmail(String email) {
         String  random    = getValidRandom();
+        if(!userRepository.findByEmail(email).isEmpty()){
+            throw new userNotFoundException("email被使用");
+        }
         try {
             sendEmail(email,random);
         }catch (MailException E){

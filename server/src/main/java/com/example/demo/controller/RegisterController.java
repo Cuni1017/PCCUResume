@@ -48,39 +48,39 @@ public ResponseEntity<String> test(
   ) {
     return ResponseEntity.ok(registerService.studentRegister(request));
   }
-  @PostMapping("/register/student/{studentId}/checkemail")
-  public ResponseEntity<String> checkStudentEmail(
-          @RequestBody checkEmailDto request,
-          @PathVariable String studentId
-  ) {
-    return ResponseEntity.ok(registerService.checkEmail(studentId,studentRepository,request));
-  }
+//  @PostMapping("/register/student/{studentId}/checkemail")
+//  public ResponseEntity<String> checkStudentEmail(
+//          @RequestBody checkEmailDto request,
+//          @PathVariable String studentId
+//  ) {
+//    return ResponseEntity.ok(registerService.checkEmail(studentId,studentRepository,request));
+//  }
   @PostMapping("/register/company")
   public ResponseEntity<String> companyRegister(
           @RequestBody CompanyRegisterDto request
   ) {
     return ResponseEntity.ok(registerService.companyRegister(request));
   }
-  @PostMapping("/register/company/{companyId}/checkemail")
-  public ResponseEntity<String> checkCompanyEmail(
-          @RequestBody checkEmailDto request,
-          @PathVariable String companyId
-  ) {
-    return ResponseEntity.ok(registerService.checkEmail(companyId,companyRepository,request));
-  }
+//  @PostMapping("/register/company/{companyId}/checkemail")
+//  public ResponseEntity<String> checkCompanyEmail(
+//          @RequestBody checkEmailDto request,
+//          @PathVariable String companyId
+//  ) {
+//    return ResponseEntity.ok(registerService.checkEmail(companyId,companyRepository,request));
+//  }
   @PostMapping("/register/teacher")
   public ResponseEntity<String> teacherRegister(
           @RequestBody TeacherRegisterDto request
   ) {
     return ResponseEntity.ok(registerService.teacherRegister(request));
   }
-  @PostMapping("/register/teacher/{teacherId}/checkemail")
-  public ResponseEntity<String> checkTeacherEmail(
-          @RequestBody checkEmailDto request,
-          @PathVariable String teacherId
-  ) {
-    return ResponseEntity.ok(registerService.checkEmail(teacherId,teacherRepository,request));
-  }
+//  @PostMapping("/register/teacher/{teacherId}/checkemail")
+//  public ResponseEntity<String> checkTeacherEmail(
+//          @RequestBody checkEmailDto request,
+//          @PathVariable String teacherId
+//  ) {
+//    return ResponseEntity.ok(registerService.checkEmail(teacherId,teacherRepository,request));
+//  }
 
 
 
