@@ -38,4 +38,6 @@ public interface ResumeService {
     Object deleteWorkExperience(RWorkExperienceRequest request, String studentId, String resumeId, String workExperienceId);
 
     Object findAllResumeByIdAndResumeId(String studentId,String resumeId);
+
+    Object chooseResume(String studentId);
 }
