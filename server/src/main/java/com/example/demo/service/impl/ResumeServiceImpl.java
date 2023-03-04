@@ -227,7 +227,7 @@ public class ResumeServiceImpl implements ResumeService {
 
     @Override
     public Object findAllResumeByIdAndResumeId(String studentId,String resumeId) {
-        Resume resume =resumeRepository.findByStudentIdAndResumeId(studentId,resumeId);
+        Resume resume =resumeRepository.findByUserIdAndResumeId(studentId,resumeId);
         RAutobiography rAutobiography =rAutobiographyRepository.findByUserIdAndResumeId(studentId,resumeId);
         List<RLicense> rLicense =rLicenseRepository.findByUserIdAndResumeId(studentId,resumeId);
         List<RProjectAchievements> rProjectAchievements =rProjectAchievementsRepository.findByUserIdAndResumeId(studentId,resumeId);
@@ -245,7 +245,8 @@ public class ResumeServiceImpl implements ResumeService {
                 .rLicense(rLicense)
                 .rWorkHope(rworkHope)
                 .rWorkExperience(rWorkExperience)
-                .build()
+                .build();
+                return null;
 
 
 

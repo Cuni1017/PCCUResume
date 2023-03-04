@@ -17,4 +17,6 @@ public interface UserRepository extends JpaRepository<User, String> {
   void deleteById(String Id);
   @Query(value = "update user set isValid = :isValid , role = :role where id = :id", nativeQuery = true)
   void  updateRoleById(int isValid, Role role, String id);
+  @Query(value = "select * from user where email = :email", nativeQuery = true)
+  Optional<User> findBymyEmail(String email);
 }
