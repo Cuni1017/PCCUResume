@@ -25,6 +25,6 @@ public interface ResumeRepository extends JpaRepository<Resume,String> {
     Optional<List<Resume>> findAllResume(String studentId);
     @Query(value = "INSERT INTO resume (id,user_id,number,school)  VALUES(:resumeId,:userId,:number,:school)", nativeQuery = true)
     Optional saveBasicResume(String resumeId, String userId, int number, School school);
-    @Query(value = "SELECT id,user_id,number,school FROM resume where user_id = :studentId", nativeQuery = true)
-    Optional findByStudentId(String studentId);
+
+    Resume findByStudentIdAndResumeId(String studentId,String resumeId);
 }

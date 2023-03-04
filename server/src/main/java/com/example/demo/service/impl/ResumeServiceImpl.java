@@ -226,13 +226,28 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    public Object findAllResumeById(String studentId) {
-        resumeRepository.findByStudentId(studentId);
-        rAutobiographyRepository.findByUserId(studentId);
-        rLicenseRepository.findByUserId(studentId);
-        rProjectAchievementsRepository.findByUserId(studentId);
+    public Object findAllResumeByIdAndResumeId(String studentId,String resumeId) {
+        Resume resume =resumeRepository.findByStudentIdAndResumeId(studentId,resumeId);
+        RAutobiography rAutobiography =rAutobiographyRepository.findByUserIdAndResumeId(studentId,resumeId);
+        List<RLicense> rLicense =rLicenseRepository.findByUserIdAndResumeId(studentId,resumeId);
+        List<RProjectAchievements> rProjectAchievements =rProjectAchievementsRepository.findByUserIdAndResumeId(studentId,resumeId);
+        List<RSpecialSkill> rSpecialSkill = rSpecialSkillRepository.findByUserIdAndResumeId(studentId,resumeId);
+        List<RWorkExperience> rWorkExperience=rWorkExperienceRepository.findByUserIdAndResumeId(studentId,resumeId);
+        RWorkHope rworkHope = rWorkHopeRepository.findByUserIdAndResumeId(studentId,resumeId);
+        resume.builder()
+                .userId(studentId)
+                .resumeId(resumeId)
+                .school(resume.school)
+                .number(resume.number)
+                .rProjectAchievements(rProjectAchievements)
+                .rAutobiography(rAutobiography)
+                .rSpecialSkill(rSpecialSkill)
+                .rLicense(rLicense)
+                .rWorkHope(rworkHope)
+                .rWorkExperience(rWorkExperience)
+                .build()
 
-        return null;
+
 
     }
 

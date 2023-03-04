@@ -37,5 +37,5 @@ public interface ResumeService {
 
     Object deleteWorkExperience(RWorkExperienceRequest request, String studentId, String resumeId, String workExperienceId);
 
-    Object findAllResumeById(String studentId);
+    Object findAllResumeByIdAndResumeId(String studentId,String resumeId);
 }

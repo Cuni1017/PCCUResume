@@ -17,13 +17,14 @@ public class ResumeController {
     private final ResumeService resumeService;
     @GetMapping("/students/{studentId}/resume/{resumeId}")
     public ResponseEntity<Object> findAllResumeById(
-            @PathVariable String studentId
+            @PathVariable String studentId,
+            @PathVariable String resumeId
 
     ) {
-        if(resumeService.findAllResumeById(studentId) == null){
+        if(resumeService.findAllResumeByIdAndResumeId(studentId,resumeId) == null){
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }else{
-            return ResponseEntity.ok(resumeService.findAllResumeById(studentId));
+            return ResponseEntity.ok(resumeService.findAllResumeByIdAndResumeId(studentId,resumeId));
         }
 
     }
