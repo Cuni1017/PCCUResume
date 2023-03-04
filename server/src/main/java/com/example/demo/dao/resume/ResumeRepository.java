@@ -27,4 +27,5 @@ public interface ResumeRepository extends JpaRepository<Resume,String> {
     Optional saveBasicResume(String resumeId, String userId, int number, School school);
 
     Resume findByUserIdAndResumeId(String studentId,String resumeId);
+    List<Resume> findByUserId(String resumeId);
 }

@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class ResumeRequest {
 
     private int number;
-
+    private String name;
     @JsonProperty(value="rWorkHopeRequest")
     private RWorkHopeRequest rWorkHopeRequest;
 }

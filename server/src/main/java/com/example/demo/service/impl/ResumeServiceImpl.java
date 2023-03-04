@@ -7,13 +7,16 @@ import com.example.demo.reponse.ResumeResponse;
 import com.example.demo.service.ResumeService;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Request;
+import org.json.JSONObject;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -42,6 +45,7 @@ public class ResumeServiceImpl implements ResumeService {
                 .school(School.中國文化大學)
                 .userId(studentId)
                 .resumeId(resumeId)
+                .name(Request.getName())
                 .build();
         System.out.println(resume );
         resumeRepository.save(resume);
@@ -248,17 +252,17 @@ public class ResumeServiceImpl implements ResumeService {
                 .rWorkHope(rworkHope)
                 .rWorkExperience(rWorkExperience)
                 .build();
-        System.out.println(rProjectAchievements);
-        System.out.println(rAutobiography);
-        System.out.println(rSpecialSkill);
-        System.out.println(rLicense);
-        System.out.println(rworkHope);
-        System.out.println(rWorkExperience);
-        System.out.println(allResume);
                 return allResume;
 
 
 
+    }
+
+    @Override
+    public Object chooseResume(String studentId) {
+        List<Resume> resume = resumeRepository.findByUserId(studentId);
+
+        return resume;
     }
 
     @Override

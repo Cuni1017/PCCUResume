@@ -21,11 +21,14 @@ public class Resume {
 
     @Column(name = "user_id")
     public String userId;
+    @Column(name = "name")
+    public String name;
 
     @Column(name = "number")
     public int number;
     @Enumerated(EnumType.STRING)
     public School school;
+
 
 
 
