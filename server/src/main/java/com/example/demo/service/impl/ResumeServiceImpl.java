@@ -245,9 +245,9 @@ public class ResumeServiceImpl implements ResumeService {
                 .rLicense(rLicense)
                 .rWorkHope(rworkHope)
                 .rWorkExperience(rWorkExperience)
-                .build()
+                .build();
 
-
+    return null;
 
     }
 
