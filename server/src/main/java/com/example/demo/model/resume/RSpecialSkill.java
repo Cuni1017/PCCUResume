@@ -27,7 +27,5 @@ public class RSpecialSkill {
     @Column(name = "special")
     public String special;
 
-    @ManyToOne
-    @JoinColumn(name = "id",insertable = false,updatable = false)
-    public Resume resume;
+
 }

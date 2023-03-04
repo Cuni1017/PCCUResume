@@ -32,8 +32,6 @@ public class RProjectAchievements {
     public String talk;
     @Column(name = "url")
     public String url;
-    @ManyToOne
-    @JoinColumn(name = "id",insertable = false,updatable = false)
-    public Resume resume;
+
 
 }

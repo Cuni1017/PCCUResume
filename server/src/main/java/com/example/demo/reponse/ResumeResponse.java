@@ -16,10 +16,10 @@ public class ResumeResponse {
     private String userId;
     private int number;
     private School school;
-    private RWorkHopeResponse rWorkHopeResponse;
-    private List<RWorkExperienceResponse> rWorkExperienceResponse;
-    private List<RSpecialSkillResponse> rSpecialSkillResponse;
-    private List<RProjectAchievementsResponse> rProjectAchievementsResponse;
-    private RAutobiographyResponse rAutobiographyResponse;
-    private List<RLicenseResponse> rLicenseResponse;
+    private RWorkHope rWorkHope;
+    private List<RWorkExperience> rWorkExperience;
+    private List<RSpecialSkill> rSpecialSkill;
+    private List<RProjectAchievements> rProjectAchievements;
+    private RAutobiography rAutobiography;
+    private List<RLicense> rLicense;
 }

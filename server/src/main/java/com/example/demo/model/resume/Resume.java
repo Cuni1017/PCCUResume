@@ -30,19 +30,19 @@ public class Resume {
 
 
 
-    @OneToMany(mappedBy = "resume")
-    private List<RWorkExperience> rWorkExperience;
-
-    @OneToOne(mappedBy = "resume")
-    private RWorkHope rWorkHope;
-
-    @OneToMany(mappedBy = "resume")
-    private List<RSpecialSkill> rSpecialSkill;
-
-    @OneToMany(mappedBy = "resume")
-    private List<RProjectAchievements> rProjectAchievements;
-    @OneToOne(mappedBy = "resume")
-    private RAutobiography rAutobiography;
-    @OneToMany(mappedBy = "resume",cascade=CascadeType.ALL)
-    private List<RLicense> rLicense;
+//    @OneToMany(mappedBy = "resume")
+//    private List<RWorkExperience> rWorkExperience;
+//
+//    @OneToOne(mappedBy = "resume")
+//    private RWorkHope rWorkHope;
+//
+//    @OneToMany(mappedBy = "resume")
+//    private List<RSpecialSkill> rSpecialSkill;
+//
+//    @OneToMany(mappedBy = "resume")
+//    private List<RProjectAchievements> rProjectAchievements;
+//    @OneToOne(mappedBy = "resume")
+//    private RAutobiography rAutobiography;
+//    @OneToMany(mappedBy = "resume",cascade=CascadeType.ALL)
+//    private List<RLicense> rLicense;
 }

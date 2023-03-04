@@ -22,7 +22,7 @@ public class RLicense {
     public String resumeId;
     @Column(name = "name")
     public String name;
-    @ManyToOne
-    @JoinColumn(name = "id ",insertable = false,updatable = false)
-    public Resume resume;
+//    @ManyToOne
+//    @JoinColumn(name = "license_id ",insertable = false,updatable = false)
+//    public Resume resume;
 }

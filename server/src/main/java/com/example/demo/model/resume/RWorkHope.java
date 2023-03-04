@@ -24,7 +24,7 @@ public class RWorkHope {
     public String type;
     @Column(name = "date")
     public String date;
-    @OneToOne
-    @JoinColumn(name = "id",insertable = false,updatable = false)
-    public Resume resume;
+//    @OneToOne
+//    @JoinColumn(name = "work_hope_id",insertable = false,updatable = false)
+//    public Resume resume;
 }
