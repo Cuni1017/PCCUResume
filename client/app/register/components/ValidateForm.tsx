@@ -1,35 +1,104 @@
 import React, { ChangeEvent, useState } from "react";
-import { Button, TextField } from "@mui/material";
+import { Button, CircularProgress, TextField } from "@mui/material";
+import { axiosInstanceNext } from "@/axiosInstance.ts";
+import { FormData } from "./RegisterForm";
 
-const ValidateForm = () => {
-  const [input, setInput] = useState("");
+const ValidateForm = ({
+  formData,
+  setFormData,
+}: {
+  formData: FormData;
+  setFormData: React.Dispatch<React.SetStateAction<FormData>>;
+}) => {
+  const [CAPTCHA, setCAPTCHA] = useState("");
+  const [resendTime, setResendTime] = useState(0);
+  const [sending, setSending] = useState(false);
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setInput(e.target.value);
+    if (e.target.name === "CAPTCHA") setCAPTCHA(e.target.value);
+    else if (e.target.name === "email")
+      setFormData({ ...formData, email: e.target.value });
+  };
+
+  const handleSend = async () => {
+    const waitTime = 60;
+    try {
+      setSending(true);
+      await new Promise((resolve, reject) => {
+        setTimeout(() => {
+          return resolve("hello");
+        }, 5 * 1000);
+      });
+      await axiosInstanceNext.post("/emailValidate", { email: formData.email });
+    } catch (error) {
+      console.log(error);
+    }
+    setSending(false);
+    setResendTime(waitTime);
+    const resendInterval = setInterval(() => {
+      setResendTime((prev) => prev - 1);
+    }, 1000);
+    setTimeout(() => clearInterval(resendInterval), waitTime * 1000);
+  };
+
+  const handleSubmit = () => {
+    axiosInstanceNext.post("/emailValidate", {
+      email: formData.email,
+      CAPTCHA,
+    });
+  };
+
+  const sendMailBtnContent = () => {
+    if (sending) return <CircularProgress />;
+    if (resendTime !== 0) return resendTime.toString();
+    return "寄送驗證碼";
   };
 
   return (
     <div className="mt-10 flex flex-col h-full">
-      <h1 className="m-5">請輸入驗證碼</h1>
-      <div className="flex justify-center">
+      <h1 className="m-5">請輸入信箱</h1>
+      <div className="flex flex-col items-center">
         <TextField
-          label="驗證碼"
+          label="信箱"
           variant="outlined"
-          value={input}
+          name="email"
+          value={formData.email}
           onChange={handleChange}
           sx={{ width: "100%", maxWidth: "500px" }}
         />
+        <br />
+        <div className="flex w-full justify-between max-w-[500px] gap-2">
+          <TextField
+            label="驗證碼"
+            variant="outlined"
+            name="CAPTCHA"
+            value={CAPTCHA}
+            onChange={handleChange}
+            sx={{ width: "100%", maxWidth: "385px" }}
+          />
+          <Button
+            variant="contained"
+            color="info"
+            onClick={handleSend}
+            disabled={resendTime !== 0 || sending}
+            sx={{ width: "100%", maxWidth: "115px" }}
+          >
+            {sendMailBtnContent()}
+          </Button>
+        </div>
       </div>
       <div className="mt-2 flex justify-center items-center gap-4">
-        <span>沒有收到驗證碼？</span>
-        <Button variant="contained" color="info">
-          重新寄送
-        </Button>
+        {/* <span>沒有收到驗證碼？</span> */}
       </div>
       <div className="h-[300px]"></div>
-      <Button variant="contained" className="mt-auto mb-10">
+      <Button
+        onClick={handleSubmit}
+        variant="contained"
+        className="mt-auto mb-10"
+        disabled={CAPTCHA.length < 6 || !formData.email.includes(".com")}
+      >
         提交
       </Button>
     </div>

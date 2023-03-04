@@ -2,6 +2,7 @@ import { axiosInstanceNext } from "../axiosInstance.ts";
 import { useSelector, useDispatch } from "react-redux";
 import { Store, setUser, cleanUser, User } from "@/redux/store";
 import { FormData } from "../app/register/components/RegisterForm";
+import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { useState } from "react";
 
@@ -44,6 +45,9 @@ export function useAuth(): UseAuth {
   const [errors, setErrors] = useState([]);
   const user = useSelector((state: Store) => state.user);
   const dispatch = useDispatch();
+  // console.log(user);
+
+  const router = useRouter();
 
   const signin = async (
     { username, password }: { username: string; password: string },
@@ -59,6 +63,8 @@ export function useAuth(): UseAuth {
         const { data } = res;
         dispatch(setUser(data));
         handleClose();
+        if (user.role === "USER") router.replace("/regiter");
+        else router.replace("/");
       }
     } catch (error) {
       console.log(error, "useAuth");

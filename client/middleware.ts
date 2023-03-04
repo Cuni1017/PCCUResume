@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { useRouter } from "next/navigation";
 
 export function middleware(req: NextRequest, res: NextResponse) {
   const bearerToken = req.headers.get("authorization") as string;
