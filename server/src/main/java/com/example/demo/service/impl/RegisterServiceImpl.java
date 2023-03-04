@@ -50,7 +50,6 @@ public class RegisterServiceImpl implements RegisterService {
         }
         String  studentId = getId(userRepository,"Student");
         Student student   = studentBuilder(request);
-        String  random    = getValidRandom();
         User    user      = User.builder()
                 .id(studentId)
                 .username(request.getStudentUsername())
@@ -61,7 +60,8 @@ public class RegisterServiceImpl implements RegisterService {
                 .build();
         userRepository.save(user);
         studentRepository.save(student);
-        return "存取成功";
+        String  random = sendEmail(user.getEmail());
+        return random;
     }
 
     public String companyRegister(CompanyRegisterDto request) {
@@ -70,7 +70,7 @@ public class RegisterServiceImpl implements RegisterService {
         }
         String companyId  = getId(companyRepository,"Company");
         Company company   = companyBuilder(request);
-        String random     = getValidRandom();
+
         User    user      = User.builder()
                 .id(companyId)
                 .username(request.getCompanyUsername())
@@ -82,8 +82,8 @@ public class RegisterServiceImpl implements RegisterService {
 
         userRepository.save(user);
         companyRepository.save(company);
-
-        return "存取成功";
+        String  random = sendEmail(user.getEmail());
+        return random;
     }
 
     public String teacherRegister(TeacherRegisterDto request) {
@@ -92,7 +92,6 @@ public class RegisterServiceImpl implements RegisterService {
         }
         String  teacherId = getId(teacherRepository,"Teacher");
         Teacher teacher   = teacherBuilder(request);
-        String  random    = getValidRandom();
         User    user      = User.builder()
                 .id(teacherId)
                 .username(request.getTeacherUsername())
@@ -104,7 +103,7 @@ public class RegisterServiceImpl implements RegisterService {
 
         userRepository.save(user);
         teacherRepository.save(teacher);
-
+        String  random = sendEmail(user.getEmail());
         return random;
     }
 
