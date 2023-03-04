@@ -6,6 +6,7 @@ import { OverridableComponent } from "@mui/material/OverridableComponent";
 import { SvgIconTypeMap } from "@mui/material";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 const url = "/dashboard";
@@ -17,15 +18,15 @@ interface MyLink {
 
 const NavigationBar = () => {
   const myLinks: MyLink[] = [
-    { linkLabel: "個人檔案", href: `${url}?ref=profile` },
+    { linkLabel: "個人檔案", href: `${url}` },
     { linkLabel: "履歷", href: `${url}/resume` },
     { linkLabel: "作品集", href: `${url}/profolios` },
   ];
 
   const jobLinks: MyLink[] = [
-    { linkLabel: "已應徵職缺", href: `${url}` },
-    { linkLabel: "儲存的職缺", href: `${url}` },
-    { linkLabel: "追蹤的企業", href: `${url}` },
+    { linkLabel: "已應徵職缺", href: `${url}#` },
+    { linkLabel: "儲存的職缺", href: `${url}#` },
+    { linkLabel: "追蹤的企業", href: `${url}#` },
   ];
 
   return (
@@ -79,14 +80,20 @@ const NavigationBarItem = ({
 
 const NavigationBarItemLinks = ({ link }: { link: MyLink }) => {
   const [hovered, setHovered] = useState(false);
-  const toggleHover = () => setHovered(!hovered);
+  const pathname = usePathname();
 
   return (
     <li
       key={link.linkLabel}
-      onMouseEnter={toggleHover}
-      onMouseLeave={toggleHover}
-      className={`${hovered ? "bg-gray-100" : ""}`}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className={`${hovered ? "bg-gray-100" : ""}
+      ${
+        pathname === link.href
+          ? "border-solid border-0 border-l border-red-500"
+          : ""
+      }
+      `}
     >
       <Link className={"block py-2 pl-9"} href={link.href}>
         {link.linkLabel}

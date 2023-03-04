@@ -24,9 +24,6 @@ public class RAutobiography {
     public String chineseAutobiography;
     @Column(name = "english_autobiography")
     public String englishAutobiography;
-    @OneToOne
-    @JoinColumn(name = "id",insertable = false,updatable = false)
-    public Resume resume;
 
 
 }

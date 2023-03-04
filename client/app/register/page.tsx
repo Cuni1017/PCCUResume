@@ -12,10 +12,17 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { FormData } from "./components/RegisterForm";
 import { useAuth } from "@/hooks/useAuth";
+import { useSelector } from "react-redux";
+import { Store } from "@/redux/store";
 
-const steps = ["選擇身分", "輸入資訊", "查收驗證碼"];
+const steps = ["驗證信箱", "選擇身分", "輸入資訊"];
 
 const RegisterPage = () => {
+  // const user = useSelector((state: Store) => state.user);
+  // if (user) {
+  //   console.log(user);
+  // }
+
   const { signup, isFetching } = useAuth();
   const [identity, setIdentity] = useState<null | string>(null);
   const [formData, setFormData] = useState<FormData>({
@@ -23,11 +30,8 @@ const RegisterPage = () => {
     password: "",
     name: "",
     email: "",
-
     pccuId: "",
-
     teacherId: "",
-
     companyName: "",
     companyTitle: "",
     companyNumber: "",
@@ -41,15 +45,10 @@ const RegisterPage = () => {
     signup({ ...formData, identity, handleNext, handleComplete });
   };
 
-  // console.log(formData);
-
   const [activeStep, setActiveStep] = useState(0);
   const [completed, setCompleted] = useState<{
     [k: number]: boolean;
   }>({});
-
-  // console.log(activeStep);
-  // console.log(completed);
 
   const totalSteps = () => {
     return steps.length;
@@ -126,14 +125,17 @@ const RegisterPage = () => {
                 {/* <Typography sx={{ mt: 2, mb: 1, py: 1 }}>
                 Step {activeStep + 1}
               </Typography> */}
-                {activeStep === 0 ? (
+                {activeStep === 1 ? (
                   <IdentityPicker
                     setIdentity={setIdentity}
                     handleNext={handleNext}
                     handleComplete={handleComplete}
                   />
                 ) : null}
-                {activeStep === 1 ? (
+                {activeStep === 0 ? (
+                  <ValidateForm formData={formData} setFormData={setFormData} />
+                ) : null}
+                {activeStep === 2 ? (
                   <RegisterForm
                     identity={identity}
                     formData={formData}
@@ -142,7 +144,6 @@ const RegisterPage = () => {
                     isFetching={isFetching}
                   />
                 ) : null}
-                {activeStep === 2 ? <ValidateForm /> : null}
                 {/* <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
                 <Button
                   color="inherit"

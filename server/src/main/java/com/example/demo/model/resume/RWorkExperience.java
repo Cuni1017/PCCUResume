@@ -27,10 +27,7 @@ public class RWorkExperience {
     @Column(name = "company_name")
     public String companyName;
 
-    @ManyToOne
-    @JoinColumn(name = "id",insertable = false,updatable = false
-    )
-    public Resume resume;
+
 
 
 

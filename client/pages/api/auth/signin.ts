@@ -34,7 +34,7 @@ export default async function handler(
     });
 
     if (errors.length) {
-      return res.status(400).json({ errorMessage: errors[0] });
+      return res.status(401).json({ errorMessage: errors[0] });
     }
 
     let token: null | string = null;
@@ -65,5 +65,5 @@ export default async function handler(
     }
   }
 
-  return res.status(404).json("Unknown endpoint");
+  return res.status(400).json("Unknown endpoint");
 }

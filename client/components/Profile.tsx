@@ -32,10 +32,15 @@ const Profile = ({
         <div className="ml-1">{user.username}</div>
         <ExpandMoreIcon />
         {isProfileMenuShow ? (
-          <div className="absolute top-16 right-0 cursor-auto">
+          <div className="absolute top-16 right-0 cursor-auto z-10">
             <div className="bg-white flex flex-col gap-2 rounded-sm py-2 w-48 shadow">
               <ProfileMenuItem>
                 <Link href="/dashboard">
+                  <div>主控台</div>
+                </Link>
+              </ProfileMenuItem>
+              <ProfileMenuItem>
+                <Link href="/dashboard/resume">
                   <div>我的履歷</div>
                 </Link>
               </ProfileMenuItem>

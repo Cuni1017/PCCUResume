@@ -63,7 +63,7 @@ public class RegisterServiceImpl implements RegisterService {
                 .email(request.getStudentEmail())
                 .password(passwordEncoder.encode(request.getStudentPassword()))
                 .role(Role.STUDENT)
-                .isValid(1)
+
                 .build();
         userRepository.save(user);
         studentRepository.save(student);
@@ -84,7 +84,7 @@ public class RegisterServiceImpl implements RegisterService {
                 .email(request.getCompanyEmail())
                 .password(passwordEncoder.encode(request.getCompanyPassword()))
                 .role(Role.COMPANY)
-                .isValid(0)
+
                 .build();
 
         userRepository.save(user);
@@ -104,7 +104,6 @@ public class RegisterServiceImpl implements RegisterService {
                 .email(request.getTeacherEmail())
                 .password(passwordEncoder.encode(request.getTeacherPassword()))
                 .role(Role.TEACHER)
-                .isValid(0)
                 .build();
 
         userRepository.save(user);
@@ -114,7 +113,7 @@ public class RegisterServiceImpl implements RegisterService {
 
     public String sendEmail(String email) {
         String  random    = getValidRandom();
-        if(!userRepository.findByEmail(email).isEmpty()){
+        if(!userRepository.findBymyEmail(email).isEmpty()){
             throw new userNotFoundException("email被使用");
         }
         try {

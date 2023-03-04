@@ -3,6 +3,7 @@ package com.example.demo.service.impl;
 import com.example.demo.dao.resume.*;
 import com.example.demo.dto.resume.post.*;
 import com.example.demo.model.resume.*;
+import com.example.demo.reponse.ResumeResponse;
 import com.example.demo.service.ResumeService;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Request;
@@ -226,16 +227,17 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    public Object findAllResumeByIdAndResumeId(String studentId,String resumeId) {
-        Resume resume =resumeRepository.findByStudentIdAndResumeId(studentId,resumeId);
-        RAutobiography rAutobiography =rAutobiographyRepository.findByUserIdAndResumeId(studentId,resumeId);
-        List<RLicense> rLicense =rLicenseRepository.findByUserIdAndResumeId(studentId,resumeId);
-        List<RProjectAchievements> rProjectAchievements =rProjectAchievementsRepository.findByUserIdAndResumeId(studentId,resumeId);
-        List<RSpecialSkill> rSpecialSkill = rSpecialSkillRepository.findByUserIdAndResumeId(studentId,resumeId);
-        List<RWorkExperience> rWorkExperience=rWorkExperienceRepository.findByUserIdAndResumeId(studentId,resumeId);
-        RWorkHope rworkHope = rWorkHopeRepository.findByUserIdAndResumeId(studentId,resumeId);
-        resume.builder()
-                .userId(studentId)
+    public Object findAllResumeByIdAndResumeId(String userId,String resumeId) {
+        Resume resume =resumeRepository.findByUserIdAndResumeId(userId,resumeId);
+        RAutobiography rAutobiography =rAutobiographyRepository.findByUserIdAndResumeId(userId,resumeId);
+        List<RLicense> rLicense =rLicenseRepository.findByUserIdAndResumeId(userId,resumeId);
+        List<RProjectAchievements> rProjectAchievements =rProjectAchievementsRepository.findByUserIdAndResumeId(userId,resumeId);
+        List<RSpecialSkill> rSpecialSkill = rSpecialSkillRepository.findByUserIdAndResumeId(userId,resumeId);
+        List<RWorkExperience> rWorkExperience=rWorkExperienceRepository.findByUserIdAndResumeId(userId,resumeId);
+        RWorkHope rworkHope = rWorkHopeRepository.findByUserIdAndResumeId(userId,resumeId);
+        System.out.println(rAutobiography);
+        ResumeResponse allResume = ResumeResponse.builder()
+                .userId(userId)
                 .resumeId(resumeId)
                 .school(resume.school)
                 .number(resume.number)
@@ -246,8 +248,16 @@ public class ResumeServiceImpl implements ResumeService {
                 .rWorkHope(rworkHope)
                 .rWorkExperience(rWorkExperience)
                 .build();
+        System.out.println(rProjectAchievements);
+        System.out.println(rAutobiography);
+        System.out.println(rSpecialSkill);
+        System.out.println(rLicense);
+        System.out.println(rworkHope);
+        System.out.println(rWorkExperience);
+        System.out.println(allResume);
+                return allResume;
 
-    return null;
+
 
     }
 

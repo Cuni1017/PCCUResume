@@ -40,10 +40,11 @@ const RegisterForm = (props: Props) => {
     helpText?: string;
     type?: string;
     col?: number;
+    disable?: boolean;
   }[] = [
+    { name: "email", label: "信箱", col: 12, disable: true },
     { name: "username", label: "帳號" },
     { name: "password", label: "密碼", type: "password" },
-    { name: "email", label: "信箱", helpText: "將寄送驗證碼至此信箱", col: 12 },
   ];
   const tempIndustryCategory = [
     "廣告／行銷／代理",
@@ -132,6 +133,7 @@ const RegisterForm = (props: Props) => {
           helperText={input.helpText ? input.helpText : undefined}
           type={input.type ? input.type : undefined}
           onChange={handleTextChange}
+          disabled={input.disable ? true : undefined}
         />
       </Grid>
     );
