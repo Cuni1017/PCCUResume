@@ -33,10 +33,16 @@ public class RegisterServiceImpl implements RegisterService {
   private final JwtService jwtService;
   private final AuthenticationManager authenticationManager;
   private final JavaMailSender mailSender;
-    public String checkEmail(String studentId, JpaRepository jpaRepository, checkEmailDto request) {
+    public String checkEmail(String usertId, JpaRepository jpaRepository, checkEmailDto request) {
         if(request.getInputMsg().equals(request.getValidMsg())){
-            User user = userRepository.findById(studentId).orElseThrow();
+            User user = userRepository.findById(usertId).orElseThrow();
+            if(user.getId().startsWith("S")){
+                user.setRole(Role.STUDENT);
+            } else if (user.getId().startsWith("C")) {
+                user.setRole(Role.COMPANY);
+            }
             user.setIsValid(1);
+            userRepository.updateRoleById(user.getIsValid(),user.getRole(),usertId);
             return "驗證成功";
         }else{
 
@@ -55,7 +61,7 @@ public class RegisterServiceImpl implements RegisterService {
                 .username(request.getStudentUsername())
                 .email(request.getStudentEmail())
                 .password(passwordEncoder.encode(request.getStudentPassword()))
-                .role(Role.STUDENT)
+                .role(Role.USER)
                 .isValid(0)
                 .build();
         userRepository.save(user);
@@ -76,7 +82,7 @@ public class RegisterServiceImpl implements RegisterService {
                 .username(request.getCompanyUsername())
                 .email(request.getCompanyEmail())
                 .password(passwordEncoder.encode(request.getCompanyPassword()))
-                .role(Role.COMPANY)
+                .role(Role.USER)
                 .isValid(0)
                 .build();
 
@@ -97,7 +103,7 @@ public class RegisterServiceImpl implements RegisterService {
                 .username(request.getTeacherUsername())
                 .email(request.getTeacherEmail())
                 .password(passwordEncoder.encode(request.getTeacherPassword()))
-                .role(Role.TEACHER)
+                .role(Role.USER)
                 .isValid(0)
                 .build();
 

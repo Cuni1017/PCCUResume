@@ -22,9 +22,6 @@ public class LoginService {
 
     public AuthenticationResponse login(AuthenticationDto request) {
         User user_data = userRepository.findByUsername(request.getUsername()).orElseThrow(() -> new userNotFoundException("查無帳號"));
-        if (user_data.getIsValid() == 0){
-            throw new userNotFoundException("帳號沒認證");
-        }
         BCryptPasswordEncoder bcryptPasswordEncoder = new BCryptPasswordEncoder();
         boolean isPasswordMatche = bcryptPasswordEncoder.matches(request.getPassword(), user_data.getPassword());
         if (request.getUsername().equals(user_data.getUsername())) {
