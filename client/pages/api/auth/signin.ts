@@ -53,7 +53,7 @@ export default async function handler(
     }
 
     if (token) {
-      setCookie("JWT", token, { req, res, maxAge: 5 * 60 * 1 }); //maxAge單位好像是秒
+      setCookie("JWT", token, { req, res, maxAge: 60 * 60 * 1 }); //maxAge單位好像是秒
       const decoded = jwt.decode(token) as {
         id: string;
         username: string;

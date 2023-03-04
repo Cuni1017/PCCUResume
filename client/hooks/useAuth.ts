@@ -1,7 +1,9 @@
 import { axiosInstanceNext } from "../axiosInstance.ts";
 import { useSelector, useDispatch } from "react-redux";
 import { Store, setUser, cleanUser, User } from "@/redux/store";
+import { FormData } from "../app/register/components/RegisterForm";
 import Cookies from "js-cookie";
+import { useState } from "react";
 
 interface UseAuth {
   signin: (
@@ -14,11 +16,32 @@ interface UseAuth {
     },
     handleClose: () => void
   ) => Promise<void>;
-  signup: (username: string, password: string) => Promise<void>;
+  signup: ({
+    identity,
+    username,
+    password,
+    name,
+    email,
+    pccuId,
+    teacherId,
+    companyName,
+    companyTitle,
+    companyNumber,
+    companyCounty,
+    companyDistrict,
+    companyAddress,
+  }: FormData & {
+    identity: string;
+    handleNext: () => void;
+    handleComplete: () => void;
+  }) => Promise<void>;
   signout: () => void;
+  isFetching: boolean;
 }
 
 export function useAuth(): UseAuth {
+  const [isFetching, setIsFetching] = useState(false);
+  const [errors, setErrors] = useState([]);
   const user = useSelector((state: Store) => state.user);
   const dispatch = useDispatch();
 
@@ -42,12 +65,63 @@ export function useAuth(): UseAuth {
     }
   };
 
-  const signup = async () => {};
+  const signup = async ({
+    identity,
+    username,
+    password,
+    name,
+    email,
+    pccuId,
+    teacherId,
+    companyName,
+    companyTitle,
+    companyNumber,
+    companyCounty,
+    companyDistrict,
+    companyAddress,
+    handleNext,
+    handleComplete,
+  }: FormData & {
+    identity: string;
+    handleNext: () => void;
+    handleComplete: () => void;
+  }) => {
+    setIsFetching(true);
+    try {
+      const res = await axiosInstanceNext.post("/api/auth/signup", {
+        identity,
+        username,
+        password,
+        name,
+        email,
+        pccuId,
+        teacherId,
+        companyName,
+        companyTitle,
+        companyNumber,
+        companyCounty,
+        companyDistrict,
+        companyAddress,
+      });
+
+      console.log("success useAuth");
+      if (res.status === 200) {
+        const { data } = res;
+        console.log(data);
+        handleNext();
+        handleComplete();
+      }
+    } catch (error: any) {
+      alert(error.response.data.errorMessage);
+      console.log(error, "useAuth");
+    }
+    setIsFetching(false);
+  };
 
   const signout = () => {
     Cookies.remove("JWT");
     dispatch(cleanUser());
   };
 
-  return { signin, signup, signout };
+  return { signin, signup, signout, isFetching };
 }

@@ -4,6 +4,8 @@ import { Autocomplete, Button } from "@mui/material";
 import AddressPicker from "./AddressPicker";
 import TaiwanPostalCode from "./data/TaiwanPostalCode.json";
 import { SelectChangeEvent } from "@mui/material/Select";
+import Grid from "@mui/material/Unstable_Grid2"; //v2
+import { CircularProgress } from "@mui/material";
 
 export interface FormData {
   username: string;
@@ -24,46 +26,74 @@ interface Props {
   formData: FormData;
   setFormData: React.Dispatch<React.SetStateAction<FormData>>;
   identity: string | null;
+  handleSubmit: () => void;
+  isFetching: boolean;
 }
 
 const RegisterForm = (props: Props) => {
-  const { formData, setFormData, identity } = props;
+  const { formData, setFormData, identity, handleSubmit, isFetching } = props;
 
   let formTitle = "";
-  let formsInputs: {
+  let formInputs: {
     name: keyof typeof formData;
-    label: string;
+    label?: string; //如果沒label，renderedInputs就不印
     helpText?: string;
     type?: string;
+    col?: number;
   }[] = [
     { name: "username", label: "帳號" },
     { name: "password", label: "密碼", type: "password" },
-    { name: "name", label: "姓名" },
-    { name: "email", label: "信箱", helpText: "將寄送驗證碼至此信箱" },
+    { name: "email", label: "信箱", helpText: "將寄送驗證碼至此信箱", col: 12 },
   ];
-  const tempIndustryCategory = ["軟體工程師", "硬體工程師"]; //行業類別 for autoComplete
+  const tempIndustryCategory = [
+    "廣告／行銷／代理",
+    "農林漁牧業",
+    "建築設計",
+    "銀行／保險／金融",
+    "教育／培訓／招聘",
+    "法律／法規",
+    "顧問／審計",
+    "移動／運輸",
+    "非營利／社團組織",
+    "科技",
+    "工業",
+    "服務",
+  ]; //行業類別 for AutoComplete
 
   switch (identity) {
     case "STD":
       formTitle = "學生";
-      formsInputs = formsInputs.concat([{ name: "pccuId", label: "學號" }]);
+      formInputs = formInputs.concat([
+        { name: "name", label: "姓名" },
+        { name: "pccuId", label: "學號" },
+      ]);
       break;
     case "CPN":
       formTitle = "廠商";
-      formsInputs = formsInputs.concat([
-        { name: "companyName", label: "公司名稱" },
-        // { name: "companyTitle", label: "行業類別" },
+      formInputs = formInputs.concat([
+        { name: "companyName", label: "公司名稱", col: 12 },
         { name: "companyNumber", label: "公司電話" },
+        { name: "companyTitle" },
+        { name: "companyCounty" },
+        { name: "companyDistrict" },
+        { name: "companyAddress" },
       ]);
       break;
     case "TCH":
       formTitle = "教師";
-      formsInputs = formsInputs.concat([
+      formInputs = formInputs.concat([
+        { name: "name", label: "姓名" },
         { name: "teacherId", label: "教師ID" },
       ]);
       break;
   }
 
+  // 控制button disabled
+  const checkIsFormCorrect = !formInputs.every(
+    (input) => formData[input.name] !== ""
+  );
+
+  // for TextFiled
   const handleTextChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -73,6 +103,7 @@ const RegisterForm = (props: Props) => {
     });
   };
 
+  // for Select
   const handleSelectChange = useCallback(
     (e: SelectChangeEvent) => {
       if (e.target.name === "companyCounty") {
@@ -90,53 +121,60 @@ const RegisterForm = (props: Props) => {
     [formData, setFormData]
   );
 
-  const renderedInputs = formsInputs.map((input) => (
-    <FormTextFiled
-      key={input.label}
-      label={input.label}
-      name={input.name}
-      value={formData[input.name]}
-      helperText={input.helpText ? input.helpText : undefined}
-      type={input.type ? input.type : undefined}
-      onChange={handleTextChange}
-    />
-  ));
+  const renderedInputs = formInputs.map((input) => {
+    if (!input.label) return;
+    return (
+      <Grid xs={12} sm={input.col ? input.col : 6} key={input.label}>
+        <FormTextFiled
+          label={input.label as string}
+          name={input.name}
+          value={formData[input.name]}
+          helperText={input.helpText ? input.helpText : undefined}
+          type={input.type ? input.type : undefined}
+          onChange={handleTextChange}
+        />
+      </Grid>
+    );
+  });
 
   return (
-    <div className="flex flex-col items-center h-full">
+    <div className="mt-10 flex flex-col h-full">
+      <h1 className="m-5">請輸入資訊</h1>
       <p className="text-center text-xl font-bold">{formTitle}</p>
-      <div className="w-full sm:w-[95%]">
-        <div className="flex flex-wrap gap-5 justify-center">
+      <div className="w-full">
+        {/* <div className="flex flex-wrap gap-5 justify-center"> */}
+        <Grid container spacing={2} className="justify-center">
           {renderedInputs}
           {identity === "CPN" ? (
             <>
-              <Autocomplete
-                options={tempIndustryCategory}
-                freeSolo
-                onInputChange={(e, value) => {
-                  setFormData({ ...formData, companyTitle: value });
-                }}
-                value={formData.companyTitle || null} // Autocomplete一定要給null不能是""
-                onChange={(e, newValue) => {
-                  setFormData({
-                    ...formData,
-                    companyTitle: newValue || "",
-                  });
-                }}
-                sx={{ width: "100%", maxWidth: "400px" }}
-                size="small"
-                renderInput={(params) => {
-                  // console.log(params);
-                  return <TextField {...params} label="行業類別" />;
-                }}
-                renderOption={(props, option, state) => {
-                  return (
-                    <li {...props} key={option}>
-                      {option}
-                    </li>
-                  );
-                }}
-              />
+              <Grid xs={12} sm={6}>
+                <Autocomplete
+                  options={tempIndustryCategory}
+                  freeSolo // !給用戶自己輸入，等有行業分類後拔掉
+                  onInputChange={(e, value) => {
+                    setFormData({ ...formData, companyTitle: value });
+                  }}
+                  value={formData.companyTitle || null} // Autocomplete一定要給null不能是""
+                  onChange={(e, newValue) => {
+                    setFormData({
+                      ...formData,
+                      companyTitle: newValue || "",
+                    });
+                  }}
+                  size="small"
+                  renderInput={(params) => {
+                    // console.log(params);
+                    return <TextField {...params} label="行業類別" />;
+                  }}
+                  renderOption={(props, option, state) => {
+                    return (
+                      <li {...props} key={option}>
+                        {option}
+                      </li>
+                    );
+                  }}
+                />
+              </Grid>
               <AddressPicker
                 county={formData.companyCounty}
                 district={formData.companyDistrict}
@@ -146,12 +184,18 @@ const RegisterForm = (props: Props) => {
               />
             </>
           ) : null}
-        </div>
+        </Grid>
       </div>
+      {/* </div> */}
 
-      <div className="mt-auto mb-4 w-full">
-        <Button variant="contained" fullWidth>
-          提交
+      <div className="mt-4 sm:mt-auto mb-10 w-full">
+        <Button
+          variant="contained"
+          fullWidth
+          disabled={checkIsFormCorrect || isFetching}
+          onClick={handleSubmit}
+        >
+          {isFetching ? <CircularProgress /> : "提交"}
         </Button>
       </div>
     </div>
@@ -174,7 +218,8 @@ const FormTextFiled = ({
   ...rest
 }: FormTextFieldProps) => {
   const textfieldWidth = "100%";
-  const textFiledMaxWidth = { sm: "300px", md: "400px" };
+  const textFiledMaxWidth = { sm: "300px", md: "380px" };
+  const sx = { width: textfieldWidth }; //, maxWidth: textFiledMaxWidth
 
   return (
     <TextField
@@ -186,7 +231,7 @@ const FormTextFiled = ({
       }}
       variant="outlined"
       size="small"
-      sx={{ width: textfieldWidth, maxWidth: textFiledMaxWidth }}
+      sx={sx}
       {...rest}
     />
   );

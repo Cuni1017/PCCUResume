@@ -6,13 +6,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Provider } from "react-redux";
 import store from "../redux/store";
 
-const LayoutWrapper = ({
-  children,
-  session,
-}: {
-  children: React.ReactNode;
-  session: any;
-}) => {
+const LayoutWrapper = ({ children }: { children: React.ReactNode }) => {
   return (
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>{children}</Provider>
