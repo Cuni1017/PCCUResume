@@ -11,4 +11,5 @@ public interface RegisterService {
     String studentRegister(StudentRegisterRequest request);
     String companyRegister(CompanyRegisterDto request);
     String teacherRegister(TeacherRegisterDto request);
+    String sendEmail(String email);
 }

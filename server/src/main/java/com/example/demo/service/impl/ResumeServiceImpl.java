@@ -227,8 +227,12 @@ public class ResumeServiceImpl implements ResumeService {
 
     @Override
     public Object findAllResumeById(String studentId) {
-        Optional s =resumeRepository.findAllResume();
-        return s.get();
+        resumeRepository.findByStudentId(studentId);
+        rAutobiographyRepository.findByUserId(studentId);
+        rLicenseRepository.findByUserId(studentId);
+        rProjectAchievementsRepository.findByUserId(studentId);
+
+        return null;
 
     }
 

@@ -35,10 +35,11 @@ public class RegisterServiceImpl implements RegisterService {
   private final JavaMailSender mailSender;
     public String checkEmail(String studentId, JpaRepository jpaRepository, checkEmailDto request) {
         if(request.getInputMsg().equals(request.getValidMsg())){
+            User user = userRepository.findById(studentId).orElseThrow();
+            user.setIsValid(1);
             return "驗證成功";
         }else{
-            userRepository.deleteById(studentId);
-            jpaRepository.deleteById(studentId);
+
             throw new userNotFoundException("驗證失敗");
         }
     }
@@ -56,16 +57,11 @@ public class RegisterServiceImpl implements RegisterService {
                 .email(request.getStudentEmail())
                 .password(passwordEncoder.encode(request.getStudentPassword()))
                 .role(Role.STUDENT)
+                .isValid(0)
                 .build();
         userRepository.save(user);
         studentRepository.save(student);
-        try {
-            sendEmail(request.getStudentEmail(),request.getStudentUsername(),random );
-            return "寄送成功";
-        }catch (MailException E){
-
-        }
-        return random;
+        return "存取成功";
     }
 
     public String companyRegister(CompanyRegisterDto request) {
@@ -81,16 +77,13 @@ public class RegisterServiceImpl implements RegisterService {
                 .email(request.getCompanyEmail())
                 .password(passwordEncoder.encode(request.getCompanyPassword()))
                 .role(Role.COMPANY)
+                .isValid(0)
                 .build();
 
         userRepository.save(user);
         companyRepository.save(company);
-        try {
-            sendEmail(request.getCompanyEmail(),request.getCompanyUsername(),random );
 
-        }catch (MailException E){
-        }
-        return random;
+        return "存取成功";
     }
 
     public String teacherRegister(TeacherRegisterDto request) {
@@ -106,14 +99,21 @@ public class RegisterServiceImpl implements RegisterService {
                 .email(request.getTeacherEmail())
                 .password(passwordEncoder.encode(request.getTeacherPassword()))
                 .role(Role.TEACHER)
+                .isValid(0)
                 .build();
 
         userRepository.save(user);
         teacherRepository.save(teacher);
-        try {
-            sendEmail(request.getTeacherEmail(),request.getTeacherUsername(),random );
 
+        return random;
+    }
+
+    public String sendEmail(String email) {
+        String  random    = getValidRandom();
+        try {
+            sendEmail(email,random);
         }catch (MailException E){
+            return "email 錯誤";
         }
         return random;
     }
@@ -175,11 +175,13 @@ public class RegisterServiceImpl implements RegisterService {
                 .build();
         return teacher;
     }
-    private void sendEmail(String userEmail , String userName ,String random) throws MailException {
+
+    private void sendEmail(String userEmail ,String random) throws MailException {
         MimeMessagePreparator messagePreparator = mimeMessage -> {
-            String message = userName.concat("驗證信箱");
+
+            String message = "pccu實習驗證信箱";
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
-            messageHelper.setFrom("mikeliu9001061@gmail.com");
+            messageHelper.setFrom(userEmail);
             messageHelper.setTo(userEmail);
             messageHelper.setSubject(message);
             messageHelper.setText(random);

@@ -31,6 +31,12 @@ public ResponseEntity<String> test1(
 ) {
   return ResponseEntity.ok("test");
 }
+  @GetMapping("/register/sendemail/{email}")
+  public ResponseEntity<String> sendEmail(
+          @PathVariable String email
+  ) {
+    return ResponseEntity.ok(registerService.sendEmail(email));
+  }
 @GetMapping("/register/test")
 public ResponseEntity<String> test(
 ) {

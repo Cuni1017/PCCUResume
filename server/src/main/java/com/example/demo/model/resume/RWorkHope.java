@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "r_work_hope")
 public class RWorkHope {
     @Id
-    @Column(name = "id")
+    @Column(name = "work_hope_id")
     public String id;
     @Column(name = "user_id")
     public String userId;

@@ -16,7 +16,7 @@ import java.util.Date;
 @Table(name = "r_project_achievements")
 public class RProjectAchievements {
     @Id
-    @Column(name = "id")
+    @Column(name = "project_achievements_id")
     public String id;
     @Column(name = "user_id")
     public String userId;
