@@ -41,7 +41,7 @@ public class ResumeController {
             @PathVariable String studentId
     ) {
 
-        return ResponseEntity.ok(resumeService.chooseResume(studentId));
+//        return ResponseEntity.ok(resumeService.chooseResume(studentId));
     }
     @PutMapping("/students/{studentId}/resume/{resumeId}/work-hope/{workHopeId}")
     public ResponseEntity<Object> editWorkHope(
