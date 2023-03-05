@@ -40,4 +40,6 @@ public interface ResumeService {
     Object findAllResumeByIdAndResumeId(String studentId,String resumeId);
 
     Object chooseResume(String studentId);
+
+    Object deleteAllResumeById(String studentId, String resumeId);
 }

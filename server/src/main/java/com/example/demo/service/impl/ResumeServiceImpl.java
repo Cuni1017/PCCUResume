@@ -62,6 +62,21 @@ public class ResumeServiceImpl implements ResumeService {
                 .build();
         return restResponse;
     }
+    @Override
+    public Object deleteAllResumeById(String studentId, String resumeId) {
+        resumeRepository.deleteByUserIdAndResumeId(studentId,resumeId);
+        rAutobiographyRepository.deleteByUserIdAndResumeId( studentId, resumeId );
+        rLicenseRepository.deleteByUserIdAndResumeId( studentId, resumeId );
+        rProjectAchievementsRepository.deleteByUserIdAndResumeId( studentId, resumeId );
+        rSpecialSkillRepository.deleteByUserIdAndResumeId( studentId, resumeId );
+        rWorkExperienceRepository.deleteByUserIdAndResumeId( studentId, resumeId );
+        rWorkHopeRepository.deleteByUserIdAndResumeId( studentId, resumeId );
+        RestResponse restResponse =RestResponse.builder()
+                .data(resumeId)
+                .message("刪除此id下全部履歷")
+                .build();
+        return restResponse;
+    }
 
     @Override
     public Object createSpecialSkill(RSpecialSkillRequest request, String studentId, String resumeId) {
@@ -353,6 +368,8 @@ public class ResumeServiceImpl implements ResumeService {
         return restResponse;
 
     }
+
+
 
     @Override
     public Object editWorkHope(RWorkHopeRequest request, String studentId,String resumeId, String workHopeId) {

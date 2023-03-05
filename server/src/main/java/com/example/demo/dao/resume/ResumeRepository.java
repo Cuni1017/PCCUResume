@@ -2,13 +2,16 @@ package com.example.demo.dao.resume;
 
 import com.example.demo.model.resume.Resume;
 import com.example.demo.model.resume.School;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-@EnableJpaRepositories
+@Repository
 public interface ResumeRepository extends JpaRepository<Resume,String> {
     //Optional<List<Resume>> findAllResume();
     @Query(value = "SELECT rm.* , ra. FROM resume as rm " +
@@ -28,4 +31,7 @@ public interface ResumeRepository extends JpaRepository<Resume,String> {
 
     Resume findByUserIdAndResumeId(String studentId,String resumeId);
     List<Resume> findByUserId(String resumeId);
+    @Modifying
+    @Transactional
+    void deleteByUserIdAndResumeId(String id ,String resumeId);
 }
