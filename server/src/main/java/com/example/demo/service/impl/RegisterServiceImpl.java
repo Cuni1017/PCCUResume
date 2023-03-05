@@ -7,6 +7,10 @@ import com.example.demo.config.error.MailException;
 import com.example.demo.config.error.UserNotFoundException;
 import com.example.demo.model.*;
 import com.example.demo.dto.*;
+import com.example.demo.reponse.RestResponse;
+import com.example.demo.reponse.register.CompanyResponse;
+import com.example.demo.reponse.register.StudentResponse;
+import com.example.demo.reponse.register.TeacherResponse;
 import com.example.demo.service.JwtService;
 import com.example.demo.service.RegisterService;
 import lombok.RequiredArgsConstructor;
@@ -49,7 +53,7 @@ public class RegisterServiceImpl implements RegisterService {
 //            throw new userNotFoundException("驗證失敗");
 //        }
 //    }
-    public String studentRegister(StudentRegisterRequest request) {
+    public Object studentRegister(StudentRegisterRequest request) {
 
         if(!userRepository.findByUsername(request.getStudentUsername()).isEmpty()){
            throw  new UserNotFoundException("這帳號被註冊過了");
@@ -66,11 +70,19 @@ public class RegisterServiceImpl implements RegisterService {
                 .build();
         userRepository.save(user);
         studentRepository.save(student);
+        StudentResponse studentResponse= StudentResponse.builder()
+                .student(student)
+                .user(user)
+                .build();
+        RestResponse restResponse =RestResponse.builder()
+                .data(studentResponse)
+                .message("儲存成功")
+                .build();
+        return restResponse;
 
-        return "儲存成功";
     }
 
-    public String companyRegister(CompanyRegisterDto request) {
+    public Object companyRegister(CompanyRegisterDto request) {
         if(!companyRepository.findByCompanyUsername(request.getCompanyUsername()).isEmpty()){
             throw  new UserNotFoundException("這帳號被註冊過了");
         }
@@ -88,10 +100,20 @@ public class RegisterServiceImpl implements RegisterService {
 
         userRepository.save(user);
         companyRepository.save(company);
-        return "儲存成功";
+        CompanyResponse companyResponse =CompanyResponse.builder()
+                .company(company)
+                .user(user)
+                .build();
+        RestResponse restResponse =RestResponse.builder()
+                .data(companyResponse)
+                .message("儲存成功")
+                .build();
+        return restResponse;
+
+
     }
 
-    public String teacherRegister(TeacherRegisterDto request) {
+    public Object teacherRegister(TeacherRegisterDto request) {
         if(!teacherRepository.findByTeacherUsername(request.getTeacherUsername()).isEmpty()){
             throw  new UserNotFoundException("這帳號被註冊過了");
         }
@@ -107,10 +129,19 @@ public class RegisterServiceImpl implements RegisterService {
 
         userRepository.save(user);
         teacherRepository.save(teacher);
-        return "儲存成功";
+        TeacherResponse teacherResponse =TeacherResponse.builder()
+                .teacher(teacher)
+                .user(user)
+                .build();
+        RestResponse restResponse =RestResponse.builder()
+                .data(teacherResponse)
+                .message("儲存成功")
+                .build();
+        return restResponse;
+
     }
 
-    public String sendEmail(String email) {
+    public Object sendEmail(String email) {
         String  random    = getValidRandom();
         if(!userRepository.findBymyEmail(email).isEmpty()){
             throw new UserNotFoundException("email被使用");
@@ -120,7 +151,12 @@ public class RegisterServiceImpl implements RegisterService {
         }catch (MailException E){
             return "email 錯誤";
         }
-        return random;
+        RestResponse restResponse =RestResponse.builder()
+                .data(random)
+                .message("亂數創造")
+                .build();
+        return restResponse;
+
     }
 
 

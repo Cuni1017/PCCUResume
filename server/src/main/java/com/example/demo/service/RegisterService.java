@@ -6,8 +6,8 @@ import com.example.demo.dto.TeacherRegisterDto;
 
 public interface RegisterService {
     //String checkEmail(String studentId, JpaRepository jpaRepository, checkEmailDto request);
-    String studentRegister(StudentRegisterRequest request);
-    String companyRegister(CompanyRegisterDto request);
-    String teacherRegister(TeacherRegisterDto request);
-    String sendEmail(String email);
+    Object studentRegister(StudentRegisterRequest request);
+    Object companyRegister(CompanyRegisterDto request);
+    Object teacherRegister(TeacherRegisterDto request);
+    Object sendEmail(String email);
 }

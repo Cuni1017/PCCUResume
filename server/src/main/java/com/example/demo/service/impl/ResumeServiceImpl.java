@@ -136,14 +136,22 @@ public class ResumeServiceImpl implements ResumeService {
                 .name(request.name)
                 .build();
         rLicenseRepository.save(rLicense);
-        return "";
+        RestResponse restResponse =RestResponse.builder()
+                .data(rLicense)
+                .message("更新成功")
+                .build();
+        return restResponse;
 
     }
 
     @Override
     public Object deleteLicense(RlicenseRequest request, String studentId, String resumeId, String licenseId) {
         rLicenseRepository.deleteById(licenseId);
-        return "刪除成功";
+        RestResponse restResponse =RestResponse.builder()
+                .data(licenseId)
+                .message("刪除成功")
+                .build();
+        return restResponse;
     }
 
 
@@ -162,7 +170,11 @@ public class ResumeServiceImpl implements ResumeService {
                         .url(Request.url)
                         .build();
         rProjectAchievementsRepository.save(rProjectAchievements);
-        return "輸入成功";
+        RestResponse restResponse =RestResponse.builder()
+                .data(rProjectAchievements)
+                .message("新增成功")
+                .build();
+        return restResponse;
     }
     @Override
     public Object editProjectAchievments(RProjectAchievementsRequest request, String studentId, String resumeId, String projectAchievmentsId) {
@@ -177,13 +189,23 @@ public class ResumeServiceImpl implements ResumeService {
                 .url(request.url)
                 .build();
         rProjectAchievementsRepository.save(rProjectAchievements);
-        return "更新成功";
+        RestResponse restResponse =RestResponse.builder()
+                .data(rProjectAchievements)
+                .message("更新成功")
+                .build();
+        return restResponse;
+
     }
 
     @Override
     public Object deleteProjectAchievments(RProjectAchievementsRequest request, String studentId, String resumeId, String projectAchievmentsId) {
         rProjectAchievementsRepository.deleteById(projectAchievmentsId);
-        return "刪除成功";
+        RestResponse restResponse =RestResponse.builder()
+                .data(projectAchievmentsId)
+                .message("刪除成功")
+                .build();
+        return restResponse;
+
     }
 
 
@@ -199,7 +221,12 @@ public class ResumeServiceImpl implements ResumeService {
                 .englishAutobiography(request.englishAutobiography)
                 .build();
         rAutobiographyRepository.save(rAutobiography);
-        return "創建成功";
+        RestResponse restResponse =RestResponse.builder()
+                .data(rAutobiography)
+                .message("新增成功")
+                .build();
+        return restResponse;
+
     }
     @Override
     public Object editAutobiography(RAutobiographyRequest request, String studentId, String resumeId, String autobiographyId) {
@@ -211,13 +238,23 @@ public class ResumeServiceImpl implements ResumeService {
                 .englishAutobiography(request.englishAutobiography)
                 .build();
         rAutobiographyRepository.save(rAutobiography);
-        return "更新成功";
+        RestResponse restResponse =RestResponse.builder()
+                .data(rAutobiography)
+                .message("更新成功")
+                .build();
+        return restResponse;
+
     }
 
     @Override
     public Object deleteAutobiography(RAutobiographyRequest request, String studentId, String resumeId, String autobiographyId) {
         rAutobiographyRepository.deleteById(autobiographyId);
-        return "刪除成功";
+        RestResponse restResponse =RestResponse.builder()
+                .data(autobiographyId)
+                .message("刪除成功")
+                .build();
+        return restResponse;
+
     }
 
 
@@ -233,7 +270,12 @@ public class ResumeServiceImpl implements ResumeService {
                 .companyName(request.companyName)
                 .build();
         rWorkExperienceRepository.save(rWorkExperience);
-        return "創建成功";
+        RestResponse restResponse =RestResponse.builder()
+                .data(rWorkExperience)
+                .message("創建成功")
+                .build();
+        return restResponse;
+
     }
     @Override
     public Object editWorkExperience(RWorkExperienceRequest request, String studentId, String resumeId, String workExperienceId) {
@@ -246,13 +288,21 @@ public class ResumeServiceImpl implements ResumeService {
                 .companyName(request.companyName)
                 .build();
         rWorkExperienceRepository.save(rWorkExperience);
-        return "更新成功";
+        RestResponse restResponse =RestResponse.builder()
+                .data(rWorkExperience)
+                .message("更新成功")
+                .build();
+        return restResponse;
     }
 
     @Override
     public Object deleteWorkExperience(RWorkExperienceRequest request, String studentId, String resumeId, String workExperienceId) {
         rWorkExperienceRepository.deleteById(workExperienceId);
-        return "刪除成功";
+        RestResponse restResponse =RestResponse.builder()
+                .data(workExperienceId)
+                .message("刪除成功")
+                .build();
+        return restResponse;
     }
 
     @Override
@@ -278,8 +328,12 @@ public class ResumeServiceImpl implements ResumeService {
                 .rWorkHope(rworkHope)
                 .rWorkExperience(rWorkExperience)
                 .build();
-                return allResume;
 
+        RestResponse restResponse =RestResponse.builder()
+                .data(allResume)
+                .message("查詢成功")
+                .build();
+        return restResponse;
 
 
     }
@@ -292,8 +346,12 @@ public class ResumeServiceImpl implements ResumeService {
                 .resume(resume)
                 .count(count)
                 .build();
+        RestResponse restResponse =RestResponse.builder()
+                .data(chooseResumeResponse)
+                .message("查詢成功")
+                .build();
+        return restResponse;
 
-        return chooseResumeResponse;
     }
 
     @Override
@@ -309,13 +367,22 @@ public class ResumeServiceImpl implements ResumeService {
         Optional rWorkHopeTest = rWorkHopeRepository.findById(workHopeId);
         rWorkHopeTest.orElseThrow();
         rWorkHopeRepository.save(rWorkHope);
-        return "更新成功";
+        RestResponse restResponse =RestResponse.builder()
+                .data(rWorkHopeTest)
+                .message("更新成功")
+                .build();
+        return restResponse;
+
     }
 
     @Override
     public Object deleteWorkHope(RWorkHopeRequest request, String studentId, String resumeId, String workHopeId) {
         rWorkHopeRepository.deleteById(workHopeId);
-        return "刪除成功";
+        RestResponse restResponse =RestResponse.builder()
+                .data(workHopeId)
+                .message("刪除成功")
+                .build();
+        return restResponse;
     }
 
 

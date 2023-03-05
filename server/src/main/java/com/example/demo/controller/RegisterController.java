@@ -32,7 +32,7 @@ public ResponseEntity<String> test1(
   return ResponseEntity.ok("test");
 }
   @GetMapping("/register/sendemail/{email}")
-  public ResponseEntity<String> sendEmail(
+  public ResponseEntity<Object> sendEmail(
           @PathVariable String email
   ) {
     return ResponseEntity.ok(registerService.sendEmail(email));
@@ -43,7 +43,7 @@ public ResponseEntity<String> test(
   return ResponseEntity.ok("test");
 }
   @PostMapping("/register/student")
-  public ResponseEntity<String> studentRegister(
+  public ResponseEntity<Object> studentRegister(
           @RequestBody StudentRegisterRequest request
   ) {
     return ResponseEntity.ok(registerService.studentRegister(request));
@@ -56,7 +56,7 @@ public ResponseEntity<String> test(
 //    return ResponseEntity.ok(registerService.checkEmail(studentId,studentRepository,request));
 //  }
   @PostMapping("/register/company")
-  public ResponseEntity<String> companyRegister(
+  public ResponseEntity<Object> companyRegister(
           @RequestBody CompanyRegisterDto request
   ) {
     return ResponseEntity.ok(registerService.companyRegister(request));
@@ -69,7 +69,7 @@ public ResponseEntity<String> test(
 //    return ResponseEntity.ok(registerService.checkEmail(companyId,companyRepository,request));
 //  }
   @PostMapping("/register/teacher")
-  public ResponseEntity<String> teacherRegister(
+  public ResponseEntity<Object> teacherRegister(
           @RequestBody TeacherRegisterDto request
   ) {
     return ResponseEntity.ok(registerService.teacherRegister(request));
