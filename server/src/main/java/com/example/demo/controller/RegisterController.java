@@ -5,7 +5,7 @@ import com.example.demo.dao.StudentRepository;
 import com.example.demo.dao.TeacherRepository;
 import com.example.demo.dto.*;
 import com.example.demo.service.RegisterService;
-import com.example.demo.auth.StudentRegisterRequest;
+import com.example.demo.dto.StudentRegisterRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

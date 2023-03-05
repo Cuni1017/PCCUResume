@@ -14,7 +14,7 @@ import java.util.List;
 public class ResumeResponse {
     private  String resumeId;
     private String userId;
-    private int number;
+    private String number;
     private School school;
     private RWorkHope rWorkHope;
     private List<RWorkExperience> rWorkExperience;

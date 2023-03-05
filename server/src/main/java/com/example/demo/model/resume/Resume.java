@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -25,7 +27,9 @@ public class Resume {
     public String name;
 
     @Column(name = "number")
-    public int number;
+    public String number;
+    @Column(name = "create_time")
+    public LocalDate createTime;
     @Enumerated(EnumType.STRING)
     public School school;
 

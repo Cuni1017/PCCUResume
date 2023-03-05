@@ -4,12 +4,12 @@ import com.example.demo.dto.resume.post.*;
 import com.example.demo.model.resume.Resume;
 
 public interface ResumeService {
-    Resume createBasicResume(ResumeRequest Request,String studentId);
-    String createSpecialSkill(RSpecialSkillRequest Request, String studentId,String resumeId) ;
-    String createLicense(RlicenseRequest Request, String studentId, String resumeId) ;
+    Object createBasicResume(ResumeRequest Request,String studentId);
+    Object createSpecialSkill(RSpecialSkillRequest Request, String studentId,String resumeId) ;
+    Object createLicense(RlicenseRequest Request, String studentId, String resumeId) ;
 
-    String createProjectAchievments(RProjectAchievementsRequest request, String studentId, String resumeId);
-    String createAutobiography(RAutobiographyRequest request, String studentId, String resumeId);
+    Object createProjectAchievments(RProjectAchievementsRequest request, String studentId, String resumeId);
+    Object createAutobiography(RAutobiographyRequest request, String studentId, String resumeId);
 
     Object createWorkExperience(RWorkExperienceRequest request, String studentId, String resumeId);
 

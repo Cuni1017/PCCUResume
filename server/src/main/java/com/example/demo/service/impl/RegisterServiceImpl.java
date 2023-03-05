@@ -1,10 +1,10 @@
 package com.example.demo.service.impl;
 
 
-import com.example.demo.auth.StudentRegisterRequest;
+import com.example.demo.dto.StudentRegisterRequest;
 import com.example.demo.dao.*;
-import com.example.demo.error.MailException;
-import com.example.demo.error.userNotFoundException;
+import com.example.demo.config.error.MailException;
+import com.example.demo.config.error.UserNotFoundException;
 import com.example.demo.model.*;
 import com.example.demo.dto.*;
 import com.example.demo.service.JwtService;
@@ -15,7 +15,6 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -53,7 +52,7 @@ public class RegisterServiceImpl implements RegisterService {
     public String studentRegister(StudentRegisterRequest request) {
 
         if(!userRepository.findByUsername(request.getStudentUsername()).isEmpty()){
-           throw  new userNotFoundException("這帳號被註冊過了");
+           throw  new UserNotFoundException("這帳號被註冊過了");
         }
         String  studentId = getId(userRepository,"Student");
         Student student   = studentBuilder(request);
@@ -73,7 +72,7 @@ public class RegisterServiceImpl implements RegisterService {
 
     public String companyRegister(CompanyRegisterDto request) {
         if(!companyRepository.findByCompanyUsername(request.getCompanyUsername()).isEmpty()){
-            throw  new userNotFoundException("這帳號被註冊過了");
+            throw  new UserNotFoundException("這帳號被註冊過了");
         }
         String companyId  = getId(companyRepository,"Company");
         Company company   = companyBuilder(request);
@@ -94,7 +93,7 @@ public class RegisterServiceImpl implements RegisterService {
 
     public String teacherRegister(TeacherRegisterDto request) {
         if(!teacherRepository.findByTeacherUsername(request.getTeacherUsername()).isEmpty()){
-            throw  new userNotFoundException("這帳號被註冊過了");
+            throw  new UserNotFoundException("這帳號被註冊過了");
         }
         String  teacherId = getId(teacherRepository,"Teacher");
         Teacher teacher   = teacherBuilder(request);
@@ -114,7 +113,7 @@ public class RegisterServiceImpl implements RegisterService {
     public String sendEmail(String email) {
         String  random    = getValidRandom();
         if(!userRepository.findBymyEmail(email).isEmpty()){
-            throw new userNotFoundException("email被使用");
+            throw new UserNotFoundException("email被使用");
         }
         try {
             sendEmail(email,random);

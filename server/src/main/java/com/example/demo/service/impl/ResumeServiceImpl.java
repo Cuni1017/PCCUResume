@@ -13,6 +13,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -47,6 +48,7 @@ public class ResumeServiceImpl implements ResumeService {
                 .userId(studentId)
                 .resumeId(resumeId)
                 .name(Request.getName())
+                .createTime(LocalDate.now())
                 .build();
         System.out.println(resume );
         resumeRepository.save(resume);
@@ -125,7 +127,7 @@ public class ResumeServiceImpl implements ResumeService {
 
 
     @Override
-    public String createProjectAchievments(RProjectAchievementsRequest Request, String studentId, String resumeId) {
+    public Object createProjectAchievments(RProjectAchievementsRequest Request, String studentId, String resumeId) {
         String projectAchievmentsId = getId(rProjectAchievementsRepository,"pr",2);
         RProjectAchievements rProjectAchievements= RProjectAchievements.builder()
                         .userId(studentId)
@@ -165,7 +167,7 @@ public class ResumeServiceImpl implements ResumeService {
 
 
     @Override
-    public String createAutobiography(RAutobiographyRequest request, String studentId, String resumeId) {
+    public Object createAutobiography(RAutobiographyRequest request, String studentId, String resumeId) {
         String autobiographyId = getId(resumeRepository,"AutobiographyId",2);
         RAutobiography rAutobiography= RAutobiography.builder()
                 .id(autobiographyId)
@@ -241,6 +243,7 @@ public class ResumeServiceImpl implements ResumeService {
         List<RWorkExperience> rWorkExperience=rWorkExperienceRepository.findByUserIdAndResumeId(userId,resumeId);
         RWorkHope rworkHope = rWorkHopeRepository.findByUserIdAndResumeId(userId,resumeId);
         System.out.println(rAutobiography);
+
         ResumeResponse allResume = ResumeResponse.builder()
                 .userId(userId)
                 .resumeId(resumeId)
@@ -262,8 +265,10 @@ public class ResumeServiceImpl implements ResumeService {
     @Override
     public Object chooseResume(String studentId) {
         List<Resume> resume = resumeRepository.findByUserId(studentId);
+        long count = resumeRepository.count();
         ChooseResumeResponse chooseResumeResponse =ChooseResumeResponse.builder()
                 .resume(resume)
+                .count(count)
                 .build();
 
         return chooseResumeResponse;

@@ -3,7 +3,7 @@ package com.example.demo.service;
 import com.example.demo.auth.AuthenticationResponse;
 import com.example.demo.dao.TokenRepository;
 import com.example.demo.dao.UserRepository;
-import com.example.demo.error.userNotFoundException;
+import com.example.demo.config.error.UserNotFoundException;
 import com.example.demo.model.Token;
 import com.example.demo.model.TokenType;
 import com.example.demo.model.User;
@@ -21,7 +21,7 @@ public class LoginService {
     private final TokenRepository tokenRepository;
 
     public AuthenticationResponse login(AuthenticationDto request) {
-        User user_data = userRepository.findByUsername(request.getUsername()).orElseThrow(() -> new userNotFoundException("查無帳號"));
+        User user_data = userRepository.findByUsername(request.getUsername()).orElseThrow(() -> new UserNotFoundException("查無帳號"));
         BCryptPasswordEncoder bcryptPasswordEncoder = new BCryptPasswordEncoder();
         boolean isPasswordMatche = bcryptPasswordEncoder.matches(request.getPassword(), user_data.getPassword());
         if (request.getUsername().equals(user_data.getUsername())) {
@@ -32,10 +32,10 @@ public class LoginService {
                         .token(jwtToken)
                         .build();
             } else {
-                throw new userNotFoundException("密碼錯誤");
+                throw new UserNotFoundException("密碼錯誤");
             }
         } else {
-            throw new userNotFoundException("帳號錯誤");
+            throw new UserNotFoundException("帳號錯誤");
         }
     }
     private void saveUserToken(User user, String jwtToken) {
