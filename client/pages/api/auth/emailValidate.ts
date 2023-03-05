@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import validator from "validator";
 import { axiosInstance } from "@/axiosInstance.ts";
 
-let ANSWER: string | null = null; //後端返回的驗證碼
+let ANSWER: string | null = "ASDFGH"; //後端返回的驗證碼
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -23,23 +23,17 @@ export default async function handler(
           `/register/sendemail/${email}`
         );
         ANSWER = response.data;
-        // ANSWER = "R456123";
+        console.log(ANSWER);
       } catch (error) {
         console.log(error, "emailValidate");
       }
     } else {
       if (CAPTCHA !== ANSWER)
         return res.status(401).json({ errorMessage: "CAPTCHA is not correct" });
-
-      try {
-        const response = await axiosInstance.get(`/register/`);
-        console.log(response);
-      } catch (error) {
-        console.log(error, "emailValidate");
-      }
+      else return res.status(200).json({ message: "OK!" });
     }
 
-    return res.status(200).json({ message: "Hello" });
+    return res.status(200).json({ message: "寄送成功" });
   }
 
   return res.status(404).json({ errorMessage: "Unknown endpoint" });

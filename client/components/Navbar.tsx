@@ -8,6 +8,7 @@ import { getCookie } from "cookies-next";
 import NavbarItem from "./NavbarItem";
 import NavbarItemMenu from "./NavbarItemMenu";
 import MenuIcon from "@mui/icons-material/Menu";
+import CloseIcon from "@mui/icons-material/Close";
 import { CircularProgress } from "@mui/material";
 import Button from "@mui/material/Button";
 import AuthModal from "./AuthModal/AuthModal";
@@ -23,6 +24,22 @@ const Navbar = () => {
   const user = useSelector((state: Store) => state.user);
   const [loading, setLoading] = useState(true); //jwt
   const dispatch = useDispatch();
+
+  const [windowSize, setWindowSize] = useState([
+    window.innerWidth,
+    window.innerHeight,
+  ]);
+
+  useEffect(() => {
+    const handleWindowResize = () => {
+      setWindowSize([window.innerWidth, window.innerHeight]);
+      if (windowSize[0] >= 899) setIsMenuShow(false);
+    };
+    window.addEventListener("resize", handleWindowResize);
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, [windowSize]);
 
   const checkJWT = useCallback(async () => {
     try {
@@ -49,13 +66,15 @@ const Navbar = () => {
     if (!JWT) {
       setLoading(false);
     } else {
-      checkJWT();
-      const interval = setInterval(() => {
+      if (!user.id) {
         checkJWT();
-      }, 5 * 60 * 1000);
-      return () => clearInterval(interval);
+        const interval = setInterval(() => {
+          checkJWT();
+        }, 5 * 60 * 1000);
+        return () => clearInterval(interval);
+      }
     }
-  }, [checkJWT]);
+  }, [checkJWT, user.id]);
 
   const CPNLinks = [
     { label: "徵才", link: "/search" },
@@ -104,12 +123,12 @@ const Navbar = () => {
               className="md:hidden flex items-center cursor-pointer h-full"
               onClick={() => setIsMenuShow(!isMenuShow)}
             >
-              <MenuIcon />
+              {isMenuShow ? <CloseIcon /> : <MenuIcon />}
             </div>
           </div>
         </div>
       </div>
-      {isMenuShow ? <MobileMenu setIsMenuShow={setIsMenuShow} /> : null}
+      <MobileMenu isMenuShow={isMenuShow} setIsMenuShow={setIsMenuShow} />
     </>
   );
 };

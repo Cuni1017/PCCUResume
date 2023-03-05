@@ -1,28 +1,23 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import IdentityPicker from "./components/IdentityPicker";
 import RegisterForm from "./components/RegisterForm";
 import ValidateForm from "./components/ValidateForm";
-import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
-import StepButton from "@mui/material/StepButton";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
+import CheckIcon from "@mui/icons-material/Check";
 import { FormData } from "./components/RegisterForm";
 import { useAuth } from "@/hooks/useAuth";
 import { useSelector } from "react-redux";
 import { Store } from "@/redux/store";
+import { StepLabel } from "@mui/material";
+import { motion } from "framer-motion";
+import Link from "next/link";
 
 const steps = ["驗證信箱", "選擇身分", "輸入資訊"];
 
 const RegisterPage = () => {
-  // const user = useSelector((state: Store) => state.user);
-  // if (user) {
-  //   console.log(user);
-  // }
-
   const { signup, isFetching } = useAuth();
   const [identity, setIdentity] = useState<null | string>(null);
   const [formData, setFormData] = useState<FormData>({
@@ -63,7 +58,7 @@ const RegisterPage = () => {
   };
 
   const allStepsCompleted = () => {
-    return completedSteps() === totalSteps();
+    return true; //completedSteps() === totalSteps()
   };
 
   const handleNext = () => {
@@ -97,14 +92,12 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="mt-10 min-h-[650px] flex flex-col items-center pt-10 bg-white">
+    <div className="mt-10 min-h-[650px] flex flex-col items-center pt-10 bg-white relative">
       <div className="flex flex-col w-[90%] min-h-[600px]">
-        <Stepper activeStep={activeStep}>
+        <Stepper activeStep={2}>
           {steps.map((label, index) => (
-            <Step key={label} completed={completed[index]}>
-              <StepButton color="inherit" onClick={handleStep(index)}>
-                {label}
-              </StepButton>
+            <Step key={label}>
+              <StepLabel color="inherit">{label}</StepLabel>
             </Step>
           ))}
         </Stepper>
@@ -112,28 +105,52 @@ const RegisterPage = () => {
           <div className="h-auto sm:h-[600px]">
             {allStepsCompleted() ? (
               <React.Fragment>
-                <Typography sx={{ mt: 2, mb: 1 }}>
-                  All steps completed - you&apos;re finished
-                </Typography>
-                <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-                  <Box sx={{ flex: "1 1 auto" }} />
-                  <Button onClick={handleReset}>Reset</Button>
-                </Box>
+                <div className="mt-10 flex flex-col h-full">
+                  <h1 className="m-5">註冊完成</h1>
+                  <div className="grow">
+                    <Link href="/">
+                      <motion.div
+                        className="max-h-[10rem] border-solid rounded-full p-10 absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] "
+                        initial={{ backgroundColor: "#fff", color: "#1976d2" }}
+                        animate={{ backgroundColor: "#3b82f6", color: "#fff" }}
+                      >
+                        <svg
+                          className="w-[10rem]"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={3}
+                        >
+                          <motion.path
+                            initial={{ pathLength: 0 }}
+                            animate={{ pathLength: 1 }}
+                            transition={{ duration: 1 }}
+                            d="M5 13l4 4L19 7"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          ></motion.path>
+                        </svg>
+                      </motion.div>
+                    </Link>
+                  </div>
+                </div>
               </React.Fragment>
             ) : (
               <React.Fragment>
-                {/* <Typography sx={{ mt: 2, mb: 1, py: 1 }}>
-                Step {activeStep + 1}
-              </Typography> */}
+                {activeStep === 0 ? (
+                  <ValidateForm
+                    formData={formData}
+                    setFormData={setFormData}
+                    handleNext={handleNext}
+                    handleComplete={handleComplete}
+                  />
+                ) : null}
                 {activeStep === 1 ? (
                   <IdentityPicker
                     setIdentity={setIdentity}
                     handleNext={handleNext}
                     handleComplete={handleComplete}
                   />
-                ) : null}
-                {activeStep === 0 ? (
-                  <ValidateForm formData={formData} setFormData={setFormData} />
                 ) : null}
                 {activeStep === 2 ? (
                   <RegisterForm
@@ -142,19 +159,9 @@ const RegisterPage = () => {
                     setFormData={setFormData}
                     handleSubmit={handleSubmit}
                     isFetching={isFetching}
+                    handleBack={handleBack}
                   />
                 ) : null}
-                {/* <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-                <Button
-                  color="inherit"
-                  disabled={activeStep === 0}
-                  onClick={handleBack}
-                  sx={{ mr: 1 }}
-                >
-                  返回
-                </Button>
-                <Box sx={{ flex: "1 1 auto" }} />
-              </Box> */}
               </React.Fragment>
             )}
           </div>
