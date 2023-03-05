@@ -4,6 +4,7 @@ import com.example.demo.dao.resume.*;
 import com.example.demo.dto.resume.post.*;
 import com.example.demo.model.resume.*;
 import com.example.demo.reponse.ChooseResumeResponse;
+import com.example.demo.reponse.RestResponse;
 import com.example.demo.reponse.ResumeResponse;
 import com.example.demo.service.ResumeService;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +34,7 @@ public class ResumeServiceImpl implements ResumeService {
     private final RWorkExperienceRepository rWorkExperienceRepository;
 
     @Override
-    public Resume createBasicResume(ResumeRequest Request,String studentId) {
+    public Object createBasicResume(ResumeRequest Request,String studentId) {
         String resumeId = getId(resumeRepository , "Resume",1);
         RWorkHope rWorkHope =RWorkHope.builder()
                 .resumeId(resumeId)
@@ -55,11 +56,15 @@ public class ResumeServiceImpl implements ResumeService {
         rWorkHopeRepository.save(rWorkHope);
        List<Resume> resumeData =  resumeRepository.findAll();
         System.out.println(resumeData);
-        return resume;
+        RestResponse restResponse =RestResponse.builder()
+                .data(resume)
+                .message("創建基本履歷")
+                .build();
+        return restResponse;
     }
 
     @Override
-    public String createSpecialSkill(RSpecialSkillRequest request, String studentId, String resumeId) {
+    public Object createSpecialSkill(RSpecialSkillRequest request, String studentId, String resumeId) {
         String specialSkillId = getId(rSpecialSkillRepository,"special",2);
         RSpecialSkill rSpecialSkill = RSpecialSkill.builder()
                 .resumeId(resumeId)
@@ -70,7 +75,11 @@ public class ResumeServiceImpl implements ResumeService {
                 .talk(request.talk)
                 .build();
         rSpecialSkillRepository.save(rSpecialSkill);
-        return "輸入成功";
+        RestResponse restResponse =RestResponse.builder()
+                .data("沒有資料傳回")
+                .message("輸入成功")
+                .build();
+        return restResponse;
     }
     @Override
     public Object editSpecialSkill(RSpecialSkillRequest request, String studentId, String resumeId, String specialSkillId) {
@@ -83,19 +92,27 @@ public class ResumeServiceImpl implements ResumeService {
                 .talk(request.talk)
                 .build();
         rSpecialSkillRepository.save(rSpecialSkill);
-        return "更新成功";
+        RestResponse restResponse =RestResponse.builder()
+                .data(rSpecialSkill)
+                .message("更新成功")
+                .build();
+        return restResponse;
     }
 
     @Override
     public Object deleteSpecialSkill(RSpecialSkillRequest request, String studentId, String resumeId, String specialSkillId) {
         rSpecialSkillRepository.deleteById(specialSkillId);
-        return "刪除成功";
+        RestResponse restResponse =RestResponse.builder()
+                .data(specialSkillId)
+                .message("刪除成功")
+                .build();
+        return restResponse;
     }
 
 
 
     @Override
-    public String createLicense(RlicenseRequest Request, String studentId, String resumeId) {
+    public Object createLicense(RlicenseRequest Request, String studentId, String resumeId) {
         String licenseId = getId(rLicenseRepository,"license",2);
         RLicense rLicense =RLicense.builder()
                 .userId(studentId)
@@ -104,10 +121,14 @@ public class ResumeServiceImpl implements ResumeService {
                 .name(Request.name)
                 .build();
         rLicenseRepository.save(rLicense);
-        return "儲存成功";
+        RestResponse restResponse =RestResponse.builder()
+                .data(rLicense)
+                .message("儲存成功")
+                .build();
+        return restResponse;
     }
     @Override
-    public Object editLicense(RlicenseRequest request, String studentId, String resumeId, String licenseId) {
+    public Object editLicense(RlicenseRequest **************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************request, String studentId, String resumeId, String licenseId) {
         RLicense rLicense =RLicense.builder()
                 .userId(studentId)
                 .resumeId(resumeId)
@@ -115,7 +136,11 @@ public class ResumeServiceImpl implements ResumeService {
                 .name(request.name)
                 .build();
         rLicenseRepository.save(rLicense);
-        return "更新成功";
+        RestResponse restResponse =RestResponse.builder()
+                .data(rLicense)
+                .message("更新成功")
+                .build();
+        return restResponse;
     }
 
     @Override
