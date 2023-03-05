@@ -128,7 +128,7 @@ public class ResumeServiceImpl implements ResumeService {
         return restResponse;
     }
     @Override
-    public Object editLicense(RlicenseRequest **************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************request, String studentId, String resumeId, String licenseId) {
+    public Object editLicense(RlicenseRequest request, String studentId, String resumeId, String licenseId) {
         RLicense rLicense =RLicense.builder()
                 .userId(studentId)
                 .resumeId(resumeId)
@@ -136,11 +136,8 @@ public class ResumeServiceImpl implements ResumeService {
                 .name(request.name)
                 .build();
         rLicenseRepository.save(rLicense);
-        RestResponse restResponse =RestResponse.builder()
-                .data(rLicense)
-                .message("更新成功")
-                .build();
-        return restResponse;
+        return "";
+
     }
 
     @Override
