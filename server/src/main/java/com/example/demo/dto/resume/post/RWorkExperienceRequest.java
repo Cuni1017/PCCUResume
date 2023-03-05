@@ -15,5 +15,5 @@ public class RWorkExperienceRequest {
     public String name;
 
     public String department;
-    public String companyName;
+        public String companyName;
 }

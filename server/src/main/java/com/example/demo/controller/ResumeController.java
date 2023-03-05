@@ -96,7 +96,7 @@ public class ResumeController {
     ) {
         return ResponseEntity.ok(resumeService.createLicense(request,studentId,resumeId));
     }
-    @PutMapping("/students/{studentId}/resume/{resumeId}/license/{licenseId}")
+        @PutMapping("/students/{studentId}/resume/{resumeId}/license/{licenseId}")
     public ResponseEntity<Object> editLicense(
             @RequestBody RlicenseRequest request,
             @PathVariable String studentId,

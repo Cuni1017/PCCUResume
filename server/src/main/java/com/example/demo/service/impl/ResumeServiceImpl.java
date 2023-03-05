@@ -3,6 +3,7 @@ package com.example.demo.service.impl;
 import com.example.demo.dao.resume.*;
 import com.example.demo.dto.resume.post.*;
 import com.example.demo.model.resume.*;
+import com.example.demo.reponse.ChooseResumeResponse;
 import com.example.demo.reponse.ResumeResponse;
 import com.example.demo.service.ResumeService;
 import lombok.RequiredArgsConstructor;
@@ -261,8 +262,11 @@ public class ResumeServiceImpl implements ResumeService {
     @Override
     public Object chooseResume(String studentId) {
         List<Resume> resume = resumeRepository.findByUserId(studentId);
+        ChooseResumeResponse chooseResumeResponse =ChooseResumeResponse.builder()
+                .resume(resume)
+                .build();
 
-        return resume;
+        return chooseResumeResponse;
     }
 
     @Override
