@@ -21,12 +21,17 @@ import java.util.List;
 public class User implements UserDetails {
 
   @Id
+  @Column(name = "id")
   private String id;
+  @Column(name = "username")
   private String username;
+  @Column(name = "img_url")
   private String email;
+  @Column(name = "password")
   private String password;
 
   @Enumerated(EnumType.STRING)
+  @Column(name = "role")
   private Role role;
 
   @OneToMany(mappedBy = "user")

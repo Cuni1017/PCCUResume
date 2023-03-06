@@ -356,11 +356,12 @@ public class ResumeServiceImpl implements ResumeService {
     @Override
     public Object chooseResume(String studentId) {
         List<Resume> resume = resumeRepository.findByUserId(studentId);
-        long count = resumeRepository.count();
+        long count = resumeRepository.countByUserId(studentId);
         ChooseResumeResponse chooseResumeResponse =ChooseResumeResponse.builder()
                 .resume(resume)
                 .count(count)
                 .build();
+        System.out.println(resume);
         RestResponse restResponse =RestResponse.builder()
                 .data(chooseResumeResponse)
                 .message("查詢成功")

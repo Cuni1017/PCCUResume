@@ -143,7 +143,7 @@ public class RegisterServiceImpl implements RegisterService {
 
     public Object sendEmail(String email) {
         String  random    = getValidRandom();
-        if(!userRepository.findBymyEmail(email).isEmpty()){
+        if(!userRepository.findByEmail(email).isEmpty()){
             throw new UserNotFoundException("email被使用");
         }
         try {

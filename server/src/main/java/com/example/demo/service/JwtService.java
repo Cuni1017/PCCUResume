@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 
+import com.example.demo.config.error.FileException;
 import com.example.demo.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -65,6 +66,11 @@ public class JwtService {
   }
 
   private boolean isTokenExpired(String token) {
+//    if(extractExpiration(token).before(new Date())){
+//      throw new FileException("jwt過期");
+//    }
+
+    System.out.println("sv");
     return extractExpiration(token).before(new Date());
   }
 
