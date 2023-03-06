@@ -28,14 +28,14 @@ public class JwtService {
   }
 
   public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-    System.out.println("se");
+
     final Claims claims = extractAllClaims(token);
-    System.out.println("sj");
+
     return claimsResolver.apply(claims);
   }
   private Claims extractAllClaims(String token) {
     Claims Claims;
-    System.out.println("ss");
+
     try {
       Claims = Jwts
               .parserBuilder()
@@ -65,18 +65,23 @@ public class JwtService {
         .setClaims(extraClaims)
         .setSubject(userDetails.getUsername())
         .setIssuedAt(new Date(System.currentTimeMillis()))
-        .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24*30))
+        .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24*60*30))
         .signWith(getSignInKey(), SignatureAlgorithm.HS256)
         .compact();
   }
 
   public boolean isTokenValid(String token, UserDetails userDetails) {
     final String username = extractUsername(token);
+
     return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
   }
 
   private boolean isTokenExpired(String token) {
 
+//    if(!extractExpiration(token).before(new Date())){
+//      throw new FileException("JWT時間過時了");
+//    }
+    System.out.println(extractExpiration(token).before(new Date()));
     return extractExpiration(token).before(new Date());
   }
 

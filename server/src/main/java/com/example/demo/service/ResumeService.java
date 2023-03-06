@@ -12,34 +12,37 @@ public interface ResumeService {
     Object createAutobiography(RAutobiographyRequest request, String studentId, String resumeId);
 
     Object createWorkExperience(RWorkExperienceRequest request, String studentId, String resumeId);
-
+    Object createWorkHope(RWorkHopeRequest request, String studentId, String resumeId);
     Object editWorkHope(RWorkHopeRequest request, String studentId,String resumeId, String workHopeId);
 
-    Object deleteWorkHope(RWorkHopeRequest request, String studentId, String resumeId, String workHopeId);
+    Object deleteWorkHope( String studentId, String resumeId, String workHopeId);
 
     Object editSpecialSkill(RSpecialSkillRequest request, String studentId, String resumeId, String specialSkillId);
 
-    Object deleteSpecialSkill(RSpecialSkillRequest request, String studentId, String resumeId, String specialSkillId);
+    Object deleteSpecialSkill( String studentId, String resumeId, String specialSkillId);
 
     Object editLicense(RlicenseRequest request, String studentId, String resumeId, String licenseId);
 
-    Object deleteLicense(RlicenseRequest request, String studentId, String resumeId, String licenseId);
+    Object deleteLicense(String studentId, String resumeId, String licenseId);
 
     Object editProjectAchievments(RProjectAchievementsRequest request, String studentId, String resumeId, String projectAchievmentsId);
 
-    Object deleteProjectAchievments(RProjectAchievementsRequest request, String studentId, String resumeId, String projectAchievmentsId);
+    Object deleteProjectAchievments( String studentId, String resumeId, String projectAchievmentsId);
 
     Object editAutobiography(RAutobiographyRequest request, String studentId, String resumeId, String autobiographyId);
 
-    Object deleteAutobiography(RAutobiographyRequest request, String studentId, String resumeId, String autobiographyId);
+    Object deleteAutobiography( String studentId, String resumeId, String autobiographyId);
 
     Object editWorkExperience(RWorkExperienceRequest request, String studentId, String resumeId, String workExperienceId);
 
-    Object deleteWorkExperience(RWorkExperienceRequest request, String studentId, String resumeId, String workExperienceId);
+    Object deleteWorkExperience( String studentId, String resumeId, String workExperienceId);
 
     Object findAllResumeByIdAndResumeId(String studentId,String resumeId);
 
     Object chooseResume(String studentId);
 
     Object deleteAllResumeById(String studentId, String resumeId);
+
+
+    Object findUserById(String studentId);
 }

@@ -15,7 +15,7 @@ public class StudentRegisterRequest {
   private String studentPassword;
   private String studentName;
   private String studentEmail;
-
+  private String studentNumber;
   private String pccuId;
 
 }

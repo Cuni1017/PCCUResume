@@ -1,11 +1,18 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.config.error.UserNotFoundException;
+import com.example.demo.dao.CompanyRepository;
+import com.example.demo.dao.StudentRepository;
+import com.example.demo.dao.UserRepository;
 import com.example.demo.dao.resume.*;
 import com.example.demo.dto.resume.post.*;
+import com.example.demo.model.Student;
+import com.example.demo.model.User;
 import com.example.demo.model.resume.*;
 import com.example.demo.reponse.ChooseResumeResponse;
 import com.example.demo.reponse.RestResponse;
 import com.example.demo.reponse.ResumeResponse;
+import com.example.demo.reponse.student.StudentResponse;
 import com.example.demo.service.ResumeService;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Request;
@@ -24,7 +31,8 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ResumeServiceImpl implements ResumeService {
-
+    private final UserRepository userRepository;
+    private final StudentRepository studentRepository;
     private final ResumeRepository resumeRepository;
     private final RWorkHopeRepository rWorkHopeRepository;
     private final RSpecialSkillRepository rSpecialSkillRepository;
@@ -32,19 +40,59 @@ public class ResumeServiceImpl implements ResumeService {
     private final RProjectAchievementsRepository rProjectAchievementsRepository;
     private final RAutobiographyRepository rAutobiographyRepository;
     private final RWorkExperienceRepository rWorkExperienceRepository;
+    @Override
+    public Object findUserById(String studentId) {
+        User user =userRepository.findById(studentId).orElseThrow(() -> new UserNotFoundException("studentId:查無使用者"));
+        Student student = studentRepository.findByStudentId(studentId).orElseThrow(() -> new UserNotFoundException("studentId:查無使用者"));
+        List<Resume> resume =resumeRepository.findByUserId(studentId);
+        StudentResponse studentResponse =StudentResponse.builder()
+                .student(student)
+                .resume(resume)
+                .build();
+        RestResponse restResponse =RestResponse.builder()
+                .data(studentResponse)
+                .message("新建成功")
+                .build();
+        return  restResponse;
+    }
 
+    @Override
+    public Object findAllResumeByIdAndResumeId(String userId,String resumeId) {
+        Resume resume =resumeRepository.findByUserIdAndResumeId(userId,resumeId);
+        RAutobiography rAutobiography =rAutobiographyRepository.findByUserIdAndResumeId(userId,resumeId);
+        List<RLicense> rLicense =rLicenseRepository.findByUserIdAndResumeId(userId,resumeId);
+        List<RProjectAchievements> rProjectAchievements =rProjectAchievementsRepository.findByUserIdAndResumeId(userId,resumeId);
+        List<RSpecialSkill> rSpecialSkill = rSpecialSkillRepository.findByUserIdAndResumeId(userId,resumeId);
+        List<RWorkExperience> rWorkExperience=rWorkExperienceRepository.findByUserIdAndResumeId(userId,resumeId);
+        RWorkHope rworkHope = rWorkHopeRepository.findByUserIdAndResumeId(userId,resumeId);
+        System.out.println(rAutobiography);
+
+        ResumeResponse allResume = ResumeResponse.builder()
+                .name(resume.name)
+                .userId(userId)
+                .resumeId(resumeId)
+                .school(resume.school)
+                .rProjectAchievements(rProjectAchievements)
+                .rAutobiography(rAutobiography)
+                .rSpecialSkill(rSpecialSkill)
+                .rLicense(rLicense)
+                .rWorkHope(rworkHope)
+                .rWorkExperience(rWorkExperience)
+                .build();
+
+        RestResponse restResponse =RestResponse.builder()
+                .data(allResume)
+                .message("查詢成功")
+                .build();
+        return restResponse;
+
+
+    }
     @Override
     public Object createBasicResume(ResumeRequest Request,String studentId) {
         String resumeId = getId(resumeRepository , "Resume",1);
-        RWorkHope rWorkHope =RWorkHope.builder()
-                .resumeId(resumeId)
-                .date(Request.getRWorkHopeRequest().getDate())
-                .type(Request.getRWorkHopeRequest().getType())
-                .userId(studentId)
-                .id(resumeId)
-                .build();
+
         Resume resume = Resume.builder()
-                .number(Request.getNumber())
                 .school(School.中國文化大學)
                 .userId(studentId)
                 .resumeId(resumeId)
@@ -53,7 +101,7 @@ public class ResumeServiceImpl implements ResumeService {
                 .build();
         System.out.println(resume );
         resumeRepository.save(resume);
-        rWorkHopeRepository.save(rWorkHope);
+
        List<Resume> resumeData =  resumeRepository.findAll();
         System.out.println(resumeData);
         RestResponse restResponse =RestResponse.builder()
@@ -77,6 +125,7 @@ public class ResumeServiceImpl implements ResumeService {
                 .build();
         return restResponse;
     }
+
 
     @Override
     public Object createSpecialSkill(RSpecialSkillRequest request, String studentId, String resumeId) {
@@ -115,7 +164,7 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    public Object deleteSpecialSkill(RSpecialSkillRequest request, String studentId, String resumeId, String specialSkillId) {
+    public Object deleteSpecialSkill( String studentId, String resumeId, String specialSkillId) {
         rSpecialSkillRepository.deleteById(specialSkillId);
         RestResponse restResponse =RestResponse.builder()
                 .data(specialSkillId)
@@ -160,7 +209,7 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    public Object deleteLicense(RlicenseRequest request, String studentId, String resumeId, String licenseId) {
+    public Object deleteLicense( String studentId, String resumeId, String licenseId) {
         rLicenseRepository.deleteById(licenseId);
         RestResponse restResponse =RestResponse.builder()
                 .data(licenseId)
@@ -213,7 +262,7 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    public Object deleteProjectAchievments(RProjectAchievementsRequest request, String studentId, String resumeId, String projectAchievmentsId) {
+    public Object deleteProjectAchievments( String studentId, String resumeId, String projectAchievmentsId) {
         rProjectAchievementsRepository.deleteById(projectAchievmentsId);
         RestResponse restResponse =RestResponse.builder()
                 .data(projectAchievmentsId)
@@ -262,7 +311,7 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    public Object deleteAutobiography(RAutobiographyRequest request, String studentId, String resumeId, String autobiographyId) {
+    public Object deleteAutobiography( String studentId, String resumeId, String autobiographyId) {
         rAutobiographyRepository.deleteById(autobiographyId);
         RestResponse restResponse =RestResponse.builder()
                 .data(autobiographyId)
@@ -292,6 +341,9 @@ public class ResumeServiceImpl implements ResumeService {
         return restResponse;
 
     }
+
+
+
     @Override
     public Object editWorkExperience(RWorkExperienceRequest request, String studentId, String resumeId, String workExperienceId) {
         RWorkExperience rWorkExperience =RWorkExperience.builder()
@@ -311,7 +363,7 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    public Object deleteWorkExperience(RWorkExperienceRequest request, String studentId, String resumeId, String workExperienceId) {
+    public Object deleteWorkExperience( String studentId, String resumeId, String workExperienceId) {
         rWorkExperienceRepository.deleteById(workExperienceId);
         RestResponse restResponse =RestResponse.builder()
                 .data(workExperienceId)
@@ -320,39 +372,7 @@ public class ResumeServiceImpl implements ResumeService {
         return restResponse;
     }
 
-    @Override
-    public Object findAllResumeByIdAndResumeId(String userId,String resumeId) {
-        Resume resume =resumeRepository.findByUserIdAndResumeId(userId,resumeId);
-        RAutobiography rAutobiography =rAutobiographyRepository.findByUserIdAndResumeId(userId,resumeId);
-        List<RLicense> rLicense =rLicenseRepository.findByUserIdAndResumeId(userId,resumeId);
-        List<RProjectAchievements> rProjectAchievements =rProjectAchievementsRepository.findByUserIdAndResumeId(userId,resumeId);
-        List<RSpecialSkill> rSpecialSkill = rSpecialSkillRepository.findByUserIdAndResumeId(userId,resumeId);
-        List<RWorkExperience> rWorkExperience=rWorkExperienceRepository.findByUserIdAndResumeId(userId,resumeId);
-        RWorkHope rworkHope = rWorkHopeRepository.findByUserIdAndResumeId(userId,resumeId);
-        System.out.println(rAutobiography);
 
-        ResumeResponse allResume = ResumeResponse.builder()
-                .name(resume.name)
-                .userId(userId)
-                .resumeId(resumeId)
-                .school(resume.school)
-                .number(resume.number)
-                .rProjectAchievements(rProjectAchievements)
-                .rAutobiography(rAutobiography)
-                .rSpecialSkill(rSpecialSkill)
-                .rLicense(rLicense)
-                .rWorkHope(rworkHope)
-                .rWorkExperience(rWorkExperience)
-                .build();
-
-        RestResponse restResponse =RestResponse.builder()
-                .data(allResume)
-                .message("查詢成功")
-                .build();
-        return restResponse;
-
-
-    }
 
     @Override
     public Object chooseResume(String studentId) {
@@ -370,7 +390,23 @@ public class ResumeServiceImpl implements ResumeService {
         return restResponse;
 
     }
-
+    @Override
+    public Object createWorkHope(RWorkHopeRequest request, String studentId, String resumeId) {
+        String workHopeId =getId(rWorkHopeRepository ,"WH",2);
+        RWorkHope rWorkHope =RWorkHope.builder()
+                .resumeId(resumeId)
+                .date(request.getDate())
+                .type(request.getType())
+                .userId(studentId)
+                .id(workHopeId)
+                .build();
+        rWorkHopeRepository.save(rWorkHope);
+        RestResponse restResponse =RestResponse.builder()
+                .data(rWorkHope)
+                .message("查詢成功")
+                .build();
+        return restResponse;
+    }
 
 
     @Override
@@ -395,7 +431,7 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    public Object deleteWorkHope(RWorkHopeRequest request, String studentId, String resumeId, String workHopeId) {
+    public Object deleteWorkHope( String studentId, String resumeId, String workHopeId) {
         rWorkHopeRepository.deleteById(workHopeId);
         RestResponse restResponse =RestResponse.builder()
                 .data(workHopeId)

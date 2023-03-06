@@ -15,6 +15,12 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class ResumeController {
     private final ResumeService resumeService;
+    @GetMapping("/students/{studentId}")
+    public ResponseEntity<Object> findUserById(
+            @PathVariable String studentId
+    ) {
+            return ResponseEntity.ok(resumeService.findUserById(studentId));
+    }
     @GetMapping("/students/{studentId}/resumes/{resumeId}")
     public ResponseEntity<Object> findAllResumeById(
             @PathVariable String studentId,
@@ -52,6 +58,14 @@ public class ResumeController {
 
         return ResponseEntity.ok(resumeService.createBasicResume(request,studentId));
     }
+    @PostMapping("/students/{studentId}/resumes/{resumeId}/work-hope")
+    public ResponseEntity<Object> createWorkHope(
+            @RequestBody RWorkHopeRequest request,
+            @PathVariable String studentId,
+            @PathVariable String resumeId
+    ) {
+        return ResponseEntity.ok(resumeService.createWorkHope(request,studentId,resumeId));
+    }
 
     @PutMapping("/students/{studentId}/resumes/{resumeId}/work-hope/{workHopeId}")
     public ResponseEntity<Object> editWorkHope(
@@ -64,12 +78,12 @@ public class ResumeController {
     }
     @DeleteMapping("/students/{studentId}/resumes/{resumeId}/work-hope/{workHopeId}")
     public ResponseEntity<Object> deleteWorkHope(
-            @RequestBody RWorkHopeRequest request,
+
             @PathVariable String studentId,
             @PathVariable String workHopeId,
             @PathVariable String resumeId
     ) {
-        return ResponseEntity.ok(resumeService.deleteWorkHope(request,studentId,resumeId,workHopeId));
+        return ResponseEntity.ok(resumeService.deleteWorkHope(studentId,resumeId,workHopeId));
     }
     @PostMapping("/students/{studentId}/resumes/{resumeId}/special-skill")
     public ResponseEntity<Object> writeSpecialSkill(
@@ -90,12 +104,12 @@ public class ResumeController {
     }
     @DeleteMapping("/students/{studentId}/resumes/{resumeId}/special-skill/{specialSkillId}")
     public ResponseEntity<Object> deleteSpecialSkill(
-            @RequestBody RSpecialSkillRequest request,
+
             @PathVariable String studentId,
             @PathVariable String resumeId,
             @PathVariable String specialSkillId
     ) {
-        return ResponseEntity.ok(resumeService.deleteSpecialSkill(request,studentId,resumeId,specialSkillId));
+        return ResponseEntity.ok(resumeService.deleteSpecialSkill(studentId,resumeId,specialSkillId));
     }
     @PostMapping("/students/{studentId}/resumes/{resumeId}/license")
     public ResponseEntity<Object> writeLicense(
@@ -116,12 +130,12 @@ public class ResumeController {
     }
     @DeleteMapping("/students/{studentId}/resumes/{resumeId}/license/{licenseId}")
     public ResponseEntity<Object> deleteLicense(
-            @RequestBody RlicenseRequest request,
+
             @PathVariable String studentId,
             @PathVariable String resumeId,
             @PathVariable String licenseId
     ) {
-        return ResponseEntity.ok(resumeService.deleteLicense(request,studentId,resumeId,licenseId));
+        return ResponseEntity.ok(resumeService.deleteLicense(studentId,resumeId,licenseId));
     }
     @PostMapping("/students/{studentId}/resumes/{resumeId}/project-achievments")
     public ResponseEntity<Object> writeProjectAchievments(
@@ -142,12 +156,12 @@ public class ResumeController {
     }
     @DeleteMapping("/students/{studentId}/resumes/{resumeId}/project-achievments/{projectAchievmentsId}")
     public ResponseEntity<Object> deleteProjectAchievments(
-            @RequestBody RProjectAchievementsRequest request,
+
             @PathVariable String studentId,
             @PathVariable String resumeId,
             @PathVariable String projectAchievmentsId
     ) {
-        return ResponseEntity.ok(resumeService.deleteProjectAchievments(request,studentId,resumeId,projectAchievmentsId));
+        return ResponseEntity.ok(resumeService.deleteProjectAchievments(studentId,resumeId,projectAchievmentsId));
     }
     @PostMapping("/students/{studentId}/resumes/{resumeId}/autobiography")
     public ResponseEntity<Object> writeAutobiography(
@@ -168,12 +182,12 @@ public class ResumeController {
     }
     @DeleteMapping("/students/{studentId}/resumes/{resumeId}/autobiography/{autobiographyId}")
     public ResponseEntity<Object> deleteAutobiography(
-            @RequestBody RAutobiographyRequest request,
+
             @PathVariable String studentId,
             @PathVariable String resumeId,
             @PathVariable String autobiographyId
     ) {
-        return ResponseEntity.ok(resumeService.deleteAutobiography(request,studentId,resumeId,autobiographyId));
+        return ResponseEntity.ok(resumeService.deleteAutobiography(studentId,resumeId,autobiographyId));
     }
     @PostMapping("/students/{studentId}/resumes/{resumeId}/work-experience")
     public ResponseEntity<Object> writeWorkExperience(
@@ -194,12 +208,11 @@ public class ResumeController {
     }
     @DeleteMapping("/students/{studentId}/resumes/{resumeId}/work-experience/{workExperienceId}")
     public ResponseEntity<Object> deleteWorkExperience(
-            @RequestBody RWorkExperienceRequest request,
             @PathVariable String studentId,
             @PathVariable String resumeId,
             @PathVariable String workExperienceId
     ) {
-        return ResponseEntity.ok(resumeService.deleteWorkExperience(request,studentId,resumeId,workExperienceId));
+        return ResponseEntity.ok(resumeService.deleteWorkExperience(studentId,resumeId,workExperienceId));
     }
 
 

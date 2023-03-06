@@ -180,11 +180,13 @@ public class RegisterServiceImpl implements RegisterService {
     private Student studentBuilder(StudentRegisterRequest request){
         String studentId = getId(userRepository,"Student");
         var student = Student.builder()
-                .student_id(studentId)
-                .student_name(request.getStudentName())
-                .student_username(request.getStudentUsername())
-                .student_email(request.getStudentEmail())
-                .student_password(passwordEncoder.encode(request.getStudentPassword()))
+                .studentId(studentId)
+                .studentName(request.getStudentName())
+                .studentUsername(request.getStudentUsername())
+                .studentEmail(request.getStudentEmail())
+                .studentPassword(passwordEncoder.encode(request.getStudentPassword()))
+                .studentNumber(request.getStudentNumber())
+                .pccuId(request.getPccuId())
                 .build();
         return student;
     }

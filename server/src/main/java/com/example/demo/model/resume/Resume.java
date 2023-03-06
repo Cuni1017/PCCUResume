@@ -26,8 +26,6 @@ public class Resume {
     @Column(name = "name")
     public String name;
 
-    @Column(name = "number")
-    public String number;
     @Column(name = "create_time")
     public LocalDate createTime;
     @Enumerated(EnumType.STRING)

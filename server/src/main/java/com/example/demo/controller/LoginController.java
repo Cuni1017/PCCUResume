@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.auth.AuthenticationResponse;
+import com.example.demo.reponse.AuthenticationResponse;
 import com.example.demo.dto.AuthenticationDto;
 import com.example.demo.service.LoginService;
 import lombok.RequiredArgsConstructor;

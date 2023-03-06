@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.auth.AuthenticationResponse;
+import com.example.demo.reponse.AuthenticationResponse;
 import com.example.demo.dao.TokenRepository;
 import com.example.demo.dao.UserRepository;
 import com.example.demo.config.error.UserNotFoundException;
