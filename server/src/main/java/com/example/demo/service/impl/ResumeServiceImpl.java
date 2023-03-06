@@ -332,6 +332,7 @@ public class ResumeServiceImpl implements ResumeService {
         System.out.println(rAutobiography);
 
         ResumeResponse allResume = ResumeResponse.builder()
+                .name(resume.name)
                 .userId(userId)
                 .resumeId(resumeId)
                 .school(resume.school)

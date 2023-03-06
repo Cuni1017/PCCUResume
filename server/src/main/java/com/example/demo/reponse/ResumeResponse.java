@@ -12,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ResumeResponse {
+    private  String name;
     private  String resumeId;
     private String userId;
     private String number;

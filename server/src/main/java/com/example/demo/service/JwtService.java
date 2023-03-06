@@ -4,6 +4,7 @@ package com.example.demo.service;
 import com.example.demo.config.error.FileException;
 import com.example.demo.model.User;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -27,16 +28,25 @@ public class JwtService {
   }
 
   public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+    System.out.println("se");
     final Claims claims = extractAllClaims(token);
+    System.out.println("sj");
     return claimsResolver.apply(claims);
   }
   private Claims extractAllClaims(String token) {
-    return Jwts
-            .parserBuilder()
-            .setSigningKey(getSignInKey())
-            .build()
-            .parseClaimsJws(token)
-            .getBody();
+    Claims Claims;
+    System.out.println("ss");
+    try {
+      Claims = Jwts
+              .parserBuilder()
+              .setSigningKey(getSignInKey())
+              .build()
+              .parseClaimsJws(token)
+              .getBody();
+    }catch(ExpiredJwtException e){
+      Claims = e.getClaims();
+    }
+    return  Claims;
     //拆開jwt
   }
   public String generateToken(User user) {
@@ -66,11 +76,7 @@ public class JwtService {
   }
 
   private boolean isTokenExpired(String token) {
-//    if(extractExpiration(token).before(new Date())){
-//      throw new FileException("jwt過期");
-//    }
 
-    System.out.println("sv");
     return extractExpiration(token).before(new Date());
   }
 
