@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 
 import com.example.demo.config.error.FileException;
+import com.example.demo.config.error.UserNotFoundException;
 import com.example.demo.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -79,10 +80,11 @@ public class JwtService {
 
   private boolean isTokenExpired(String token) {
 
-    if(extractExpiration(token).before(new Date())){
-      throw new FileException("JWT時間過時了");
-    }
     System.out.println(extractExpiration(token).before(new Date()));
+    if( extractExpiration(token).before(new Date()) == true)
+    {
+      throw new UserNotFoundException("jwt過期");
+    }
     return extractExpiration(token).before(new Date());
   }
 
