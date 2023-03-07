@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
 @Data
 @Builder
@@ -15,9 +16,9 @@ public class RProjectAchievementsRequest {
 
     public String name;
 
-    public Date startTime;
+    public LocalDate startTime;
 
-    public Date endTime;
+    public LocalDate endTime;
 
     public String talk;
 

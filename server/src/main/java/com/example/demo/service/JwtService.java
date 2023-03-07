@@ -50,6 +50,7 @@ public class JwtService {
     //拆開jwt
   }
   public String generateToken(User user) {
+
     return generateToken(new HashMap<>(), user);
   }
 
@@ -78,9 +79,9 @@ public class JwtService {
 
   private boolean isTokenExpired(String token) {
 
-//    if(!extractExpiration(token).before(new Date())){
-//      throw new FileException("JWT時間過時了");
-//    }
+    if(extractExpiration(token).before(new Date())){
+      throw new FileException("JWT時間過時了");
+    }
     System.out.println(extractExpiration(token).before(new Date()));
     return extractExpiration(token).before(new Date());
   }

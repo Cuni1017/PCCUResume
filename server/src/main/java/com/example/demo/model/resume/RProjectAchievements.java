@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -25,9 +26,9 @@ public class RProjectAchievements {
     @Column(name = "name")
     public String name;
     @Column(name = "start_time")
-    public Date startTime;
+    public LocalDate startTime;
     @Column(name = "end_time")
-    public Date endTime;
+    public LocalDate endTime;
     @Column(name = "talk")
     public String talk;
     @Column(name = "url")
