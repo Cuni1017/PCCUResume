@@ -65,5 +65,5 @@ export default async function handler(
     }
   }
 
-  return res.status(400).json("Unknown endpoint");
+  return res.status(404).json("Unknown endpoint");
 }

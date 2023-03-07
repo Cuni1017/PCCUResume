@@ -1,8 +1,8 @@
 import { ChangeEvent, useCallback } from "react";
 import TextField from "@mui/material/TextField";
 import { Autocomplete, Button } from "@mui/material";
-import AddressPicker from "./AddressPicker";
-import TaiwanPostalCode from "./data/TaiwanPostalCode.json";
+import AddressPicker from "../../components/AddressPicker";
+import TaiwanPostalCode from "../../components/data/TaiwanPostalCode.json";
 import { SelectChangeEvent } from "@mui/material/Select";
 import Grid from "@mui/material/Unstable_Grid2"; //v2
 import { CircularProgress } from "@mui/material";
@@ -78,7 +78,7 @@ const RegisterForm = (props: Props) => {
       ]);
       break;
     case "CPN":
-      formTitle = "廠商";
+      formTitle = "公司";
       formInputs = formInputs.concat([
         { name: "companyName", label: "公司名稱", col: 12 },
         { name: "companyNumber", label: "公司電話" },

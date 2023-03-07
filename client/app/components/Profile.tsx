@@ -1,5 +1,5 @@
 import { User } from "@/redux/slices/user";
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../../hooks/useAuth";
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
@@ -40,7 +40,7 @@ const Profile = ({
                 </Link>
               </ProfileMenuItem>
               <ProfileMenuItem>
-                <Link href="/dashboard/resume">
+                <Link href="/dashboard/resumes">
                   <div>我的履歷</div>
                 </Link>
               </ProfileMenuItem>

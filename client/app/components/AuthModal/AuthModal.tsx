@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import AuthModalInputs from "./AuthModalInputs";
-import { useAuth } from "../../hooks/useAuth";
+import { useAuth } from "../../../hooks/useAuth";
 
 const style = {
   position: "absolute" as "absolute",
@@ -80,8 +80,7 @@ export default function AuthModal({ isSignin }: { isSignin: boolean }) {
             <Button
               variant="contained"
               fullWidth
-              color="primary"
-              className="mt-2 bg-red-600 hover:bg-red-800 text-lg disabled:bg-gray-300 h-12"
+              className="mt-4 bg-[#DC2626] hover:bg-[#991B1B] text-lg disabled:bg-gray-300 h-12"
               onClick={handleClick}
               disabled={false}
             >

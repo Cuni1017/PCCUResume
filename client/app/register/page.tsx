@@ -34,16 +34,17 @@ const RegisterPage = () => {
     companyDistrict: "中正區",
     companyAddress: "",
   });
+  const [activeStep, setActiveStep] = useState(2);
+  const [completed, setCompleted] = useState<{
+    [k: number]: boolean;
+  }>({});
+
+  console.log(formData);
 
   const handleSubmit = () => {
     if (!identity) return;
     signup({ ...formData, identity, handleNext, handleComplete });
   };
-
-  const [activeStep, setActiveStep] = useState(0);
-  const [completed, setCompleted] = useState<{
-    [k: number]: boolean;
-  }>({});
 
   const totalSteps = () => {
     return steps.length;
@@ -58,7 +59,7 @@ const RegisterPage = () => {
   };
 
   const allStepsCompleted = () => {
-    return true; //completedSteps() === totalSteps()
+    return completedSteps() === totalSteps();
   };
 
   const handleNext = () => {
@@ -94,7 +95,7 @@ const RegisterPage = () => {
   return (
     <div className="mt-10 min-h-[650px] flex flex-col items-center pt-10 bg-white relative">
       <div className="flex flex-col w-[90%] min-h-[600px]">
-        <Stepper activeStep={2}>
+        <Stepper activeStep={activeStep}>
           {steps.map((label, index) => (
             <Step key={label}>
               <StepLabel color="inherit">{label}</StepLabel>

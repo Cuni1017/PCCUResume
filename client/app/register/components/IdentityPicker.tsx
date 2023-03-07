@@ -28,7 +28,7 @@ const IdentityPicker = (props: any) => {
             className="border-solid border border-gray-200 px-10 py-6 cursor-pointer bg-white text-xl font-bold flex flex-col items-center gap-1"
           >
             <Image src="/CPN.png" alt="" width="100" height="100" />
-            廠商
+            公司
           </button>
           <button
             onClick={() => handleClick("TCH")}

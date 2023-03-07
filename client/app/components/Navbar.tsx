@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Store, setUser, cleanUser } from "../redux/store";
+import { Store, setUser, cleanUser } from "@/redux/store";
 import Link from "next/link";
 import { getCookie } from "cookies-next";
 import NavbarItem from "./NavbarItem";
@@ -16,19 +16,18 @@ import Profile from "./Profile";
 
 import { axiosInstanceNext } from "@/axiosInstance.ts";
 import MobileMenu from "./MobileMenu/MobileMenu";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
   const [isMenuShow, setIsMenuShow] = useState(false);
-  const [isProfileMenuShow, setIsProfileMenuShow] = useState(true);
+  const [isProfileMenuShow, setIsProfileMenuShow] = useState(false);
+  const router = useRouter();
 
   const user = useSelector((state: Store) => state.user);
   const [loading, setLoading] = useState(true); //jwt
   const dispatch = useDispatch();
 
-  const [windowSize, setWindowSize] = useState([
-    window.innerWidth,
-    window.innerHeight,
-  ]);
+  const [windowSize, setWindowSize] = useState([0, 0]);
 
   useEffect(() => {
     const handleWindowResize = () => {
@@ -53,13 +52,15 @@ const Navbar = () => {
         dispatch(setUser(res.data));
       } else {
         dispatch(cleanUser());
+        alert("請重新登入");
         console.log("請重新登入");
+        router.push("/");
       }
     } catch (error) {
       console.log(error, "Navbar");
     }
     setLoading(false);
-  }, [dispatch]);
+  }, [dispatch, router]);
 
   useEffect(() => {
     const JWT = getCookie("JWT");
@@ -68,11 +69,11 @@ const Navbar = () => {
     } else {
       if (!user.id) {
         checkJWT();
-        const interval = setInterval(() => {
-          checkJWT();
-        }, 5 * 60 * 1000);
-        return () => clearInterval(interval);
       }
+      const interval = setInterval(() => {
+        checkJWT();
+      }, 5 * 60 * 1000);
+      return () => clearInterval(interval);
     }
   }, [checkJWT, user.id]);
 
@@ -93,7 +94,7 @@ const Navbar = () => {
             </div>
             <div className="hidden md:flex gap-4 h-full items-center">
               <NavbarItem label="找工作" link="/jobs" />
-              <NavbarItemMenu label="廠商" links={CPNLinks} />
+              <NavbarItemMenu label="公司" links={CPNLinks} />
               <NavbarItemMenu label="教師" links={TCHLinks} />
             </div>
           </div>

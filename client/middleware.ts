@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
+// import { useRouter } from "next/navigation";
 
 const NextUrl = "http://localhost:3000";
 
 export function middleware(req: NextRequest, res: NextResponse) {
-  console.log(req.url);
+  // console.log(req.url);
 
   // !普通切換路徑
   if (!req.url.includes("api")) {
@@ -17,7 +18,7 @@ export function middleware(req: NextRequest, res: NextResponse) {
     const bearerToken = req.headers.get("authorization") as string;
     if (!bearerToken) {
       return new NextResponse(
-        JSON.stringify({ errorMessage: "Unauthorized request1" }),
+        JSON.stringify({ errorMessage: "Unauthorized request" }),
         { status: 401 }
       );
     }
@@ -25,7 +26,7 @@ export function middleware(req: NextRequest, res: NextResponse) {
     const token = bearerToken.split(" ")[1]; //去掉 bearer
     if (!token) {
       return new NextResponse(
-        JSON.stringify({ errorMessage: "Unauthorized request2" }),
+        JSON.stringify({ errorMessage: "Unauthorized request" }),
         { status: 401 }
       );
     }
@@ -35,5 +36,10 @@ export function middleware(req: NextRequest, res: NextResponse) {
 }
 
 export const config = {
-  matcher: ["/api/auth/me", "/dashboard/:path*", "/admin/:path*"],
+  matcher: [
+    "/api/auth/me",
+    "/api/resume/:path*",
+    "/dashboard/:path*",
+    "/admin/:path*",
+  ],
 };

@@ -1,6 +1,6 @@
 import "./globals.css";
 import LayoutWrapper from "./LayoutWrapper";
-import Navbar from "../components/Navbar";
+import Navbar from "./components/Navbar";
 
 // https://github.com/facebook/react/issues/25994
 // react devtools TypeError Bug

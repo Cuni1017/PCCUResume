@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import Card from "./Card";
+import Card from "../../components/Card";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 import { SvgIconTypeMap } from "@mui/material";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
@@ -19,8 +19,8 @@ interface MyLink {
 const NavigationBar = () => {
   const myLinks: MyLink[] = [
     { linkLabel: "個人檔案", href: `${url}` },
-    { linkLabel: "履歷", href: `${url}/resume` },
-    { linkLabel: "作品集", href: `${url}/profolios` },
+    { linkLabel: "履歷", href: `${url}/resumes` },
+    { linkLabel: "作品集", href: `${url}/portfolios` },
   ];
 
   const jobLinks: MyLink[] = [

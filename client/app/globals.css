@@ -16,3 +16,26 @@ hr{
 
   opacity: 0.3;
 }
+
+/* .btn{
+  background-color: rgb(229 231 235);
+  cursor: pointer;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.25rem;
+  border-style: none;
+}
+.btn :hover{
+  background-color: rgb(209 213 219);
+}
+.btn :disabled{
+  background-color: rgb(241 245 249);
+}
+
+.deleteBtn{
+  background-color: #cc3e3e;
+
+}
+
+.deleteBtn :hover{
+  background-color: #e75757;
+} */
