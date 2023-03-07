@@ -32,7 +32,7 @@ const MobileMenu = ({
       <ul className="list-none m-0 py-2 px-0">
         <li className="border-0 border-b border-gray-100 border-solid py-2">
           <Link href="/jobs">
-            <div className="h-full text-xl pl-5">找工作</div>
+            <div className="h-full text-xl pl-5">找實習</div>
           </Link>
         </li>
         <MobileMenuItem

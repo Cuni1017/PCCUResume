@@ -6,6 +6,7 @@ import NewResume from "./components/NewResume";
 import { Store } from "@/redux/store";
 import { useSelector } from "react-redux";
 import { useGetResumes } from "../../../hooks/useResume";
+import TextFiled from "@mui/material/TextField";
 
 export interface Resume {
   resumeId: string;
@@ -19,7 +20,7 @@ export interface Resume {
 const ResumePage = () => {
   const user = useSelector((state: Store) => state.user);
   const { data: resumes, isFetching } = useGetResumes(user.id);
-  
+
   const renderedContent = () => {
     if (isFetching) {
       return "Loading...";
@@ -43,7 +44,7 @@ const ResumePage = () => {
 
   return (
     <div>
-      <p>履歷列表</p>
+      <p className="text-sm">履歷列表</p>
       <div className="flex flex-col gap-3">{renderedContent()}</div>
     </div>
   );

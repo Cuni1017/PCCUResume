@@ -6,7 +6,7 @@ import AddIcon from "@mui/icons-material/Add";
 import Box from "@mui/material/Box";
 import MyButton from "../../../components/MyButton";
 import Modal from "@mui/material/Modal";
-import TextFiled from "./TextFiled";
+import TextFiled from "./shared/TextFiled";
 import { DateField } from "@mui/x-date-pickers/DateField";
 import dayjs, { Dayjs } from "dayjs";
 import Checkbox from "@mui/material/Checkbox";
@@ -230,6 +230,7 @@ const WorkExperienceEditCard = ({
             size="small"
             value={startTime}
             name="startTime"
+            format={"YYYY／MM／DD"}
             error={data.startTime > data.endTime ? true : undefined}
             onChange={(newValue: any, context: any) => {
               if (context.validationError == null) {
@@ -245,6 +246,7 @@ const WorkExperienceEditCard = ({
             size="small"
             value={endTime}
             name="endTime"
+            format={"YYYY／MM／DD"}
             error={data.startTime > data.endTime ? true : undefined}
             disabled={stillwork ? true : undefined}
             onChange={(newValue: any, context: any) => {

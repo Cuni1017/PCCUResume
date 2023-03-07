@@ -81,10 +81,10 @@ public class JwtService {
   private boolean isTokenExpired(String token) {
 
     System.out.println(extractExpiration(token).before(new Date()));
-    if( extractExpiration(token).before(new Date()) == true)
-    {
-      throw new UserNotFoundException("jwt過期");
-    }
+//    if( extractExpiration(token).before(new Date()) == true)
+//    {
+//      throw new UserNotFoundException("jwt過期");
+//    }
     return extractExpiration(token).before(new Date());
   }
 

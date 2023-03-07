@@ -1,10 +1,14 @@
 import React, { ChangeEvent, useCallback, useEffect, useState } from "react";
 import Card from "../../../components/Card";
 import { MuiChipsInput } from "mui-chips-input";
-
+import EditIcon from "@mui/icons-material/Edit";
+import CloseIcon from "@mui/icons-material/Close";
 import Checkbox from "@mui/material/Checkbox";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import ResumeItemHeader from "./shared/ResumeItemHeader";
+import ResumeItemContent from "./shared/ResumeItemContent";
+import SaveCheck from "./shared/SaveCheck";
 
 // 工作期望
 
@@ -27,15 +31,17 @@ const RWorkHope = ({ userId, resumeId, workHope }: Props) => {
   });
   const [types, setTypes] = useState<string[]>([]);
   const [dates, setDates] = useState<string[]>([]);
+  const [isEditing, setIsEditing] = useState(false);
+
+  const handleSave = () => {
+    console.log(data, "save");
+  };
 
   const handleTypeChange = (newChips: any) => {
     setTypes(newChips);
   };
 
-  const handleDateChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    index: number
-  ) => {
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let newDate = dates;
     if (!newDate.includes(e.target.name)) {
       setDates([...dates, e.target.name]);
@@ -88,8 +94,9 @@ const RWorkHope = ({ userId, resumeId, workHope }: Props) => {
       control={
         <Checkbox
           name={day}
+          disabled={!isEditing}
           checked={dates.includes(day) ? true : false}
-          onChange={(e) => handleDateChange(e, index)}
+          onChange={(e) => handleDateChange(e)}
         />
       }
       label={day}
@@ -98,35 +105,60 @@ const RWorkHope = ({ userId, resumeId, workHope }: Props) => {
 
   return (
     <Card>
-      <div className="py-3">
-        <div className="text-xl border-solid border-0 border-b border-gray-300 w-full text-center leading-10 font-bold">
-          求職條件
-        </div>
-        <div className="flex flex-col items-center justify-center gap-3 p-4">
-          <div className="w-full md:max-w-[700px] flex flex-col md:flex-row justify-center items-start md:items-center">
-            <div className="w-full max-w-[100px]">
-              <span>上班時段：</span>
+      <ResumeItemHeader label="求職條件">
+        <span
+          onClick={() => setIsEditing(!isEditing)}
+          className="text-end text-sm flex items-center justify-end text-gray-500 hover:text-gray-800 cursor-pointer absolute top-1 right-5 gap-1"
+        >
+          {isEditing ? (
+            <>
+              <CloseIcon /> 關閉
+            </>
+          ) : (
+            <>
+              <EditIcon /> 編輯
+            </>
+          )}
+        </span>
+      </ResumeItemHeader>
+      <ResumeItemContent>
+        <div className="flex flex-col w-full gap-4">
+          <div className="flex flex-col gap-2 w-full">
+            <div className="w-full flex flex-col md:flex-row justify-center md:items-center gap-1">
+              <div className="w-full max-w-[100px]">
+                <span>上班時段：</span>
+              </div>
+              <div className="w-full">
+                <FormGroup className="flex flex-row justify-center md:justify-between w-full">
+                  {renderedCheckboxs}
+                </FormGroup>
+              </div>
             </div>
-            <div className="w-full">
-              <FormGroup className="flex flex-row justify-center md:justify-between w-full">
-                {renderedCheckboxs}
-              </FormGroup>
+            <div className="">
+              <div className="w-full max-w-[100px]">
+                <span>期望職類：</span>
+              </div>
+              <MuiChipsInput
+                value={types}
+                onChange={handleTypeChange}
+                disabled={!isEditing}
+                size="small"
+                fullWidth
+                placeholder={isEditing ? "請輸入並按下Enter" : ""}
+              />
             </div>
           </div>
-          <div className="w-full md:max-w-[700px] flex flex-col md:flex-row justify-center items-start md:items-center">
-            <div className="w-full max-w-[100px]">
-              <span>期望職類：</span>
+          {isEditing ? (
+            <div>
+              <SaveCheck
+                onSave={handleSave}
+                onCancel={() => setIsEditing(false)}
+                disabled={false}
+              />
             </div>
-            <MuiChipsInput
-              value={types}
-              onChange={handleTypeChange}
-              size="small"
-              fullWidth
-              placeholder="請輸入並按下Enter"
-            />
-          </div>
+          ) : null}
         </div>
-      </div>
+      </ResumeItemContent>
     </Card>
   );
 };

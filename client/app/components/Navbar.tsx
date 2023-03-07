@@ -93,7 +93,7 @@ const Navbar = () => {
               <Link href="/">PCCUResume</Link>
             </div>
             <div className="hidden md:flex gap-4 h-full items-center">
-              <NavbarItem label="找工作" link="/jobs" />
+              <NavbarItem label="找實習" link="/jobs" />
               <NavbarItemMenu label="公司" links={CPNLinks} />
               <NavbarItemMenu label="教師" links={TCHLinks} />
             </div>

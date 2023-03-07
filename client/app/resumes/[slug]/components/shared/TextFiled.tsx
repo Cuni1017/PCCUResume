@@ -20,6 +20,7 @@ const TextFiled = ({
         <span>{label}</span>
       </div>
       <OutlinedInput
+        className={rest.classnames ? rest.classnames : ""}
         size="small"
         name={name}
         fullWidth

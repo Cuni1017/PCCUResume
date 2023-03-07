@@ -27,7 +27,7 @@ const NewResume = ({ userId }: { userId: string }) => {
     <Card className="bg-white border-solid border-gray-300 border shadow">
       <div className="px-2">
         <div className="text-md flex items-center justify-center gap-2 py-2">
-          <span className="w-full max-w-[100px]">履歷名稱</span>
+          <span className="w-full max-w-[100px]">履歷名稱：</span>
           <TextField
             size="small"
             name="name"
@@ -37,39 +37,6 @@ const NewResume = ({ userId }: { userId: string }) => {
             variant="standard"
           />
         </div>
-        {/* <div className="text-md flex items-center justify-center gap-2 py-2">
-          <span className="w-full max-w-[100px]">手機號碼</span>
-          <TextField
-            size="small"
-            name="number"
-            value={formData.number}
-            onChange={handleChange}
-            placeholder="0912345678"
-            variant="standard"
-          />
-        </div>
-        <div className="text-md flex items-center justify-center gap-2 py-2">
-          <span className="w-full max-w-[100px]">希望職位</span>
-          <TextField
-            size="small"
-            name="type"
-            value={formData.type}
-            onChange={handleChange}
-            placeholder="主管"
-            variant="standard"
-          />
-        </div>
-        <div className="text-md flex items-center justify-center gap-2 py-2">
-          <span className="w-full max-w-[100px]">期望工作時間</span>
-          <TextField
-            size="small"
-            name="date"
-            value={formData.date}
-            onChange={handleChange}
-            placeholder="星期一到五"
-            variant="standard"
-          />
-        </div> */}
       </div>
       <div className="flex px-2 py-2 gap-2 bg-gray-100 border-solid border-0 border-t border-gray-300">
         <MyButton
