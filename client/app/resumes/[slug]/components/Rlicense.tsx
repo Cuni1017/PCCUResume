@@ -2,12 +2,18 @@ import React, { ChangeEvent, useEffect, useState } from "react";
 import Card from "../../../components/Card";
 import ResumeItemHeader from "./shared/ResumeItemHeader";
 import ResumeItemContent from "./shared/ResumeItemContent";
+import HeaderController from "./shared/HeaderController";
 import DeleteCheckModal from "./shared/DeleteCheckModal";
 import TextFiled from "./shared/TextFiled";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import SaveCheck from "./shared/SaveCheck";
+import {
+  useDeleteResumeDetail,
+  usePostResumeDetail,
+  usePutResumeDetail,
+} from "@/hooks/Resume/useResumeDetail";
 
 // 證照
 
@@ -39,12 +45,15 @@ const Rlicense = ({ userId, resumeId, license }: Props) => {
     setIsNewing(true);
   };
 
-  const handleSave = () => {};
-
   const renderedLicense = () => {
     if (data.length > 0) {
       return data.map((license) => (
-        <LicenseCard key={license.name} license={license} />
+        <LicenseCard
+          key={license.name}
+          license={license}
+          resumeId={resumeId}
+          userId={userId}
+        />
       ));
     } else {
       return <div className="w-full text-center">秀出證照證明自己！</div>;
@@ -54,22 +63,26 @@ const Rlicense = ({ userId, resumeId, license }: Props) => {
   return (
     <Card>
       <ResumeItemHeader label="證照">
-        {isNewing !== false ? null : (
-          <span
-            onClick={handleNew}
-            className="text-end text-sm flex items-center justify-end text-gray-500 hover:text-gray-800 cursor-pointer absolute top-1 right-5"
-          >
-            <AddIcon />
-            新增
-          </span>
-        )}
+        <HeaderController
+          text="新增"
+          Icon={AddIcon}
+          isEditing={isNewing}
+          setIsEditing={() => {
+            setIsNewing(!isNewing);
+          }}
+        />
       </ResumeItemHeader>
       <ResumeItemContent>
         <div className="flex flex-col w-full justify-center gap-2">
-          {renderedLicense()}
           {isNewing !== false ? (
-            <NewLicenseCard setIsNewing={setIsNewing} handleSave={handleSave} />
-          ) : null}
+            <NewLicenseCard
+              setIsNewing={setIsNewing}
+              userId={userId}
+              resumeId={resumeId}
+            />
+          ) : (
+            <>{renderedLicense()}</>
+          )}
         </div>
       </ResumeItemContent>
     </Card>
@@ -77,10 +90,12 @@ const Rlicense = ({ userId, resumeId, license }: Props) => {
 };
 
 const NewLicenseCard = ({
-  handleSave,
   setIsNewing,
+  resumeId,
+  userId,
 }: {
-  handleSave: (license: License) => void;
+  resumeId: string;
+  userId: string;
   setIsNewing: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [license, setLicense] = useState({
@@ -90,9 +105,20 @@ const NewLicenseCard = ({
     userId: "",
   });
 
+  const { mutate: PostMutate } = usePostResumeDetail(resumeId);
+
   const onSave = () => {
     console.log(license, "save");
-    handleSave(license);
+
+    PostMutate({
+      userId,
+      resumeId,
+      endpoint: "license",
+      formData: {
+        name: license.name,
+      },
+    });
+    setIsNewing(false);
   };
   const onCancel = () => {
     setIsNewing(false);
@@ -121,16 +147,43 @@ const NewLicenseCard = ({
   );
 };
 
-const LicenseCard = ({ license }: { license: License }) => {
+const LicenseCard = ({
+  license,
+  userId,
+  resumeId,
+}: {
+  userId: string;
+  resumeId: string;
+  license: License;
+}) => {
   const [data, setData] = useState(license);
   const [open, setOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const { mutate: PutMutate } = usePutResumeDetail(license.resumeId);
+  const { mutate: DeleteMutate } = useDeleteResumeDetail(license.resumeId);
 
-  const onSave = () => {
-    console.log(data, "save");
+  const handleSave = () => {
+    console.log(data);
+
+    PutMutate({
+      userId,
+      resumeId,
+      endpoint: "license",
+      endpointId: data.id,
+      formData: {
+        name: data.name,
+      },
+    });
+  };
+
+  const handleDelete = () => {
+    DeleteMutate({
+      userId,
+      resumeId,
+      endpoint: "license",
+      endpointId: data.id,
+    });
   };
 
   const handleTextChange = (
@@ -166,24 +219,22 @@ const LicenseCard = ({ license }: { license: License }) => {
           </div>
           <div
             className="cursor-pointer hover:text-red-800"
-            onClick={handleOpen}
+            onClick={() => setOpen(true)}
           >
             <DeleteIcon />
           </div>
         </div>
         <DeleteCheckModal
           open={open}
-          onDelete={() => {
-            console.log(license, "delete");
-          }}
-          onClose={handleClose}
+          onDelete={handleDelete}
+          onClose={() => setOpen(false)}
         />
       </div>
       <div className="w-full">
         {isEditing ? (
           <SaveCheck
             disabled={data.name === ""}
-            onSave={onSave}
+            onSave={handleSave}
             onCancel={() => setIsEditing(false)}
           ></SaveCheck>
         ) : null}

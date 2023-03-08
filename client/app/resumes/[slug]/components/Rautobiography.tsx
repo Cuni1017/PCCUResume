@@ -2,15 +2,24 @@ import React, { ChangeEvent, useEffect, useState } from "react";
 import Card from "../../../components/Card";
 import ResumeItemHeader from "./shared/ResumeItemHeader";
 import ResumeItemContent from "./shared/ResumeItemContent";
+import HeaderController from "./shared/HeaderController";
 import EditIcon from "@mui/icons-material/Edit";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import SaveCheck from "./shared/SaveCheck";
+import {
+  useDeleteResumeDetail,
+  usePostResumeDetail,
+  usePutResumeDetail,
+} from "@/hooks/Resume/useResumeDetail";
 
 // 自傳
 
 interface AutoBiography {
   chineseAutobiography: string | null;
   englishAutobiography: string | null;
+  id: string;
+  resumeId: string;
+  userId: string;
 }
 
 interface Props {
@@ -23,6 +32,9 @@ const Rautobiography = ({ userId, resumeId, autobiography }: Props) => {
   const [data, setData] = useState<AutoBiography>({
     chineseAutobiography: "",
     englishAutobiography: "",
+    id: "",
+    resumeId: "",
+    userId: "",
   });
   const [isEditing, setIsEditing] = useState(false);
 
@@ -59,20 +71,21 @@ const Rautobiography = ({ userId, resumeId, autobiography }: Props) => {
   return (
     <Card>
       <ResumeItemHeader label="自傳">
-        {isEditing ? null : (
-          <span
-            onClick={handleEdit}
-            className="text-end text-sm flex items-center justify-end text-gray-500 hover:text-gray-800 cursor-pointer absolute top-1 right-5 gap-1"
-          >
-            <EditIcon />
-            編輯
-          </span>
-        )}
+        <HeaderController
+          text="編輯"
+          Icon={EditIcon}
+          isEditing={isEditing}
+          setIsEditing={() => {
+            setIsEditing(!isEditing);
+          }}
+        />
       </ResumeItemHeader>
       <ResumeItemContent>
         <div className="flex flex-col w-full">
           {isEditing ? (
             <AutoBiographyEditCard
+              userId={userId}
+              resumeId={resumeId}
               autobiography={data}
               setIsEditing={setIsEditing}
             />
@@ -86,9 +99,13 @@ const Rautobiography = ({ userId, resumeId, autobiography }: Props) => {
 };
 
 const AutoBiographyEditCard = ({
+  userId,
+  resumeId,
   autobiography,
   setIsEditing,
 }: {
+  userId: string;
+  resumeId: string;
   autobiography: AutoBiography;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
@@ -100,8 +117,35 @@ const AutoBiographyEditCard = ({
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
+  const { mutate: PostMutate } = usePostResumeDetail(resumeId);
+  const { mutate: PutMutate } = usePutResumeDetail(data.resumeId);
+  const { mutate: DeleteMutate } = useDeleteResumeDetail(data.resumeId);
+
   const handleSave = () => {
     console.log(data, "save");
+    if (!data.id) {
+      PostMutate({
+        userId,
+        resumeId,
+        endpoint: "autobiography",
+        formData: {
+          chineseAutobiography: data.chineseAutobiography,
+          englishAutobiography: data.englishAutobiography,
+        },
+      });
+    } else {
+      PutMutate({
+        userId,
+        resumeId,
+        endpoint: "autobiography",
+        endpointId: data.id,
+        formData: {
+          chineseAutobiography: data.chineseAutobiography,
+          englishAutobiography: data.englishAutobiography,
+        },
+      });
+    }
+    setIsEditing(false);
   };
 
   return (
@@ -138,7 +182,8 @@ const AutoBiographyEditCard = ({
         onSave={handleSave}
         onCancel={() => setIsEditing(false)}
         disabled={
-          data.chineseAutobiography === "" && data.englishAutobiography === ""
+          false
+          // data.chineseAutobiography === "" && data.englishAutobiography === ""
         }
       />
     </div>

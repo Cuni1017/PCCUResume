@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { TextField } from "@mui/material";
 import Card from "../../../components/Card";
 import MyButton from "../../../components/MyButton";
-import { usePostResume } from "../../../../hooks/useResume";
+import { usePostResume } from "../../../../hooks/Resume/useResume";
 
 const NewResume = ({ userId }: { userId: string }) => {
   const mutation = usePostResume();

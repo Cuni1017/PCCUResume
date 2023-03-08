@@ -153,7 +153,7 @@ export default async function handler(
           });
           break;
       }
-      return res.status(200).json({ response: response?.data });
+      return res.status(200).json({ response: response?.data.data });
     } catch (error: any) {
       return res.status(401).json({ errorMessage: error });
     }

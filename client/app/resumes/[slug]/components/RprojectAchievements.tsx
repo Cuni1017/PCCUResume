@@ -5,8 +5,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteCheckModal from "./shared/DeleteCheckModal";
 import ResumeItemHeader from "./shared/ResumeItemHeader";
-import MyButton from "../../../components/MyButton";
 import ResumeItemContent from "./shared/ResumeItemContent";
+import HeaderController from "./shared/HeaderController";
+import MyButton from "../../../components/MyButton";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import TextFiled from "./shared/TextFiled";
 import { DateField } from "@mui/x-date-pickers/DateField";
@@ -14,6 +15,11 @@ import dayjs, { Dayjs } from "dayjs";
 import Checkbox from "@mui/material/Checkbox";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import {
+  useDeleteResumeDetail,
+  usePostResumeDetail,
+  usePutResumeDetail,
+} from "@/hooks/Resume/useResumeDetail";
 
 // 專案成就
 
@@ -50,6 +56,10 @@ const RprojectAchievements = ({
     setIsEditing(index);
   };
 
+  const { mutate: PostMutate } = usePostResumeDetail(resumeId);
+  const { mutate: PutMutate } = usePutResumeDetail(resumeId);
+  const { mutate: DeleteMutate } = useDeleteResumeDetail(resumeId);
+
   const handleSave = (
     PAId: string, //空的表示要Post新的
     PA: ProjectAchievement
@@ -59,12 +69,46 @@ const RprojectAchievements = ({
 
     // 表示New
     if (!PAId) {
+      PostMutate({
+        userId,
+        resumeId,
+        endpoint: "project-achievments",
+        formData: {
+          name: PA.name,
+          startTime: PA.startTime,
+          endTime: PA.endTime,
+          talk: PA.talk,
+          url: PA.url,
+        },
+      });
     } else {
+      PutMutate({
+        userId,
+        resumeId,
+        endpoint: "project-achievments",
+        endpointId: PA.id,
+        formData: {
+          name: PA.name,
+          startTime: PA.startTime,
+          endTime: PA.endTime,
+          talk: PA.talk,
+          url: PA.url,
+        },
+      });
     }
+
+    setIsEditing(null);
   };
 
   const handleDelete = (PAId: string) => {
     console.log(PAId, "delete");
+
+    DeleteMutate({
+      userId,
+      resumeId,
+      endpoint: "project-achievments",
+      endpointId: PAId,
+    });
   };
 
   useEffect(() => {
@@ -92,7 +136,16 @@ const RprojectAchievements = ({
   return (
     <Card>
       <ResumeItemHeader label="專案成就">
-        {isEditing !== null ? null : (
+        <HeaderController
+          text="新增"
+          Icon={AddIcon}
+          isEditing={isEditing}
+          setIsEditing={() => {
+            if (isEditing === null) setIsEditing(data.length);
+            else setIsEditing(null);
+          }}
+        />
+        {/* {isEditing !== null ? null : (
           <span
             onClick={handleNew}
             className="text-end text-sm flex items-center justify-end text-gray-500 hover:text-gray-800 cursor-pointer absolute top-1 right-5"
@@ -100,7 +153,7 @@ const RprojectAchievements = ({
             <AddIcon />
             新增
           </span>
-        )}
+        )} */}
       </ResumeItemHeader>
       <ResumeItemContent>
         {isEditing !== null ? (

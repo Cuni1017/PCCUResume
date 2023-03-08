@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { Store } from "@/redux/store";
-import { useGetResume } from "../../../../hooks/useResume";
+import { useGetResume } from "../../../../hooks/Resume/useResume";
 import UserCard from "../components/UserCard";
 import Rlicense from "../components/Rlicense";
 import RprojectAchievements from "../components/RprojectAchievements";
@@ -40,18 +40,41 @@ const ResumePage = ({ params }: { params: any }) => {
   // console.log(resumeId);
 
   return (
-    <div className="flex flex-col gap-2 mt-4 px-4">
+    <div className="flex flex-col gap-2 p-4">
       <UserCard userInfo={userInfo} />
       <RworkHope userId={user.id} resumeId={resumeId} workHope={rworkHope} />
+      {/* {
+          id: "pr123",
+          type: "前端工程師、後端工程師",
+          date: "週一、週二、週五",
+          resumeId: "R2023030703",
+          userId: "C660423810",
+        } */}
       <RworkExperience
         userId={user.id}
         resumeId={resumeId}
         workExperience={rworkExperience}
       />
+      {/* 
+        [
+          {
+            name: "前端工程師",
+            department: "軟體部",
+            companyname: "劉大偉有限公司",
+            startTime: "2023-01-05T05:50:37",
+            endTime: "2023-02-19T02:40:23",
+            id: "pr12345",
+            resumeId: "R2023030703",
+            userId: "C660423810",
+          },
+        ]
+      */}
       <RprojectAchievements
         userId={user.id}
         resumeId={resumeId}
-        projectAchievements={[
+        projectAchievements={rprojectAchievements}
+      />
+      {/* [
           {
             name: "PCCUResume",
             talk: "幫助學校架設實習平台",
@@ -72,13 +95,10 @@ const ResumePage = ({ params }: { params: any }) => {
             resumeId: "R2023030703",
             userId: "C660423810",
           },
-        ]} //rprojectAchievements
-      />
+        ] */}
       {/* rlicense */}
-      <Rlicense
-        userId={user.id}
-        resumeId={resumeId}
-        license={[
+      <Rlicense userId={user.id} resumeId={resumeId} license={rlicense} />
+      {/* [
           {
             name: "Java證照",
             id: "pr2023030700",
@@ -91,18 +111,18 @@ const ResumePage = ({ params }: { params: any }) => {
             resumeId: "R2023030703",
             userId: "C660423810",
           },
-        ]}
-      />
+        ] */}
       <Rautobiography
         userId={user.id}
         resumeId={resumeId}
-        autobiography={null}
+        autobiography={rautobiography}
       />
-      {/* rautobiography */}
       <RspecialSkill
         userId={user.id}
         resumeId={resumeId}
-        specialSkills={[
+        specialSkills={rspecialSkill}
+      />
+      {/* [
           {
             name: "玩OW",
             talk: "亞服前500亞服前500亞服前500亞服前500亞服前500亞服前500亞服前500亞服前500亞服前500亞服前500亞服前500亞服前500亞服前500亞服前500亞服前500亞服前500亞服前500亞服前500亞服前500亞服前500亞服前500亞服前500亞服前500亞服前500亞服前500亞服前500",
@@ -113,9 +133,7 @@ const ResumePage = ({ params }: { params: any }) => {
             talk: "大胃王比賽冠軍大胃王比賽冠軍大胃王比賽冠軍大胃王比賽冠軍大胃王比賽冠軍大胃王比賽冠軍大胃王比賽冠軍大胃王比賽冠軍大胃王比賽冠軍大胃王比賽冠軍大胃王比賽冠軍大胃王比賽冠軍大胃王比賽冠軍大胃王比賽冠軍",
             special: "林小明不行",
           },
-        ]}
-      />
-      {/* rspecialSkill */}
+        ] */}
     </div>
   );
 };

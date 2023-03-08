@@ -4,6 +4,9 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import Box from "@mui/material/Box";
+import ResumeItemHeader from "./shared/ResumeItemHeader";
+import ResumeItemContent from "./shared/ResumeItemContent";
+import HeaderController from "./shared/HeaderController";
 import MyButton from "../../../components/MyButton";
 import Modal from "@mui/material/Modal";
 import TextFiled from "./shared/TextFiled";
@@ -12,6 +15,11 @@ import dayjs, { Dayjs } from "dayjs";
 import Checkbox from "@mui/material/Checkbox";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import {
+  useDeleteResumeDetail,
+  usePostResumeDetail,
+  usePutResumeDetail,
+} from "@/hooks/Resume/useResumeDetail";
 
 const style = {
   position: "absolute",
@@ -30,9 +38,12 @@ const style = {
 interface WorkExperice {
   name: string;
   department: string;
-  companyname: string;
+  companyName: string;
   startTime: string;
   endTime: string;
+  id: string;
+  resumeId: string;
+  userId: string;
 }
 
 interface Props {
@@ -51,20 +62,50 @@ const RworkExperience = ({ userId, resumeId, workExperience }: Props) => {
   const handleEdit = (index: number) => {
     setIsEditing(index);
   };
-  const handleDelete = (index: number) => {
-    let newData = data;
-    newData.splice(index, 1);
-    setData([...newData]);
+
+  const { mutate: PostMutate } = usePostResumeDetail(resumeId);
+  const { mutate: PutMutate } = usePutResumeDetail(resumeId);
+  const { mutate: DeleteMutate } = useDeleteResumeDetail(resumeId);
+
+  const handleDelete = (WEId: string) => {
+    DeleteMutate({
+      userId,
+      resumeId,
+      endpoint: "work-experience",
+      endpointId: WEId,
+    });
   };
 
-  const handleSave = (index: number, EX: WorkExperice) => {
-    let newData = [...data];
-    if (index + 1 <= data.length) {
-      newData[index] = EX;
+  const handleSave = (WEId: string, WE: WorkExperice) => {
+    console.log(WE, "save");
+
+    if (!WE.id) {
+      console.log("No Id");
+      PostMutate({
+        userId,
+        resumeId,
+        endpoint: "work-experience",
+        formData: {
+          name: WE.name,
+          department: WE.department,
+          companyName: WE.companyName,
+        },
+      });
     } else {
-      newData.splice(index, 0, EX);
+      console.log("Yes Id");
+      PutMutate({
+        userId,
+        resumeId,
+        endpoint: "work-experience",
+        endpointId: WE.id,
+        formData: {
+          name: WE.name,
+          department: WE.department,
+          companyName: WE.companyName,
+        },
+      });
     }
-    setData(newData);
+
     setIsEditing(null);
   };
 
@@ -92,47 +133,41 @@ const RworkExperience = ({ userId, resumeId, workExperience }: Props) => {
 
   return (
     <Card>
-      <div className="py-3">
-        <div className="text-xl border-solid border-0 border-b border-gray-300 w-full text-center leading-10 font-bold relative">
-          <div>
-            工作經歷
-            {isEditing !== null ? null : (
-              <span
-                onClick={handleNewEX}
-                className="text-end text-sm flex items-center justify-end text-gray-500 hover:text-gray-800 cursor-pointer absolute top-1 right-5"
-              >
-                <AddIcon />
-                新增
-              </span>
-            )}
-          </div>
-        </div>
+      <ResumeItemHeader label="工作經歷">
+        <HeaderController
+          text="新增"
+          Icon={AddIcon}
+          isEditing={isEditing}
+          setIsEditing={() => {
+            if (isEditing === null) setIsEditing(data.length);
+            else setIsEditing(null);
+          }}
+        />
+      </ResumeItemHeader>
+      <ResumeItemContent>
         {isEditing !== null ? (
           <WorkExperienceEditCard
             WE={isEditing > data.length ? null : data[isEditing]}
-            index={isEditing}
             handleSave={handleSave}
             setIsEditing={setIsEditing}
           />
         ) : (
-          <div className="flex flex-col items-center justify-center gap-3 p-4">
+          <div className="flex flex-col items-center justify-center gap-3 w-full">
             {renderedWorkExperiences()}
           </div>
         )}
-      </div>
+      </ResumeItemContent>
     </Card>
   );
 };
 
 const WorkExperienceEditCard = ({
   WE,
-  index,
   handleSave,
   setIsEditing,
 }: {
   WE: WorkExperice | null;
-  index: number;
-  handleSave: (index: number, EX: WorkExperice) => void;
+  handleSave: (WEId: string, WE: WorkExperice) => void;
   setIsEditing: React.Dispatch<React.SetStateAction<number | null>>;
 }) => {
   const state = WE
@@ -140,9 +175,12 @@ const WorkExperienceEditCard = ({
     : {
         name: "",
         department: "",
-        companyname: "",
+        companyName: "",
         startTime: "",
         endTime: "",
+        id: "",
+        resumeId: "",
+        userId: "",
       };
   const [data, setData] = useState(state);
   const [startTime, setStartTime] = React.useState<Dayjs | null>(null);
@@ -154,7 +192,7 @@ const WorkExperienceEditCard = ({
   }>({ startTime: false, endTime: false });
   const disabled =
     !data.name ||
-    !data.companyname ||
+    !data.companyName ||
     !data.department ||
     !data.startTime ||
     !data.endTime ||
@@ -162,27 +200,28 @@ const WorkExperienceEditCard = ({
     errors.endTime ||
     data.startTime > data.endTime;
 
+  const formatDate = "YYYY-MM-DD";
   useEffect(() => {
     if (data.startTime) {
-      setStartTime(dayjs(data.startTime, "MM/DD/YYYY"));
+      setStartTime(dayjs(data.startTime, formatDate));
     }
     if (data.endTime) {
       if (data.endTime === "仍在職") {
         setEndTime(null);
         setStillWork(true);
-      } else setEndTime(dayjs(data.endTime, "MM/DD/YYYY"));
+      } else setEndTime(dayjs(data.endTime, formatDate));
     }
   }, [data.endTime, data.startTime]);
 
   const mergeStartTimeToData = () => {
     if (startTime) {
-      setData({ ...data, startTime: startTime.format("L") });
+      setData({ ...data, startTime: startTime.format(formatDate) });
     }
   };
 
   const mergeEndTimeToData = () => {
     if (endTime) {
-      setData({ ...data, endTime: endTime.format("L") });
+      setData({ ...data, endTime: endTime.format(formatDate) });
     }
   };
 
@@ -201,11 +240,11 @@ const WorkExperienceEditCard = ({
   };
 
   return (
-    <div className="p-4 flex flex-col items-center justify-center gap-3">
+    <div className="flex flex-col items-center justify-center gap-3 w-full">
       <TextFiled
         label="公司名稱："
-        value={data.companyname}
-        name="companyname"
+        value={data.companyName}
+        name="companyName"
         onChange={handleTextChange}
       ></TextFiled>
       <TextFiled
@@ -282,7 +321,7 @@ const WorkExperienceEditCard = ({
       <div className="flex gap-24">
         <MyButton
           disabled={disabled}
-          onClick={() => handleSave(index, data)}
+          onClick={() => handleSave(data.id, data)}
           classNames="w-[100px] bg-blue-500 disabled:cursor-not-allowed disabled:bg-gray-400 hover:bg-blue-600 text-white"
         >
           儲存
@@ -301,7 +340,7 @@ const WorkExperienceEditCard = ({
 interface WorkExperienceCardProps {
   WE: WorkExperice;
   handleEdit: (index: number) => void;
-  handleDelete: (index: number) => void;
+  handleDelete: (WEId: string) => void;
   index: number;
 }
 
@@ -318,17 +357,12 @@ const WorkExperienceCard = ({
   return (
     <div className="w-full md:max-w-[700px] flex">
       <div className="w-full grow">
-        <div className="font-bold text-lg">
-          {WE.name}
-          {/* 前端工程師 */}
-        </div>
+        <div className="font-bold text-lg">{WE.name}</div>
         <div className="font-bold">
-          {WE.companyname} {WE.department}
-          {/* 劉大偉有限公司 軟體工程部門 */}
+          {WE.companyName} {WE.department}
         </div>
         <div className="text-slate-700 text-sm">
-          {WE.startTime}~{WE.endTime}
-          {/* 1940/1~1940/2 */}
+          {/* {WE.startTime.substring(0, 10)}－{WE.endTime.substring(0, 10)} */}
         </div>
       </div>
       <div className="flex justify-end items-center gap-3 text-gray-500">
@@ -355,7 +389,7 @@ const WorkExperienceCard = ({
             <div className="flex justify-center gap-10 mt-5">
               <MyButton
                 onClick={() => {
-                  handleDelete(index);
+                  handleDelete(WE.id);
                   setOpen(false);
                 }}
                 classNames="bg-[#e25555] hover:bg-red-800 text-white w-[100px]"

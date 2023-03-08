@@ -6,7 +6,7 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 
 import { useSelector } from "react-redux";
 import { Store } from "@/redux/store";
-import { useGetResume } from "../../../hooks/useResume";
+import { useGetResume } from "../../../hooks/Resume/useResume";
 import Card from "../../components/Card";
 import Image from "next/image";
 import Rlicense from "./components/RworkHope";

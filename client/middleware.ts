@@ -32,13 +32,14 @@ export function middleware(req: NextRequest, res: NextResponse) {
     }
   }
 
-  console.log("I AM MIDDLEWARE AND I WAS CALLED BEFORE THE ENDPOINT");
+  // console.log("I AM MIDDLEWARE AND I WAS CALLED BEFORE THE ENDPOINT");
 }
 
 export const config = {
   matcher: [
     "/api/auth/me",
     "/api/resume/:path*",
+    "/resumes/:path*",
     "/dashboard/:path*",
     "/admin/:path*",
   ],

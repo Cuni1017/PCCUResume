@@ -45,9 +45,9 @@ export function useAuth(): UseAuth {
   const [errors, setErrors] = useState([]);
   const user = useSelector((state: Store) => state.user);
   const dispatch = useDispatch();
-  // console.log(user);
-
   const router = useRouter();
+
+  // console.log(user);
 
   const signin = async (
     { username, password }: { username: string; password: string },
@@ -118,7 +118,8 @@ export function useAuth(): UseAuth {
         handleComplete();
       }
     } catch (error: any) {
-      alert(error.response.data.errorMessage);
+      alert("此帳號已註冊過");
+      // alert(error.response.data.errorMessage);
       console.log(error, "useAuth");
     }
     setIsFetching(false);

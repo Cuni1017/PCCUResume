@@ -5,8 +5,7 @@ import ResumeCard from "./components/ResumeCard";
 import NewResume from "./components/NewResume";
 import { Store } from "@/redux/store";
 import { useSelector } from "react-redux";
-import { useGetResumes } from "../../../hooks/useResume";
-import TextFiled from "@mui/material/TextField";
+import { useGetResumes } from "../../../hooks/Resume/useResume";
 
 export interface Resume {
   resumeId: string;

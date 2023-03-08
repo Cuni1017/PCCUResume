@@ -2,13 +2,18 @@ import React, { ChangeEvent, useEffect, useState } from "react";
 import Card from "../../../components/Card";
 import ResumeItemHeader from "./shared/ResumeItemHeader";
 import ResumeItemContent from "./shared/ResumeItemContent";
+import HeaderController from "./shared/HeaderController";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteCheckModal from "./shared/DeleteCheckModal";
 import SaveCheck from "./shared/SaveCheck";
-import OutlinedInput from "@mui/material/OutlinedInput";
 import TextFiled from "./shared/TextFiled";
+import {
+  useDeleteResumeDetail,
+  usePostResumeDetail,
+  usePutResumeDetail,
+} from "@/hooks/Resume/useResumeDetail";
 
 // 專長
 
@@ -16,6 +21,9 @@ interface SpeicalSkill {
   name: string;
   talk: string;
   special: string;
+  id: string;
+  resumeId: string;
+  userId: string;
 }
 
 interface Props {
@@ -48,7 +56,7 @@ const RspecialSkill = ({ userId, resumeId, specialSkills }: Props) => {
       ));
     } else {
       return (
-        <div className="text-center w-full">
+        <div className="text-center w-full col-span-2">
           填寫與別人不同的專長，讓公司看見你！
         </div>
       );
@@ -58,7 +66,16 @@ const RspecialSkill = ({ userId, resumeId, specialSkills }: Props) => {
   return (
     <Card>
       <ResumeItemHeader label="專長">
-        {isEditing !== null ? null : (
+        <HeaderController
+          text="新增"
+          Icon={AddIcon}
+          isEditing={isEditing}
+          setIsEditing={() => {
+            if (isEditing === null) setIsEditing(data.length);
+            else setIsEditing(null);
+          }}
+        />
+        {/* {isEditing !== null ? null : (
           <span
             onClick={handleNew}
             className="text-end text-sm flex items-center justify-end text-gray-500 hover:text-gray-800 cursor-pointer absolute top-1 right-5"
@@ -66,16 +83,20 @@ const RspecialSkill = ({ userId, resumeId, specialSkills }: Props) => {
             <AddIcon />
             新增
           </span>
-        )}
+        )} */}
       </ResumeItemHeader>
       <ResumeItemContent>
         {isEditing !== null ? (
           <SSEditCard
+            userId={userId}
+            resumeId={resumeId}
             specialSkill={isEditing > data.length ? null : data[isEditing]}
             setIsEditing={setIsEditing}
           />
         ) : (
-          <div className="flex gap-3">{renderedSpeicalSkills()}</div>
+          <div className="flex flex-col sm:grid grid-cols-2 gap-3 w-full">
+            {renderedSpeicalSkills()}
+          </div>
         )}
       </ResumeItemContent>
     </Card>
@@ -83,9 +104,13 @@ const RspecialSkill = ({ userId, resumeId, specialSkills }: Props) => {
 };
 
 const SSEditCard = ({
+  userId,
+  resumeId,
   specialSkill,
   setIsEditing,
 }: {
+  userId: string;
+  resumeId: string;
   specialSkill: SpeicalSkill | null;
   setIsEditing: React.Dispatch<React.SetStateAction<number | null>>;
 }) => {
@@ -95,6 +120,7 @@ const SSEditCard = ({
         name: "",
         talk: "",
         special: "",
+        id: "",
       };
   const [data, setData] = useState(state);
 
@@ -104,8 +130,38 @@ const SSEditCard = ({
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
+  const { mutate: PostMutate } = usePostResumeDetail(resumeId);
+  const { mutate: PutMutate } = usePutResumeDetail(resumeId);
+
   const handleSave = () => {
     console.log(data, "save");
+
+    if (!data.id) {
+      PostMutate({
+        userId,
+        resumeId,
+        endpoint: "special-skill",
+        formData: {
+          name: data.name,
+          talk: data.talk,
+          special: data.special,
+        },
+      });
+    } else {
+      PutMutate({
+        userId,
+        resumeId,
+        endpoint: "special-skill",
+        endpointId: data.id,
+        formData: {
+          name: data.name,
+          talk: data.talk,
+          special: data.special,
+        },
+      });
+    }
+
+    setIsEditing(null);
   };
 
   return (
@@ -156,14 +212,24 @@ const SpeicalSkillCard = ({
   const handleEdit = () => {
     setIsEditing(index);
   };
+
+  const { mutate: DeleteMutate } = useDeleteResumeDetail(specialSkill.resumeId);
+
   const handleDelete = () => {
     console.log(specialSkill, "delete");
+
+    DeleteMutate({
+      userId: specialSkill.userId,
+      resumeId: specialSkill.resumeId,
+      endpoint: "special-skill",
+      endpointId: specialSkill.id,
+    });
   };
   const [open, setOpen] = useState(false);
 
   return (
     <div
-      className="relative"
+      className="relative w-full"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >

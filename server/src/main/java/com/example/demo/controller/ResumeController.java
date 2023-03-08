@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+
 public class ResumeController {
     private final ResumeService resumeService;
     @GetMapping("/students/{studentId}")
@@ -58,6 +59,7 @@ public class ResumeController {
 
         return ResponseEntity.ok(resumeService.createBasicResume(request,studentId));
     }
+
     @PostMapping("/students/{studentId}/resumes/{resumeId}/work-hope")
     public ResponseEntity<Object> createWorkHope(
             @RequestBody RWorkHopeRequest request,
