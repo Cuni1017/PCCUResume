@@ -44,5 +44,5 @@ public interface ResumeService {
     Object deleteAllResumeById(String studentId, String resumeId);
 
 
-    Object findUserById(String studentId);
+
 }

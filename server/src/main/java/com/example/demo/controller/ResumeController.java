@@ -16,12 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 public class ResumeController {
     private final ResumeService resumeService;
-    @GetMapping("/students/{studentId}")
-    public ResponseEntity<Object> findUserById(
-            @PathVariable String studentId
-    ) {
-            return ResponseEntity.ok(resumeService.findUserById(studentId));
-    }
+
     @GetMapping("/students/{studentId}/resumes/{resumeId}")
     public ResponseEntity<Object> findAllResumeById(
             @PathVariable String studentId,

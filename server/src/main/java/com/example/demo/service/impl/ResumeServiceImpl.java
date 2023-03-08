@@ -40,21 +40,7 @@ public class ResumeServiceImpl implements ResumeService {
     private final RProjectAchievementsRepository rProjectAchievementsRepository;
     private final RAutobiographyRepository rAutobiographyRepository;
     private final RWorkExperienceRepository rWorkExperienceRepository;
-    @Override
-    public Object findUserById(String studentId) {
-        User user =userRepository.findById(studentId).orElseThrow(() -> new UserNotFoundException("studentId:查無使用者"));
-        Student student = studentRepository.findByStudentId(studentId).orElseThrow(() -> new UserNotFoundException("studentId:查無使用者"));
-        List<Resume> resume =resumeRepository.findByUserId(studentId);
-        StudentResponse studentResponse =StudentResponse.builder()
-                .student(student)
-                .resume(resume)
-                .build();
-        RestResponse restResponse =RestResponse.builder()
-                .data(studentResponse)
-                .message("新建成功")
-                .build();
-        return  restResponse;
-    }
+
 
     @Override
     public Object findAllResumeByIdAndResumeId(String userId,String resumeId) {
