@@ -5,15 +5,6 @@ import { queryKeys } from "@/tanstack-query/constant";
 
 const JWT = getCookie("JWT");
 
-const endpoint = [
-  "work-hope",
-  "special-skill",
-  "license",
-  "project-achievments",
-  "autobiography",
-  "work-experience",
-];
-
 const options = {
   headers: {
     Authorization: `Bearer ${JWT}`,
@@ -31,9 +22,12 @@ async function postResumeDetail({
   endpoint: string;
   formData: any;
 }) {
-  const { data } = await axiosInstance.post(
-    `/students/${userId}/resumes/${resumeId}/${endpoint}`,
-    formData,
+  const { data } = await axiosInstanceNext.post(
+    `/api/students/${userId}/resumes/${resumeId}/details`,
+    {
+      formData,
+      endpoint,
+    },
     options
   );
   return data.data;
@@ -52,9 +46,13 @@ async function putResumeDetail({
   resumeId: string;
   userId: string;
 }) {
-  const { data } = await axiosInstance.put(
-    `/students/${userId}/resumes/${resumeId}/${endpoint}/${endpointId}`,
-    formData,
+  const { data } = await axiosInstanceNext.put(
+    `/api/students/${userId}/resumes/${resumeId}/details`,
+    {
+      formData,
+      endpoint,
+      endpointId,
+    },
     options
   );
   return data.data;
@@ -71,9 +69,15 @@ async function deleteResumeDetail({
   resumeId: string;
   userId: string;
 }) {
-  const { data } = await axiosInstance.delete(
-    `/students/${userId}/resumes/${resumeId}/${endpoint}/${endpointId}`,
-    options
+  const { data } = await axiosInstanceNext.delete(
+    `/api/students/${userId}/resumes/${resumeId}/details`,
+    {
+      ...options,
+      data: {
+        endpoint,
+        endpointId,
+      },
+    }
   );
 
   return data.message;

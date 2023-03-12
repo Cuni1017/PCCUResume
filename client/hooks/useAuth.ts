@@ -110,10 +110,7 @@ export function useAuth(): UseAuth {
         companyAddress,
       });
 
-      console.log("success useAuth");
       if (res.status === 200) {
-        const { data } = res;
-        console.log(data);
         handleNext();
         handleComplete();
       }
@@ -128,6 +125,7 @@ export function useAuth(): UseAuth {
   const signout = () => {
     Cookies.remove("JWT");
     dispatch(cleanUser());
+    router.replace("/");
   };
 
   return { signin, signup, signout, isFetching };

@@ -19,8 +19,10 @@ public class StudentRegisterRequest {
   private String studentName;
   @NotBlank(message = "EMAIL沒塡")
   private String studentEmail;
-  @NotBlank(message = "沒塡")
+  @NotBlank(message = "電話號碼沒塡")
   private String studentNumber;
+  @NotBlank(message = "學號沒塡")
+
   private String pccuId;
 
 }

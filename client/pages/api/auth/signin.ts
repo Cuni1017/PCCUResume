@@ -39,13 +39,13 @@ export default async function handler(
 
     let token: null | string = null;
     try {
-      const res = await axiosInstance.post("/login", {
+      const response = await axiosInstance.post("/login", {
         username,
         password,
       });
       const {
         data: { token: JWT },
-      } = res;
+      } = response;
       token = JWT;
     } catch (error) {
       console.log(error);
@@ -53,11 +53,13 @@ export default async function handler(
     }
 
     if (token) {
-      setCookie("JWT", token, { req, res, maxAge: 60 * 60 * 1 }); //maxAge單位好像是秒
+      setCookie("JWT", token, { req, res, maxAge: 24 * 60 * 60 * 1 }); //maxAge單位好像是秒
       const decoded = jwt.decode(token) as {
         id: string;
         username: string;
-        sub: string;
+        name: string;
+        imageURL: string;
+        role: string;
       };
       return res.status(200).json({ ...decoded });
     } else {
@@ -65,5 +67,5 @@ export default async function handler(
     }
   }
 
-  return res.status(404).json("Unknown endpoint");
+  return res.status(405).json({ errorMessage: "Method not allow" });
 }

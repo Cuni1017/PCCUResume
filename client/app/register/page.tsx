@@ -39,8 +39,6 @@ const RegisterPage = () => {
     [k: number]: boolean;
   }>({});
 
-  console.log(formData);
-
   const handleSubmit = () => {
     if (!identity) return;
     signup({ ...formData, identity, handleNext, handleComplete });

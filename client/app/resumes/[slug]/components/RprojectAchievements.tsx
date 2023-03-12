@@ -64,8 +64,6 @@ const RprojectAchievements = ({
     PAId: string, //空的表示要Post新的
     PA: ProjectAchievement
   ) => {
-    console.log(PAId);
-    console.log(PA, "Save");
 
     // 表示New
     if (!PAId) {
@@ -101,7 +99,6 @@ const RprojectAchievements = ({
   };
 
   const handleDelete = (PAId: string) => {
-    console.log(PAId, "delete");
 
     DeleteMutate({
       userId,
@@ -262,7 +259,9 @@ const PAEditCard = ({
         label="專案敘述："
         value={data.talk}
         multiline
-        maxRows={5}
+        fullWidth
+        minRows={2}
+        maxRows={6}
         name="talk"
         onChange={handleTextChange}
       ></TextFiled>

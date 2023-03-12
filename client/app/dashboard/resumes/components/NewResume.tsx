@@ -21,8 +21,6 @@ const NewResume = ({ userId }: { userId: string }) => {
     mutate({ userId, formData });
   };
 
-  // console.log(formData);
-
   return (
     <Card className="bg-white border-solid border-gray-300 border shadow">
       <div className="px-2">

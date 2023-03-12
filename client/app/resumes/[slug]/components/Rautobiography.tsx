@@ -122,7 +122,6 @@ const AutoBiographyEditCard = ({
   const { mutate: DeleteMutate } = useDeleteResumeDetail(data.resumeId);
 
   const handleSave = () => {
-    console.log(data, "save");
     if (!data.id) {
       PostMutate({
         userId,
@@ -159,7 +158,8 @@ const AutoBiographyEditCard = ({
               value={data.chineseAutobiography}
               onChange={handleTextChange}
               multiline
-              minRows={5}
+              minRows={1}
+              maxRows={6}
               name="chineseAutobiography"
             />
           </div>
@@ -172,7 +172,8 @@ const AutoBiographyEditCard = ({
               value={data.englishAutobiography}
               onChange={handleTextChange}
               multiline
-              minRows={5}
+              minRows={1}
+              maxRows={6}
               name="englishAutobiography"
             />
           </div>

@@ -134,7 +134,6 @@ const SSEditCard = ({
   const { mutate: PutMutate } = usePutResumeDetail(resumeId);
 
   const handleSave = () => {
-    console.log(data, "save");
 
     if (!data.id) {
       PostMutate({
@@ -177,6 +176,7 @@ const SSEditCard = ({
         value={data.talk}
         name="talk"
         multiline
+        fullWidth
         minRows={2}
         maxRows={5}
         onChange={handleTextChange}
@@ -216,8 +216,6 @@ const SpeicalSkillCard = ({
   const { mutate: DeleteMutate } = useDeleteResumeDetail(specialSkill.resumeId);
 
   const handleDelete = () => {
-    console.log(specialSkill, "delete");
-
     DeleteMutate({
       userId: specialSkill.userId,
       resumeId: specialSkill.resumeId,

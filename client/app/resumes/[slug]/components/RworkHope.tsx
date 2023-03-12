@@ -87,7 +87,6 @@ const WorkHopeEditCard = ({
   const { mutate: PutMutate } = usePutResumeDetail(data.resumeId);
 
   const handleSave = () => {
-    console.log(data, "save");
 
     if (data.id !== "") {
       PutMutate({

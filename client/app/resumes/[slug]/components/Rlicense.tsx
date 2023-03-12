@@ -33,7 +33,6 @@ interface Props {
 const Rlicense = ({ userId, resumeId, license }: Props) => {
   const [data, setData] = useState<License[]>([]);
   const [isNewing, setIsNewing] = useState(false);
-  // console.log(data);
 
   useEffect(() => {
     if (license) {
@@ -108,8 +107,6 @@ const NewLicenseCard = ({
   const { mutate: PostMutate } = usePostResumeDetail(resumeId);
 
   const onSave = () => {
-    console.log(license, "save");
-
     PostMutate({
       userId,
       resumeId,
@@ -164,7 +161,6 @@ const LicenseCard = ({
   const { mutate: DeleteMutate } = useDeleteResumeDetail(license.resumeId);
 
   const handleSave = () => {
-    console.log(data);
 
     PutMutate({
       userId,

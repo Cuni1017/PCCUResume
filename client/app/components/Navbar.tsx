@@ -53,7 +53,6 @@ const Navbar = () => {
       } else {
         dispatch(cleanUser());
         alert("請重新登入");
-        console.log("請重新登入");
         router.push("/");
       }
     } catch (error) {

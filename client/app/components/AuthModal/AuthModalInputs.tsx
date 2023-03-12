@@ -34,6 +34,7 @@ const AuthModalInputs = ({ inputs, handleChangeInput, isSignin }: Props) => {
           label="Password"
           variant="outlined"
           name="password"
+          type="password"
           value={inputs.password}
           onChange={(
             e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>

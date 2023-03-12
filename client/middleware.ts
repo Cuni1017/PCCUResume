@@ -4,7 +4,6 @@ import { NextRequest, NextResponse } from "next/server";
 const NextUrl = "http://localhost:3000";
 
 export function middleware(req: NextRequest, res: NextResponse) {
-  // console.log(req.url);
 
   // !普通切換路徑
   if (!req.url.includes("api")) {
@@ -32,13 +31,12 @@ export function middleware(req: NextRequest, res: NextResponse) {
     }
   }
 
-  // console.log("I AM MIDDLEWARE AND I WAS CALLED BEFORE THE ENDPOINT");
 }
 
 export const config = {
   matcher: [
     "/api/auth/me",
-    "/api/resume/:path*",
+    "/api/students/:path*",
     "/resumes/:path*",
     "/dashboard/:path*",
     "/admin/:path*",
