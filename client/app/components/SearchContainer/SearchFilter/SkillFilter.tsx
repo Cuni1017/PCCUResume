@@ -1,14 +1,20 @@
 "use client";
 
-import { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent, Dispatch, SetStateAction } from "react";
+import { useSearchParams } from "next/navigation";
 import FormGroup from "@mui/material/FormGroup";
 import SearchFilterModel from "./shared/Model";
 import SearchBar from "./shared/SearchBar";
 import CheckBoxOption from "./shared/CheckBoxOption";
 import Techs from "../../data/Techs.json";
-import { useSearchParams } from "next/navigation";
 
-const SkillFilter = () => {
+const SkillFilter = ({
+  searchParamsList,
+  setSearchParamsList,
+}: {
+  searchParamsList: string[] | undefined;
+  setSearchParamsList: Dispatch<SetStateAction<string[] | undefined>>;
+}) => {
   const TechsSearchParams = useSearchParams()?.getAll("tech");
   const [searchTerm, setSearchTerm] = useState("");
   const handleTextChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -26,12 +32,18 @@ const SkillFilter = () => {
       return 0;
     })
     .map((skill) => (
-      <CheckBoxOption key={skill} label={skill} category="tech" />
+      <CheckBoxOption
+        key={skill}
+        label={skill}
+        category="tech"
+        searchParamsList={searchParamsList}
+        setSearchParamsList={setSearchParamsList}
+      />
     ));
 
   return (
     <SearchFilterModel label="使用技術">
-      <div className="w-[400px] h-[400px] overflow-auto">
+      <div className="min-w-[200px] md:w-[400px] h-[400px] overflow-auto">
         <div className="p-3 pb-0">
           <SearchBar value={searchTerm} onChange={handleTextChange} />
         </div>

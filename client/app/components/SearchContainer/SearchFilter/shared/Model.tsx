@@ -4,9 +4,11 @@ import ExpandMoreOutlinedIcon from "@mui/icons-material/ExpandMoreOutlined";
 const SearchFilterModel = ({
   children,
   label,
+  align,
 }: {
   children: React.ReactNode;
   label: string;
+  align?: string;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const divEl = useRef<any>(null);
@@ -21,18 +23,18 @@ const SearchFilterModel = ({
         if (!divEl.current) return;
         if (!divEl.current.contains(e.target)) setIsOpen(false);
       };
-      document.addEventListener("click", handler, true);
+      document.addEventListener("mousedown", handler, true);
 
       return () => {
-        document.removeEventListener("click", handler);
+        document.removeEventListener("mousedown", handler);
       };
     }
   }, []);
 
   return (
-    <div ref={divEl} className="relative cursor-pointer rounded-sm">
+    <div ref={divEl} className="relative cursor-pointer rounded-sm md:w-auto">
       <div
-        className={`flex items-center px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded-sm ${
+        className={`flex items-center justify-between px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded-sm select-none ${
           isOpen ? "bg-blue-100 hover:bg-blue-100" : ""
         }`}
         onClick={handleClick}
@@ -40,13 +42,18 @@ const SearchFilterModel = ({
         {label} <ExpandMoreOutlinedIcon />
       </div>
 
-      {isOpen ? (
-        <div className="bg-white absolute left-0 top-10 border-solid border-gray-300 border rounded-md shadow">
-          {children}
-        </div>
-      ) : null}
+      <div
+        className={`bg-white absolute top-10 ${align} border-solid border-gray-300 border rounded-md shadow cursor-auto z-10`}
+        style={{ display: isOpen ? "block" : "none" }}
+      >
+        {children}
+      </div>
     </div>
   );
 };
+
+// ${
+//   align ? `${align}` : "left-0"
+// }
 
 export default SearchFilterModel;

@@ -2,6 +2,7 @@ import React from "react";
 
 const Card = ({
   children,
+  classnames,
   ...rest
 }: {
   children: React.ReactNode;
@@ -9,7 +10,7 @@ const Card = ({
 }) => {
   return (
     <div
-      className="border border-solid border-gray-100 shadow rounded-md bg-white"
+      className={`border border-solid border-gray-100 shadow rounded-md bg-white ${classnames}`}
       {...rest}
     >
       {children}

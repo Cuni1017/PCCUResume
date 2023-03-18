@@ -1,6 +1,6 @@
 import "./globals.css";
 import Providers from "./Providers";
-import Navbar from "./components/Navbar";
+import Navbar from "./components/Navbar/Navbar";
 
 // https://github.com/facebook/react/issues/25994
 // react devtools TypeError Bug
@@ -67,12 +67,12 @@ export default function RootLayout({
         <Providers>
           <div className="bg-gray-100 min-h-screen w-screen min-w-[320px] font-sans">
             <Navbar />
-            <main className="max-w-screen-md lg:max-w-screen-lg m-auto">
+            <main className="md:max-w-[860px] lg:max-w-[1140px] m-auto">
               {children}
             </main>
           </div>
         </Providers>
-        <script dangerouslySetInnerHTML={{ __html }} />
+        {/* <script dangerouslySetInnerHTML={{ __html }} /> */}
       </body>
     </html>
   );

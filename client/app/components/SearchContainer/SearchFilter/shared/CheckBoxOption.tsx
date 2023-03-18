@@ -1,5 +1,4 @@
-import React from "react";
-import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import React, { Dispatch, SetStateAction } from "react";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Image from "next/image";
@@ -7,25 +6,27 @@ import Image from "next/image";
 const CheckBoxOption = ({
   label,
   category,
+  searchParamsList,
+  setSearchParamsList,
 }: {
   label: string;
   category: string;
+  searchParamsList: string[] | undefined;
+  setSearchParamsList: Dispatch<SetStateAction<string[] | undefined>>;
 }) => {
-  const pathname = usePathname();
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const allSearchParams = searchParams?.toString();
-  let searchParamsList = allSearchParams?.split("&").filter((x) => x);
-
   const handleClick = () => {
-    searchParamsList?.includes(`${category}=${encodeURI(label)}`)
-      ? (searchParamsList = searchParamsList.filter(
-          (searchParams) => searchParams !== `${category}=${encodeURI(label)}`
-        ))
-      : searchParamsList?.push(`${category}=${label}`);
+    if (!searchParamsList) {
+      setSearchParamsList([`${category}=${encodeURI(label)}`]);
+      return;
+    }
 
-    const href = `${pathname}?` + searchParamsList?.join("&");
-    router.push(href);
+    let newSearchParamsList = [...searchParamsList];
+    newSearchParamsList?.includes(`${category}=${encodeURI(label)}`)
+      ? (newSearchParamsList = newSearchParamsList.filter(
+          (searchParam) => searchParam !== `${category}=${encodeURI(label)}`
+        ))
+      : newSearchParamsList?.push(`${category}=${encodeURI(label)}`);
+    setSearchParamsList(newSearchParamsList);
   };
 
   const imgSrc = `/techs/${
