@@ -1,9 +1,9 @@
 package com.example.demo.controller;
 
 
-import com.example.demo.category.post.*;
+
 import com.example.demo.category.resume.post.*;
-import com.example.demo.dto.resume.post.*;
+
 import com.example.demo.service.ResumeService;
 
 import lombok.RequiredArgsConstructor;

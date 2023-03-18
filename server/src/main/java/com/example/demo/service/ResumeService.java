@@ -1,8 +1,8 @@
 package com.example.demo.service;
 
-import com.example.demo.category.post.*;
+
 import com.example.demo.category.resume.post.*;
-import com.example.demo.dto.resume.post.*;
+
 
 public interface ResumeService {
     Object createBasicResume(ResumeRequest Request, String studentId);
@@ -44,8 +44,6 @@ public interface ResumeService {
 
     Object deleteAllResumeById(String studentId, String resumeId);
 
-
-<<<<<<< HEAD
     Object findUserById(String studentId);
 
     Object createSubject(RSubjectRequest request, String studentId, String resumeId);
@@ -53,7 +51,5 @@ public interface ResumeService {
     Object editSubject(RSubjectRequest request, String studentId, String resumeId, String subjectId);
 
     Object deleteSubject(String studentId, String resumeId, String subjectId);
-=======
 
->>>>>>> 9aab6050f903c28d5cf29ef83443932a8ed14b00
 }

@@ -4,10 +4,11 @@ import com.example.demo.config.error.UserNotFoundException;
 import com.example.demo.dao.StudentRepository;
 import com.example.demo.dao.UserRepository;
 import com.example.demo.dao.resume.ResumeRepository;
+import com.example.demo.dto.RestDto;
 import com.example.demo.model.Student;
 import com.example.demo.model.User;
 import com.example.demo.model.resume.Resume;
-import com.example.demo.reponse.RestResponse;
+
 import com.example.demo.reponse.student.StudentResponse;
 import com.example.demo.service.StudentService;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,7 @@ public class StudentServiceImpl implements StudentService {
                 .student(student)
                 .resume(resume)
                 .build();
-        RestResponse restResponse =RestResponse.builder()
+        RestDto restResponse =RestDto.builder()
                 .data(studentResponse)
                 .message("新建成功")
                 .build();
