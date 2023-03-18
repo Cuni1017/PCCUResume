@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="dca8bf27-c774-414e-bb33-7534c3ec9c75" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/app/api/hello/route.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/app/favicon.ico" beforeDir="false" afterPath="$PROJECT_DIR$/client/app/favicon.ico" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/app/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/app/globals.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/app/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/app/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/next.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/next.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/.mvn/wrapper/maven-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/Demo7Application.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/category/AuthenticationCategory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/category/CompanyRegisterCategory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/category/SendEmailCategory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/category/StudentRegisterCategory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/category/TeacherRegisterCategory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/category/VacanciesCategory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/category/checkEmailCategory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/category/resume/post/RAutobiographyRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/category/resume/post/RProjectAchievementsRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/category/resume/post/RSpecialSkillRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/category/resume/post/RSubjectRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/category/resume/post/RWorkExperienceRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/category/resume/post/RWorkHopeRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/category/resume/post/ResumeRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/category/resume/post/RlicenseRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/config/ApplicationConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/config/JwtAuthenticationFilter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/config/SecurityConfiguration.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/config/WebConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/config/error/CustomizedResponseEntityExceptionHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/config/error/ErrorDetails.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/config/error/FileException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/config/error/MailException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/config/error/UserNotFoundException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/controller/CompanyController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/controller/ImageController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/controller/LoginController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/controller/RegisterController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/controller/ResumeController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/controller/StudentController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/controller/VacanciesController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/dao/CompanyRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/dao/CountyRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/dao/SkillRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/dao/StudentRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/dao/TeacherRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/dao/TokenRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/dao/UserRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/dao/resume/RAutobiographyRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/dao/resume/RLicenseRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/dao/resume/RProjectAchievementsRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/dao/resume/RSpecialSkillRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/dao/resume/RSubjectRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/dao/resume/RWorkExperienceRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/dao/resume/RWorkHopeRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/dao/resume/ResumeRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/dao/vacancies/VacanciesCountyRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/dao/vacancies/VacanciesDao.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/dao/vacancies/VacanciesRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/dao/vacancies/VacanciesRowMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/dao/vacancies/VacanciesSkillRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/dao/vacancies/VacanciesSpecification.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/demo/DemoController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/dto/RestDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/dto/vacancies/FindVacanciesDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/dto/vacancies/PageVacanciesDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/dto/vacancies/VacanciesDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/model/Company.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/model/County.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/model/Role.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/model/Skill.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/model/Student.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/model/Teacher.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/model/Token.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/model/TokenType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/model/User.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/model/resume/RAutobiography.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/model/resume/RLicense.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/model/resume/RProjectAchievements.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/model/resume/RSpecialSkill.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/model/resume/RSubject.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/model/resume/RWorkExperience.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/model/resume/RWorkHope.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/model/resume/Resume.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/model/resume/School.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/model/vacancies/County.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/model/vacancies/Vacancies.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/model/vacancies/VacanciesCounty.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/model/vacancies/VacanciesSkill.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/reponse/AuthenticationResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/reponse/ChooseResumeResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/reponse/RAutobiographyResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/reponse/RLicenseResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/reponse/RProjectAchievementsResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/reponse/RSpecialSkillResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/reponse/RWorkExperienceResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/reponse/RWorkHopeResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/reponse/ResumeResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/reponse/file/FilePath.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/reponse/register/CompanyResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/reponse/register/StudentResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/reponse/register/TeacherResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/reponse/student/StudentResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/service/CompanyService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/service/JwtService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/service/LoginService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/service/LogoutService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/service/PictureUploadService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/service/RegisterService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/service/ResumeService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/service/StudentService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/service/VacanciesService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/service/impl/CompanyServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/service/impl/RegisterServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/service/impl/ResumeServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/service/impl/StudentServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/example/demo/service/impl/VacanciesServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/test/java/com/example/demo/Demo7ApplicationTests.java" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2NBJCrBNPAdsQKA7G4HNbUCeii1" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Users/H270/Downloads/WEB/test/Capstone-Project/server",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="dca8bf27-c774-414e-bb33-7534c3ec9c75" name="Changes" comment="" />
+      <created>1679131417768</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1679131417768</updated>
+      <workItem from="1679131418996" duration="145000" />
+      <workItem from="1679131602521" duration="44000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
