@@ -7,5 +7,6 @@ import org.springframework.stereotype.Service;
 public interface CompanyService {
     Object createVacancies(String companyId,VacanciesCategory vacanciesCategory);
 
-    Object getVacanciesSkillAndCounty(String companyId);
+
+    Object getVacancies(String companyId);
 }

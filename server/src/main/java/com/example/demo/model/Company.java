@@ -21,6 +21,8 @@ public class Company {
     private String companyId;
     @Column(name = "company_name")
     private String companyName;
+    @Column(name = "company_image_url")
+    private String companyImageUrl;
     @Column(name = "company_title")
     private String companyTitle;
     @Column(name = "company_username")

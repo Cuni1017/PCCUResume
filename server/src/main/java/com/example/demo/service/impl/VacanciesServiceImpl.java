@@ -53,6 +53,16 @@ public class VacanciesServiceImpl implements VacanciesService {
         return restResponse;
     }
 
+    @Override
+    public Object findSkills() {
+        return skillRepository.findAll();
+    }
+
+    @Override
+    public Object findCounties() {
+        return countyRepository.findAll();
+    }
+
 
     private List<String> findSkillName(){
         return  skillRepository.findSkillName();

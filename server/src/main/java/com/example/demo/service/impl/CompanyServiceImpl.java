@@ -8,6 +8,7 @@ import com.example.demo.dao.vacancies.VacanciesCountyRepository;
 import com.example.demo.dao.vacancies.VacanciesRepository;
 import com.example.demo.dao.vacancies.VacanciesSkillRepository;
 import com.example.demo.dto.RestDto;
+import com.example.demo.dto.vacancies.CompanyVacanciesDto;
 import com.example.demo.dto.vacancies.VacanciesDto;
 import com.example.demo.model.County;
 import com.example.demo.model.Skill;
@@ -92,11 +93,15 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public Object getVacanciesSkillAndCounty(String companyId) {
-        List<County> counties = countyRepository.findAll();
-        List<Skill> skills = skillRepository.findAll();
-        return null;
+    public Object getVacancies(String companyId) {
+        List<Object> companyVacanciesDtos =vacanciesRepository.findVacancies(companyId);
+        RestDto restDto = RestDto.builder()
+                .data(companyVacanciesDtos)
+                .message("查詢成功")
+                .build();
+        return restDto;
     }
+
 
     private String getId(JpaRepository repository , String idType , int x){
         long userCount = repository.count();
