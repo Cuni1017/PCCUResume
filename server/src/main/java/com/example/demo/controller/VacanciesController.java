@@ -26,4 +26,14 @@ public class VacanciesController {
            ) {
             return ResponseEntity.ok(VacanciesService.findAll(technology,order,county,salaryType,salaryMax,salaryMin,page,limit));
     }
+    @GetMapping("/vacancies/skills")
+    public ResponseEntity<Object> findSkills(
+    ) {
+        return ResponseEntity.ok(VacanciesService.findSkills());
+    }
+    @GetMapping("/vacancies/counties")
+    public ResponseEntity<Object> findCounties(
+    ) {
+        return ResponseEntity.ok(VacanciesService.findCounties());
+    }
 }

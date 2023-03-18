@@ -70,5 +70,6 @@ public class Vacancies {
     private String teacherValidType;
     @Column(name = "vacancies_condition")
     private String vacanciesCondition;
-
+    @Column(name = "vacancies_content")
+    private String vacanciesContent;
 }
