@@ -1,6 +1,6 @@
-package com.example.demo.dto;
+package com.example.demo.category;
 
-public class SendEmailDto {
+public class SendEmailCategory {
     private String studentValidMsg;
     private String studentEmail;
 }

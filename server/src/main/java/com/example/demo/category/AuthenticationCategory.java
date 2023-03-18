@@ -1,4 +1,4 @@
-package com.example.demo.reponse;
+package com.example.demo.category;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,10 +7,11 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class RestResponse {
-    private String message;
-    private Object data;
+@NoArgsConstructor
+public class AuthenticationCategory {
 
+  private String username;
+
+  private String password;
 }

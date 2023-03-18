@@ -14,4 +14,8 @@ public interface RWorkExperienceRepository extends JpaRepository<RWorkExperience
     @Modifying
     @Transactional
     List<RWorkExperience> findByUserIdAndResumeId(String studentId, String resumeId);
+
+    @Modifying
+    @Transactional
+    void deleteByUserIdAndResumeIdAndId(String userId, String resumeId,String id);
 }

@@ -1,11 +1,12 @@
 package com.example.demo.controller;
 
+import com.example.demo.category.CompanyRegisterCategory;
+import com.example.demo.category.TeacherRegisterCategory;
 import com.example.demo.dao.CompanyRepository;
 import com.example.demo.dao.StudentRepository;
 import com.example.demo.dao.TeacherRepository;
-import com.example.demo.dto.*;
 import com.example.demo.service.RegisterService;
-import com.example.demo.dto.StudentRegisterRequest;
+import com.example.demo.category.StudentRegisterCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,7 +45,7 @@ public ResponseEntity<String> test(
 }
   @PostMapping("/register/student")
   public ResponseEntity<Object> studentRegister(
-          @RequestBody StudentRegisterRequest request
+          @RequestBody StudentRegisterCategory request
   ) {
     return ResponseEntity.ok(registerService.studentRegister(request));
   }
@@ -57,7 +58,7 @@ public ResponseEntity<String> test(
 //  }
   @PostMapping("/register/company")
   public ResponseEntity<Object> companyRegister(
-          @RequestBody CompanyRegisterDto request
+          @RequestBody CompanyRegisterCategory request
   ) {
     return ResponseEntity.ok(registerService.companyRegister(request));
   }
@@ -70,7 +71,7 @@ public ResponseEntity<String> test(
 //  }
   @PostMapping("/register/teacher")
   public ResponseEntity<Object> teacherRegister(
-          @RequestBody TeacherRegisterDto request
+          @RequestBody TeacherRegisterCategory request
   ) {
     return ResponseEntity.ok(registerService.teacherRegister(request));
   }

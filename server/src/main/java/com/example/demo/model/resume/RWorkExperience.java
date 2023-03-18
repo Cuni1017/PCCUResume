@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -27,7 +29,10 @@ public class RWorkExperience {
     @Column(name = "company_name")
     public String companyName;
 
-
+    @Column(name = "start_timeend_time")
+    public LocalDate startTime;
+    @Column(name = "end_time")
+    public String endTime;
 
 
 

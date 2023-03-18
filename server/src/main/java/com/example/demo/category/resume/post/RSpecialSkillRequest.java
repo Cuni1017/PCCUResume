@@ -1,4 +1,4 @@
-package com.example.demo.dto.resume.post;
+package com.example.demo.category.resume.post;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RAutobiographyRequest {
-    public String chineseAutobiography;
+public class RSpecialSkillRequest {
+    public String name;
 
-    public String englishAutobiography;
+    public String talk;
+
+    public String special;
+
 }

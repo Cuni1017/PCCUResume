@@ -14,4 +14,8 @@ public interface RWorkHopeRepository extends JpaRepository<RWorkHope,String> {
     @Modifying
     @Transactional
     void deleteByUserIdAndResumeId(String userId, String resumeId);
+
+    @Modifying
+    @Transactional
+    void deleteByUserIdAndResumeIdAndId(String userId, String resumeId,String id);
 }

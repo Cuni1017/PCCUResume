@@ -1,13 +1,14 @@
 package com.example.demo.service.impl;
 
 
-import com.example.demo.dto.StudentRegisterRequest;
+import com.example.demo.category.CompanyRegisterCategory;
+import com.example.demo.category.StudentRegisterCategory;
+import com.example.demo.category.TeacherRegisterCategory;
 import com.example.demo.dao.*;
 import com.example.demo.config.error.MailException;
 import com.example.demo.config.error.UserNotFoundException;
 import com.example.demo.model.*;
-import com.example.demo.dto.*;
-import com.example.demo.reponse.RestResponse;
+import com.example.demo.dto.RestDto;
 import com.example.demo.reponse.register.CompanyResponse;
 import com.example.demo.reponse.register.StudentResponse;
 import com.example.demo.reponse.register.TeacherResponse;
@@ -53,7 +54,7 @@ public class RegisterServiceImpl implements RegisterService {
 //            throw new userNotFoundException("驗證失敗");
 //        }
 //    }
-    public Object studentRegister(StudentRegisterRequest request) {
+    public Object studentRegister(StudentRegisterCategory request) {
 
         if(!userRepository.findByUsername(request.getStudentUsername()).isEmpty()){
            throw  new UserNotFoundException("這帳號被註冊過了");
@@ -74,7 +75,7 @@ public class RegisterServiceImpl implements RegisterService {
                 .student(student)
                 .user(user)
                 .build();
-        RestResponse restResponse =RestResponse.builder()
+        RestDto restResponse = RestDto.builder()
                 .data(studentResponse)
                 .message("儲存成功")
                 .build();
@@ -82,7 +83,7 @@ public class RegisterServiceImpl implements RegisterService {
 
     }
 
-    public Object companyRegister(CompanyRegisterDto request) {
+    public Object companyRegister(CompanyRegisterCategory request) {
         if(!companyRepository.findByCompanyUsername(request.getCompanyUsername()).isEmpty()){
             throw  new UserNotFoundException("這帳號被註冊過了");
         }
@@ -104,7 +105,7 @@ public class RegisterServiceImpl implements RegisterService {
                 .company(company)
                 .user(user)
                 .build();
-        RestResponse restResponse =RestResponse.builder()
+        RestDto restResponse = RestDto.builder()
                 .data(companyResponse)
                 .message("儲存成功")
                 .build();
@@ -113,7 +114,7 @@ public class RegisterServiceImpl implements RegisterService {
 
     }
 
-    public Object teacherRegister(TeacherRegisterDto request) {
+    public Object teacherRegister(TeacherRegisterCategory request) {
         if(!teacherRepository.findByTeacherUsername(request.getTeacherUsername()).isEmpty()){
             throw  new UserNotFoundException("這帳號被註冊過了");
         }
@@ -133,7 +134,7 @@ public class RegisterServiceImpl implements RegisterService {
                 .teacher(teacher)
                 .user(user)
                 .build();
-        RestResponse restResponse =RestResponse.builder()
+        RestDto restResponse = RestDto.builder()
                 .data(teacherResponse)
                 .message("儲存成功")
                 .build();
@@ -151,7 +152,7 @@ public class RegisterServiceImpl implements RegisterService {
         }catch (MailException E){
             return "email 錯誤";
         }
-        RestResponse restResponse =RestResponse.builder()
+        RestDto restResponse = RestDto.builder()
                 .data(random)
                 .message("亂數創造")
                 .build();
@@ -177,7 +178,7 @@ public class RegisterServiceImpl implements RegisterService {
         String random = "R"+ (int)(Math.random()*1000000);
         return random;
     }
-    private Student studentBuilder(StudentRegisterRequest request){
+    private Student studentBuilder(StudentRegisterCategory request){
         String studentId = getId(userRepository,"Student");
         var student = Student.builder()
                 .studentId(studentId)
@@ -190,7 +191,7 @@ public class RegisterServiceImpl implements RegisterService {
                 .build();
         return student;
     }
-    private Company companyBuilder(CompanyRegisterDto request){
+    private Company companyBuilder(CompanyRegisterCategory request){
         String companyId = getId(companyRepository,"Company");
         var company = Company.builder()
                 .companyId(companyId)
@@ -206,7 +207,7 @@ public class RegisterServiceImpl implements RegisterService {
                 .build();
         return company;
     }
-    private Teacher teacherBuilder(TeacherRegisterDto request){
+    private Teacher teacherBuilder(TeacherRegisterCategory request){
         String teacherId = getId(teacherRepository,"Teacher");
         Teacher teacher = Teacher
                 .builder()

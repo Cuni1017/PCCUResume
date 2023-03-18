@@ -16,4 +16,7 @@ public interface RAutobiographyRepository extends JpaRepository<RAutobiography,S
     @Modifying
     @Transactional
     void deleteByUserIdAndResumeId(String UserId,String resumeId );
+    @Modifying
+    @Transactional
+    void deleteByUserIdAndResumeIdAndId(String UserId,String resumeId,String id );
 }

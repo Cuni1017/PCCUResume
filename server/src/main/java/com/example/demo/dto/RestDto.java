@@ -1,4 +1,4 @@
-package com.example.demo.dto.resume.post;
+package com.example.demo.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,8 +7,10 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class RlicenseRequest {
-    public String name;
+@AllArgsConstructor
+public class RestDto {
+    private String message;
+    private Object data;
+
 }

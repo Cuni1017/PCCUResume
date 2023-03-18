@@ -1,4 +1,5 @@
-package com.example.demo.dto.resume.post;
+package com.example.demo.category.resume.post;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,11 +10,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RSpecialSkillRequest {
-    public String name;
 
-    public String talk;
+public class RWorkHopeRequest {
 
-    public String special;
+    private String type;
 
+    private String date;
 }

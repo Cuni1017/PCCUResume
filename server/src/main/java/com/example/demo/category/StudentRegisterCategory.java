@@ -1,4 +1,4 @@
-package com.example.demo.dto;
+package com.example.demo.category;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class StudentRegisterRequest {
+public class StudentRegisterCategory {
 
   private String studentUsername;
   private String studentPassword;

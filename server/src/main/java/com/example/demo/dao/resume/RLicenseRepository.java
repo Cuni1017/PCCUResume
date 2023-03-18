@@ -15,4 +15,7 @@ public interface RLicenseRepository extends JpaRepository<RLicense,String> {
     @Modifying
     @Transactional
     void deleteByUserIdAndResumeId(String userId, String resumeId);
+    @Modifying
+    @Transactional
+    void deleteByUserIdAndResumeIdAndId(String userId, String resumeId,String id);
 }

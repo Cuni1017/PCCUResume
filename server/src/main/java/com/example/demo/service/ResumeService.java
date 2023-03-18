@@ -1,10 +1,11 @@
 package com.example.demo.service;
 
+import com.example.demo.category.post.*;
+import com.example.demo.category.resume.post.*;
 import com.example.demo.dto.resume.post.*;
-import com.example.demo.model.resume.Resume;
 
 public interface ResumeService {
-    Object createBasicResume(ResumeRequest Request,String studentId);
+    Object createBasicResume(ResumeRequest Request, String studentId);
     Object createSpecialSkill(RSpecialSkillRequest Request, String studentId,String resumeId) ;
     Object createLicense(RlicenseRequest Request, String studentId, String resumeId) ;
 
@@ -45,4 +46,10 @@ public interface ResumeService {
 
 
     Object findUserById(String studentId);
+
+    Object createSubject(RSubjectRequest request, String studentId, String resumeId);
+
+    Object editSubject(RSubjectRequest request, String studentId, String resumeId, String subjectId);
+
+    Object deleteSubject(String studentId, String resumeId, String subjectId);
 }

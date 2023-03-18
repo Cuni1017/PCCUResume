@@ -28,7 +28,7 @@ public class RProjectAchievements {
     @Column(name = "start_time")
     public LocalDate startTime;
     @Column(name = "end_time")
-    public LocalDate endTime;
+    public String endTime;
     @Column(name = "talk")
     public String talk;
     @Column(name = "url")

@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.config.error.FileException;
-import com.example.demo.reponse.RestResponse;
+import com.example.demo.dto.RestDto;
 import com.example.demo.reponse.file.FilePath;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 @Service
@@ -51,7 +50,7 @@ public class PictureUploadService {
                 .fillPath(filePath.toString())
                 .fillName(newFileName)
                 .build();
-        RestResponse restResponse =RestResponse.builder()
+        RestDto restResponse = RestDto.builder()
                 .data(filePathBuild)
                 .message("上傳圖片成功")
                 .build();

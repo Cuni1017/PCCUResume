@@ -1,6 +1,4 @@
-package com.example.demo.dto.resume.post;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
+package com.example.demo.category;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,9 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-
-public class ResumeRequest {
-
-    private String name;
-
+public class checkEmailCategory {
+    private String validMsg;
+    private String inputMsg;
 }

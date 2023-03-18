@@ -1,5 +1,4 @@
-package com.example.demo.dto.resume.post;
-
+package com.example.demo.category.resume.post;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,10 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-
-public class RWorkHopeRequest {
-
-    private String type;
-
-    private String date;
+public class RlicenseRequest {
+    public String name;
 }

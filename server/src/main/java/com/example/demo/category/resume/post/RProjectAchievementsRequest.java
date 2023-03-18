@@ -1,4 +1,4 @@
-package com.example.demo.dto.resume.post;
+package com.example.demo.category.resume.post;
 
 import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
@@ -18,7 +18,7 @@ public class RProjectAchievementsRequest {
 
     public LocalDate startTime;
 
-    public LocalDate endTime;
+    public String endTime;
 
     public String talk;
 

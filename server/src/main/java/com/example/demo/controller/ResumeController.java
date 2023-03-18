@@ -1,11 +1,11 @@
 package com.example.demo.controller;
 
 
+import com.example.demo.category.post.*;
+import com.example.demo.category.resume.post.*;
 import com.example.demo.dto.resume.post.*;
-import com.example.demo.model.resume.RLicense;
 import com.example.demo.service.ResumeService;
 
-import jdk.jshell.Snippet;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -213,6 +213,32 @@ public class ResumeController {
             @PathVariable String workExperienceId
     ) {
         return ResponseEntity.ok(resumeService.deleteWorkExperience(studentId,resumeId,workExperienceId));
+    }
+    @PostMapping("/students/{studentId}/resumes/{resumeId}/subject")
+    public ResponseEntity<Object> writeSubject(
+            @RequestBody RSubjectRequest request,
+            @PathVariable String studentId,
+            @PathVariable String resumeId
+    ) {
+        return ResponseEntity.ok(resumeService.createSubject(request,studentId,resumeId));
+    }
+    @PutMapping("/students/{studentId}/resumes/{resumeId}/subject/{subjectId}")
+    public ResponseEntity<Object> editSubject(
+            @RequestBody RSubjectRequest request,
+            @PathVariable String studentId,
+            @PathVariable String resumeId,
+            @PathVariable String subjectId
+    ) {
+        return ResponseEntity.ok(resumeService.editSubject(request,studentId,resumeId,subjectId));
+    }
+    @DeleteMapping("/students/{studentId}/resumes/{resumeId}/subject/{subjectId}")
+    public ResponseEntity<Object> deleteSubject(
+
+            @PathVariable String studentId,
+            @PathVariable String resumeId,
+            @PathVariable String subjectId
+    ) {
+        return ResponseEntity.ok(resumeService. deleteSubject(studentId,resumeId,subjectId));
     }
 
 

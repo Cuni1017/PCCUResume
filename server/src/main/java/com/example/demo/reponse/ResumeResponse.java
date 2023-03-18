@@ -23,4 +23,5 @@ public class ResumeResponse {
     private List<RProjectAchievements> rProjectAchievements;
     private RAutobiography rAutobiography;
     private List<RLicense> rLicense;
+    private List<RSubject> rSubject;
 }
