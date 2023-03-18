@@ -13,14 +13,10 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+
 public class ResumeController {
     private final ResumeService resumeService;
-    @GetMapping("/students/{studentId}")
-    public ResponseEntity<Object> findUserById(
-            @PathVariable String studentId
-    ) {
-            return ResponseEntity.ok(resumeService.findUserById(studentId));
-    }
+
     @GetMapping("/students/{studentId}/resumes/{resumeId}")
     public ResponseEntity<Object> findAllResumeById(
             @PathVariable String studentId,
@@ -58,6 +54,7 @@ public class ResumeController {
 
         return ResponseEntity.ok(resumeService.createBasicResume(request,studentId));
     }
+
     @PostMapping("/students/{studentId}/resumes/{resumeId}/work-hope")
     public ResponseEntity<Object> createWorkHope(
             @RequestBody RWorkHopeRequest request,

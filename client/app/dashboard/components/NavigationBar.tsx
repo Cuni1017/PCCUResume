@@ -24,9 +24,9 @@ const NavigationBar = () => {
   ];
 
   const jobLinks: MyLink[] = [
-    { linkLabel: "已應徵職缺", href: `${url}#` },
-    { linkLabel: "儲存的職缺", href: `${url}#` },
-    { linkLabel: "追蹤的企業", href: `${url}#` },
+    { linkLabel: "已應徵職缺", href: `${url}/applications-jobs` },
+    { linkLabel: "儲存的職缺", href: `${url}/favorite-jobs` },
+    { linkLabel: "追蹤的企業", href: `${url}/following-companies` },
   ];
 
   return (
@@ -90,7 +90,7 @@ const NavigationBarItemLinks = ({ link }: { link: MyLink }) => {
       className={`${hovered ? "bg-gray-100" : ""}
       ${
         pathname === link.href
-          ? "border-solid border-0 border-l border-red-500"
+          ? "border-solid border-0 border-l border-blue-400"
           : ""
       }
       `}

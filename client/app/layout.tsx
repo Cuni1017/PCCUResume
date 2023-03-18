@@ -1,5 +1,5 @@
 import "./globals.css";
-import LayoutWrapper from "./LayoutWrapper";
+import Providers from "./Providers";
 import Navbar from "./components/Navbar";
 
 // https://github.com/facebook/react/issues/25994
@@ -64,14 +64,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <LayoutWrapper>
+        <Providers>
           <div className="bg-gray-100 min-h-screen w-screen min-w-[320px] font-sans">
             <Navbar />
             <main className="max-w-screen-md lg:max-w-screen-lg m-auto">
               {children}
             </main>
           </div>
-        </LayoutWrapper>
+        </Providers>
         <script dangerouslySetInnerHTML={{ __html }} />
       </body>
     </html>

@@ -13,6 +13,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
+<<<<<<< HEAD
+=======
+import org.springframework.web.cors.CorsUtils;
+>>>>>>> 9aab6050f903c28d5cf29ef83443932a8ed14b00
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -45,6 +49,11 @@ public class SecurityConfiguration {
                     //"/students/**"
             )
             .permitAll()
+<<<<<<< HEAD
+=======
+            .requestMatchers(CorsUtils::isPreFlightRequest)
+            .permitAll()
+>>>>>>> 9aab6050f903c28d5cf29ef83443932a8ed14b00
             .anyRequest()
             .authenticated()
             .and()
@@ -60,6 +69,12 @@ public class SecurityConfiguration {
             .logoutUrl("/logout")
             .addLogoutHandler(logoutHandler)
             .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext());
+<<<<<<< HEAD
+=======
+//            .and()
+//        .cors()
+//            .configurationSource(corsConfigurationSource());
+>>>>>>> 9aab6050f903c28d5cf29ef83443932a8ed14b00
 
 
     return http.build();
@@ -77,8 +92,14 @@ public class SecurityConfiguration {
 //                .allowCredentials(true)
                 .allowedHeaders("*");
       }
+<<<<<<< HEAD
     };
 
+=======
+
+      ;
+    };
+>>>>>>> 9aab6050f903c28d5cf29ef83443932a8ed14b00
 //  @Bean
 //  CorsConfigurationSource corsConfigurationSource() {
 //    CorsConfiguration configuration = new CorsConfiguration();
@@ -93,5 +114,12 @@ public class SecurityConfiguration {
 //    source.registerCorsConfiguration("/**", configuration);
 //    return source;
 //  }
+<<<<<<< HEAD
   }
 }
+=======
+
+  }
+}
+
+>>>>>>> 9aab6050f903c28d5cf29ef83443932a8ed14b00

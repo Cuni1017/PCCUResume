@@ -157,8 +157,7 @@ export default async function handler(
     } catch (error: any) {
       return res.status(401).json({ errorMessage: error });
     }
-
-    return res.status(200).json({ message: "OK" });
   }
-  return res.status(404).json("Unknown endpoint");
+
+  return res.status(405).json({ errorMessage: "Method not allow" });
 }

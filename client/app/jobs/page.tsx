@@ -1,7 +1,5 @@
-import React from "react";
-
-const JobsSearchIndexPage = () => {
-  return <div>搜尋職缺頁面</div>;
+const JobsSearchHomePage = () => {
+  return;
 };
 
-export default JobsSearchIndexPage;
+export default JobsSearchHomePage;

@@ -37,6 +37,7 @@ public class ResumeServiceImpl implements ResumeService {
     private final RProjectAchievementsRepository rProjectAchievementsRepository;
     private final RAutobiographyRepository rAutobiographyRepository;
     private final RWorkExperienceRepository rWorkExperienceRepository;
+<<<<<<< HEAD
     private final RSubjectRepository rSubjectRepository;
     @Override
     public Object findUserById(String studentId) {
@@ -53,6 +54,9 @@ public class ResumeServiceImpl implements ResumeService {
                 .build();
         return  restResponse;
     }
+=======
+
+>>>>>>> 9aab6050f903c28d5cf29ef83443932a8ed14b00
 
 
 

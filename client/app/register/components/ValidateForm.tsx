@@ -58,7 +58,6 @@ const ValidateForm = ({
         email: formData.email,
         CAPTCHA,
       });
-      console.log(response);
       if (response.status === 200) {
         handleNext();
         handleComplete();

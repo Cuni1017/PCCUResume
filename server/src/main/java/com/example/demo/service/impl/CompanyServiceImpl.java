@@ -2,6 +2,8 @@ package com.example.demo.service.impl;
 
 import com.example.demo.category.VacanciesCategory;
 import com.example.demo.dao.CompanyRepository;
+import com.example.demo.dao.CountyRepository;
+import com.example.demo.dao.SkillRepository;
 import com.example.demo.dao.vacancies.VacanciesCountyRepository;
 import com.example.demo.dao.vacancies.VacanciesRepository;
 import com.example.demo.dao.vacancies.VacanciesSkillRepository;
@@ -30,6 +32,8 @@ public class CompanyServiceImpl implements CompanyService {
     private final VacanciesRepository vacanciesRepository;
     private final VacanciesCountyRepository vacanciesCountyRepository;
     private final VacanciesSkillRepository vacanciesSkillRepository;
+    private final CountyRepository countyRepository;
+    private final SkillRepository skillRepository;
     public static final String NOT_CHECK = "尚未審核";
     @Override
     public Object createVacancies(String companyId,VacanciesCategory vacanciesCategory) {
@@ -89,7 +93,8 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public Object getVacanciesSkillAndCounty(String companyId) {
-        List<County> counties = .findAll();
+        List<County> counties = countyRepository.findAll();
+        List<Skill> skills = skillRepository.findAll();
     }
 
     private String getId(JpaRepository repository , String idType , int x){

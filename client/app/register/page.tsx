@@ -34,12 +34,10 @@ const RegisterPage = () => {
     companyDistrict: "中正區",
     companyAddress: "",
   });
-  const [activeStep, setActiveStep] = useState(2);
+  const [activeStep, setActiveStep] = useState(0);
   const [completed, setCompleted] = useState<{
     [k: number]: boolean;
   }>({});
-
-  console.log(formData);
 
   const handleSubmit = () => {
     if (!identity) return;

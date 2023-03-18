@@ -20,13 +20,20 @@ export default async function handler(
     });
   }
 
-  // 驗證JWT
+  try {
+    const {
+      data: {
+        data: { resume, student },
+      },
+    } = await axiosInstance.get(`/students/${payload.id}`, {
+      headers: {
+        Authorization: bearerToken,
+      },
+    });
 
-  // try {
-  //   const response = axiosInstance.get(`/user/${}`);
-  // } catch (error) {
-  //   console.log(error);
-  // }
+  } catch (error) {
+    console.log(error, "me");
+  }
 
   return res.status(200).json({ ...payload });
 }

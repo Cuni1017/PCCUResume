@@ -4,8 +4,6 @@ const IdentityPicker = (props: any) => {
   const { setIdentity, handleNext, handleComplete } = props;
 
   const handleClick = (id: string) => {
-    // console.log(window.history);
-    // window.history.pushState({ id }, "", `#${id}`);
     setIdentity(id);
     handleNext();
     handleComplete();

@@ -7,7 +7,6 @@ export default async function handler(
 ) {
   const bearerToken = req.headers["authorization"] as string;
   const userId = req.query.userId;
-  console.log(userId);
 
   if (req.method === "GET") {
     if (!userId) {

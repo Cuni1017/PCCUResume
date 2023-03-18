@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import validator from "validator";
 import { axiosInstance } from "@/axiosInstance.ts";
 
-let ANSWER: string | null = "ASDFGH"; //後端返回的驗證碼
+let ANSWER: string | null; //後端返回的驗證碼
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -22,7 +22,7 @@ export default async function handler(
         const response = await axiosInstance.get(
           `/register/sendemail/${email}`
         );
-        ANSWER = response.data;
+        ANSWER = response.data.data;
         console.log(ANSWER);
       } catch (error) {
         console.log(error, "emailValidate");
