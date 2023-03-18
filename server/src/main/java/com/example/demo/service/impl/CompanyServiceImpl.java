@@ -95,6 +95,7 @@ public class CompanyServiceImpl implements CompanyService {
     public Object getVacanciesSkillAndCounty(String companyId) {
         List<County> counties = countyRepository.findAll();
         List<Skill> skills = skillRepository.findAll();
+        return null;
     }
 
     private String getId(JpaRepository repository , String idType , int x){

@@ -11,12 +11,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-<<<<<<< HEAD:server/src/main/java/com/example/demo/category/CompanyRegisterCategory.java
+
 public class CompanyRegisterCategory {
-=======
-public class CompanyRegisterDto {
+
     @NotBlank(message = "公司名稱沒填")
->>>>>>> 9aab6050f903c28d5cf29ef83443932a8ed14b00:server/src/main/java/com/example/demo/dto/CompanyRegisterDto.java
+
     private String companyName;
     @NotBlank(message = "公司型態沒填")
     private String companyTitle;
