@@ -15,7 +15,6 @@ public class VacanciesController {
     private final VacanciesService VacanciesService;
     @GetMapping("/vacancies")
     public ResponseEntity<Object> findAllVacancies(
-           @RequestParam String search,
            @RequestParam(required = false) List<String> technology,
            @RequestParam(required = false) List<String> county ,
            @RequestParam(defaultValue = "month",required = false) String salaryType,
