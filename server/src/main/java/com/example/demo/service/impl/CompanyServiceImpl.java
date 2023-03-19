@@ -35,7 +35,7 @@ public class CompanyServiceImpl implements CompanyService {
     private final VacanciesSkillRepository vacanciesSkillRepository;
     private final CountyRepository countyRepository;
     private final SkillRepository skillRepository;
-    public static final String NOT_CHECK = "尚未審核";
+    public static final String NOT_CHECK = "審核中";
     @Override
     public Object createVacancies(String companyId,VacanciesCategory vacanciesCategory) {
         String vacanciesId = getId(vacanciesCountyRepository,"V",1);
@@ -59,11 +59,11 @@ public class CompanyServiceImpl implements CompanyService {
                 .vacanciesDownSalary(vacanciesCategory.getVacanciesDownSalary())
                 .vacanciesDescription(vacanciesCategory.getVacanciesDescription())
                 .vacanciesRequirement(vacanciesCategory.getVacanciesRequirement())
-                .applyCount(vacanciesCategory.getApplyCount())
+                .applyCount(0)
                 .vacanciesQuantity(vacanciesCategory.getVacanciesQuantity())
-                .vacanciesView(vacanciesCategory.getVacanciesView())
+                .vacanciesView(0)
                 .teacherValidType(NOT_CHECK)
-                .vacanciesCondition(vacanciesCategory.getVacancies_condition())
+                .vacanciesCondition(vacanciesCategory.getVacanciesCondition())
                 .build();
         for(int i = 0;i < (vacanciesCategory.getCounty().size());i++){
             VacanciesCounty vacanciesCounty =VacanciesCounty.builder()
