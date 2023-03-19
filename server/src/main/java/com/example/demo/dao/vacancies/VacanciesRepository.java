@@ -25,7 +25,7 @@ public interface VacanciesRepository extends JpaRepository<Vacancies,String>,Pag
     @Query(value ="select * FROM vacancies where vacancies_skill in :technology ",nativeQuery = true)
     Object find(@Param("technology") List<String> technology);
 @Query(value = "SELECT c.company_id, c.company_name, c.company_image_url,\n"+
-        "v.vacancies_id, v.teacher_id, v.vacancies_name, v.vacancies_time, v.vacancies_content,\n"+
+        "v.vacancies_id, v.teacher_id, v.vacancies_name, v.vacancies_time, v.vacancies_description,v.vacancies_requirement,\n"+
         "v.vacancies_work_experience, v.vacancies_Education, v.vacancies_department,\n"+
         "v.vacancies_quantity, v.vacancies_create_time,v.vacancies_end_time, v.apply_count,\n"+
         "group_concat(DISTINCT s.skill_name) skills, group_concat(DISTINCT ct.county_name) countys,\n"+
@@ -37,7 +37,7 @@ public interface VacanciesRepository extends JpaRepository<Vacancies,String>,Pag
         "INNER JOIN vacancies_county vc  ON vc.vacancies_id = v.vacancies_id \n"+
         "INNER JOIN county ct  ON ct.county_id = vc.county_id \n"+
         "WHERE s.skill_name IN :technology AND ct.county_name IN :county \n"+
-        "AND vacancies_down_salary > :salaryMin AND  vacancies_down_salary < :salaryMax \n"+
+        "AND vacancies_down_salary >= :salaryMin AND  vacancies_down_salary <= :salaryMax \n"+
         "AND vacancies_salary_type = :salaryType AND teacher_valid_type = '審查通過' AND v.vacancies_quantity > 0 \n"+
         "group by v.vacancies_id ", nativeQuery = true)
 Page<Object> findPageVacancies(@Param("county") List<String> county,
