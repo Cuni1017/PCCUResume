@@ -5,9 +5,12 @@
     import com.example.demo.category.VacanciesCategory;
     import com.example.demo.dao.CountyRepository;
     import com.example.demo.dao.SkillRepository;
+    import com.example.demo.dao.vacancies.VacanciesDao;
     import com.example.demo.dao.vacancies.VacanciesRepository;
+    import com.example.demo.dto.vacancies.CompanyVacanciesDto;
     import com.example.demo.dto.vacancies.FindVacanciesDto;
     import com.example.demo.dto.RestDto;
+    import com.example.demo.dto.vacancies.PageVacanciesDto;
     import com.example.demo.service.VacanciesService;
     import lombok.RequiredArgsConstructor;
     import org.springframework.data.domain.Page;
@@ -26,40 +29,34 @@
         private final VacanciesRepository vacanciesRepository;
         private final SkillRepository skillRepository;
         private final CountyRepository countyRepository;
+        private final VacanciesDao vacanciesDao;
 
         @Override
-        public Object findAll(List<String> technology, String order, List<String> county, String salaryType, Long salaryMax, int salaryMin, int page, int limit) {
-            List<String> skills = findSkillName();
-            List<String> counties = findCountyName();
-            if(technology == null){
-                technology = skills;
-            }
-            if(county == null){
-                county = counties;
-            }
-//            if(search ==null){
-//                search = "";
-//            }else{
-//                String searchBefore = "AND ( ";
-//                String searchAfter = " ) ";
-//                search = " `company_name` = " + search + " AND `vacancies_name` = " + search ;
-//                search = searchBefore + search + searchAfter;
-//                System.out.println(search);
-//            }
-            System.out.println("county:"+county);
-            System.out.println("technology:"+technology);
-            Pageable pageable = PageRequest.of(page -1 , limit, Sort.by("vacancies_id"));
-            Page<Object> pageVacancies=vacanciesRepository.findPageVacancies(county,technology,salaryMin,salaryMax,salaryType,pageable);
-            FindVacanciesDto findVacanciesDto =FindVacanciesDto.builder()
-                    .technology(skills)
-                    .county(counties)
-                    .PageVacancies(pageVacancies)
+        public Object findPageVacancies( List<String> county,List<String> technology, String salaryType, Long salaryMax, int salaryMin, String order, int page, int limit) {
+            int selectOffset = getSelectOffset(page,limit);
+            int selectLimit = getSelectLimit(page,limit);
+            List<CompanyVacanciesDto> companyVacanciesDto =vacanciesDao.findPageVacancies( county, technology, salaryType, salaryMax,salaryMin,order, selectLimit, selectOffset);
+            Integer count = vacanciesDao.findPageVacanciesCount(county, technology, salaryType, salaryMax,salaryMin,order, selectLimit, selectOffset);
+            PageVacanciesDto pageVacanciesDto = PageVacanciesDto.builder()
+                    .companyVacanciesDto(companyVacanciesDto)
+                    .page(page)
+                    .size(limit)
+                    .total(count)
                     .build();
-            RestDto restResponse = RestDto.builder()
-                    .data(findVacanciesDto)
+            RestDto restDto = RestDto.builder()
+                    .data(pageVacanciesDto)
                     .message("查詢成功")
                     .build();
-            return restResponse;
+//            FindVacanciesDto findVacanciesDto =FindVacanciesDto.builder()
+//                    .technology(skills)
+//                    .county(counties)
+//                    .PageVacancies(pageVacancies)
+//                    .build();
+//            RestDto restResponse = RestDto.builder()
+//                    .data(findVacanciesDto)
+//                    .message("查詢成功")
+//                    .build();
+            return restDto;
         }
 
         @Override
@@ -80,6 +77,12 @@
         private List<String> findCountyName(){
             return  countyRepository.findCountyName();
 
+        }
+        private int getSelectOffset(int page,int limit){
+            return (page-1)*limit;
+        }
+        private int getSelectLimit(int page,int limit){
+            return page*limit;
         }
 
     //        if(county != null){

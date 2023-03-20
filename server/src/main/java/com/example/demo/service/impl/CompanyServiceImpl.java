@@ -4,11 +4,15 @@ import com.example.demo.category.VacanciesCategory;
 import com.example.demo.dao.CompanyRepository;
 import com.example.demo.dao.CountyRepository;
 import com.example.demo.dao.SkillRepository;
+import com.example.demo.dao.company.CompanyDao;
 import com.example.demo.dao.vacancies.VacanciesCountyRepository;
+import com.example.demo.dao.vacancies.VacanciesDao;
 import com.example.demo.dao.vacancies.VacanciesRepository;
 import com.example.demo.dao.vacancies.VacanciesSkillRepository;
+import com.example.demo.dto.EntityUtils;
 import com.example.demo.dto.RestDto;
 import com.example.demo.dto.vacancies.CompanyVacanciesDto;
+import com.example.demo.dto.vacancies.PageVacanciesDto;
 import com.example.demo.dto.vacancies.VacanciesDto;
 import com.example.demo.model.County;
 import com.example.demo.model.Skill;
@@ -16,6 +20,7 @@ import com.example.demo.model.vacancies.Vacancies;
 import com.example.demo.model.vacancies.VacanciesCounty;
 import com.example.demo.model.vacancies.VacanciesSkill;
 import com.example.demo.service.CompanyService;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
@@ -35,6 +40,7 @@ public class CompanyServiceImpl implements CompanyService {
     private final VacanciesSkillRepository vacanciesSkillRepository;
     private final CountyRepository countyRepository;
     private final SkillRepository skillRepository;
+    private final CompanyDao companyDao;
     public static final String NOT_CHECK = "審核中";
     @Override
     public Object createVacancies(String companyId,VacanciesCategory vacanciesCategory) {
@@ -93,13 +99,48 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public Object getVacancies(String companyId) {
-        List<Object> companyVacanciesDtos =vacanciesRepository.findVacancies(companyId);
+    public Object getVacancies(String companyId,int page,int limit) {
+        int selectOffset = getSelectOffset(page,limit);
+        int selectLimit = getSelectLimit(page,limit);
+        List<CompanyVacanciesDto> companyVacanciesDtos = companyDao.getCompanyVacancies(companyId,selectLimit,selectOffset);
+        Integer total = companyDao.getCompanyVacanciesCount(companyId);
+        System.out.println(companyVacanciesDtos);
+        PageVacanciesDto pageVacanciesDto =PageVacanciesDto.builder()
+                .companyVacanciesDto(companyVacanciesDtos)
+                .page(page)
+                .size(limit)
+                .total(total)
+                .build();
         RestDto restDto = RestDto.builder()
-                .data(companyVacanciesDtos)
                 .message("查詢成功")
+                .data(pageVacanciesDto)
                 .build();
         return restDto;
+        //        PageVacanciesDto pageVacanciesDto = PageVacanciesDto.builder()
+//                .companyId( )
+//                .companyName()
+//                .companyImage_Url()
+//                .vacanciesId()W
+//                .teacherId()
+//                .vacanciesName()
+//                .vacanciesTime()
+//                .vacanciesDescription()
+//                .vacanciesRequirement()
+//                .vacanciesWorkExperience()
+//                .vacanciesEducation()
+//                .vacanciesDepartment()
+//                .vacanciesQuantity()
+//                .vacanciesCreateTime()
+//                .vacanciesEndTime()
+//                .applyCount()
+//                .vacanciesView()
+//                .vacanciesDownSalary()
+//                .vacanciesTopSalary()
+//                .vacanciesSalaryType()
+//                .skills()
+//                .counties()
+//                .build();
+//    return pageVacanciesDto;
     }
 
 
@@ -114,5 +155,11 @@ public class CompanyServiceImpl implements CompanyService {
         idType = idType.substring(0,x);
         String studentId = idType + intToday;
         return studentId;
+    }
+    private int getSelectOffset(int page,int limit){
+        return (page-1)*limit;
+    }
+    private int getSelectLimit(int page,int limit){
+        return page*limit;
     }
 }
