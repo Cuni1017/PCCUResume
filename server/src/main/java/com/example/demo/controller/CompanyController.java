@@ -12,9 +12,11 @@ public class CompanyController {
     private final CompanyService companyService;
     @GetMapping("/company/{companyId}/vacancies")
     public ResponseEntity<Object> getVacancies(
-            @PathVariable String companyId
+            @PathVariable String companyId,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int limit
     ) {
-        return ResponseEntity.ok(companyService.getVacancies(companyId));
+        return ResponseEntity.ok(companyService.getVacancies(companyId,page,limit));
     }
     @PostMapping("/company/{companyId}/vacancies")
     public ResponseEntity<Object> createVacancies(

@@ -7,7 +7,7 @@ import java.util.List;
 public interface VacanciesService {
 
 
-    Object findAll( List<String> technology, String order, List<String> county, String salaryType, Long salaryMax, int salaryMin, int page, int limit);
+    Object findPageVacancies( List<String> county,List<String> technology,  String salaryType, Long salaryMax, int salaryMin, String order, int page, int limit);
 
     Object findSkills();
 

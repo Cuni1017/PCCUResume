@@ -14,7 +14,7 @@ import java.util.List;
 public class VacanciesController {
     private final VacanciesService VacanciesService;
     @GetMapping("/vacancies")
-    public ResponseEntity<Object> findAllVacancies(
+    public ResponseEntity<Object> findVacancies(
            @RequestParam(required = false) List<String> technology,
            @RequestParam(required = false) List<String> county ,
            @RequestParam(defaultValue = "month",required = false) String salaryType,
@@ -24,7 +24,7 @@ public class VacanciesController {
            @RequestParam(defaultValue = "1" ,required = false  ) int page,
            @RequestParam(defaultValue = "10",required = false ) int limit
            ) {
-            return ResponseEntity.ok(VacanciesService.findAll(technology,order,county,salaryType,salaryMax,salaryMin,page,limit));
+            return ResponseEntity.ok(VacanciesService.findPageVacancies(county,technology,salaryType,salaryMax,salaryMin,order,page,limit));
     }
     @GetMapping("/vacancies/skills")
     public ResponseEntity<Object> findSkills(
