@@ -44,7 +44,7 @@ public class SecurityConfiguration {
                         "/register/**",
                         "/login",
                         "/swagger-ui/**",
-                        "/vacancies/*"
+                        "/vacancies"
                         //"/students/**"
                 )
                 .permitAll()
