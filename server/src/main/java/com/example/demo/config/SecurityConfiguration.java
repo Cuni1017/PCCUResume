@@ -41,11 +41,10 @@ public class SecurityConfiguration {
 //          .permitAll()
 
                 .requestMatchers(
-
                         "/register/**",
                         "/login",
                         "/swagger-ui/**",
-                        "/vacancies/"
+                        "/vacancies/*"
                         //"/students/**"
                 )
                 .permitAll()

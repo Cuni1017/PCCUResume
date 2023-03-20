@@ -8,5 +8,5 @@ public interface CompanyService {
     Object createVacancies(String companyId,VacanciesCategory vacanciesCategory);
 
 
-    Object getVacancies(String companyId,int page,int limit);
+    Object findVacanciesByCompanyName(String companyName,int page,int limit);
 }

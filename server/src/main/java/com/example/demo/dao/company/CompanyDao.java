@@ -16,7 +16,7 @@ public class CompanyDao {
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private static final String COUNT_BEFORE = "SELECT count(*) FROM (";
     private static final String COUNT_AFTER = ") as s";
-    public List<CompanyVacanciesDto> getCompanyVacancies(String companyId, int selectLimit, int selectOffset){
+    public List<CompanyVacanciesDto> getCompanyVacanciesByCompanyName(String companyName, int selectLimit, int selectOffset){
         String sql ="SELECT c.company_id, c.company_name, c.company_image_url,\n"+
                 "v.vacancies_id, v.teacher_id, v.vacancies_name, v.vacancies_time, v.vacancies_description,v.vacancies_requirement,\n"+
                 "v.vacancies_work_experience, v.vacancies_Education, v.vacancies_department,\n"+
@@ -28,17 +28,17 @@ public class CompanyDao {
                 "INNER JOIN skill s  ON s.skill_id = vs.skill_id \n"+
                 "INNER JOIN vacancies_county vc  ON vc.vacancies_id = v.vacancies_id \n"+
                 "INNER JOIN county ct  ON ct.county_id = vc.county_id \n"+
-                "WHERE c.company_id = :companyId \n"+
+                "WHERE c.company_name = :companyName \n"+
                 "group by v.vacancies_id LIMIT :limit OFFSET :offset";
 
         Map<String,Object> map= new HashMap<>();
-        map.put("companyId",companyId);
+        map.put("companyName",companyName);
         map.put("limit",selectLimit);
         map.put("offset",selectOffset);
 
         return namedParameterJdbcTemplate.query(sql,map,new CompanyVacanciesRowMapper());
     }
-    public Integer getCompanyVacanciesCount(String companyId){
+    public Integer getCompanyVacanciesCount(String companyName){
         String sql =
                 "SELECT count(DISTINCT v.vacancies_id) \n"+
                         "FROM vacancies v INNER JOIN company c ON c.company_id = v.company_id \n"+
@@ -46,10 +46,10 @@ public class CompanyDao {
                         "INNER JOIN skill s  ON s.skill_id = vs.skill_id \n"+
                         "INNER JOIN vacancies_county vc  ON vc.vacancies_id = v.vacancies_id \n"+
                         "INNER JOIN county ct  ON ct.county_id = vc.county_id \n"+
-                        "WHERE c.company_id = :companyId \n"+
+                        "WHERE c.company_name = :companyName \n"+
                         "group by v.vacancies_id ";
         Map<String,Object> map= new HashMap<>();
-        map.put("companyId",companyId);
+        map.put("companyName",companyName);
         sql = COUNT_BEFORE + sql +COUNT_AFTER;
         Integer CompanyVacanciesCount =  namedParameterJdbcTemplate.queryForObject(sql,map,Integer.class);
         return CompanyVacanciesCount;

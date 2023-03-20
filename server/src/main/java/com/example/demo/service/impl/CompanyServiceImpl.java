@@ -99,11 +99,11 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public Object getVacancies(String companyId,int page,int limit) {
+    public Object findVacanciesByCompanyName(String companyName,int page,int limit) {
         int selectOffset = getSelectOffset(page,limit);
         int selectLimit = getSelectLimit(page,limit);
-        List<CompanyVacanciesDto> companyVacanciesDtos = companyDao.getCompanyVacancies(companyId,selectLimit,selectOffset);
-        Integer total = companyDao.getCompanyVacanciesCount(companyId);
+        List<CompanyVacanciesDto> companyVacanciesDtos = companyDao.getCompanyVacanciesByCompanyName(companyName,selectLimit,selectOffset);
+        Integer total = companyDao.getCompanyVacanciesCount(companyName);
         System.out.println(companyVacanciesDtos);
         PageVacanciesDto pageVacanciesDto =PageVacanciesDto.builder()
                 .companyVacanciesDto(companyVacanciesDtos)
