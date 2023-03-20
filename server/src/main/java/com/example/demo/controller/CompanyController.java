@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class CompanyController {
     private final CompanyService companyService;
-    @GetMapping("/company/{companyId}/vacancies")
+    @GetMapping("/company/{companyName}/vacancies")
     public ResponseEntity<Object> getVacancies(
-            @PathVariable String companyId,
+            @PathVariable String companyName,
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int limit
     ) {
-        return ResponseEntity.ok(companyService.getVacancies(companyId,page,limit));
+        return ResponseEntity.ok(companyService.findVacanciesByCompanyName(companyName,page,limit));
     }
     @PostMapping("/company/{companyId}/vacancies")
     public ResponseEntity<Object> createVacancies(
