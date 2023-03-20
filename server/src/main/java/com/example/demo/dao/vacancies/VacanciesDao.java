@@ -31,10 +31,10 @@ public class VacanciesDao {
                 "INNER JOIN county ct  ON ct.county_id = vc.county_id \n"+
                 "WHERE 1=1 ";
                 if(county != null){
-                    sql = sql + " AND ct.county_name IN :county";
+                    sql = sql + " AND ct.county_name IN (:county)";
                 }
                 if(technology != null){
-                    sql = sql + " AND s.skill_name IN :county";
+                    sql = sql + " AND s.skill_name IN (:technology)";
                 }
                 sql = sql + " AND v.vacancies_down_salary >= :salaryMin";
                 sql = sql + " AND v.vacancies_top_salary <= :salaryMax";
@@ -72,10 +72,10 @@ public class VacanciesDao {
                 "INNER JOIN county ct  ON ct.county_id = vc.county_id \n"+
                 "WHERE 1=1 ";
         if(county != null){
-            sql = sql + " AND ct.county_name IN :county";
+            sql = sql + " AND ct.county_name IN (:county)";
         }
         if(technology != null){
-            sql = sql + " AND s.skill_name IN :county";
+            sql = sql + " AND s.skill_name IN (:technology)";
         }
         sql = sql + " AND v.vacancies_down_salary >= :salaryMin";
         sql = sql + " AND v.vacancies_top_salary <= :salaryMax";
@@ -85,7 +85,7 @@ public class VacanciesDao {
         sql = sql + " AND v.vacancies_watch_type = '公開'";
         sql = sql + " group by v.vacancies_id";
         sql = sql + " order by :order";
-        sql = sql + " LIMIT :limit OFFSET :offset";
+//        sql = sql + " LIMIT :limit OFFSET :offset";
 
         Map<String,Object> map= new HashMap<>();
         map.put("county",county);
@@ -93,9 +93,10 @@ public class VacanciesDao {
         map.put("salaryMin",salaryMin);
         map.put("salaryMax",salaryMax);
         map.put("salaryType",salaryType);
-        map.put("limit",selectLimit);
         map.put("order",order);
-        map.put("offset",selectOffset);
+//        map.put("limit",selectLimit);
+//
+//        map.put("offset",selectOffset);
         System.out.println(sql);
         sql = COUNT_BEFORE +sql + COUNT_AFTER;
         return namedParameterJdbcTemplate.queryForObject(sql,map,Integer.class);

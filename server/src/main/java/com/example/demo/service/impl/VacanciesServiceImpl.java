@@ -43,6 +43,7 @@
                     .size(limit)
                     .total(count)
                     .build();
+            System.out.println(county);
             RestDto restDto = RestDto.builder()
                     .data(pageVacanciesDto)
                     .message("查詢成功")
