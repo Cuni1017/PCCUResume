@@ -1,7 +1,10 @@
 package com.example.demo.dao.vacancies;
 
 import com.example.demo.dto.vacancies.CompanyVacanciesDto;
+import com.example.demo.dto.vacancies.FullVacanciesDto;
+import com.example.demo.model.vacancies.Vacancies;
 import com.example.demo.rowmapper.CompanyVacanciesRowMapper;
+import com.example.demo.rowmapper.FullVacanciesRowMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -17,12 +20,28 @@ public class VacanciesDao {
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private static final String COUNT_BEFORE = "SELECT count(*) FROM (";
     private static final String COUNT_AFTER = ") as s";
+    public FullVacanciesDto findFullVacanciesById(String vacanciesId){
+        String sql ="SELECT c.*,v.*,\n"+
+                "group_concat(DISTINCT s.skill_name) skills, group_concat(DISTINCT ct.county_name) county\n"+
+                "FROM vacancies v INNER JOIN company c ON c.company_id = v.company_id \n"+
+                "INNER JOIN vacancies_skill vs ON vs.vacancies_id = v.vacancies_id \n"+
+                "INNER JOIN skill s  ON s.skill_id = vs.skill_id \n"+
+                "INNER JOIN vacancies_county vc  ON vc.vacancies_id = v.vacancies_id \n"+
+                "INNER JOIN county ct  ON ct.county_id = vc.county_id \n"+
+                "WHERE 1=1 AND  v.vacancies_id = :vacanciesId";
+
+        Map<String,Object> map= new HashMap<>();
+
+        map.put("vacanciesId",vacanciesId);
+        System.out.println(sql);
+        return namedParameterJdbcTemplate.queryForObject(sql,map,new FullVacanciesRowMapper());
+    }
     public List<CompanyVacanciesDto> findPageVacancies(List<String> county,List<String> technology, String salaryType, Long salaryMax, int salaryMin, String order,int selectLimit, int selectOffset){
         String sql ="SELECT c.company_id, c.company_name, c.company_image_url,\n"+
                 "v.vacancies_id, v.teacher_id, v.vacancies_name, v.vacancies_time, v.vacancies_description,v.vacancies_requirement,\n"+
                 "v.vacancies_work_experience, v.vacancies_Education, v.vacancies_department,\n"+
                 "v.vacancies_quantity, v.vacancies_create_time,v.vacancies_end_time, v.apply_count,\n"+
-                "group_concat(DISTINCT s.skill_name) skills, group_concat(DISTINCT ct.county_name) counties,\n"+
+                "group_concat(DISTINCT s.skill_name) skills, group_concat(DISTINCT ct.county_name) county,\n"+
                 "v.vacancies_view,v.vacancies_down_salary,v.vacancies_top_salary,v.vacancies_salary_type\n"+
                 "FROM vacancies v INNER JOIN company c ON c.company_id = v.company_id \n"+
                 "INNER JOIN vacancies_skill vs ON vs.vacancies_id = v.vacancies_id \n"+
@@ -67,7 +86,7 @@ public class VacanciesDao {
                 "v.vacancies_id, v.teacher_id, v.vacancies_name, v.vacancies_time, v.vacancies_description,v.vacancies_requirement,\n"+
                 "v.vacancies_work_experience, v.vacancies_Education, v.vacancies_department,\n"+
                 "v.vacancies_quantity, v.vacancies_create_time,v.vacancies_end_time, v.apply_count,\n"+
-                "group_concat(DISTINCT s.skill_name) skills, group_concat(DISTINCT ct.county_name) counties,\n"+
+                "group_concat(DISTINCT s.skill_name) skills, group_concat(DISTINCT ct.county_name) county,\n"+
                 "v.vacancies_view,v.vacancies_down_salary,v.vacancies_top_salary,v.vacancies_salary_type\n"+
                 "FROM vacancies v INNER JOIN company c ON c.company_id = v.company_id \n"+
                 "INNER JOIN vacancies_skill vs ON vs.vacancies_id = v.vacancies_id \n"+
@@ -104,6 +123,18 @@ public class VacanciesDao {
         System.out.println(sql);
         sql = COUNT_BEFORE +sql + COUNT_AFTER;
         return namedParameterJdbcTemplate.queryForObject(sql,map,Integer.class);
+    }
+    public Vacancies updateVacancies(Vacancies vacancies){
+        String sql = "UPDATE vacancies SET vacancies_name = :vacanciesName," +
+                " vacancies_time = :vacanciesName , vacancies_work_experience = :vacanciesWorkExperience," +
+                " vacancies_education = :vacanciesEducation,vacancies_department = :vacanciesDepartment," +
+                " vacancies_other = :vacanciesOther , vacancies_safe = :vacanciesSafe," +
+                " vacancies_district = :vacanciesDistrict, vacancies_address = :vacanciesAddress," +
+                " vacancies_salary_type = :vacanciesSalaryType, vacancies_top_Salary = :vacanciesTopSalary," +
+                " vacancies_down_Salary = :vacanciesDownSalary,vacancies_description = :vacanciesDescription," +
+                " vacancies_requirement = :vacanciesRequirement ,vacancies_quantity = :vacanciesQuantity," +
+                " teacher_valid_ype = '審核中,  vacancies_condition = :vacanciesCondition,vacancies_watch_type = :vacanciesWatchType";
+                return null;
     }
 
 }

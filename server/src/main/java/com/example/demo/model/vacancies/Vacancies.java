@@ -22,7 +22,7 @@ import java.util.Date;
 public class Vacancies {
     @Id
     @Column(name = "vacancies_id")
-    private String id;
+    private String vacanciesId;
     @Column(name = "company_id")
     private String companyId;
     @Column(name = "teacher_id")
@@ -46,7 +46,7 @@ public class Vacancies {
     @Column(name = "vacancies_create_time")
     private LocalDate vacanciesCreateTime;
     @Column(name = "vacancies_end_time")
-    private Date vacanciesEndTime;
+    private LocalDate vacanciesEndTime;
     @Column(name = "vacancies_district")
     private String vacanciesDistrict;
     @Column(name = "vacancies_address")

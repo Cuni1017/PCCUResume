@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -27,8 +28,8 @@ public class CompanyVacanciesDto {
     private String vacanciesEducation;
     private String vacanciesDepartment;
     private String vacanciesQuantity;
-    private Date vacanciesCreateTime;
-    private Date vacanciesEndTime;
+    private LocalDate vacanciesCreateTime;
+    private LocalDate vacanciesEndTime;
     private int applyCount;
 
     private int vacanciesView;
@@ -36,5 +37,5 @@ public class CompanyVacanciesDto {
     private Long vacanciesTopSalary;
     private String vacanciesSalaryType;
     private String skills;
-    private String counties;
+    private String county;
 }
