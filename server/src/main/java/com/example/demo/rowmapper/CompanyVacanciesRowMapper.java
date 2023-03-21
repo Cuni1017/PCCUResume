@@ -31,6 +31,8 @@ public class CompanyVacanciesRowMapper implements RowMapper<CompanyVacanciesDto>
         companyVacanciesDto .setVacanciesDownSalary(rs.getInt("vacancies_down_salary"));
         companyVacanciesDto .setVacanciesTopSalary(rs.getLong("vacancies_top_salary"));
         companyVacanciesDto .setVacanciesSalaryType(rs.getString("vacancies_salary_type"));
+        companyVacanciesDto.setTeacherValidType(rs.getString("teacher_valid_type"));
+        companyVacanciesDto.setVacanciesWatchType(rs.getString("vacancies_watch_type"));
         companyVacanciesDto .setSkills(rs.getString("skills"));
         companyVacanciesDto .setCounty(rs.getString("county"));
         return companyVacanciesDto ;
