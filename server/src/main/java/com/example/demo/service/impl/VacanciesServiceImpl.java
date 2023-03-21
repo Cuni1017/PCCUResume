@@ -57,7 +57,11 @@
         @Override
         public Object findFullVacanciesById(String vacanciesId) {
             FullVacanciesDto fullVacanciesDto = vacanciesDao.findFullVacanciesById(vacanciesId);
-            Optional<Vacancies> vacancies =vacanciesRepository.findById(vacanciesId);
+            Vacancies vacancies =vacanciesRepository.findById(vacanciesId).orElseThrow(()->new RuntimeException("vacanciesId:查不到"));
+            Integer VacanciesView = vacancies.getVacanciesView();
+            VacanciesView++;
+            vacancies.setVacanciesView(VacanciesView);
+            vacanciesRepository.save(vacancies);
             System.out.println(fullVacanciesDto);
            RestDto restResponse = RestDto.builder()
                     .data(fullVacanciesDto)

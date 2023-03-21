@@ -29,13 +29,13 @@ public class CompanyVacanciesDto {
     private String vacanciesDepartment;
     private String vacanciesQuantity;
     private LocalDate vacanciesCreateTime;
-
     private int applyCount;
-
     private int vacanciesView;
     private int vacanciesDownSalary;
     private Long vacanciesTopSalary;
     private String vacanciesSalaryType;
+    private String vacanciesWatchType;
+    private String teacherValidType;
     private String skills;
     private String county;
 }

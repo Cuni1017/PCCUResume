@@ -20,7 +20,7 @@ public class CompanyDao {
         String sql ="SELECT c.company_id, c.company_name, c.company_image_url,\n"+
                 "v.vacancies_id, v.teacher_id, v.vacancies_name, v.vacancies_time, v.vacancies_description,v.vacancies_requirement,\n"+
                 "v.vacancies_work_experience, v.vacancies_Education, v.vacancies_department,\n"+
-                "v.vacancies_quantity, v.vacancies_create_time,v.vacancies_end_time, v.apply_count,\n"+
+                "v.vacancies_quantity, v.vacancies_create_time,v.vacancies_end_time, v.apply_count,v.teacher_valid_type,v.vacancies_watch_type,\n"+
                 "group_concat(DISTINCT s.skill_name) skills, group_concat(DISTINCT ct.county_name) county,\n"+
                 "v.vacancies_view,v.vacancies_down_salary,v.vacancies_top_salary,v.vacancies_salary_type\n"+
                 "FROM vacancies v INNER JOIN company c ON c.company_id = v.company_id \n"+
