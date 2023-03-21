@@ -1,5 +1,5 @@
-import { axiosInstance } from "@/axiosInstance.ts";
 import { NextApiRequest, NextApiResponse } from "next";
+import { axiosInstance } from "@/axiosInstance.ts";
 
 export default async function handler(
   req: NextApiRequest,

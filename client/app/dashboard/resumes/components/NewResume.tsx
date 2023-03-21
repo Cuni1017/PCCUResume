@@ -39,7 +39,7 @@ const NewResume = ({ userId }: { userId: string }) => {
       <div className="flex px-2 py-2 gap-2 bg-gray-100 border-solid border-0 border-t border-gray-300">
         <MyButton
           onClick={handleSubmit}
-          classNames="w-full hover:bg-gray-300"
+          classnames="w-full hover:bg-gray-300"
           disabled={disabled}
         >
           確認

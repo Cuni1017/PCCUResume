@@ -56,6 +56,7 @@ const SearchBar = () => {
         onCompositionStart={() => {
           setIsTyping(true);
         }}
+        onCompositionEnd={() => setIsTyping(false)}
         InputProps={{
           style: {
             height: "44px",
@@ -67,7 +68,6 @@ const SearchBar = () => {
           ),
         }}
         placeholder="搜尋職稱、技能、公司或任何關鍵字"
-        onCompositionEnd={() => setIsTyping(false)}
         name="searchTerm"
       />
     </div>

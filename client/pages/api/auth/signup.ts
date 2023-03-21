@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import validator from "validator";
 import { axiosInstance } from "@/axiosInstance.ts";
+import validator from "validator";
 
 export default async function handler(
   req: NextApiRequest,

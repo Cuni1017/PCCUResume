@@ -1,27 +1,81 @@
-import InfoCard from "../components/SearchContainer/InfoCard";
+import JobInfoCard, {
+  Vacancy,
+} from "../components/SearchContainer/JobInfoCard";
+import PaginationBar from "../components/SearchContainer/PaginationBar";
 
-const fetchJobs = async () => {
-  const res = await fetch("http://localhost:8080/vacancies", {
+const fetchJobs = async (searchParams: any) => {
+  const {
+    location,
+    tech,
+    salary_type,
+    salary_currency,
+    ["salary_range[max]"]: max_salary,
+    ["salary_range[min]"]: min_salary,
+    page,
+  } = searchParams;
+
+  const locations = location
+    ? location instanceof Array
+      ? "county=" + location.join("&county=")
+      : "county=" + location
+    : "";
+
+  const techs = tech
+    ? tech instanceof Array
+      ? "technology=" + tech.join("&technology=")
+      : "technology=" + tech
+    : "";
+
+  const salaryMin = min_salary ? `salaryMin=${min_salary}` : "";
+  const salaryMax = max_salary ? `salaryMax=${max_salary}` : "";
+  const salaryType = salary_type
+    ? `salaryType=${salary_type.replace("per_", "")}`
+    : "";
+  // const salaryCurrency = salary_currency
+  //   ? `salaryCurrency=${salary_currency}`
+  //   : "";
+
+  const whichPage = page ? `page=${page}` : "";
+
+  const url = `http://localhost:8080/vacancies?${locations}&${techs}&${salaryMin}&${salaryMax}&${salaryType}&${whichPage}`;
+
+  const res = await fetch(url, {
     method: "GET",
     headers: {
-      Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsImlkIjoiQzY2MDQyMzgxMCIsInVzZXJuYW1lIjoiY29yeTEiLCJzdWIiOiJjb3J5MSIsImlhdCI6MTY3OTEyNzg3MiwiZXhwIjoxNjc3NDI0OTA1fQ.fImtD2hMpgWUQmQZlCwkTQeGwFtEQkiVliLLRblMpV4",
+      "Cache-Control": "no-cache",
+      "Content-Type": "application/json",
     },
   });
+
   if (!res.ok) {
     throw new Error("Failed to fetch");
   }
+
   return res.json();
 };
 
-const JobsSearchHomePage = async () => {
-  const data = await fetchJobs();
-  // console.log(data);
+const JobsSearchHomePage = async (props: any) => {
+  const { params, searchParams } = props;
+
+  const data = await fetchJobs(searchParams);
+  const totalJobs = data.data.total;
+  const eachPageJobNumber = data.data.size;
+  // const currentPage = data.data.page;
+  const vacancies: Vacancy[] = data.data.companyVacanciesDto;
+
+  const renderedJobs = vacancies.map((vacancy) => {
+    return <JobInfoCard key={vacancy.vacanciesId} vacancy={vacancy} />;
+  });
 
   return (
     <>
-      <InfoCard />
-      <InfoCard />
+      {renderedJobs}
+      <div className="flex justify-center mb-10">
+        <PaginationBar
+          count={Math.ceil(totalJobs / eachPageJobNumber)}
+          page={searchParams.page ? parseInt(searchParams.page) : 1}
+        />
+      </div>
     </>
   );
 };

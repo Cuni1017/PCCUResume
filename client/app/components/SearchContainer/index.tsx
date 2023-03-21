@@ -21,7 +21,6 @@ const SearchContainer = ({ children }: { children: React.ReactNode }) => {
             <SearchFilter />
           </div>
         </Card>
-
         <div className="flex flex-col gap-2">{children}</div>
       </div>
     </>

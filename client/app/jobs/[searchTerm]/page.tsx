@@ -1,7 +1,9 @@
-import InfoCard from "@/app/components/SearchContainer/InfoCard";
+import JobInfoCard, {
+  Vacancy,
+} from "@/app/components/SearchContainer/JobInfoCard";
+import PaginationBar from "../../components/SearchContainer/PaginationBar";
 
 const fetchJobs = async (searchParams: any) => {
-  // console.log(searchParams);
   const {
     location,
     tech,
@@ -9,18 +11,19 @@ const fetchJobs = async (searchParams: any) => {
     salary_currency,
     ["salary_range[max]"]: max_salary,
     ["salary_range[min]"]: min_salary,
+    page,
   } = searchParams;
 
   const locations = location
     ? location instanceof Array
       ? "county=" + location.join("&county=")
-      : location
+      : "county=" + location
     : "";
 
   const techs = tech
     ? tech instanceof Array
       ? "technology=" + tech.join("&technology=")
-      : tech
+      : "technology=" + tech
     : "";
 
   const salaryMin = min_salary ? `salaryMin=${min_salary}` : "";
@@ -32,12 +35,14 @@ const fetchJobs = async (searchParams: any) => {
   //   ? `salaryCurrency=${min_salary}`
   //   : null;
 
-  const url = `http://localhost:8080/vacancies?${locations}&${techs}&${salaryMin}&${salaryMax}&${salaryType}`;
+  const whichPage = page ? `page=${page}` : "";
+
+  const url = `http://localhost:8080/vacancies?${locations}&${techs}&${salaryMin}&${salaryMax}&${salaryType}&${whichPage}`;
   const res = await fetch(url, {
     method: "GET",
     headers: {
-      Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsImlkIjoiQzY2MDQyMzgxMCIsInVzZXJuYW1lIjoiY29yeTEiLCJzdWIiOiJjb3J5MSIsImlhdCI6MTY3OTEyNzg3MiwiZXhwIjoxNjc3NDI0OTA1fQ.fImtD2hMpgWUQmQZlCwkTQeGwFtEQkiVliLLRblMpV4",
+      "Cache-Control": "no-cache",
+      "Content-Type": "application/json",
     },
   });
   if (!res.ok) {
@@ -48,15 +53,26 @@ const fetchJobs = async (searchParams: any) => {
 
 const JobsSearchPage = async (props: any) => {
   const { params, searchParams } = props;
+
   const data = await fetchJobs(searchParams);
+  const totalJobs = data.data.total;
+  const eachPageJobNumber = data.data.size;
+  // const currentPage = data.data.page;
+  const vacancies: Vacancy[] = data.data.companyVacanciesDto;
 
-  console.log(data.data.pageVacancies);
+  const renderedJobs = vacancies.map((vacancy) => {
+    return <JobInfoCard key={vacancy.vacanciesId} vacancy={vacancy} />;
+  });
 
-  // console.log(params);
-  // console.log(searchParams);
   return (
     <>
-      <InfoCard />
+      {renderedJobs}
+      <div className="flex justify-center mb-10">
+        <PaginationBar
+          count={Math.floor(totalJobs / eachPageJobNumber + 1)}
+          page={searchParams.page ? searchParams.page : 1}
+        />
+      </div>
     </>
   );
 };

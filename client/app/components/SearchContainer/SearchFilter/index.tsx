@@ -44,12 +44,18 @@ const SearchFilterContainer = () => {
   }, [debounceRouterPush, searchParamsList]);
 
   useEffect(() => {
-    setSearchParamsList(
+    if (
       searchParams
         ?.toString()
         .split("&")
-        .filter((x) => x)
-    );
+        .filter((x) => x) !== searchParamsList
+    )
+      setSearchParamsList(
+        searchParams
+          ?.toString()
+          .split("&")
+          .filter((x) => x)
+      );
   }, [searchParams]);
 
   return (
