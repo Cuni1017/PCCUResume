@@ -40,7 +40,7 @@ public class VacanciesDao {
         String sql ="SELECT c.company_id, c.company_name, c.company_image_url,\n"+
                 "v.vacancies_id, v.teacher_id, v.vacancies_name, v.vacancies_time, v.vacancies_description,v.vacancies_requirement,\n"+
                 "v.vacancies_work_experience, v.vacancies_Education, v.vacancies_department,\n"+
-                "v.vacancies_quantity, v.vacancies_create_time,v.vacancies_end_time, v.apply_count,\n"+
+                "v.vacancies_quantity, v.vacancies_create_time, v.apply_count,\n"+
                 "group_concat(DISTINCT s.skill_name) skills, group_concat(DISTINCT ct.county_name) county,\n"+
                 "v.vacancies_view,v.vacancies_down_salary,v.vacancies_top_salary,v.vacancies_salary_type\n"+
                 "FROM vacancies v INNER JOIN company c ON c.company_id = v.company_id \n"+
@@ -63,7 +63,7 @@ public class VacanciesDao {
 
                 sql = sql + " AND v.vacancies_quantity > 0";
 
-//                sql = sql + " AND v.teacher_valid_type = '審查通過'";
+                sql = sql + " AND v.teacher_valid_type = '審查通過'";
                 sql = sql + " AND v.vacancies_watch_type = '公開'";
                 sql = sql + " group by v.vacancies_id";
                 sql = sql + " order by :order";
@@ -85,7 +85,7 @@ public class VacanciesDao {
         String sql ="SELECT c.company_id, c.company_name, c.company_image_url,\n"+
                 "v.vacancies_id, v.teacher_id, v.vacancies_name, v.vacancies_time, v.vacancies_description,v.vacancies_requirement,\n"+
                 "v.vacancies_work_experience, v.vacancies_Education, v.vacancies_department,\n"+
-                "v.vacancies_quantity, v.vacancies_create_time,v.vacancies_end_time, v.apply_count,\n"+
+                "v.vacancies_quantity, v.vacancies_create_time, v.apply_count,\n"+
                 "group_concat(DISTINCT s.skill_name) skills, group_concat(DISTINCT ct.county_name) county,\n"+
                 "v.vacancies_view,v.vacancies_down_salary,v.vacancies_top_salary,v.vacancies_salary_type\n"+
                 "FROM vacancies v INNER JOIN company c ON c.company_id = v.company_id \n"+
@@ -100,11 +100,15 @@ public class VacanciesDao {
         if(technology != null){
             sql = sql + " AND s.skill_name IN (:technology)";
         }
+        if(salaryType != null){
+            sql = sql + " AND v.vacancies_salary_type = :salaryType";
+        }
         sql = sql + " AND v.vacancies_down_salary >= :salaryMin";
         sql = sql + " AND v.vacancies_top_salary <= :salaryMax";
-        sql = sql + " AND v.vacancies_salary_type = :salaryType";
+
         sql = sql + " AND v.vacancies_quantity > 0";
-//                sql = sql + " AND v.teacher_valid_type = '審查通過'";
+
+        sql = sql + " AND v.teacher_valid_type = '審查通過'";
         sql = sql + " AND v.vacancies_watch_type = '公開'";
         sql = sql + " group by v.vacancies_id";
         sql = sql + " order by :order";
@@ -120,8 +124,11 @@ public class VacanciesDao {
 //        map.put("limit",selectLimit);
 //
 //        map.put("offset",selectOffset);
-        System.out.println(sql);
+
+
         sql = COUNT_BEFORE +sql + COUNT_AFTER;
+        System.out.println(sql);
+        System.out.println("total:"+namedParameterJdbcTemplate.queryForObject(sql,map,Integer.class));
         return namedParameterJdbcTemplate.queryForObject(sql,map,Integer.class);
     }
     public Vacancies updateVacancies(Vacancies vacancies){
