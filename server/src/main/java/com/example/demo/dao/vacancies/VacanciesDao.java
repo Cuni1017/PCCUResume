@@ -36,10 +36,14 @@ public class VacanciesDao {
                 if(technology != null){
                     sql = sql + " AND s.skill_name IN (:technology)";
                 }
+                if(salaryType != null){
+                    sql = sql + " AND v.vacancies_salary_type = :salaryType";
+                }
                 sql = sql + " AND v.vacancies_down_salary >= :salaryMin";
                 sql = sql + " AND v.vacancies_top_salary <= :salaryMax";
-                sql = sql + " AND v.vacancies_salary_type = :salaryType";
+
                 sql = sql + " AND v.vacancies_quantity > 0";
+
 //                sql = sql + " AND v.teacher_valid_type = '審查通過'";
                 sql = sql + " AND v.vacancies_watch_type = '公開'";
                 sql = sql + " group by v.vacancies_id";

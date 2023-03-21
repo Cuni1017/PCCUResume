@@ -29,4 +29,5 @@ public interface CompanyRepository extends JpaRepository<Company,String> {
             "group by v.vacancies_id ", nativeQuery = true)
     List<Object[]> findVacancies(@Param("companyId") String companyId);
 
+    Company findCompanyByCompanyName(String companyName);
 }

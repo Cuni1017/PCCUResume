@@ -1,6 +1,5 @@
 package com.example.demo.dao.vacancies;
 
-import com.example.demo.dto.vacancies.CompanyVacanciesDto;
 import com.example.demo.model.vacancies.Vacancies;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +10,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
+
 
 @Repository
 public interface VacanciesRepository extends JpaRepository<Vacancies,String>,PagingAndSortingRepository<Vacancies, String> {
@@ -24,6 +25,7 @@ public interface VacanciesRepository extends JpaRepository<Vacancies,String>,Pag
 //    List<Object> findAll(@Param("county") String county,@Param("technology") String technology);
 //    @Query(value ="select * FROM vacancies where vacancies_skill in :technology ",nativeQuery = true)
 //    Object find(@Param("technology") List<String> technology);
+//Optional<Vacancies> findById(String id);
 @Query(value = "SELECT c.company_id, c.company_name, c.company_image_url,\n"+
         "v.vacancies_id, v.teacher_id, v.vacancies_name, v.vacancies_time, v.vacancies_description,v.vacancies_requirement,\n"+
         "v.vacancies_work_experience, v.vacancies_Education, v.vacancies_department,\n"+

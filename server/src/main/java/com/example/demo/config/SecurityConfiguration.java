@@ -38,13 +38,15 @@ public class SecurityConfiguration {
                 .disable()
                 .authorizeHttpRequests()
 //        .requestMatchers("/api/v1/auth/**")
-//          .permitAll()
+//          .permitAll().
 
                 .requestMatchers(
                         "/register/**",
                         "/login",
                         "/swagger-ui/**",
-                        "/vacancies"
+                        "/vacancies",
+                        "/company/*/vacancies",
+                        "/vacancies/*"
                         //"/students/**"
                 )
                 .permitAll()

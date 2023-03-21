@@ -11,6 +11,7 @@
     import com.example.demo.dto.vacancies.FindVacanciesDto;
     import com.example.demo.dto.RestDto;
     import com.example.demo.dto.vacancies.PageVacanciesDto;
+    import com.example.demo.model.vacancies.Vacancies;
     import com.example.demo.service.VacanciesService;
     import lombok.RequiredArgsConstructor;
     import org.springframework.data.domain.Page;
@@ -21,6 +22,7 @@
     import org.springframework.stereotype.Service;
 
     import java.util.List;
+    import java.util.Optional;
 
     @RequiredArgsConstructor
     @Service
@@ -48,16 +50,18 @@
                     .data(pageVacanciesDto)
                     .message("查詢成功")
                     .build();
-//            FindVacanciesDto findVacanciesDto =FindVacanciesDto.builder()
-//                    .technology(skills)
-//                    .county(counties)
-//                    .PageVacancies(pageVacancies)
-//                    .build();
-//            RestDto restResponse = RestDto.builder()
-//                    .data(findVacanciesDto)
-//                    .message("查詢成功")
-//                    .build();
             return restDto;
+        }
+
+        @Override
+        public Object findVacanciesById(String vacanciesId) {
+           Vacancies vacancies = vacanciesRepository.findById(vacanciesId).orElseThrow(()-> new RuntimeException("vacanciesId:找不到此職缺"));
+            System.out.println(vacancies);
+           RestDto restResponse = RestDto.builder()
+                    .data(vacancies)
+                    .message("查詢成功")
+                    .build();
+            return restResponse;
         }
 
         @Override

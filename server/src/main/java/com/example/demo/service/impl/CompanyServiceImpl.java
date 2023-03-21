@@ -14,6 +14,7 @@ import com.example.demo.dto.RestDto;
 import com.example.demo.dto.vacancies.CompanyVacanciesDto;
 import com.example.demo.dto.vacancies.PageVacanciesDto;
 import com.example.demo.dto.vacancies.VacanciesDto;
+import com.example.demo.model.Company;
 import com.example.demo.model.County;
 import com.example.demo.model.Skill;
 import com.example.demo.model.vacancies.Vacancies;
@@ -43,13 +44,14 @@ public class CompanyServiceImpl implements CompanyService {
     private final CompanyDao companyDao;
     public static final String NOT_CHECK = "審核中";
     @Override
-    public Object createVacancies(String companyId,VacanciesCategory vacanciesCategory) {
+    public Object createVacancies(String companyName,VacanciesCategory vacanciesCategory) {
         String vacanciesId = getId(vacanciesCountyRepository,"V",1);
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu/MM/dd");
         LocalDate localDate = LocalDate.now();
+        Company company =companyRepository.findCompanyByCompanyName(companyName);
         Vacancies vacancies = Vacancies.builder()
                 .id(vacanciesId)
-                .companyId(companyId)
+                .companyId(company.getCompanyId())
                 .vacanciesName(vacanciesCategory.getVacanciesName())
                 .vacanciesTime(vacanciesCategory.getVacanciesTime())
                 .vacanciesWorkExperience(vacanciesCategory.getVacanciesWorkExperience())
@@ -70,6 +72,7 @@ public class CompanyServiceImpl implements CompanyService {
                 .vacanciesView(0)
                 .teacherValidType(NOT_CHECK)
                 .vacanciesCondition(vacanciesCategory.getVacanciesCondition())
+                .vacanciesWatchType(vacanciesCategory.getVacanciesWatchType())
                 .build();
         for(int i = 0;i < (vacanciesCategory.getCounty().size());i++){
             VacanciesCounty vacanciesCounty =VacanciesCounty.builder()
@@ -141,6 +144,48 @@ public class CompanyServiceImpl implements CompanyService {
 //                .counties()
 //                .build();
 //    return pageVacanciesDto;
+    }
+
+    @Override
+    public Object updateVacancies(String companyName, String vacanciesId, VacanciesCategory vacanciesCategory) {
+//        Vacancies vacancies = Vacancies.builder()
+//                .id(vacanciesId)
+//                .vacanciesName(vacanciesCategory.getVacanciesName())
+//                .vacanciesTime(vacanciesCategory.getVacanciesTime())
+//                .vacanciesWorkExperience(vacanciesCategory.getVacanciesWorkExperience())
+//                .vacanciesEducation(vacanciesCategory.getVacanciesEducation())
+//                .vacanciesDepartment(vacanciesCategory.getVacanciesDepartment())
+//                .vacanciesOther(vacanciesCategory.getVacanciesOther())
+//                .vacanciesSafe(vacanciesCategory.getVacanciesSafe())
+//                .vacanciesDistrict(vacanciesCategory.getVacanciesDistrict())
+//                .vacanciesAddress(vacanciesCategory.getVacanciesAddress())
+//                .vacanciesSalaryType(vacanciesCategory.getVacanciesSalaryType())
+//                .vacanciesTopSalary(vacanciesCategory.getVacanciesTopSalary())
+//                .vacanciesDownSalary(vacanciesCategory.getVacanciesDownSalary())
+//                .vacanciesDescription(vacanciesCategory.getVacanciesDescription())
+//                .vacanciesRequirement(vacanciesCategory.getVacanciesRequirement())
+//                .applyCount(0)
+//                .vacanciesQuantity(vacanciesCategory.getVacanciesQuantity())
+//                .vacanciesView(0)
+//                .teacherValidType(NOT_CHECK)
+//                .vacanciesCondition(vacanciesCategory.getVacanciesCondition())
+//                .vacanciesWatchType(vacanciesCategory.getVacanciesWatchType())
+//                .build();
+//        for(int i = 0;i < (vacanciesCategory.getCounty().size());i++){
+//            VacanciesCounty vacanciesCounty =VacanciesCounty.builder()
+//                    .countyId(vacanciesCategory.getCounty().get(i))
+//                    .vacanciesId(vacanciesId)
+//                    .build();
+//            vacanciesCountyRepository.save(vacanciesCounty);
+//        }
+//        for(int i = 0;i < (vacanciesCategory.getSkill().size());i++){
+//            VacanciesSkill vacanciesSkill = VacanciesSkill.builder()
+//                    .vacanciesId(vacanciesId)
+//                    .skillId(vacanciesCategory.getSkill().get(i))
+//                    .build();
+//            vacanciesSkillRepository.save(vacanciesSkill);
+//        }
+        return null;
     }
 
 

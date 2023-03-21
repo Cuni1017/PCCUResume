@@ -17,6 +17,7 @@ public class VacanciesCategory {
     private String vacanciesDepartment;
     private String vacanciesOther;
     private String vacanciesSafe;
+    private String vacanciesWatchType;
 
 
     private String vacanciesDistrict;
