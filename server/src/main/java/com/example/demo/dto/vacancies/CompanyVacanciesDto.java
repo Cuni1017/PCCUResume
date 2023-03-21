@@ -29,11 +29,7 @@ public class CompanyVacanciesDto {
     private String vacanciesDepartment;
     private String vacanciesQuantity;
     private LocalDate vacanciesCreateTime;
-<<<<<<< HEAD
 
-=======
-    private String vacanciesEndTime;
->>>>>>> a7671fe9c83b0acaa9ffe520f58a9731e1af5659
     private int applyCount;
 
     private int vacanciesView;
