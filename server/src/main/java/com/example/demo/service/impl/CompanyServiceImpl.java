@@ -169,7 +169,7 @@ public class CompanyServiceImpl implements CompanyService {
                 .vacanciesCondition(vacanciesCategory.getVacanciesCondition())
                 .vacanciesWatchType(vacanciesCategory.getVacanciesWatchType())
                 .build();
-
+//        int row = VaupdateVacancies(vacancies);
 //        for(int i = 0;i < (vacanciesCategory.getCounty().size());i++){
 //            VacanciesCounty vacanciesCounty =VacanciesCounty.builder()
 //                    .countyId(vacanciesCategory.getCounty().get(i))
