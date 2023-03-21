@@ -8,10 +8,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDate;
 import java.util.Date;
-
+@DynamicUpdate
 @Data
 @Builder
 @NoArgsConstructor
@@ -71,4 +72,6 @@ public class Vacancies {
     @Column(name = "vacancies_condition")
     private String vacanciesCondition;
 
+    @Column(name = "vacancies_watch_type")
+    private String vacanciesWatchType;
 }

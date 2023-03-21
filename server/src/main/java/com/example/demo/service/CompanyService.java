@@ -9,4 +9,7 @@ public interface CompanyService {
 
 
     Object findVacanciesByCompanyName(String companyName,int page,int limit);
+
+
+    Object updateVacancies(String companyName, String vacanciesId, VacanciesCategory vacanciesCategory);
 }

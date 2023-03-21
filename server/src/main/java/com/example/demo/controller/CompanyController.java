@@ -18,11 +18,19 @@ public class CompanyController {
     ) {
         return ResponseEntity.ok(companyService.findVacanciesByCompanyName(companyName,page,limit));
     }
-    @PostMapping("/company/{companyId}/vacancies")
+    @PostMapping("/company/{companyName}/vacancies")
     public ResponseEntity<Object> createVacancies(
-            @PathVariable String companyId,
+            @PathVariable String companyName,
             @RequestBody VacanciesCategory vacanciesCategory
     ) {
-        return ResponseEntity.ok(companyService.createVacancies(companyId,vacanciesCategory));
+        return ResponseEntity.ok(companyService.createVacancies(companyName,vacanciesCategory));
+    }
+    @PutMapping("/company/{companyName}/vacancies/{vacanciesId}")
+    public ResponseEntity<Object> updateVacancies(
+            @PathVariable String companyName,
+            @PathVariable String vacanciesId,
+            @RequestBody VacanciesCategory vacanciesCategory
+    ) {
+        return ResponseEntity.ok(companyService.updateVacancies(companyName,vacanciesId,vacanciesCategory));
     }
 }
