@@ -14,7 +14,15 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 public class FullVacanciesDto {
-   private Company company;
+   private String companyId;
+   private String companyName;
+   private String companyTitle ;
+   private int companyNumber;
+   private String companyCounty;
+   private String companyDistrict;
+   private String companyAddress;
+   private String companyEmail;
+   private String companyImageUrl;
    private Vacancies vacancies;
    private String skills;
    private String county;

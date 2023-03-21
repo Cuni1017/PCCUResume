@@ -21,20 +21,23 @@ public class VacanciesDao {
     private static final String COUNT_BEFORE = "SELECT count(*) FROM (";
     private static final String COUNT_AFTER = ") as s";
     public FullVacanciesDto findFullVacanciesById(String vacanciesId){
-        String sql ="SELECT c.*,v.*,\n"+
-                "group_concat(DISTINCT s.skill_name) skills, group_concat(DISTINCT ct.county_name) county\n"+
+        String sql ="SELECT c.company_id,c.company_name,c.company_title,c.company_number,\n"+
+                "c.company_county,c.company_district,c.company_address,c.company_email,c.company_image_url,v.*," +
+                " group_concat(DISTINCT s.skill_name) skills, group_concat(DISTINCT ct.county_name) county\n"+
                 "FROM vacancies v INNER JOIN company c ON c.company_id = v.company_id \n"+
                 "INNER JOIN vacancies_skill vs ON vs.vacancies_id = v.vacancies_id \n"+
                 "INNER JOIN skill s  ON s.skill_id = vs.skill_id \n"+
                 "INNER JOIN vacancies_county vc  ON vc.vacancies_id = v.vacancies_id \n"+
                 "INNER JOIN county ct  ON ct.county_id = vc.county_id \n"+
-                "WHERE 1=1 AND  v.vacancies_id = :vacanciesId";
+                "WHERE 1=1 AND  v.vacancies_id = :vacanciesId group by v.vacancies_id";
 
         Map<String,Object> map= new HashMap<>();
 
         map.put("vacanciesId",vacanciesId);
         System.out.println(sql);
-        return namedParameterJdbcTemplate.queryForObject(sql,map,new FullVacanciesRowMapper());
+
+        return
+                namedParameterJdbcTemplate.queryForObject(sql,map,new FullVacanciesRowMapper());
     }
     public List<CompanyVacanciesDto> findPageVacancies(List<String> county,List<String> technology, String salaryType, Long salaryMax, int salaryMin, String order,int selectLimit, int selectOffset){
         String sql ="SELECT c.company_id, c.company_name, c.company_image_url,\n"+
