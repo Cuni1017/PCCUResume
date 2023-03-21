@@ -46,7 +46,7 @@ public class Vacancies {
     @Column(name = "vacancies_create_time")
     private LocalDate vacanciesCreateTime;
     @Column(name = "vacancies_end_time")
-    private LocalDate vacanciesEndTime;
+    private String vacanciesEndTime;
     @Column(name = "vacancies_district")
     private String vacanciesDistrict;
     @Column(name = "vacancies_address")
