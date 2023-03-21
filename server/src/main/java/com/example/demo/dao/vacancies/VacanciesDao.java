@@ -134,7 +134,7 @@ public class VacanciesDao {
         System.out.println("total:"+namedParameterJdbcTemplate.queryForObject(sql,map,Integer.class));
         return namedParameterJdbcTemplate.queryForObject(sql,map,Integer.class);
     }
-    public Vacancies updateVacancies(Vacancies vacancies){
+    public int updateVacancies(Vacancies vacancies){
         String sql = "UPDATE vacancies SET vacancies_name = :vacanciesName," +
                 " vacancies_time = :vacanciesName , vacancies_work_experience = :vacanciesWorkExperience," +
                 " vacancies_education = :vacanciesEducation,vacancies_department = :vacanciesDepartment," +
@@ -143,8 +143,30 @@ public class VacanciesDao {
                 " vacancies_salary_type = :vacanciesSalaryType, vacancies_top_Salary = :vacanciesTopSalary," +
                 " vacancies_down_Salary = :vacanciesDownSalary,vacancies_description = :vacanciesDescription," +
                 " vacancies_requirement = :vacanciesRequirement ,vacancies_quantity = :vacanciesQuantity," +
-                " teacher_valid_ype = '審核中,  vacancies_condition = :vacanciesCondition,vacancies_watch_type = :vacanciesWatchType";
-                return null;
-    }
+                " teacher_valid_ype = '審核中',  vacancies_condition = :vacanciesCondition,vacancies_watch_type = :vacanciesWatchType";
+        Map<String,Object> map= new HashMap<>();
+
+        map.put("vacanciesId",vacancies.getVacanciesId());
+        map.put("vacanciesName",vacancies.getVacanciesName());
+        map.put("vacanciesWorkExperience",vacancies.getVacanciesWorkExperience());
+        map.put("vacanciesEducation",vacancies.getVacanciesEducation());
+        map.put("vacanciesDepartment",vacancies.getVacanciesDepartment());
+        map.put("vacanciesOther",vacancies.getVacanciesOther());
+        map.put("vacanciesSafe",vacancies.getVacanciesSafe());
+        map.put("vacanciesDistrict",vacancies.getVacanciesDistrict());
+        map.put("vacanciesAddress",vacancies);
+        map.put("vacanciesSalaryType",vacancies);
+        map.put("vacanciesTopSalary",vacancies);
+
+        map.put("vacanciesDownSalary",vacancies);
+        map.put("vacanciesDescription",vacancies);
+        map.put("vacanciesRequirement",vacancies);
+        map.put("vacanciesQuantity",vacancies);
+        map.put("vacanciesCondition",vacancies);
+        map.put("vacanciesWatchType",vacancies);
+
+        int row =namedParameterJdbcTemplate.update(sql,map);
+        return  row;
+        }
 
 }

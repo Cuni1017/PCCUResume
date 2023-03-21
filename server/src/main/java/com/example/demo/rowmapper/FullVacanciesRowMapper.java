@@ -35,7 +35,7 @@ public class FullVacanciesRowMapper implements RowMapper<FullVacanciesDto> {
                 .vacanciesOther(rs.getString("vacancies_other"))
                 .vacanciesSafe(rs.getString("vacancies_safe"))
                 .vacanciesCreateTime(rs.getDate("vacancies_create_time").toLocalDate())
-                .vacanciesEndTime(rs.getDate("vacancies_end_time").toLocalDate())
+                .vacanciesEndTime(rs.getString("vacancies_end_time"))
                 .vacanciesDistrict(rs.getString("vacancies_district"))
                 .vacanciesAddress(rs.getString("vacancies_address"))
                 .vacanciesSalaryType(rs.getString("vacancies_salary_type"))

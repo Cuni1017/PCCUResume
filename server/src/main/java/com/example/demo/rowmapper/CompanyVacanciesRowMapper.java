@@ -25,6 +25,10 @@ public class CompanyVacanciesRowMapper implements RowMapper<CompanyVacanciesDto>
         companyVacanciesDto .setVacanciesDepartment(rs.getString("vacancies_department"));
         companyVacanciesDto .setVacanciesQuantity(rs.getString("vacancies_quantity"));
         companyVacanciesDto .setVacanciesCreateTime(rs.getDate("vacancies_create_time").toLocalDate());
+<<<<<<< HEAD
+=======
+        companyVacanciesDto .setVacanciesEndTime(rs.getString("vacancies_end_time"));
+>>>>>>> a7671fe9c83b0acaa9ffe520f58a9731e1af5659
         companyVacanciesDto .setApplyCount(rs.getInt("apply_count"));
         companyVacanciesDto .setVacanciesView(rs.getInt("vacancies_view"));
         companyVacanciesDto .setVacanciesDownSalary(rs.getInt("vacancies_down_salary"));
