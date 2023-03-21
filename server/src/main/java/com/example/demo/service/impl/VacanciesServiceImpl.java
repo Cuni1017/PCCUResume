@@ -57,6 +57,7 @@
         @Override
         public Object findFullVacanciesById(String vacanciesId) {
             FullVacanciesDto fullVacanciesDto = vacanciesDao.findFullVacanciesById(vacanciesId);
+            Optional<Vacancies> vacancies =vacanciesRepository.findById(vacanciesId);
             System.out.println(fullVacanciesDto);
            RestDto restResponse = RestDto.builder()
                     .data(fullVacanciesDto)

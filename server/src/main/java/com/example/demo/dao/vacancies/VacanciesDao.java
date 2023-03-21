@@ -21,26 +21,29 @@ public class VacanciesDao {
     private static final String COUNT_BEFORE = "SELECT count(*) FROM (";
     private static final String COUNT_AFTER = ") as s";
     public FullVacanciesDto findFullVacanciesById(String vacanciesId){
-        String sql ="SELECT c.*,v.*,\n"+
-                "group_concat(DISTINCT s.skill_name) skills, group_concat(DISTINCT ct.county_name) county\n"+
+        String sql ="SELECT c.company_id,c.company_name,c.company_title,c.company_number,\n"+
+                "c.company_county,c.company_district,c.company_address,c.company_email,c.company_image_url,v.*," +
+                " group_concat(DISTINCT s.skill_name) skills, group_concat(DISTINCT ct.county_name) county\n"+
                 "FROM vacancies v INNER JOIN company c ON c.company_id = v.company_id \n"+
                 "INNER JOIN vacancies_skill vs ON vs.vacancies_id = v.vacancies_id \n"+
                 "INNER JOIN skill s  ON s.skill_id = vs.skill_id \n"+
                 "INNER JOIN vacancies_county vc  ON vc.vacancies_id = v.vacancies_id \n"+
                 "INNER JOIN county ct  ON ct.county_id = vc.county_id \n"+
-                "WHERE 1=1 AND  v.vacancies_id = :vacanciesId";
+                "WHERE 1=1 AND  v.vacancies_id = :vacanciesId group by v.vacancies_id";
 
         Map<String,Object> map= new HashMap<>();
 
         map.put("vacanciesId",vacanciesId);
         System.out.println(sql);
-        return namedParameterJdbcTemplate.queryForObject(sql,map,new FullVacanciesRowMapper());
+
+        return
+                namedParameterJdbcTemplate.queryForObject(sql,map,new FullVacanciesRowMapper());
     }
     public List<CompanyVacanciesDto> findPageVacancies(List<String> county,List<String> technology, String salaryType, Long salaryMax, int salaryMin, String order,int selectLimit, int selectOffset){
         String sql ="SELECT c.company_id, c.company_name, c.company_image_url,\n"+
                 "v.vacancies_id, v.teacher_id, v.vacancies_name, v.vacancies_time, v.vacancies_description,v.vacancies_requirement,\n"+
                 "v.vacancies_work_experience, v.vacancies_Education, v.vacancies_department,\n"+
-                "v.vacancies_quantity, v.vacancies_create_time,v.vacancies_end_time, v.apply_count,\n"+
+                "v.vacancies_quantity, v.vacancies_create_time, v.apply_count,\n"+
                 "group_concat(DISTINCT s.skill_name) skills, group_concat(DISTINCT ct.county_name) county,\n"+
                 "v.vacancies_view,v.vacancies_down_salary,v.vacancies_top_salary,v.vacancies_salary_type\n"+
                 "FROM vacancies v INNER JOIN company c ON c.company_id = v.company_id \n"+
@@ -63,7 +66,7 @@ public class VacanciesDao {
 
                 sql = sql + " AND v.vacancies_quantity > 0";
 
-//                sql = sql + " AND v.teacher_valid_type = '審查通過'";
+                sql = sql + " AND v.teacher_valid_type = '審查通過'";
                 sql = sql + " AND v.vacancies_watch_type = '公開'";
                 sql = sql + " group by v.vacancies_id";
                 sql = sql + " order by :order";
@@ -85,7 +88,7 @@ public class VacanciesDao {
         String sql ="SELECT c.company_id, c.company_name, c.company_image_url,\n"+
                 "v.vacancies_id, v.teacher_id, v.vacancies_name, v.vacancies_time, v.vacancies_description,v.vacancies_requirement,\n"+
                 "v.vacancies_work_experience, v.vacancies_Education, v.vacancies_department,\n"+
-                "v.vacancies_quantity, v.vacancies_create_time,v.vacancies_end_time, v.apply_count,\n"+
+                "v.vacancies_quantity, v.vacancies_create_time, v.apply_count,\n"+
                 "group_concat(DISTINCT s.skill_name) skills, group_concat(DISTINCT ct.county_name) county,\n"+
                 "v.vacancies_view,v.vacancies_down_salary,v.vacancies_top_salary,v.vacancies_salary_type\n"+
                 "FROM vacancies v INNER JOIN company c ON c.company_id = v.company_id \n"+
@@ -100,11 +103,15 @@ public class VacanciesDao {
         if(technology != null){
             sql = sql + " AND s.skill_name IN (:technology)";
         }
+        if(salaryType != null){
+            sql = sql + " AND v.vacancies_salary_type = :salaryType";
+        }
         sql = sql + " AND v.vacancies_down_salary >= :salaryMin";
         sql = sql + " AND v.vacancies_top_salary <= :salaryMax";
-        sql = sql + " AND v.vacancies_salary_type = :salaryType";
+
         sql = sql + " AND v.vacancies_quantity > 0";
-//                sql = sql + " AND v.teacher_valid_type = '審查通過'";
+
+        sql = sql + " AND v.teacher_valid_type = '審查通過'";
         sql = sql + " AND v.vacancies_watch_type = '公開'";
         sql = sql + " group by v.vacancies_id";
         sql = sql + " order by :order";
@@ -120,8 +127,11 @@ public class VacanciesDao {
 //        map.put("limit",selectLimit);
 //
 //        map.put("offset",selectOffset);
-        System.out.println(sql);
+
+
         sql = COUNT_BEFORE +sql + COUNT_AFTER;
+        System.out.println(sql);
+        System.out.println("total:"+namedParameterJdbcTemplate.queryForObject(sql,map,Integer.class));
         return namedParameterJdbcTemplate.queryForObject(sql,map,Integer.class);
     }
     public int updateVacancies(Vacancies vacancies){
