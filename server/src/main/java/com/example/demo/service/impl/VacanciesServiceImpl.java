@@ -10,6 +10,7 @@
     import com.example.demo.dto.vacancies.CompanyVacanciesDto;
     import com.example.demo.dto.vacancies.FindVacanciesDto;
     import com.example.demo.dto.RestDto;
+    import com.example.demo.dto.vacancies.FullVacanciesDto;
     import com.example.demo.dto.vacancies.PageVacanciesDto;
     import com.example.demo.model.vacancies.Vacancies;
     import com.example.demo.service.VacanciesService;
@@ -54,11 +55,11 @@
         }
 
         @Override
-        public Object findVacanciesById(String vacanciesId) {
-           Vacancies vacancies = vacanciesRepository.findById(vacanciesId).orElseThrow(()-> new RuntimeException("vacanciesId:找不到此職缺"));
-            System.out.println(vacancies);
+        public Object findFullVacanciesById(String vacanciesId) {
+            FullVacanciesDto fullVacanciesDto = vacanciesDao.findFullVacanciesById(vacanciesId);
+            System.out.println(fullVacanciesDto);
            RestDto restResponse = RestDto.builder()
-                    .data(vacancies)
+                    .data(fullVacanciesDto)
                     .message("查詢成功")
                     .build();
             return restResponse;

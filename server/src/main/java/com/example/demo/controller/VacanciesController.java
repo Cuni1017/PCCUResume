@@ -31,7 +31,7 @@ public class VacanciesController {
     public ResponseEntity<Object> findVacanciesById(
             @PathVariable String vacanciesId
     ) {
-        return ResponseEntity.ok(VacanciesService.findVacanciesById(vacanciesId));
+        return ResponseEntity.ok(VacanciesService.findFullVacanciesById(vacanciesId));
     }
     @GetMapping("/vacancies/skills")
     public ResponseEntity<Object> findSkills(

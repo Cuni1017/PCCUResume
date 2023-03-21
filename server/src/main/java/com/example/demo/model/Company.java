@@ -39,7 +39,8 @@ public class Company {
     private String companyAddress;
     @Column(name = "company_email")
     private String companyEmail;
-
+    @Column(name = "company_valid_type")
+    private String companyValidType;
 
 
 
