@@ -54,7 +54,7 @@ const CompanyJobs = async (props: any) => {
                 <ContentAction companyName={companyName} />
               </div>
             </div>
-            <JobStateCounter />
+            <JobStateCounter vacancies={vacancies} />
             <div className="flex gap-3 w-full md:max-w-[16rem]">
               <ContentSearchBar />
             </div>

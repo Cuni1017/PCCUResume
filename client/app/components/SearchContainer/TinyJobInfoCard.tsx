@@ -6,7 +6,6 @@ import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlin
 import { getSalaryText } from "@/util/getSalaryText";
 import { Vacancy } from "@/app/components/SearchContainer/JobInfoCard";
 import Tooltip from "@mui/material/Tooltip";
-import MyButton from "../MyButton";
 
 interface Props {
   vacancy: Vacancy;

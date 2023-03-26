@@ -26,7 +26,7 @@ const fetchJobById = async (vacancyId: string) => {
   return res.json();
 };
 
-const JobPage = async (props: any) => {
+const CompanyJobPage = async (props: any) => {
   const { params } = props;
 
   const data = await fetchJobById(params.jobId);
@@ -133,7 +133,7 @@ const JobPage = async (props: any) => {
           <div className="gap-2 hidden md:flex">
             <SaveButton />
             <Link href={`/apply-for-job/${vacanciesId}`}>
-              <MyButton classnames="bg-blue-400 hover:bg-blue-500 text-white text-base">
+              <MyButton classnames="bg-blue-500 hover:bg-blue-400 text-white text-base">
                 立即應徵
               </MyButton>
             </Link>
@@ -152,4 +152,4 @@ const JobPage = async (props: any) => {
   );
 };
 
-export default JobPage;
+export default CompanyJobPage;

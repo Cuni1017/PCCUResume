@@ -13,7 +13,7 @@ import { axiosInstance } from "@/axiosInstance.ts";
 
 const style = {
   width: "100%",
-  maxWidth: 360,
+  // maxWidth: 360,
   bgcolor: "background.paper",
 };
 
@@ -23,15 +23,12 @@ interface Skill {
 }
 
 const SkillPicker = () => {
-  const [data, setData] = useState<number[]>([]);
-  const [searchTerm, setSearchTerm] = useState("");
   const [skills, setSkills] = useState<Skill[]>([]);
-
-  const handleClick = (skillId: number) => {
-    setData([...data, skillId]);
-  };
-
-  console.log(data);
+  const [data, setData] = useState<Skill[]>([
+    { skillId: 1, skillName: "React" },
+  ]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const fetchSkills = async () => {
@@ -41,11 +38,25 @@ const SkillPicker = () => {
     fetchSkills();
   }, []);
 
+  const handleClick = (skillId: number, skillName: string) => {
+    if (data.every((skill) => skill.skillId !== skillId))
+      setData([...data, { skillId, skillName }]);
+  };
+
+  console.log(data);
+
   const renderedListItem = skills.map((skill) => (
     <ListItem
       button
+      divider
       key={skill.skillId}
-      onClick={() => handleClick(skill.skillId)}
+      style={{ display: isOpen ? "flex" : "none" }}
+      onClick={() =>
+        handleClick(
+          parseInt(skill.skillId as unknown as string),
+          skill.skillName
+        )
+      }
     >
       <ListItemText primary={skill.skillName} />
     </ListItem>
@@ -53,61 +64,43 @@ const SkillPicker = () => {
 
   return (
     <>
-      <InputSkillChips chipData={data} />
-      <br />
-      <List
-        sx={style}
-        component="nav"
-        aria-label="skills"
-        // style={{ display: "none" }}
-      >
-        {renderedListItem}
+      <InputSkillChips
+        onClick={() => setIsOpen(!isOpen)}
+        chipData={data}
+        setChipData={setData}
+      />
+      <List sx={style} component="nav" aria-label="skills">
+        <div className="flex flex-col max-h-[400px] overflow-auto">
+          {renderedListItem}
+        </div>
         {/* divider、light */}
-        {/* <ListItem button onClick={handleClick}>
-          <ListItemText primary="Inbox" />
-        </ListItem>
-        <Divider />
-        <ListItem button divider>
-          <ListItemText primary="Drafts" />
-        </ListItem>
-        <ListItem button>
-          <ListItemText primary="Trash" />
-        </ListItem>
-        <Divider light />
-        <ListItem button>
-          <ListItemText primary="Spam" />
-        </ListItem> */}
       </List>
     </>
   );
 };
 
-interface ChipData {
-  key: number;
-  label: string;
-}
-
 const ChipListItem = styled("li")(({ theme }) => ({
   margin: theme.spacing(0.5),
 }));
 
-const InputSkillChips = ({ chipData }: { chipData: any }) => {
-  // const [chipData, setChipData] = React.useState<readonly ChipData[]>([
-  //   { key: 0, label: "Angular" },
-  //   { key: 1, label: "jQuery" },
-  //   { key: 2, label: "Polymer" },
-  //   { key: 3, label: "React" },
-  //   { key: 4, label: "Vue.js" },
-  // ]);
-
-  const handleDelete = (chipToDelete: ChipData) => () => {
+const InputSkillChips = ({
+  onClick,
+  chipData,
+  setChipData,
+}: {
+  onClick: () => void;
+  chipData: any;
+  setChipData: React.Dispatch<React.SetStateAction<Skill[]>>;
+}) => {
+  const handleDelete = (chipToDelete: Skill) => () => {
     setChipData((chips) =>
-      chips.filter((chip) => chip.key !== chipToDelete.key)
+      chips.filter((chip) => chip.skillId !== chipToDelete.skillId)
     );
   };
 
   return (
     <Paper
+      onClick={onClick}
       sx={{
         display: "flex",
         justifyContent: "start",
@@ -115,22 +108,26 @@ const InputSkillChips = ({ chipData }: { chipData: any }) => {
         listStyle: "none",
         p: 0.5,
         m: 0,
+        mb: 1,
       }}
       component="ul"
+      className="cursor-pointer"
     >
-      {chipData.map((data: any) => {
+      {chipData.map((data: Skill) => {
         let icon;
 
-        if (data.label === "React") {
-          icon = <TagFacesIcon />;
-        }
+        // if (data.skillName === "React") {
+        //   icon = <TagFacesIcon />;
+        // }
 
         return (
-          <ChipListItem key={data.number}>
+          <ChipListItem key={data.skillId}>
             <Chip
               icon={icon}
-              label={data.number}
-              onDelete={data.label === "React" ? undefined : handleDelete(data)}
+              label={data.skillName}
+              onDelete={
+                data.skillName === "React" ? undefined : handleDelete(data)
+              }
             />
           </ChipListItem>
         );

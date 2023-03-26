@@ -5,7 +5,7 @@ const JobEditPage = (props: any) => {
 
   return (
     <div>
-      {params.slug}公司 職缺ID為{params.jobId}的編輯頁面
+      {decodeURI(params.slug)}公司 職缺ID為{params.jobId}的編輯頁面
     </div>
   );
 };

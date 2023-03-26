@@ -5,16 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 import LocationFilter from "./LocationFilter";
 import SalaryFilter from "./SalaryFilter";
 import SkillFilter from "./SkillFilter";
-
-const debounce = (callback: any, time: number = 1500) => {
-  let timer: any;
-  return (...args: any) => {
-    clearTimeout(timer);
-    timer = setTimeout(() => {
-      callback(args);
-    }, time);
-  };
-};
+import { debounce } from "@/util/debounce";
 
 const SearchFilterContainer = () => {
   const pathname = usePathname();
@@ -29,8 +20,9 @@ const SearchFilterContainer = () => {
   );
 
   const debounceRouterPush = useCallback(
-    debounce((searchParamsList: Array<string[]>) => {
-      const href = `${pathname}?` + searchParamsList[0]?.sort()?.join("&");
+    debounce((searchParamsList: string[]) => {
+      const href = `${pathname}?` + searchParamsList.sort().join("&");
+      console.log("index router push");
       router.push(href, { forceOptimisticNavigation: true });
     }, 800),
     [pathname]
@@ -38,7 +30,7 @@ const SearchFilterContainer = () => {
 
   useEffect(() => {
     if (!isInit) {
-      debounceRouterPush(searchParamsList);
+      // debounceRouterPush(searchParamsList);
     }
     setIsInit(false);
   }, [debounceRouterPush, searchParamsList]);
@@ -48,6 +40,7 @@ const SearchFilterContainer = () => {
       searchParams
         ?.toString()
         .split("&")
+        .filter((searchParam) => !searchParam.includes("page="))
         .filter((x) => x) !== searchParamsList
     )
       setSearchParamsList(
@@ -62,6 +55,18 @@ const SearchFilterContainer = () => {
     <div className="flex flex-col gap-1">
       <div className="text-sm">篩選條件</div>
       <div className="md:flex gap-2 flex-wrap justify-between md:justify-start grid grid-cols-2">
+        <button
+          onClick={async () => {
+            try {
+              console.log(router.push);
+              await router.push(`/jobs/${Math.floor(Math.random() * 100)}`);
+            } catch (err) {
+              console.log(err);
+            }
+          }}
+        >
+          Test
+        </button>
         <LocationFilter
           searchParamsList={searchParamsList}
           setSearchParamsList={setSearchParamsList}

@@ -1,3 +1,7 @@
+function roundToOne(num: string | number) {
+  return +(Math.round(parseFloat(num + "e+1")) + "e-1");
+}
+
 export function getSalaryText({
   type,
   max,
@@ -8,6 +12,6 @@ export function getSalaryText({
   min: number;
 }) {
   return type === "month"
-    ? `${min / 10000}萬 ~ ${max / 10000}萬 TWD ／ 月`
+    ? `${roundToOne(min / 10000)}萬 ~ ${roundToOne(max / 10000)}萬 TWD ／ 月`
     : `${min} ~ ${max} TWD ／ 時`;
 }

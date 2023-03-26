@@ -2,7 +2,7 @@ import { ChangeEvent, useMemo } from "react";
 import { FormControl, MenuItem, TextField } from "@mui/material";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
-import TaiwanPostalCode from "./data/TaiwanPostalCode.json";
+import TaiwanPostalCode from "@/data/TaiwanPostalCode.json";
 import Grid from "@mui/material/Unstable_Grid2"; //v2
 
 interface Props {

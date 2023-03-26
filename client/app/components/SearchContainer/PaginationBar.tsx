@@ -1,20 +1,32 @@
 "use client";
 import Pagination from "@mui/material/Pagination";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import { useMemo, useEffect } from "react";
 
 interface Props {
-  count: number;
-  page: number;
+  count: number; // 總共頁數
+  page: number; // 目前第幾頁
 }
 
 const PaginationBar = ({ count, page }: Props) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  let searchParamsList = searchParams
-    ?.toString()
-    ?.split("&")
-    .filter((x) => x);
+  let searchParamsList = useMemo(
+    () =>
+      searchParams
+        ?.toString()
+        ?.split("&")
+        .filter((x) => x),
+    [searchParams]
+  );
+
+  useEffect(() => {
+    if (count > 1 && page < count)
+      router.prefetch(
+        `${pathname}?${searchParamsList?.join("&")}&page=${page + 1}`
+      );
+  }, [count, page, pathname, router, searchParamsList]);
 
   const handleChange = (e: React.ChangeEvent<unknown>, page: number) => {
     let newSearchParamsList = searchParamsList ? [...searchParamsList] : [];
@@ -27,6 +39,8 @@ const PaginationBar = ({ count, page }: Props) => {
     router.push(`${pathname}?${newSearchParamsList?.join("&")}`);
   };
 
+  if (count === 0) return null;
+  if (count < page) return null;
   return (
     <Pagination
       count={count}

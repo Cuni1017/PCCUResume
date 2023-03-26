@@ -1,4 +1,5 @@
 "use client";
+
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import LocalAtmOutlinedIcon from "@mui/icons-material/LocalAtmOutlined";
@@ -18,13 +19,6 @@ const Detail = ({ vacancy }: { vacancy: Vacancy }) => {
     vacanciesEducation,
     county,
   } = vacancy;
-
-  const renderedSalaryText =
-    vacanciesSalaryType === "month"
-      ? `${vacanciesDownSalary / 10000}萬 ~ ${
-          vacanciesTopSalary / 10000
-        }萬 TWD ／ 月`
-      : `${vacanciesDownSalary} ~ ${vacanciesTopSalary} TWD ／ 時`;
 
   return (
     <div className="flex flex-col gap-1">

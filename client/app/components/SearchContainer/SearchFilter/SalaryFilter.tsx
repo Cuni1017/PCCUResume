@@ -7,20 +7,11 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import DeleteForeverSharpIcon from "@mui/icons-material/DeleteForeverSharp";
 import SearchFilterModel from "./shared/Model";
 import Slider from "@mui/material/Slider";
+import { debounce } from "@/util/debounce";
 
 function valuetext(value: number) {
   return `${value} TWD`;
 }
-
-const debounce = (callback: any, time: number) => {
-  let timer: any;
-  return (...args: any) => {
-    clearTimeout(timer);
-    timer = setTimeout(() => {
-      callback(args);
-    }, time);
-  };
-};
 
 const maxSalary = 10000000;
 
@@ -29,7 +20,7 @@ const SalaryFilter = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [salaryRange, setSalaryRange] = useState<number[]>([0, maxSalary]);
-  let searchParamsList = useMemo(
+  const searchParamsList = useMemo(
     () =>
       searchParams
         ?.toString()
@@ -38,26 +29,18 @@ const SalaryFilter = () => {
     [searchParams]
   );
 
-  const handleSliderChange = (event: Event, newValue: number | number[]) => {
-    setSalaryRange(newValue as number[]);
-  };
-
   useEffect(() => {
     if (!searchParams) return;
     const minValue = parseInt(searchParams.get("salary_range[min]") || "0");
     const maxValue = parseInt(
-      searchParams.get("salary_range[max]") || "10000000"
+      searchParams.get("salary_range[max]") || `${maxSalary}`
     );
     if (minValue !== salaryRange[0] || maxValue !== salaryRange[1])
       setSalaryRange([minValue, maxValue]);
   }, [searchParams]);
 
-  useEffect(() => {
-    debounceSalaryRangeChange(salaryRange);
-  }, [salaryRange]);
-
   const debounceSalaryRangeChange = useCallback(
-    debounce((params: Array<number[]>) => {
+    debounce((salaryRange: number[]) => {
       let newSearchParamsList = searchParamsList ? [...searchParamsList] : [];
       if (!searchParams || !newSearchParamsList) return;
       const minIndex = newSearchParamsList.findIndex((searchParam) =>
@@ -67,73 +50,85 @@ const SalaryFilter = () => {
         searchParam.includes(encodeURI("salary_range[max]"))
       );
 
-      params[0][0] === 0
+      salaryRange[0] === 0
         ? (newSearchParamsList = newSearchParamsList.filter(
             (searchParam) =>
               !searchParam.includes(encodeURI("salary_range[min]"))
           ))
         : minIndex === -1
         ? newSearchParamsList.push(
-            encodeURI(`salary_range[min]=${params[0][0]}`)
+            encodeURI(`salary_range[min]=${salaryRange[0]}`)
           )
         : newSearchParamsList.splice(
             minIndex,
             1,
-            encodeURI(`salary_range[min]=${params[0][0]}`)
+            encodeURI(`salary_range[min]=${salaryRange[0]}`)
           );
 
-      params[0][1] === maxSalary || params[0][1] === 0
+      salaryRange[1] === maxSalary || salaryRange[1] === 0
         ? (newSearchParamsList = newSearchParamsList.filter(
             (searchParam) =>
               !searchParam.includes(encodeURI("salary_range[max]"))
           ))
         : maxIndex === -1
         ? newSearchParamsList.push(
-            encodeURI(`salary_range[max]=${params[0][1]}`)
+            encodeURI(`salary_range[max]=${salaryRange[1]}`)
           )
         : newSearchParamsList.splice(
             maxIndex,
             1,
-            encodeURI(`salary_range[max]=${params[0][1]}`)
+            encodeURI(`salary_range[max]=${salaryRange[1]}`)
           );
 
-      router.push(`${pathname}?${newSearchParamsList?.join("&")}`);
-    }, 800),
+      console.log("salaryFilter router push");
+      router.push(`${pathname}?${newSearchParamsList?.sort()?.join("&")}`);
+    }, 300),
     [pathname, searchParamsList]
   );
+
+  useEffect(() => {
+    // debounceSalaryRangeChange(salaryRange);
+  }, [debounceSalaryRangeChange, salaryRange]);
+
+  const handleSliderChange = (event: Event, newValue: number | number[]) => {
+    setSalaryRange(newValue as number[]);
+  };
 
   const handleTextChange = (e: ChangeEvent<HTMLInputElement>) => {
     let newValue = [...salaryRange];
     e.target.name === "salary_range[min]"
-      ? (newValue[0] = parseInt(e.target.value) | 0)
-      : (newValue[1] = parseInt(e.target.value) | 0);
+      ? (newValue[0] = parseInt(e.target.value) || 0)
+      : (newValue[1] = parseInt(e.target.value) || maxSalary);
 
     if (newValue[0] < 0) newValue[0] = 0;
     if (newValue[1] > maxSalary) newValue[1] = maxSalary;
     setSalaryRange(newValue);
   };
 
-  const handleSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    let salaryTypeIndex = searchParamsList!.findIndex((searchParam) =>
-      searchParam.includes(e.target.name)
-    );
+  const handleSelectChange = useCallback(
+    (e: ChangeEvent<HTMLSelectElement>) => {
+      const newSearchParamsList = searchParamsList ? [...searchParamsList] : [];
 
-    if (!searchParamsList) return;
+      let salaryTypeIndex = newSearchParamsList!.findIndex((searchParam) =>
+        searchParam.includes(e.target.name)
+      );
 
-    if (salaryTypeIndex !== -1)
-      e.target.value === "All"
-        ? searchParamsList.splice(salaryTypeIndex, 1)
-        : (searchParamsList[
-            salaryTypeIndex
-          ] = `${e.target.name}=${e.target.value}`);
-    else searchParamsList.push(`${e.target.name}=${e.target.value}`);
+      if (salaryTypeIndex !== -1)
+        e.target.value === "All"
+          ? newSearchParamsList.splice(salaryTypeIndex, 1)
+          : (newSearchParamsList[
+              salaryTypeIndex
+            ] = `${e.target.name}=${e.target.value}`);
+      else newSearchParamsList.push(`${e.target.name}=${e.target.value}`);
 
-    const href = `${pathname}?` + searchParamsList?.join("&");
-    router.push(href);
-  };
+      const href = `${pathname}?` + newSearchParamsList?.sort()?.join("&");
+      router.push(href);
+    },
+    [pathname, router, searchParamsList]
+  );
 
-  const handleCancelSalaryFilter = () => {
-    searchParamsList = searchParamsList?.filter(
+  const handleCancelSalaryFilter = useCallback(() => {
+    const newSearchParamsList = searchParamsList?.filter(
       (searchParam) =>
         !searchParam.includes("salary_type") &&
         !searchParam.includes("salary_currency") &&
@@ -141,9 +136,9 @@ const SalaryFilter = () => {
         !searchParam.includes(encodeURI("salary_range[max]"))
     );
 
-    const href = `${pathname}?` + searchParamsList?.join("&");
+    const href = `${pathname}?` + newSearchParamsList?.sort()?.join("&");
     router.push(href);
-  };
+  }, [pathname, router, searchParamsList]);
 
   return (
     <SearchFilterModel label="薪資" align="right-0 md:left-0 md:w-[450px]">

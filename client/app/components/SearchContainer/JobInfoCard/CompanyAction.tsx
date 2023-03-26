@@ -16,10 +16,10 @@ import MyModal from "../../MyModal";
 import MyButton from "../../MyButton";
 
 const CompanyAction = ({ vacancy }: { vacancy: Vacancy }) => {
-  const { companyName, vacanciesId } = vacancy;
+  const { companyName, vacanciesId, vacanciesWatchType } = vacancy;
 
   const [isOpen, setIsOpen] = useState(false); //DeleteCheckModal
-  const vacancieState: "open" | "pause" | "hidden" = "open";
+  const vacancieState: "公開" | "暫停" | "隱藏" = vacanciesWatchType;
 
   const handleVisible = () => {};
   const handleToggleState = () => {};
@@ -31,13 +31,13 @@ const CompanyAction = ({ vacancy }: { vacancy: Vacancy }) => {
     <div className="bg-gray-100 px-5 py-2 flex justify-between">
       <div></div>
       <div className="flex gap-1">
-        {vacancieState === "hidden" ? (
+        {vacancieState === "隱藏" ? (
           <div className="border-solid border p-1 rounded text-sm text-[#aaa]">
             隱藏
           </div>
         ) : null}
 
-        {vacancieState === "pause" ? (
+        {vacancieState === "暫停" ? (
           <div className="border-solid border p-1 rounded text-sm text-[#e6bc6b] bg-[hsla(40,71%,66%,.1)]">
             暫停
           </div>
@@ -61,7 +61,7 @@ const CompanyAction = ({ vacancy }: { vacancy: Vacancy }) => {
           </Tooltip>
         </Link>
 
-        {vacancieState === "hidden" ? (
+        {vacancieState === "隱藏" ? (
           <Tooltip title="取消隱藏">
             <div className="flex items-center gap-1 cursor-pointer">
               <VisibilityOutlinedIcon />
@@ -75,7 +75,7 @@ const CompanyAction = ({ vacancy }: { vacancy: Vacancy }) => {
           </Tooltip>
         )}
 
-        {vacancieState === "open" || vacancieState === "hidden" ? (
+        {vacancieState === "公開" || vacancieState === "隱藏" ? (
           <Tooltip title="暫停">
             <div className="flex items-center gap-1 cursor-pointer">
               <PauseIcon />

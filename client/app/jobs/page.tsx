@@ -1,6 +1,7 @@
 import JobInfoCard, {
   Vacancy,
 } from "../components/SearchContainer/JobInfoCard";
+import NotFoundCard from "../components/SearchContainer/NotFoundCard";
 import PaginationBar from "../components/SearchContainer/PaginationBar";
 
 const fetchJobs = async (searchParams: any) => {
@@ -13,6 +14,8 @@ const fetchJobs = async (searchParams: any) => {
     ["salary_range[min]"]: min_salary,
     page,
   } = searchParams;
+
+  if (page < 1) return null;
 
   const locations = location
     ? location instanceof Array
@@ -42,7 +45,7 @@ const fetchJobs = async (searchParams: any) => {
   const res = await fetch(url, {
     method: "GET",
     headers: {
-      "Cache-Control": "no-cache",
+      "Cache-Control": "no-store",
       "Content-Type": "application/json",
     },
   });
@@ -55,27 +58,44 @@ const fetchJobs = async (searchParams: any) => {
 };
 
 const JobsSearchHomePage = async (props: any) => {
-  const { params, searchParams } = props;
+  const { searchParams } = props;
 
-  const data = await fetchJobs(searchParams);
-  const totalJobs = data.data.total;
-  const eachPageJobNumber = data.data.size;
-  // const currentPage = data.data.page;
-  const vacancies: Vacancy[] = data.data.companyVacanciesDto;
+  const res = await fetchJobs(searchParams);
+  if (!res) return <NotFoundCard />;
 
-  const renderedJobs = vacancies.map((vacancy) => {
-    return <JobInfoCard key={vacancy.vacanciesId} vacancy={vacancy} />;
-  });
+  const totalJobs = res.data.total;
+  const eachPageJobQuantity = res.data.size;
+  const vacancies: Vacancy[] = res.data.companyVacanciesDto;
+
+  const totalPage = Math.ceil(totalJobs / eachPageJobQuantity);
+  const currentPage = searchParams.page
+    ? searchParams.page < 0
+      ? 1
+      : parseInt(searchParams.page)
+    : 1;
 
   return (
     <>
-      {renderedJobs}
-      <div className="flex justify-center mb-10">
-        <PaginationBar
-          count={Math.ceil(totalJobs / eachPageJobNumber)}
-          page={searchParams.page ? parseInt(searchParams.page) : 1}
-        />
-      </div>
+      {searchParams.page < 1 || searchParams.page > totalPage ? (
+        <NotFoundCard />
+      ) : (
+        <>
+          {vacancies.length > 0 ? (
+            <>
+              {vacancies.map((vacancy) => {
+                return (
+                  <JobInfoCard key={vacancy.vacanciesId} vacancy={vacancy} />
+                );
+              })}
+              <div className="flex justify-center mb-10">
+                <PaginationBar count={totalPage} page={currentPage} />
+              </div>
+            </>
+          ) : (
+            <NotFoundCard />
+          )}
+        </>
+      )}
     </>
   );
 };

@@ -6,7 +6,7 @@ import FormGroup from "@mui/material/FormGroup";
 import SearchFilterModel from "./shared/Model";
 import SearchBar from "./shared/SearchBar";
 import CheckBoxOption from "./shared/CheckBoxOption";
-import Techs from "../../data/Techs.json";
+import Techs from "@/data/Techs.json";
 
 const SkillFilter = ({
   searchParamsList,

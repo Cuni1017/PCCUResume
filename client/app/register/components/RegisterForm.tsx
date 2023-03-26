@@ -2,7 +2,7 @@ import { ChangeEvent, useCallback } from "react";
 import TextField from "@mui/material/TextField";
 import { Autocomplete, Button } from "@mui/material";
 import AddressPicker from "../../components/AddressPicker";
-import TaiwanPostalCode from "../../components/data/TaiwanPostalCode.json";
+import TaiwanPostalCode from "@/data/TaiwanPostalCode.json";
 import { SelectChangeEvent } from "@mui/material/Select";
 import Grid from "@mui/material/Unstable_Grid2"; //v2
 import { CircularProgress } from "@mui/material";

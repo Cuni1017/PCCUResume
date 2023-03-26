@@ -5,7 +5,7 @@ import SearchFilterModel from "./shared/Model";
 import SearchBar from "./shared/SearchBar";
 import CheckBoxOption from "./shared/CheckBoxOption";
 import FormGroup from "@mui/material/FormGroup";
-import TaiwanPostalCode from "@/app/components/data/TaiwanPostalCode.json";
+import TaiwanPostalCode from "@/data/TaiwanPostalCode.json";
 import { useSearchParams } from "next/navigation";
 
 const LocationFilter = ({

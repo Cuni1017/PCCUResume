@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Card from "@/app/components/Card";
 import SkillPicker from "../../components/SkillPicker";
+import { OutlinedInput } from "@mui/material";
 
 const NewJobPage = (props: any) => {
   const { params } = props;
@@ -34,10 +35,26 @@ const NewJobPage = (props: any) => {
       <div className="flex flex-col md:flex-row gap-5">
         <Card classnames="w-full md:w-[70%]">
           <div className="p-5 flex flex-col gap-3">
-            <div>基本資訊</div>
+            <div className="mb-1">基本資訊</div>
             <div>
               <div className="text-sm flex gap-1">
-                職務 <div className="text-xs text-red-500">*</div>
+                職務名稱 <div className="text-xs text-red-500">*</div>
+              </div>
+              <div>
+                <OutlinedInput fullWidth size="small" />
+              </div>
+            </div>
+            <div>
+              <div className="text-sm flex gap-1">
+                職務部門 <div className="text-xs text-red-500">*</div>
+              </div>
+              <div>
+                <OutlinedInput fullWidth size="small" />
+              </div>
+            </div>
+            <div>
+              <div className="text-sm flex gap-1">
+                技能 <div className="text-xs text-red-500">*</div>
               </div>
               <div>
                 <SkillPicker />
@@ -47,7 +64,7 @@ const NewJobPage = (props: any) => {
         </Card>
         <div>推薦文章</div>
       </div>
-      {params.slug}公司 新增職缺頁面
+      {decodeURI(params.slug)}公司 新增職缺頁面
     </div>
   );
 };

@@ -102,7 +102,10 @@ const ValidateForm = ({
             color="info"
             onClick={handleSend}
             disabled={
-              resendTime !== 0 || sending || !formData.email.includes(".com")
+              resendTime !== 0 ||
+              sending ||
+              !formData.email.includes(".com") ||
+              !formData.email.includes("@")
             }
             sx={{ width: "100%", maxWidth: "115px" }}
           >
@@ -121,6 +124,7 @@ const ValidateForm = ({
         disabled={
           CAPTCHA.length < 6 ||
           !formData.email.includes(".com") ||
+          !formData.email.includes("@") ||
           sendTimes === 0
         }
       >
