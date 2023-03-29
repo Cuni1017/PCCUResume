@@ -336,13 +336,13 @@ const PAEditCard = ({
         <MyButton
           disabled={disabled}
           onClick={() => handleSave(data.id, data)}
-          classNames="w-[100px] bg-blue-500 disabled:cursor-not-allowed disabled:bg-gray-400 hover:bg-blue-600 text-white"
+          classnames="w-[100px] bg-blue-500 disabled:cursor-not-allowed disabled:bg-gray-400 hover:bg-blue-600 text-white"
         >
           儲存
         </MyButton>
         <MyButton
           onClick={() => setIsEditing(null)}
-          classNames="w-[100px] hover:bg-gray-300"
+          classnames="w-[100px] hover:bg-gray-300"
         >
           取消
         </MyButton>

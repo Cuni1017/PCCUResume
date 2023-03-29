@@ -35,25 +35,25 @@ const CardFooter = ({ resume, userId }: { resume: Resume; userId: string }) => {
   return (
     <>
       <Link href={`/resumes/${resume.resumeId}/editor`}>
-        <MyButton classNames="text-white bg-[#13af69] hover:bg-[#1bd380] focus:bg-[#0e7d4b] focus:border-[#063822]">
+        <MyButton classnames="text-white bg-[#13af69] hover:bg-[#1bd380] focus:bg-[#0e7d4b] focus:border-[#063822]">
           編輯
         </MyButton>
       </Link>
       <Link href={`/resumes/${resume.resumeId}/editor`}>
-        <MyButton classNames="hover:bg-gray-200">檢視</MyButton>
+        <MyButton classnames="hover:bg-gray-200">檢視</MyButton>
       </Link>
       <div className="ml-auto flex gap-2">
         <MyButton
           onClick={() => {
             alert("目前暫無功能");
           }}
-          classNames="h-[33px] flex items-center hover:bg-gray-200"
+          classnames="h-[33px] flex items-center hover:bg-gray-200"
         >
           <SettingsIcon />
         </MyButton>
         <MyButton
           onClick={handleOpen}
-          classNames="hover:bg-[#e25454] hover:text-white h-[33px] flex items-center"
+          classnames="hover:bg-[#e25454] hover:text-white h-[33px] flex items-center"
         >
           <DeleteForeverIcon />
         </MyButton>
@@ -66,11 +66,11 @@ const CardFooter = ({ resume, userId }: { resume: Resume; userId: string }) => {
           <div className="flex gap-2 p-2 justify-between">
             <MyButton
               onClick={() => handleDelete()}
-              classNames="bg-[#e25555] hover:bg-[#df6e6e]  text-white h-[33px] flex items-center"
+              classnames="bg-[#e25555] hover:bg-[#df6e6e]  text-white h-[33px] flex items-center"
             >
               確認刪除
             </MyButton>
-            <MyButton onClick={handleClose} classNames="hover:bg-gray-200">
+            <MyButton onClick={handleClose} classnames="hover:bg-gray-200">
               取消
             </MyButton>
           </div>

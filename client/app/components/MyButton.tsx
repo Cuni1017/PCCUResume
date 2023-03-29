@@ -2,18 +2,18 @@ import React from "react";
 
 export const Button = ({
   children,
-  classNames,
+  classnames,
   ...rest
 }: {
   children: React.ReactNode;
-  classNames: string;
+  classnames: string;
   [key: string]: any;
 }) => {
   return (
     <button
       {...rest}
       className={`py-2 px-3 border-none disabled:bg-slate-100 cursor-pointer rounded ${
-        classNames ? classNames : ""
+        classnames ? classnames : ""
       }`}
     >
       {children}

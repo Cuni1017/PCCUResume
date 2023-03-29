@@ -1,11 +1,10 @@
 "use client";
 
 import React, { useCallback, useEffect, useState } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import InputAdornment from "@mui/material/InputAdornment";
-import SwitchSection from "./SwitchSection";
 
 const debounce = (callback: any, time: number = 1500) => {
   let timer: any;
@@ -22,6 +21,7 @@ const SearchBar = () => {
   const pathname = usePathname();
   const [searchTerm, setSerchTerm] = useState("");
   const [isTyping, setIsTyping] = useState(false); // 判斷是否正在輸入 for 新注音或日文等輸入法
+  let searchParams = useSearchParams()?.toString();
 
   useEffect(() => {
     if (pathname && pathname !== "/jobs")
@@ -35,9 +35,11 @@ const SearchBar = () => {
 
   const handlePathnameChange = useCallback(
     debounce((searchTerm: string) => {
-      router.replace(`/jobs/${searchTerm}`);
+      router.push(`/jobs/${searchTerm}?${searchParams}`, {
+        forceOptimisticNavigation: true,
+      });
     }, 800),
-    []
+    [searchParams]
   );
 
   useEffect(() => {
@@ -54,6 +56,7 @@ const SearchBar = () => {
         onCompositionStart={() => {
           setIsTyping(true);
         }}
+        onCompositionEnd={() => setIsTyping(false)}
         InputProps={{
           style: {
             height: "44px",
@@ -65,7 +68,6 @@ const SearchBar = () => {
           ),
         }}
         placeholder="搜尋職稱、技能、公司或任何關鍵字"
-        onCompositionEnd={() => setIsTyping(false)}
         name="searchTerm"
       />
     </div>

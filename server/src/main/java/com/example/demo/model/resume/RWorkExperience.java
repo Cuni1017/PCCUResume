@@ -29,7 +29,7 @@ public class RWorkExperience {
     @Column(name = "company_name")
     public String companyName;
 
-    @Column(name = "start_timeend_time")
+    @Column(name = "start_time")
     public LocalDate startTime;
     @Column(name = "end_time")
     public String endTime;

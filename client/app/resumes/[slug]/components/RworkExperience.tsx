@@ -322,13 +322,13 @@ const WorkExperienceEditCard = ({
         <MyButton
           disabled={disabled}
           onClick={() => handleSave(data.id, data)}
-          classNames="w-[100px] bg-blue-500 disabled:cursor-not-allowed disabled:bg-gray-400 hover:bg-blue-600 text-white"
+          classnames="w-[100px] bg-blue-500 disabled:cursor-not-allowed disabled:bg-gray-400 hover:bg-blue-600 text-white"
         >
           儲存
         </MyButton>
         <MyButton
           onClick={() => setIsEditing(null)}
-          classNames="w-[100px] hover:bg-gray-300"
+          classnames="w-[100px] hover:bg-gray-300"
         >
           取消
         </MyButton>
@@ -392,13 +392,13 @@ const WorkExperienceCard = ({
                   handleDelete(WE.id);
                   setOpen(false);
                 }}
-                classNames="bg-[#e25555] hover:bg-red-800 text-white w-[100px]"
+                classnames="bg-[#e25555] hover:bg-red-800 text-white w-[100px]"
               >
                 確定
               </MyButton>
               <MyButton
                 onClick={handleClose}
-                classNames="hover:bg-gray-300 w-[100px]"
+                classnames="hover:bg-gray-300 w-[100px]"
               >
                 取消
               </MyButton>

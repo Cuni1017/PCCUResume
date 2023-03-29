@@ -1,8 +1,17 @@
-import React from "react";
+import CompanyHeader from "./components/CompanyHeader/CompanyHeader";
 
 const CompanyPage = (props: any) => {
-  const { params, searchParams } = props;
-  return <div>{params.slug} 公司頁面</div>;
+  const {
+    params: { slug: companyName },
+    searchParams,
+  } = props;
+
+  return (
+    <div>
+      <CompanyHeader page="/" companyName={companyName} />
+      {decodeURI(companyName)} 公司介紹頁面
+    </div>
+  );
 };
 
 export default CompanyPage;

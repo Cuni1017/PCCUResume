@@ -31,13 +31,13 @@ const DeleteCheckModal = ({ open, onDelete, onClose }: Props) => {
           <div className="flex justify-center gap-10 mt-5">
             <MyButton
               onClick={onDelete}
-              classNames="bg-[#e25555] hover:bg-red-800 text-white w-[100px]"
+              classnames="bg-[#e25555] hover:bg-red-800 text-white w-[100px]"
             >
               確定
             </MyButton>
             <MyButton
               onClick={onClose}
-              classNames="hover:bg-gray-300 w-[100px]"
+              classnames="hover:bg-gray-300 w-[100px]"
             >
               取消
             </MyButton>
