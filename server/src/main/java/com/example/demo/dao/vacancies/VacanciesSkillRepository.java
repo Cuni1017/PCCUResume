@@ -12,6 +12,6 @@ import org.springframework.stereotype.Repository;
 public interface VacanciesSkillRepository extends JpaRepository<VacanciesSkill,String> {
     @Modifying
     @Transactional
-    @Query(value = "DELETE FROM Vacancies_skill vs WHERE vs.vacancies_id = :vacanciesId",nativeQuery = true)
+    @Query(value = "DELETE FROM vacancies_skill vs WHERE vs.vacancies_id = :vacanciesId",nativeQuery = true)
     void deleteByVacanciesId(@Param("vacanciesId") String vacanciesId);
 }
