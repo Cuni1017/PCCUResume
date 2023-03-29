@@ -12,4 +12,6 @@ public interface CompanyService {
 
 
     Object updateVacancies(String companyName, String vacanciesId, VacanciesCategory vacanciesCategory);
+
+    Object deleteVacancies(String companyName, String vacanciesId);
 }

@@ -90,13 +90,12 @@ public class RegisterServiceImpl implements RegisterService {
         String companyId  = getId(companyRepository,"Company");
         Company company   = companyBuilder(request);
 
-        User    user      = User.builder()
+        User user = User.builder()
                 .id(companyId)
                 .username(request.getCompanyUsername())
                 .email(request.getCompanyEmail())
                 .password(passwordEncoder.encode(request.getCompanyPassword()))
                 .role(Role.COMPANY)
-
                 .build();
 
         userRepository.save(user);
@@ -225,7 +224,7 @@ public class RegisterServiceImpl implements RegisterService {
 
             String message = "pccu實習驗證信箱";
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
-            messageHelper.setFrom(userEmail);
+            messageHelper.setFrom(MikeEmail.email.myEmail.toString());
             messageHelper.setTo(userEmail);
             messageHelper.setSubject(message);
             messageHelper.setText(random);

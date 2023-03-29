@@ -17,13 +17,13 @@ import com.example.demo.dto.vacancies.VacanciesDto;
 import com.example.demo.model.Company;
 import com.example.demo.model.County;
 import com.example.demo.model.Skill;
-import com.example.demo.model.vacancies.Vacancies;
-import com.example.demo.model.vacancies.VacanciesCounty;
-import com.example.demo.model.vacancies.VacanciesSkill;
+import com.example.demo.model.vacancies.*;
 import com.example.demo.service.CompanyService;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -31,6 +31,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -42,10 +43,11 @@ public class CompanyServiceImpl implements CompanyService {
     private final CountyRepository countyRepository;
     private final SkillRepository skillRepository;
     private final CompanyDao companyDao;
+    private final VacanciesDao vacanciesDao;
     public static final String NOT_CHECK = "審核中";
     @Override
     public Object createVacancies(String companyName,VacanciesCategory vacanciesCategory) {
-        String vacanciesId = getId(vacanciesCountyRepository,"V",1);
+        String vacanciesId = getId(vacanciesRepository,"V",1);
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu/MM/dd");
         LocalDate localDate = LocalDate.now();
         Company company =companyRepository.findCompanyByCompanyName(companyName);
@@ -75,17 +77,24 @@ public class CompanyServiceImpl implements CompanyService {
                 .vacanciesWatchType(vacanciesCategory.getVacanciesWatchType())
                 .build();
         for(int i = 0;i < (vacanciesCategory.getCounty().size());i++){
-            VacanciesCounty vacanciesCounty =VacanciesCounty.builder()
-                    .countyId(vacanciesCategory.getCounty().get(i))
+            VacanciesCountyId vacanciesCountyId = VacanciesCountyId.builder()
                     .vacanciesId(vacanciesId)
+                    .countyId(vacanciesCategory.getCounty().get(i))
+                    .build();
+            VacanciesCounty vacanciesCounty =VacanciesCounty.builder()
+                    .vacanciesCountyId(vacanciesCountyId)
                     .build();
             vacanciesCountyRepository.save(vacanciesCounty);
         }
         for(int i = 0;i < (vacanciesCategory.getSkill().size());i++){
+            VacanciesSkillId vacanciesSkillId =VacanciesSkillId.builder()
+                    .vacanciesId(vacanciesId)
+                    .skillId(vacanciesCategory.getSkill().get(i))
+                    .build();
             VacanciesSkill vacanciesSkill = VacanciesSkill.builder()
-                            .vacanciesId(vacanciesId)
-                            .skillId(vacanciesCategory.getSkill().get(i))
+                            .vacanciesSkillId(vacanciesSkillId)
                             .build();
+            System.out.println(vacanciesSkill);
             vacanciesSkillRepository.save(vacanciesSkill);
         }
         vacanciesRepository.save(vacancies);
@@ -148,8 +157,10 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public Object updateVacancies(String companyName, String vacanciesId, VacanciesCategory vacanciesCategory) {
+        Vacancies selectVacancies =vacanciesRepository.findById(vacanciesId).orElseThrow(() -> new RuntimeException("vacanciesId:找不到職缺"));
         Vacancies vacancies = Vacancies.builder()
                 .vacanciesId(vacanciesId)
+                .companyId(selectVacancies.getCompanyId())
                 .vacanciesName(vacanciesCategory.getVacanciesName())
                 .vacanciesTime(vacanciesCategory.getVacanciesTime())
                 .vacanciesWorkExperience(vacanciesCategory.getVacanciesWorkExperience())
@@ -157,6 +168,7 @@ public class CompanyServiceImpl implements CompanyService {
                 .vacanciesDepartment(vacanciesCategory.getVacanciesDepartment())
                 .vacanciesOther(vacanciesCategory.getVacanciesOther())
                 .vacanciesSafe(vacanciesCategory.getVacanciesSafe())
+                .vacanciesCreateTime(selectVacancies.getVacanciesCreateTime())
                 .vacanciesDistrict(vacanciesCategory.getVacanciesDistrict())
                 .vacanciesAddress(vacanciesCategory.getVacanciesAddress())
                 .vacanciesSalaryType(vacanciesCategory.getVacanciesSalaryType())
@@ -164,27 +176,62 @@ public class CompanyServiceImpl implements CompanyService {
                 .vacanciesDownSalary(vacanciesCategory.getVacanciesDownSalary())
                 .vacanciesDescription(vacanciesCategory.getVacanciesDescription())
                 .vacanciesRequirement(vacanciesCategory.getVacanciesRequirement())
+                .applyCount(selectVacancies.getApplyCount())
                 .vacanciesQuantity(vacanciesCategory.getVacanciesQuantity())
+                .vacanciesView(selectVacancies.getVacanciesView())
                 .teacherValidType(NOT_CHECK)
                 .vacanciesCondition(vacanciesCategory.getVacanciesCondition())
                 .vacanciesWatchType(vacanciesCategory.getVacanciesWatchType())
                 .build();
-//        int row = VaupdateVacancies(vacancies);
-//        for(int i = 0;i < (vacanciesCategory.getCounty().size());i++){
-//            VacanciesCounty vacanciesCounty =VacanciesCounty.builder()
-//                    .countyId(vacanciesCategory.getCounty().get(i))
-//                    .vacanciesId(vacanciesId)
-//                    .build();
-//            vacanciesCountyRepository.save(vacanciesCounty);
-//        }
-//        for(int i = 0;i < (vacanciesCategory.getSkill().size());i++){
-//            VacanciesSkill vacanciesSkill = VacanciesSkill.builder()
-//                    .vacanciesId(vacanciesId)
-//                    .skillId(vacanciesCategory.getSkill().get(i))
-//                    .build();
-//            vacanciesSkillRepository.save(vacanciesSkill);
-//        }
-        return null;
+        vacanciesRepository.save(vacancies);
+        vacanciesSkillRepository.deleteByVacanciesId(vacanciesId);
+        vacanciesCountyRepository.deleteByVacanciesId(vacanciesId);
+
+        for(int i = 0;i < (vacanciesCategory.getCounty().size());i++){
+            VacanciesCountyId vacanciesCountyId = VacanciesCountyId.builder()
+                    .vacanciesId(vacanciesId)
+                    .countyId(vacanciesCategory.getCounty().get(i))
+                    .build();
+            VacanciesCounty vacanciesCounty =VacanciesCounty.builder()
+                    .vacanciesCountyId(vacanciesCountyId)
+                    .build();
+            vacanciesCountyRepository.save(vacanciesCounty);
+        }
+        for(int i = 0;i < (vacanciesCategory.getSkill().size());i++){
+            VacanciesSkillId vacanciesSkillId =VacanciesSkillId.builder()
+                    .vacanciesId(vacanciesId)
+                    .skillId(vacanciesCategory.getSkill().get(i))
+                    .build();
+            VacanciesSkill vacanciesSkill = VacanciesSkill.builder()
+                    .vacanciesSkillId(vacanciesSkillId)
+                    .build();
+            System.out.println(vacanciesSkill);
+            vacanciesSkillRepository.save(vacanciesSkill);
+        }
+        VacanciesDto vacanciesDto =VacanciesDto.builder()
+                .county(vacanciesCategory.getCounty())
+                .vacancies(vacancies)
+                .skills(vacanciesCategory.getSkill())
+                .build();
+        RestDto restDto = RestDto.builder()
+                .data(vacanciesDto)
+                .message("更新成功")
+                .build();
+        return restDto;
+    }
+    @Transactional
+    @Modifying
+    @Override
+    public Object deleteVacancies(String companyName, String vacanciesId) {
+        vacanciesRepository.deleteById(vacanciesId);
+        vacanciesSkillRepository.deleteByVacanciesId(vacanciesId);
+        vacanciesCountyRepository.deleteByVacanciesId(vacanciesId);
+        RestDto restDto = RestDto.builder()
+                .data(vacanciesId)
+                .message("vacanciesId刪除成功")
+                .build();
+        return restDto;
+
     }
 
 

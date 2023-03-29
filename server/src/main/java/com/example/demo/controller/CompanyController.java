@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 public class CompanyController {
     private final CompanyService companyService;
     @GetMapping("/company/{companyName}/vacancies")
-    public ResponseEntity<Object> getVacancies(
+    public ResponseEntity<Object> findVacancies(
             @PathVariable String companyName,
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int limit
@@ -32,5 +32,12 @@ public class CompanyController {
             @RequestBody VacanciesCategory vacanciesCategory
     ) {
         return ResponseEntity.ok(companyService.updateVacancies(companyName,vacanciesId,vacanciesCategory));
+    }
+    @DeleteMapping("/company/{companyName}/vacancies/{vacanciesId}")
+    public ResponseEntity<Object> deleteVacancies(
+            @PathVariable String companyName,
+            @PathVariable String vacanciesId
+    ) {
+        return ResponseEntity.ok(companyService.deleteVacancies(companyName,vacanciesId));
     }
 }

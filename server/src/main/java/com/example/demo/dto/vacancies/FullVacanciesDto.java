@@ -27,3 +27,4 @@ public class FullVacanciesDto {
    private String skills;
    private String county;
 }
+
