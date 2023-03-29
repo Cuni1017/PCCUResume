@@ -19,7 +19,7 @@ public class ApplyForJobController {
     ){
         return ResponseEntity.ok(applyForJobService.findUserResume(userId,vacanciesId));
     }
-    @PostMapping("/student/{userId}/resumeId}/apply-for-job/{companyId}/{{vacanciesId}")
+    @PostMapping("/student/{userId}/{resumeId}/apply-for-job/{companyId}/{vacanciesId}")
     public ResponseEntity<Object> createApply(
             @PathVariable String userId,
             @PathVariable String companyId,
