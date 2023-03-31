@@ -3,6 +3,7 @@ package com.example.demo.dao.apply;
 import com.example.demo.dto.ApplyUserDto;
 import com.example.demo.dto.applyforjob.ApplyCompanyDto;
 import com.example.demo.dto.vacancies.CompanyVacanciesDto;
+import com.example.demo.model.vacancies.Vacancies;
 import com.example.demo.rowmapper.ApplyCompanyRowMapper;
 import com.example.demo.rowmapper.ApplyUserRowMapper;
 import com.example.demo.rowmapper.CompanyVacanciesRowMapper;
@@ -65,4 +66,18 @@ public class ApplyDao {
 
         return namedParameterJdbcTemplate.query(sql,map,new CompanyVacanciesRowMapper());
     }
+//    public List<Vacancies> getCompanyCheckVacanciesApply(String companyId){
+//        String sql ="SELECT v.* FROM vacancies v \n" +
+//                "INNER JOIN apply a ON a.vacancies_id = v.vacancies_id \n"+
+//                "INNER JOIN company c ON c.company_id = v.company_id \n"+
+//                "WHERE c.company_id = :companyId \n"+
+//                "group by v.vacancies_id LIMIT :limit OFFSET :offset";
+//
+//        Map<String,Object> map= new HashMap<>();
+//        map.put("companyName",companyName);
+//        map.put("limit",selectLimit);
+//        map.put("offset",selectOffset);
+//
+//        return namedParameterJdbcTemplate.query(sql,map,new CompanyVacanciesRowMapper());
+//    }
 }
