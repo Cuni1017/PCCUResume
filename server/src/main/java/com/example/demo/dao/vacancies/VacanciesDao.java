@@ -67,7 +67,7 @@ public class VacanciesDao {
 
                 sql = sql + " AND v.vacancies_quantity > 0";
 
-                sql = sql + " AND v.teacher_valid_type = '審查通過'";
+                sql = sql + " AND v.teacher_valid_type = '審核通過'";
                 sql = sql + " AND v.vacancies_watch_type = '公開'";
                 sql = sql + " group by v.vacancies_id";
                 sql = sql + " order by :order";
@@ -112,7 +112,7 @@ public class VacanciesDao {
 
         sql = sql + " AND v.vacancies_quantity > 0";
 
-        sql = sql + " AND v.teacher_valid_type = '審查通過'";
+        sql = sql + " AND v.teacher_valid_type = '審核通過'";
         sql = sql + " AND v.vacancies_watch_type = '公開'";
         sql = sql + " group by v.vacancies_id";
         sql = sql + " order by :order";

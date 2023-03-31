@@ -39,7 +39,7 @@ public interface VacanciesRepository extends JpaRepository<Vacancies,String>,Pag
         "INNER JOIN county ct  ON ct.county_id = vc.county_id \n"+
         "WHERE s.skill_name IN :technology AND ct.county_name IN :county \n"+
         "AND v.vacancies_down_salary >= :salaryMin AND  v.vacancies_top_salary <= :salaryMax \n"+
-        "AND v.vacancies_salary_type = :salaryType AND v.teacher_valid_type = '審查通過' AND v.vacancies_quantity > 0 \n"+
+        "AND v.vacancies_salary_type = :salaryType AND v.teacher_valid_type = '審核通過' AND v.vacancies_quantity > 0 \n"+
         "group by v.vacancies_id ", nativeQuery = true)
 Page<Object> findPageVacancies(@Param("county")     List<String> county,
                                @Param("technology") List<String> technology,
