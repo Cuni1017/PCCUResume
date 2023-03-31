@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.*;
 public class ApplyForJobController {
     private  final ApplyForJobService applyForJobService;
     private final JavaMailSender mailSender;
-    @GetMapping("/student/{userId}/apply-for-job/{vacanciesId}")
+    @GetMapping("/students/{userId}/apply-for-job/{vacanciesId}")
     public ResponseEntity<Object> findUserResume(
             @PathVariable String userId,
             @PathVariable String vacanciesId
     ){
         return ResponseEntity.ok(applyForJobService.findUserResume(userId,vacanciesId));
     }
-    @PostMapping("/student/{userId}/{resumeId}/apply-for-job/{companyId}/{vacanciesId}")
+    @PostMapping("/students/{userId}/{resumeId}/apply-for-job/{companyId}/{vacanciesId}")
     public ResponseEntity<Object> createApply(
             @PathVariable String userId,
             @PathVariable String companyId,
