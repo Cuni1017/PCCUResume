@@ -14,8 +14,15 @@ import java.time.LocalDate;
 @RestController
 public class CompanyForJobController {
     private  final CompanyForJobService companyForJobService;
+    @GetMapping("company/{companyName}/company-for-job")
+    public ResponseEntity<Object> findApplyVacanciesByCompanyName(
+            @PathVariable String companyName
+    ){
+
+        return ResponseEntity.ok( companyForJobService.findVacanciesCheckApply(companyName));
+    }
     @GetMapping("/company/vacancies/{vacanciesId}/company-for-job")
-    public ResponseEntity<Object> findUserResume(
+    public ResponseEntity<Object> findVacanciesAndAppliesById(
             @PathVariable String vacanciesId,
             @RequestParam(required = false) ChangeApplyTypeCategory changeApplyTypeCategory
     ){
@@ -26,6 +33,14 @@ public class CompanyForJobController {
 //            ex.getMessage();
 //        }
         return ResponseEntity.ok( companyForJobService.findVacanciesAndAppliesById(vacanciesId,changeApplyTypeCategory));
+    }
+    @GetMapping("/company/company-for-job/student/{userId}/resume/{resumeId}")
+    public ResponseEntity<Object> findUserResume(
+            @PathVariable String userId,
+            @PathVariable String resumeId
+    ){
+//
+        return ResponseEntity.ok( companyForJobService.findUserResume(userId,resumeId));
     }
     @PutMapping("/company/company-for-job/{applyId}")
     public ResponseEntity<Object> changeApplyType(

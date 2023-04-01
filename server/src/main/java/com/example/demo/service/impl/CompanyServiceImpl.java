@@ -50,7 +50,7 @@ public class CompanyServiceImpl implements CompanyService {
         String vacanciesId = getId(vacanciesRepository,"V",1);
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu/MM/dd");
         LocalDate localDate = LocalDate.now();
-        Company company =companyRepository.findCompanyByCompanyName(companyName);
+        Company company =companyRepository.findByCompanyName(companyName).orElseThrow(()-> new RuntimeException("每有此公司"));
         Vacancies vacancies = Vacancies.builder()
                 .vacanciesId(vacanciesId)
                 .companyId(company.getCompanyId())

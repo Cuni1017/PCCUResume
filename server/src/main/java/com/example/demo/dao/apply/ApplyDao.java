@@ -66,18 +66,5 @@ public class ApplyDao {
 
         return namedParameterJdbcTemplate.query(sql,map,new CompanyVacanciesRowMapper());
     }
-//    public List<Vacancies> getCompanyCheckVacanciesApply(String companyId){
-//        String sql ="SELECT v.* FROM vacancies v \n" +
-//                "INNER JOIN apply a ON a.vacancies_id = v.vacancies_id \n"+
-//                "INNER JOIN company c ON c.company_id = v.company_id \n"+
-//                "WHERE c.company_id = :companyId \n"+
-//                "group by v.vacancies_id LIMIT :limit OFFSET :offset";
-//
-//        Map<String,Object> map= new HashMap<>();
-//        map.put("companyName",companyName);
-//        map.put("limit",selectLimit);
-//        map.put("offset",selectOffset);
-//
-//        return namedParameterJdbcTemplate.query(sql,map,new CompanyVacanciesRowMapper());
-//    }
+
 }

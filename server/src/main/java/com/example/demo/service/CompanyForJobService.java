@@ -11,4 +11,8 @@ public interface CompanyForJobService {
     Object changeApply(String applyId, ChangeApplyTypeCategory changeApplyTypeCategory);
 
     Object updateApplyTime(String applyId, LocalDate applyStartTime, LocalDate applyEndTime);
+
+    Object findVacanciesCheckApply(String companyName);
+
+    Object findUserResume(String userId, String resumeId);
 }

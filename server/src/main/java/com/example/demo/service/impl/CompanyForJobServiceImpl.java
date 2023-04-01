@@ -2,14 +2,18 @@ package com.example.demo.service.impl;
 
 import com.example.demo.category.ChangeApplyTypeCategory;
 import com.example.demo.dao.ApplyRepository;
+import com.example.demo.dao.CompanyRepository;
 import com.example.demo.dao.HistoryApplyRepository;
 import com.example.demo.dao.StudentRepository;
 import com.example.demo.dao.apply.ApplyDao;
+import com.example.demo.dao.resume.*;
 import com.example.demo.dao.vacancies.VacanciesRepository;
 import com.example.demo.dto.ApplyUserDto;
 import com.example.demo.dto.CompanyFoJobDto;
 import com.example.demo.dto.RestDto;
+import com.example.demo.dto.resume.AllResumeDto;
 import com.example.demo.model.*;
+import com.example.demo.model.resume.*;
 import com.example.demo.model.vacancies.Vacancies;
 import com.example.demo.service.CompanyForJobService;
 import jakarta.transaction.Transactional;
@@ -33,11 +37,34 @@ public class CompanyForJobServiceImpl implements CompanyForJobService {
     private final ApplyDao applyDao;
     private final StudentRepository studentRepository;
     private final HistoryApplyRepository historyApplyRepository;
+    private final CompanyRepository companyRepository;
     private final JavaMailSender mailSender;
+    private final ResumeRepository resumeRepository;
+    private final RWorkHopeRepository rWorkHopeRepository;
+    private final RSpecialSkillRepository rSpecialSkillRepository;
+    private final RLicenseRepository rLicenseRepository;
+    private final RProjectAchievementsRepository rProjectAchievementsRepository;
+    private final RAutobiographyRepository rAutobiographyRepository;
+    private final RWorkExperienceRepository rWorkExperienceRepository;
+
+    private final RSubjectRepository rSubjectRepository;
+    @Override
+    public Object findVacanciesCheckApply(String companyName) {
+        Company company = companyRepository.findByCompanyName(companyName).orElseThrow(()-> new RuntimeException("每有此公司"));
+        List<Vacancies> vacancies = applyRepository.findVacanciesCheckApply(company.getCompanyId());
+        RestDto restDto =RestDto.builder()
+                .data(vacancies)
+                .message("查詢成功")
+                .build();
+        return restDto;
+    }
+
+
     @Override
     public Object findVacanciesAndAppliesById(String vacanciesId,ChangeApplyTypeCategory changeApplyTypeCategory) {
         List<ApplyUserDto>  applyUserDto    = applyDao.findUserAndApplies(vacanciesId,changeApplyTypeCategory.getApplyType().toString());
         Vacancies           vacancies       = vacanciesRepository.findById(vacanciesId).orElseThrow(()->new RuntimeException("找不到職缺"));
+
         CompanyFoJobDto     companyFoJobDto = CompanyFoJobDto.builder()
                 .applyUserDto(applyUserDto)
                 .vacancies(vacancies)
@@ -48,6 +75,36 @@ public class CompanyForJobServiceImpl implements CompanyForJobService {
                 .build();
         return restDto;
     }
+    @Override
+    public Object findUserResume(String userId, String resumeId) {
+        Resume resume =resumeRepository.findByUserIdAndResumeId(userId,resumeId);
+        RAutobiography rAutobiography =rAutobiographyRepository.findByUserIdAndResumeId(userId,resumeId);
+        List<RLicense> rLicense =rLicenseRepository.findByUserIdAndResumeId(userId,resumeId);
+        List<RProjectAchievements> rProjectAchievements =rProjectAchievementsRepository.findByUserIdAndResumeId(userId,resumeId);
+        List<RSpecialSkill> rSpecialSkill = rSpecialSkillRepository.findByUserIdAndResumeId(userId,resumeId);
+        List<RWorkExperience> rWorkExperience=rWorkExperienceRepository.findByUserIdAndResumeId(userId,resumeId);
+        List<RSubject> rSubject = rSubjectRepository.findByUserIdAndResumeId(userId,resumeId);
+        RWorkHope rworkHope = rWorkHopeRepository.findByUserIdAndResumeId(userId,resumeId);
+        AllResumeDto allResume = AllResumeDto.builder()
+                .name(resume.name)
+                .userId(userId)
+                .resumeId(resumeId)
+                .school(resume.school)
+                .rProjectAchievements(rProjectAchievements)
+                .rAutobiography(rAutobiography)
+                .rSpecialSkill(rSpecialSkill)
+                .rLicense(rLicense)
+                .rWorkHope(rworkHope)
+                .rWorkExperience(rWorkExperience)
+                .rSubject(rSubject)
+                .build();
+        RestDto restResponse = RestDto.builder()
+                .data(allResume)
+                .message("查詢成功")
+                .build();
+        return restResponse;
+    }
+
     @Transactional
     @Modifying
     @Override
@@ -116,6 +173,8 @@ public class CompanyForJobServiceImpl implements CompanyForJobService {
         applyRepository.save(apply);
         return apply;
     }
+
+
 
     private HistoryApply getHistoryApply(Apply apply) {
         LocalDate now = LocalDate.now();

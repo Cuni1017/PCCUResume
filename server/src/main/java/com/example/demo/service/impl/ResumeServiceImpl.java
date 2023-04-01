@@ -12,7 +12,7 @@ import com.example.demo.model.User;
 import com.example.demo.model.resume.*;
 import com.example.demo.reponse.ChooseResumeResponse;
 import com.example.demo.dto.RestDto;
-import com.example.demo.reponse.ResumeResponse;
+import com.example.demo.dto.resume.AllResumeDto;
 import com.example.demo.reponse.student.StudentResponse;
 import com.example.demo.service.ResumeService;
 import lombok.RequiredArgsConstructor;
@@ -70,7 +70,7 @@ public class ResumeServiceImpl implements ResumeService {
         List<RSubject> rsubject = rSubjectRepository.findByUserIdAndResumeId(userId,resumeId);
         System.out.println(rAutobiography);
 
-        ResumeResponse allResume = ResumeResponse.builder()
+        AllResumeDto allResume = AllResumeDto.builder()
                 .name(resume.name)
                 .userId(userId)
                 .resumeId(resumeId)

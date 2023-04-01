@@ -1,4 +1,4 @@
-package com.example.demo.reponse;
+package com.example.demo.dto.resume;
 
 import com.example.demo.model.resume.*;
 import lombok.AllArgsConstructor;
@@ -11,7 +11,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ResumeResponse {
+public class AllResumeDto {
     private  String name;
     private  String resumeId;
     private String userId;
