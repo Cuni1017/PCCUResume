@@ -44,6 +44,8 @@ public class ApplyForJobServiceImpl implements ApplyForJobService {
     @Override
     public Object findUserResume(String studentName, String vacanciesId) {
         Vacancies vacancies = vacanciesRepository.findById(vacanciesId).orElseThrow(()->new RuntimeException("找不到工作"+vacanciesId));
+        System.out.println(vacancies.getTeacherValidType());
+        System.out.println(TeacherValidType.審核通過);
         checkVacancies(vacancies);
         Student student = studentRepository.findByStudentUsername(studentName).orElseThrow(() -> new RuntimeException("找不倒學生"));
         List<Resume> resumes = resumeRepository.findByUserId(student.getStudentId());
@@ -107,10 +109,10 @@ public class ApplyForJobServiceImpl implements ApplyForJobService {
         if(vacancies.getVacanciesQuantity()<=0){
             throw new RuntimeException("職缺數量不足");
         }
-        if(vacancies.getTeacherValidType() != TeacherValidType.審核通過.toString()){
+        if(!vacancies.getTeacherValidType().equals(TeacherValidType.審核通過.toString())){
             throw new RuntimeException("職缺教師尚未審核通過");
         }
-        if(vacancies.getVacanciesWatchType() == VacanciesWatchType.暫停.toString()){
+        if(vacancies.getVacanciesWatchType().equals(VacanciesWatchType.暫停.toString())){
             throw new RuntimeException("職缺已被設定暫停應徵");
         }
     }
