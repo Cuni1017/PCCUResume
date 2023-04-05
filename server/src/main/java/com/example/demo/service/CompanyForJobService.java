@@ -6,7 +6,7 @@ import com.example.demo.model.ApplyType;
 import java.time.LocalDate;
 
 public interface CompanyForJobService {
-    Object findVacanciesAndAppliesById( String vacanciesId,ChangeApplyTypeCategory changeApplyTypeCategory);
+    Object findVacanciesAndAppliesById( String vacanciesId,String applyType);
 
     Object changeApply(String applyId, ChangeApplyTypeCategory changeApplyTypeCategory);
 

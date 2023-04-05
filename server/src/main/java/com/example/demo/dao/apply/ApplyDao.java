@@ -1,5 +1,6 @@
 package com.example.demo.dao.apply;
 
+import com.example.demo.category.ChangeApplyTypeCategory;
 import com.example.demo.dto.ApplyUserDto;
 import com.example.demo.dto.applyforjob.ApplyCompanyDto;
 import com.example.demo.dto.vacancies.CompanyVacanciesDto;
@@ -30,7 +31,8 @@ public class ApplyDao {
 
         return namedParameterJdbcTemplate.queryForObject(sql,map, new ApplyCompanyRowMapper());
     }
-    public List<ApplyUserDto> findUserAndApplies(String vacanciesId,String applyType){
+    public List<ApplyUserDto> findUserAndApplies(String vacanciesId, String applyType){
+        Map<String,Object> map= new HashMap<>();
         String sql = "SELECT a.apply_id,a.vacancies_id,a.user_id,a.create_time,\n" +
                 "a.apply_type,a.company_id,a.resume_id, s.student_name \n" +
                 "  FROM apply a INNER JOIN student s ON a.user_id = s.student_id\n" +
@@ -38,10 +40,13 @@ public class ApplyDao {
 
         if(applyType != null){
             sql = sql + " AND a.apply_type = :applyType";
+
+            map.put("applyType",applyType);
+            System.out.println(sql);
         }
-        Map<String,Object> map= new HashMap<>();
+
         map.put("vacanciesId",vacanciesId);
-        map.put("applyType",applyType);
+
         return namedParameterJdbcTemplate.query(sql,map, new ApplyUserRowMapper());
     }
     public List<CompanyVacanciesDto> getCompanyVacanciesByCompanyName(String companyName, int selectLimit, int selectOffset){

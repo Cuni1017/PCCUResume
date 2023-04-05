@@ -61,8 +61,8 @@ public class CompanyForJobServiceImpl implements CompanyForJobService {
 
 
     @Override
-    public Object findVacanciesAndAppliesById(String vacanciesId,ChangeApplyTypeCategory changeApplyTypeCategory) {
-        List<ApplyUserDto>  applyUserDto    = applyDao.findUserAndApplies(vacanciesId,changeApplyTypeCategory.getApplyType().toString());
+    public Object findVacanciesAndAppliesById(String vacanciesId,String applyType) {
+        List<ApplyUserDto>  applyUserDto    = applyDao.findUserAndApplies(vacanciesId,changeApplyTypeCategory);
         Vacancies           vacancies       = vacanciesRepository.findById(vacanciesId).orElseThrow(()->new RuntimeException("找不到職缺"));
 
         CompanyFoJobDto     companyFoJobDto = CompanyFoJobDto.builder()
