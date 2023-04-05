@@ -13,12 +13,12 @@ public class ApplyForJobController {
     private  final ApplyForJobService applyForJobService;
     private final JavaMailSender mailSender;
 
-    @GetMapping("/students/{userId}/apply-for-job/{vacanciesId}")
+    @GetMapping("/students/{studentName}/apply-for-job/vacancies/{vacanciesId}")
     public ResponseEntity<Object> findUserResume(
-            @PathVariable String userId,
+            @PathVariable String studentName,
             @PathVariable String vacanciesId
     ){
-        return ResponseEntity.ok(applyForJobService.findUserResume(userId,vacanciesId));
+        return ResponseEntity.ok(applyForJobService.findUserResume(studentName,vacanciesId));
     }
     @PostMapping("/students/{userId}/{resumeId}/apply-for-job/{companyId}/{vacanciesId}")
     public ResponseEntity<Object> createApply(

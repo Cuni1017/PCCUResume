@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class StudentController {
     private final StudentService studentService;
-    @GetMapping("/students/{studentId}")
+    @GetMapping("/students/{studentUsername}")
     public ResponseEntity<Object> findUserById(
-            @PathVariable String studentId
+            @PathVariable String studentUsername
     ) {
-        return ResponseEntity.ok(studentService.findUserById(studentId));
+        return ResponseEntity.ok(studentService.findUserById(studentUsername));
     }
 }

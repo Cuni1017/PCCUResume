@@ -42,12 +42,11 @@ public class ApplyForJobServiceImpl implements ApplyForJobService {
     private final JavaMailSender mailSender;
 
     @Override
-    public Object findUserResume(String userId, String vacanciesId) {
+    public Object findUserResume(String studentName, String vacanciesId) {
         Vacancies vacancies = vacanciesRepository.findById(vacanciesId).orElseThrow(()->new RuntimeException("找不到工作"+vacanciesId));
         checkVacancies(vacancies);
-
-        List<Resume> resumes = resumeRepository.findByUserId(userId);
-        Student student = studentRepository.findByStudentId(userId).orElseThrow(()->new RuntimeException("找不倒學生:"+userId));
+        Student student = studentRepository.findByStudentUsername(studentName).orElseThrow(() -> new RuntimeException("找不倒學生"));
+        List<Resume> resumes = resumeRepository.findByUserId(student.getStudentId());
         ApplyCompanyDto applyCompanyDto = applyForJobDao.findByVacanciesId(vacanciesId);
 
         ApplyVacanciesDto applyVacanciesDto = ApplyVacanciesDto.builder()

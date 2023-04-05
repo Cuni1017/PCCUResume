@@ -10,7 +10,7 @@ import com.example.demo.config.error.UserNotFoundException;
 import com.example.demo.model.*;
 import com.example.demo.dto.RestDto;
 import com.example.demo.reponse.register.CompanyResponse;
-import com.example.demo.reponse.register.StudentResponse;
+import com.example.demo.dto.StudentDto;
 import com.example.demo.reponse.register.TeacherResponse;
 import com.example.demo.service.JwtService;
 import com.example.demo.service.RegisterService;
@@ -71,9 +71,15 @@ public class RegisterServiceImpl implements RegisterService {
                 .build();
         userRepository.save(user);
         studentRepository.save(student);
-        StudentResponse studentResponse= StudentResponse.builder()
-                .student(student)
-                .user(user)
+        StudentDto studentResponse= StudentDto.builder()
+                .studentId(student.getStudentId())
+                .studentName(student.getStudentName())
+                .studentImageUrl(student.getStudentImageUrl())
+                .studentEmail(student.getStudentEmail())
+                .studentNumber(student.getStudentNumber())
+                .studentUsername(student.getStudentUsername())
+                .pccuId(student.getPccuId())
+                .role(user.getRole().toString())
                 .build();
         RestDto restResponse = RestDto.builder()
                 .data(studentResponse)

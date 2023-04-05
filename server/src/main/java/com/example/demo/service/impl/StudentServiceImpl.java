@@ -5,6 +5,7 @@ import com.example.demo.dao.StudentRepository;
 import com.example.demo.dao.UserRepository;
 import com.example.demo.dao.resume.ResumeRepository;
 import com.example.demo.dto.RestDto;
+import com.example.demo.dto.StudentDto;
 import com.example.demo.model.Student;
 import com.example.demo.model.User;
 import com.example.demo.model.resume.Resume;
@@ -22,17 +23,22 @@ public class StudentServiceImpl implements StudentService {
     private final StudentRepository studentRepository;
     private final ResumeRepository resumeRepository;
     @Override
-    public Object findUserById(String studentId) {
-        User user =userRepository.findById(studentId).orElseThrow(() -> new UserNotFoundException("studentId:查無使用者"));
-        Student student = studentRepository.findByStudentId(studentId).orElseThrow(() -> new UserNotFoundException("studentId:查無使用者"));
-        List<Resume> resume =resumeRepository.findByUserId(studentId);
-        StudentResponse studentResponse =StudentResponse.builder()
-                .student(student)
-                .resume(resume)
+    public Object findUserById(String studentUsername) {
+        User user =userRepository.findByUsername(studentUsername).orElseThrow(() -> new UserNotFoundException("studentId:查無使用者"));
+        Student student = studentRepository.findByStudentId(user.getId()).orElseThrow(() -> new UserNotFoundException("studentId:查無使用者"));
+        StudentDto studentDto = StudentDto.builder()
+                .studentId(student.getStudentId())
+                .studentImageUrl(student.getStudentImageUrl())
+                .studentEmail(student.getStudentEmail())
+                .studentName(student.getStudentName())
+                .studentUsername(student.getStudentUsername())
+                .pccuId(student.getPccuId())
+                .role(user.getRole().toString())
+                .studentNumber(student.getStudentNumber())
                 .build();
         RestDto restResponse =RestDto.builder()
-                .data(studentResponse)
-                .message("新建成功")
+                .data(studentDto)
+                .message("查詢成功")
                 .build();
         return  restResponse;
     }
