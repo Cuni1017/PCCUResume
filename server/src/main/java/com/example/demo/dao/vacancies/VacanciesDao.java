@@ -20,6 +20,9 @@ public class VacanciesDao {
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private static final String COUNT_BEFORE = "SELECT count(*) FROM (";
     private static final String COUNT_AFTER = ") as s";
+
+
+
     public FullVacanciesDto findFullVacanciesById(String vacanciesId){
         String sql ="SELECT c.company_id,c.company_name,c.company_title,c.company_number,\n"+
                 "c.company_county,c.company_district,c.company_address,c.company_email,c.company_image_url,v.*," +

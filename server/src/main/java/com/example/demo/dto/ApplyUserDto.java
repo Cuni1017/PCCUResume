@@ -24,4 +24,7 @@ public class ApplyUserDto {
     private String applyType;
     private String companyId;
     private String resumeId;
+    private String studentEmail;
+    private String studentUsername;
+    private String studentImageUrl;
 }

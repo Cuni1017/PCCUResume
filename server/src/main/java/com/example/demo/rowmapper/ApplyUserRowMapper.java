@@ -20,6 +20,10 @@ public class ApplyUserRowMapper implements RowMapper<ApplyUserDto> {
         applyUserDto.setCompanyId(rs.getString("company_id"));
         applyUserDto.setResumeId(rs.getString("resume_id"));
         applyUserDto.setStudentRealName(rs.getString("student_name"));
+        applyUserDto.setStudentUsername(rs.getString("student_username"));
+        applyUserDto.setStudentEmail(rs.getString("student_email"));
+        applyUserDto.setStudentImageUrl(rs.getString("student_image_url"));
+
         System.out.println(applyUserDto );
         return  applyUserDto;
 

@@ -6,13 +6,15 @@ import com.example.demo.model.ApplyType;
 import java.time.LocalDate;
 
 public interface CompanyForJobService {
-    Object findVacanciesAndAppliesById( String vacanciesId,String applyType);
+
 
     Object changeApply(String applyId, ChangeApplyTypeCategory changeApplyTypeCategory);
 
     Object updateApplyTime(String applyId, LocalDate applyStartTime, LocalDate applyEndTime);
 
-    Object findVacanciesCheckApply(String companyName);
+
 
     Object findUserResume(String userId, String resumeId);
+
+    Object findVacanciesApplyBycompanyName(String companyName);
 }

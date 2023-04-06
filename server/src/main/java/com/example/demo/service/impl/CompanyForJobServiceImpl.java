@@ -11,6 +11,7 @@ import com.example.demo.dao.vacancies.VacanciesRepository;
 import com.example.demo.dto.ApplyUserDto;
 import com.example.demo.dto.CompanyFoJobDto;
 import com.example.demo.dto.RestDto;
+import com.example.demo.dto.applyforjob.AllApplyDto;
 import com.example.demo.dto.resume.AllResumeDto;
 import com.example.demo.model.*;
 import com.example.demo.model.resume.*;
@@ -27,7 +28,9 @@ import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -48,33 +51,10 @@ public class CompanyForJobServiceImpl implements CompanyForJobService {
     private final RWorkExperienceRepository rWorkExperienceRepository;
 
     private final RSubjectRepository rSubjectRepository;
-    @Override
-    public Object findVacanciesCheckApply(String companyName) {
-//        Company company = companyRepository.findByCompanyName(companyName).orElseThrow(()-> new RuntimeException("每有此公司"));
-//        List<Vacancies> vacancies = applyRepository.findVacanciesCheckApply(company.getCompanyId());
-//        RestDto restDto =RestDto.builder()
-//                .data(vacancies)
-//                .message("查詢成功")
-//                .build();
-        return null;
-    }
 
 
-    @Override
-    public Object findVacanciesAndAppliesById(String vacanciesId,String applyType) {
-        List<ApplyUserDto>  applyUserDto    = applyDao.findUserAndApplies(vacanciesId,applyType);
-        Vacancies           vacancies       = vacanciesRepository.findById(vacanciesId).orElseThrow(()->new RuntimeException("找不到職缺"));
 
-        CompanyFoJobDto     companyFoJobDto = CompanyFoJobDto.builder()
-                .applyUserDto(applyUserDto)
-                .vacancies(vacancies)
-                .build();
-        RestDto restDto = RestDto.builder()
-                .data(companyFoJobDto)
-                .message("查詢成功")
-                .build();
-        return restDto;
-    }
+
     @Override
     public Object findUserResume(String userId, String resumeId) {
         Resume resume =resumeRepository.findByUserIdAndResumeId(userId,resumeId);
@@ -103,6 +83,25 @@ public class CompanyForJobServiceImpl implements CompanyForJobService {
                 .message("查詢成功")
                 .build();
         return restResponse;
+    }
+
+    @Override
+    public Object findVacanciesApplyBycompanyName(String companyName) {
+        List<String> vacanciesIds = applyDao.findApplyVacanciesIdByCompanyName(companyName);
+        List<AllApplyDto> allApplyDtoList = new LinkedList<>();
+        vacanciesIds = vacanciesIds.stream().distinct().collect(Collectors.toList());
+
+        for(String vacanciesId : vacanciesIds){
+            List<ApplyUserDto> applyUserDto = applyDao.findApplyVacanciesAndUserByVacanciesId(vacanciesId);
+            Vacancies vacancies = vacanciesRepository.findById(vacanciesId).orElseThrow(()->new RuntimeException("沒有此職缺"));
+            AllApplyDto allApplyDto=AllApplyDto.builder()
+                    .vacancies(vacancies)
+                    .ApplyUserDto(applyUserDto)
+                    .build();
+            allApplyDtoList.add(allApplyDto);
+        }
+        return allApplyDtoList;
+
     }
 
     @Transactional

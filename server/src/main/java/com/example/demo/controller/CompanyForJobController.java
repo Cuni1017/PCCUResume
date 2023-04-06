@@ -19,22 +19,9 @@ public class CompanyForJobController {
             @PathVariable String companyName
     ){
 
-        return ResponseEntity.ok( companyForJobService.findVacanciesCheckApply(companyName));
+        return ResponseEntity.ok( companyForJobService.findVacanciesApplyBycompanyName(companyName));
     }
-    @GetMapping("/company/vacancies/{vacanciesId}/company-for-job")
-    public ResponseEntity<Object> findVacanciesAndAppliesById(
-            @PathVariable String vacanciesId,
-            @RequestParam(required = false) String applyType
-    ){
-//        try{
-//            ApplyType newApplyType = ApplyType.valueOf(applyType);
-//
-//        }catch (RuntimeException ex){
-//            ex.getMessage();
-//        }
 
-        return ResponseEntity.ok( companyForJobService.findVacanciesAndAppliesById(vacanciesId,applyType));
-    }
     @GetMapping("/company/company-for-job/student/{userId}/resume/{resumeId}")
     public ResponseEntity<Object> findUserResume(
             @PathVariable String userId,
