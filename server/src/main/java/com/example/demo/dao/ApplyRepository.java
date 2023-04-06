@@ -13,8 +13,12 @@ import java.util.Map;
 
 @Repository
 public interface ApplyRepository extends JpaRepository<Apply,String> {
-    List<Apply> findByVacanciesId(String vacanciesId);
-
+//    List<Apply> findByVacanciesId(String vacanciesId);
+//    @Query(value = "SELECT v.vacancies_id FROM vacancies v \n" +
+//            "INNER JOIN apply a ON a.vacancies_id = v.vacancies_id \n"+
+//            "INNER JOIN company c ON c.company_id = v.company_id \n"+
+//            "WHERE c.company_name = :companyName",nativeQuery = true)
+//    List<String> findVacanciesIdByStudentName(String studentName);
 
 
 

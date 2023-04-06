@@ -6,4 +6,6 @@ public interface ApplyForJobService {
     Object findUserResume(String studentName, String vacanciesId);
 
     Object createApply(String userId,String companyId, String resumeId,  String vacanciesId, ApplyCategory applyCategory);
+
+    Object findUserApply(String studentName);
 }

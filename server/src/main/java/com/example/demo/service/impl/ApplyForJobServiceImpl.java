@@ -105,6 +105,12 @@ public class ApplyForJobServiceImpl implements ApplyForJobService {
         return restDto;
     }
 
+    @Override
+    public Object findUserApply(String studentName) {
+
+        return null;
+    }
+
     private void checkVacancies(Vacancies vacancies) {
         if(vacancies.getVacanciesQuantity()<=0){
             throw new RuntimeException("職缺數量不足");

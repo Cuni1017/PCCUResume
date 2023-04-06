@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class ApplyForJobController {
     private  final ApplyForJobService applyForJobService;
+
     private final JavaMailSender mailSender;
     private  final CompanyForJobService companyForJobService;
 
@@ -32,6 +33,12 @@ public class ApplyForJobController {
             @RequestBody ApplyCategory applyCategory
     ){
         return ResponseEntity.ok(applyForJobService.createApply(userId,companyId,resumeId,vacanciesId,applyCategory));
+    }
+    @GetMapping("/students/{studentName}/apply-for-job")
+    public ResponseEntity<Object> findUserApply(
+            @PathVariable String studentName
+    ){
+        return ResponseEntity.ok(applyForJobService.findUserApply(studentName));
     }
     @PutMapping("/students/company-for-job/{applyId}")
     public ResponseEntity<Object> changeCompanyApplyType(
