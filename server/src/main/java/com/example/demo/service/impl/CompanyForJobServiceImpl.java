@@ -100,7 +100,11 @@ public class CompanyForJobServiceImpl implements CompanyForJobService {
                     .build();
             allApplyDtoList.add(allApplyDto);
         }
-        return allApplyDtoList;
+        RestDto restDto = RestDto.builder()
+                .data(allApplyDtoList)
+                .message("查詢成功")
+                .build();
+        return restDto;
 
     }
 
