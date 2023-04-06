@@ -86,13 +86,13 @@ public class CompanyForJobServiceImpl implements CompanyForJobService {
     }
 
     @Override
-    public Object findVacanciesApplyBycompanyName(String companyName) {
+    public Object findVacanciesApplyBycompanyName(String companyName,String applyType) {
         List<String> vacanciesIds = applyDao.findApplyVacanciesIdByCompanyName(companyName);
         List<AllApplyDto> allApplyDtoList = new LinkedList<>();
         vacanciesIds = vacanciesIds.stream().distinct().collect(Collectors.toList());
 
         for(String vacanciesId : vacanciesIds){
-            List<ApplyUserDto> applyUserDto = applyDao.findApplyVacanciesAndUserByVacanciesId(vacanciesId);
+            List<ApplyUserDto> applyUserDto = applyDao.findApplyVacanciesAndUserByVacanciesId(vacanciesId,applyType);
             Vacancies vacancies = vacanciesRepository.findById(vacanciesId).orElseThrow(()->new RuntimeException("沒有此職缺"));
             AllApplyDto allApplyDto=AllApplyDto.builder()
                     .vacancies(vacancies)

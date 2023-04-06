@@ -16,10 +16,11 @@ public class CompanyForJobController {
     private  final CompanyForJobService companyForJobService;
     @GetMapping("company/{companyName}/company-for-job")
     public ResponseEntity<Object> findApplyVacanciesByCompanyName(
-            @PathVariable String companyName
+            @PathVariable String companyName,
+            @RequestParam(required = false) String applyType
     ){
 
-        return ResponseEntity.ok( companyForJobService.findVacanciesApplyBycompanyName(companyName));
+        return ResponseEntity.ok( companyForJobService.findVacanciesApplyBycompanyName(companyName,applyType));
     }
 
     @GetMapping("/company/company-for-job/student/{userId}/resume/{resumeId}")
@@ -31,15 +32,13 @@ public class CompanyForJobController {
         return ResponseEntity.ok( companyForJobService.findUserResume(userId,resumeId));
     }
     @PutMapping("/company/company-for-job/{applyId}")
-    public ResponseEntity<Object> changeApplyType(
+    public ResponseEntity<Object> changeCompanyApplyType(
             @PathVariable String applyId,
             @RequestBody ChangeApplyTypeCategory changeApplyTypeCategory
 
 
     ){
-
         return ResponseEntity.ok( companyForJobService.changeApply(applyId,changeApplyTypeCategory));
-
     }
     @PutMapping("/company/company-for-job/{applyId}/insert-apply-time")
     public ResponseEntity<Object> updateApplyTime(

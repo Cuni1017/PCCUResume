@@ -16,5 +16,5 @@ public interface CompanyForJobService {
 
     Object findUserResume(String userId, String resumeId);
 
-    Object findVacanciesApplyBycompanyName(String companyName);
+    Object findVacanciesApplyBycompanyName(String companyName,String applyType);
 }

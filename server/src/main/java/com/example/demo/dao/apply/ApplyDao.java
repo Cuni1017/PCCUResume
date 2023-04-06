@@ -25,8 +25,7 @@ public class ApplyDao {
                 String sql =  "SELECT v.vacancies_id FROM vacancies v \n" +
                 "INNER JOIN apply a ON a.vacancies_id = v.vacancies_id \n"+
                 "INNER JOIN company c ON c.company_id = v.company_id \n"+
-                "WHERE c.company_name = :companyName  AND v.teacher_valid_type = '審核通過' AND v.vacancies_quantity > 0 " +
-                "AND v.vacancies_watch_type = '公開'\n";
+                "WHERE c.company_name = :companyName";
                 Map<String,Object> map= new HashMap<>();
                 map.put("companyName",companyName);
                 return  namedParameterJdbcTemplate.queryForList(sql,map, String.class);
@@ -41,14 +40,17 @@ public class ApplyDao {
 
         return namedParameterJdbcTemplate.queryForObject(sql,map, new ApplyCompanyRowMapper());
     }
-    public  List<ApplyUserDto> findApplyVacanciesAndUserByVacanciesId(String vacanciesId) {
+    public  List<ApplyUserDto> findApplyVacanciesAndUserByVacanciesId(String vacanciesId, String applyType) {
         String sql = "SELECT a.apply_id,a.vacancies_id,a.user_id,a.create_time,\n" +
                 "a.apply_type,a.company_id,a.resume_id, s.student_name ,s.student_email,s.student_image_url,s.student_username\n" +
                 "  FROM apply a INNER JOIN student s ON a.user_id = s.student_id\n" +
-                "  WHERE a.vacancies_id = :vacanciesId";
+                "  WHERE a.vacancies_id = :vacanciesId ";
+        if(applyType != null){
+            sql = sql + " AND a.apply_type = :applyType";
+        }
         Map<String,Object> map= new HashMap<>();
         map.put("vacanciesId",vacanciesId);
-
+        map.put("applyType",applyType);
         return namedParameterJdbcTemplate.query(sql,map, new ApplyUserRowMapper());
     }
 //    public List<Vacancies> findVacanciesCheckApply(String companyName){
