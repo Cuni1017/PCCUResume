@@ -50,13 +50,13 @@ public class CompanyForJobServiceImpl implements CompanyForJobService {
     private final RSubjectRepository rSubjectRepository;
     @Override
     public Object findVacanciesCheckApply(String companyName) {
-        Company company = companyRepository.findByCompanyName(companyName).orElseThrow(()-> new RuntimeException("每有此公司"));
-        List<Vacancies> vacancies = applyRepository.findVacanciesCheckApply(company.getCompanyId());
-        RestDto restDto =RestDto.builder()
-                .data(vacancies)
-                .message("查詢成功")
-                .build();
-        return restDto;
+//        Company company = companyRepository.findByCompanyName(companyName).orElseThrow(()-> new RuntimeException("每有此公司"));
+//        List<Vacancies> vacancies = applyRepository.findVacanciesCheckApply(company.getCompanyId());
+//        RestDto restDto =RestDto.builder()
+//                .data(vacancies)
+//                .message("查詢成功")
+//                .build();
+        return null;
     }
 
 

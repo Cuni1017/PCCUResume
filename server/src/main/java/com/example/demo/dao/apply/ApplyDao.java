@@ -31,6 +31,16 @@ public class ApplyDao {
 
         return namedParameterJdbcTemplate.queryForObject(sql,map, new ApplyCompanyRowMapper());
     }
+//    public List<Vacancies> findVacanciesCheckApply(String companyName){
+//        String sql =  "SELECT v.* FROM vacancies v \n" +
+//                "INNER JOIN apply a ON a.vacancies_id = v.vacancies_id \n"+
+//                "INNER JOIN company c ON c.company_id = v.company_id \n"+
+//                "WHERE c.company_name = :companyName\n"+
+//                "group by v.vacancies_id ";
+//        Map<String,Object> map= new HashMap<>();
+//        map.put("companyName",companyName);
+//        return namedParameterJdbcTemplate.query(sql,map, new ApplyUserRowMapper());
+//    }
     public List<ApplyUserDto> findUserAndApplies(String vacanciesId, String applyType){
         Map<String,Object> map= new HashMap<>();
         String sql = "SELECT a.apply_id,a.vacancies_id,a.user_id,a.create_time,\n" +
