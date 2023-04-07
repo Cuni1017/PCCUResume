@@ -92,7 +92,17 @@ public class CompanyForJobServiceImpl implements CompanyForJobService {
         switch (newApplyType){
             case 面試中:
                 Apply progressApply =  changeApplyType(apply,newApplyType.toString());
-                return getRestDto(progressApply,"更新成功");
+                try {
+                    sendApplyTypeMail(vacancies ,student,newApplyType.toString());
+                    RestDto restDto = RestDto.builder()
+                            .data(progressApply)
+                            .message("更新成功")
+                            .build();
+                    return restDto;
+                } catch (MailException e) {
+                    // 在這裡處理異常情況
+                    return "郵件發送失敗: " + e.getMessage();
+                }
             case 實習中:
                 Apply InApply =  changeApplyType(apply,newApplyType.toString());
                 int quantity = vacancies.getVacanciesQuantity();

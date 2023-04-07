@@ -9,6 +9,7 @@ import com.example.demo.dao.UserHistoryMoveRepository;
 import com.example.demo.dao.apply.ApplyDao;
 import com.example.demo.dao.resume.ResumeRepository;
 import com.example.demo.dao.vacancies.VacanciesRepository;
+import com.example.demo.dto.ApplytypeVacnciesDto;
 import com.example.demo.dto.RestDto;
 import com.example.demo.dto.applyforjob.ApplyCompanyDto;
 import com.example.demo.dto.applyforjob.ApplyVacanciesDto;
@@ -26,7 +27,9 @@ import org.springframework.stereotype.Service;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -108,7 +111,22 @@ public class ApplyForJobServiceImpl implements ApplyForJobService {
     @Override
     public Object findUserApply(String studentName) {
         List<Vacancies> vacancies = applyRepository.findVacanciesByStudentName(studentName);
-        return vacancies;
+        List<String> vacanciesIds = vacancies.stream().map((s)->s.getVacanciesId()).distinct().collect(Collectors.toList());
+        List<ApplytypeVacnciesDto> applytypeVacnciesDtoLinkedList = new LinkedList<>();
+        for(String vacanciesId :vacanciesIds){
+            List<Apply> apply = applyRepository.findByVacanciesId(vacanciesId);
+            Vacancies vacancy = vacancies.stream().filter((s)->s.getVacanciesId()==vacanciesId).findFirst().orElseThrow(()->new RuntimeException("沒有此職缺"));
+            ApplytypeVacnciesDto applytypeVacnciesDto=ApplytypeVacnciesDto.builder()
+                    .apply(apply)
+                    .vacancies(vacancy)
+                    .build();
+            applytypeVacnciesDtoLinkedList.add(applytypeVacnciesDto);
+        }
+        RestDto restDto = RestDto.builder()
+                .data(applytypeVacnciesDtoLinkedList)
+                .message("查詢成功")
+                .build();
+        return restDto;
     }
 
     private void checkVacancies(Vacancies vacancies) {

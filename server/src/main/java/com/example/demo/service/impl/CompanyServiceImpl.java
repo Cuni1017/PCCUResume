@@ -231,6 +231,8 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
 
+
+
     private String getId(JpaRepository repository , String idType , int x){
         long userCount = repository.count();
         Date dNow = new Date( );
