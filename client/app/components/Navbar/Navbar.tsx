@@ -82,7 +82,7 @@ const Navbar = () => {
 
   const CPNLinks = [
     { label: "徵才", link: "/search" },
-    { label: "刊登", link: "/jobs/new" },
+    { label: "刊登", link: `/companies/${user.name}/jobs/new` },
   ];
 
   const TCHLinks = [{ label: "教師管理", link: "/admin" }];

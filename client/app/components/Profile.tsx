@@ -31,7 +31,7 @@ const Profile = ({
             alt="cat"
           ></Image>
         </div>
-        <div className="ml-1">{name}</div>
+        <div className="ml-1 hidden sm:block text-sm">{name}</div>
         <ExpandMoreIcon />
         {isProfileMenuShow ? (
           <div className="absolute top-16 right-0 cursor-auto z-10">

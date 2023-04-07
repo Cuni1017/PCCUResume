@@ -17,9 +17,8 @@ const SearchPage = async (props: any) => {
   console.log(res);
 
   return (
-    <div>
+    <div className="md:max-w-[860px] lg:max-w-[1140px] m-auto px-5 md:p-0">
       搜尋{searchParams.q}的人才搜尋頁面
-      <Link href="/search/test">Test</Link>
     </div>
   );
 };

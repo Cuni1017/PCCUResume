@@ -2,13 +2,31 @@ import CompanyHeader from "./components/CompanyHeader/CompanyHeader";
 import ContentAction from "./components/CompanyContent/ContentAction";
 import { notFound } from "next/navigation";
 
-const CompanyPage = (props: any) => {
+const fetchCompany = async (companyName: string) => {
+  const url = `http://localhost:8080/company/${companyName}`;
+  const res = await fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization:
+        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiU1RVREVOVCIsImlkIjoiUzIwMjMwMzA4MjAiLCJ1c2VybmFtZSI6ImNvcnkiLCJzdWIiOiJjb3J5IiwiaWF0IjoxNjgwODYzNDM1LCJleHAiOjE2NzkxNjA0Njd9.tKWBTuGFs1GoD2xnM1hxWlXoztjsfbWSKBA5eJQaVc0",
+    },
+  });
+  if (!res.ok) {
+    notFound();
+    // throw new Error("Failed to fetch");
+  }
+
+  return res.json();
+};
+
+const CompanyPage = async (props: any) => {
   const {
     params: { slug: companyName },
     searchParams,
   } = props;
 
-  // notFound();
+  const data = await fetchCompany(companyName);
 
   return (
     <div className="flex flex-col gap-4">
