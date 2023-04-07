@@ -16,5 +16,5 @@ public interface CompanyService {
     Object deleteVacancies(String companyName, String vacanciesId);
 
 
-
+    Object findCompanyByCompanyName(String companyName);
 }

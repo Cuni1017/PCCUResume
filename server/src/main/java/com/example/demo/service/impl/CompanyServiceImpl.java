@@ -9,6 +9,7 @@ import com.example.demo.dao.vacancies.VacanciesCountyRepository;
 import com.example.demo.dao.vacancies.VacanciesDao;
 import com.example.demo.dao.vacancies.VacanciesRepository;
 import com.example.demo.dao.vacancies.VacanciesSkillRepository;
+import com.example.demo.dto.CompanyDto;
 import com.example.demo.dto.RestDto;
 import com.example.demo.dto.CompanyVacanciesDto;
 import com.example.demo.dto.vacancies.PageVacanciesDto;
@@ -230,7 +231,28 @@ public class CompanyServiceImpl implements CompanyService {
 
     }
 
-
+    @Override
+    public Object findCompanyByCompanyName(String companyName) {
+        Company company = companyRepository.findByCompanyName(companyName).orElseThrow(()-> new RuntimeException("沒有此職缺"));
+        CompanyDto companyDto = CompanyDto.builder()
+                .companyId(company.getCompanyId())
+                .companyName(company.getCompanyName())
+                .companyImageUrl(company.getCompanyImageUrl())
+                .companyEmail(company.getCompanyEmail())
+                .companyAddress(company.getCompanyAddress())
+                .companyCounty(company.getCompanyCounty())
+                .companyDistrict(company.getCompanyDistrict())
+                .companyNumber(company.getCompanyNumber())
+                .companyTitle(company.getCompanyTitle())
+                .companyUsername(company.getCompanyUsername())
+                .companyValidType(company.getCompanyValidType())
+                .build();
+        RestDto restDto = RestDto.builder()
+                .data(companyDto)
+                .message("查詢成功")
+                .build();
+        return  restDto;
+    }
 
 
     private String getId(JpaRepository repository , String idType , int x){
