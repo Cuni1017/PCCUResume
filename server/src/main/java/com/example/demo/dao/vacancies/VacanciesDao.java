@@ -1,6 +1,6 @@
  package com.example.demo.dao.vacancies;
 
-import com.example.demo.dto.vacancies.CompanyVacanciesDto;
+import com.example.demo.dto.CompanyVacanciesDto;
 import com.example.demo.dto.vacancies.FullVacanciesDto;
 import com.example.demo.model.vacancies.Vacancies;
 import com.example.demo.rowmapper.CompanyVacanciesRowMapper;

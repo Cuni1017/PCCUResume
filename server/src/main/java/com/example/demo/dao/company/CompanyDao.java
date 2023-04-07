@@ -1,6 +1,6 @@
 package com.example.demo.dao.company;
 
-import com.example.demo.dto.vacancies.CompanyVacanciesDto;
+import com.example.demo.dto.CompanyVacanciesDto;
 import com.example.demo.rowmapper.CompanyVacanciesRowMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;

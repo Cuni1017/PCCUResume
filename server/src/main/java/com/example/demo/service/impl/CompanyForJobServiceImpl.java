@@ -55,35 +55,7 @@ public class CompanyForJobServiceImpl implements CompanyForJobService {
 
 
 
-    @Override
-    public Object findUserResume(String userId, String resumeId) {
-        Resume resume =resumeRepository.findByUserIdAndResumeId(userId,resumeId);
-        RAutobiography rAutobiography =rAutobiographyRepository.findByUserIdAndResumeId(userId,resumeId);
-        List<RLicense> rLicense =rLicenseRepository.findByUserIdAndResumeId(userId,resumeId);
-        List<RProjectAchievements> rProjectAchievements =rProjectAchievementsRepository.findByUserIdAndResumeId(userId,resumeId);
-        List<RSpecialSkill> rSpecialSkill = rSpecialSkillRepository.findByUserIdAndResumeId(userId,resumeId);
-        List<RWorkExperience> rWorkExperience=rWorkExperienceRepository.findByUserIdAndResumeId(userId,resumeId);
-        List<RSubject> rSubject = rSubjectRepository.findByUserIdAndResumeId(userId,resumeId);
-        RWorkHope rworkHope = rWorkHopeRepository.findByUserIdAndResumeId(userId,resumeId);
-        AllResumeDto allResume = AllResumeDto.builder()
-                .name(resume.name)
-                .userId(userId)
-                .resumeId(resumeId)
-                .school(resume.school)
-                .rProjectAchievements(rProjectAchievements)
-                .rAutobiography(rAutobiography)
-                .rSpecialSkill(rSpecialSkill)
-                .rLicense(rLicense)
-                .rWorkHope(rworkHope)
-                .rWorkExperience(rWorkExperience)
-                .rSubject(rSubject)
-                .build();
-        RestDto restResponse = RestDto.builder()
-                .data(allResume)
-                .message("查詢成功")
-                .build();
-        return restResponse;
-    }
+//
 
     @Override
     public Object findVacanciesApplyBycompanyName(String companyName,String applyType) {
@@ -233,7 +205,12 @@ public class CompanyForJobServiceImpl implements CompanyForJobService {
             message = message +",您應徵的實習職缺"+ vacancies.getVacanciesName()+"失敗,";
             message = message +"這並不是你不夠好或是實力不足只是再不好的時機遇到我們會將您加入我們的人才儲備";
             return message;
-        }else {
+        } else if (applyType.contains("面試")) {
+            String message = "這裡很高興的通知";
+            message = message + student.getStudentName();
+            message = message +",您應徵的實習職缺"+ vacancies.getVacanciesName()+"通知您去面試,詳細情況公司會跟您確認";
+            return message;
+        } else {
             String message = "這裡很高興的通知";
             message = message + student.getStudentName();
             message = message +",您應徵的實習職缺"+ vacancies.getVacanciesName()+"成功,";

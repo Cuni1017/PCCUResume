@@ -1,13 +1,9 @@
 package com.example.demo.dao.apply;
 
-import com.example.demo.category.ChangeApplyTypeCategory;
 import com.example.demo.dto.ApplyUserDto;
 import com.example.demo.dto.applyforjob.ApplyCompanyDto;
-import com.example.demo.dto.vacancies.CompanyVacanciesDto;
-import com.example.demo.model.vacancies.Vacancies;
 import com.example.demo.rowmapper.ApplyCompanyRowMapper;
 import com.example.demo.rowmapper.ApplyUserRowMapper;
-import com.example.demo.rowmapper.CompanyVacanciesRowMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;

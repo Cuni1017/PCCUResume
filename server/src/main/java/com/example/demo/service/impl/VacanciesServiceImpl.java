@@ -2,28 +2,21 @@
 
     //import com.example.demo.dao.vacancies.VacanciesSpecification;
 
-    import com.example.demo.category.VacanciesCategory;
     import com.example.demo.dao.CountyRepository;
     import com.example.demo.dao.SkillRepository;
     import com.example.demo.dao.vacancies.VacanciesDao;
     import com.example.demo.dao.vacancies.VacanciesRepository;
-    import com.example.demo.dto.vacancies.CompanyVacanciesDto;
-    import com.example.demo.dto.vacancies.FindVacanciesDto;
+    import com.example.demo.dto.CompanyVacanciesDto;
     import com.example.demo.dto.RestDto;
     import com.example.demo.dto.vacancies.FullVacanciesDto;
     import com.example.demo.dto.vacancies.PageVacanciesDto;
     import com.example.demo.model.vacancies.Vacancies;
     import com.example.demo.service.VacanciesService;
     import lombok.RequiredArgsConstructor;
-    import org.springframework.data.domain.Page;
-    import org.springframework.data.domain.PageRequest;
 
-    import org.springframework.data.domain.Pageable;
-    import org.springframework.data.domain.Sort;
     import org.springframework.stereotype.Service;
 
     import java.util.List;
-    import java.util.Optional;
 
     @RequiredArgsConstructor
     @Service

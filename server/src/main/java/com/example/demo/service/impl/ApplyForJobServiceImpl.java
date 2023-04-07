@@ -107,8 +107,8 @@ public class ApplyForJobServiceImpl implements ApplyForJobService {
 
     @Override
     public Object findUserApply(String studentName) {
-
-        return null;
+        List<Vacancies> vacancies = applyRepository.findVacanciesByStudentName(studentName);
+        return vacancies;
     }
 
     private void checkVacancies(Vacancies vacancies) {

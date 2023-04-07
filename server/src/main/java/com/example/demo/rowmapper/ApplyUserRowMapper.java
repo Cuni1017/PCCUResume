@@ -1,12 +1,10 @@
 package com.example.demo.rowmapper;
 
 import com.example.demo.dto.ApplyUserDto;
-import com.example.demo.dto.vacancies.CompanyVacanciesDto;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.SQLOutput;
 
 public class ApplyUserRowMapper implements RowMapper<ApplyUserDto> {
     @Override

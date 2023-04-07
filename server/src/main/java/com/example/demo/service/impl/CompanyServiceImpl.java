@@ -9,14 +9,11 @@ import com.example.demo.dao.vacancies.VacanciesCountyRepository;
 import com.example.demo.dao.vacancies.VacanciesDao;
 import com.example.demo.dao.vacancies.VacanciesRepository;
 import com.example.demo.dao.vacancies.VacanciesSkillRepository;
-import com.example.demo.dto.EntityUtils;
 import com.example.demo.dto.RestDto;
-import com.example.demo.dto.vacancies.CompanyVacanciesDto;
+import com.example.demo.dto.CompanyVacanciesDto;
 import com.example.demo.dto.vacancies.PageVacanciesDto;
 import com.example.demo.dto.vacancies.VacanciesDto;
 import com.example.demo.model.Company;
-import com.example.demo.model.County;
-import com.example.demo.model.Skill;
 import com.example.demo.model.vacancies.*;
 import com.example.demo.service.CompanyService;
 
@@ -31,7 +28,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

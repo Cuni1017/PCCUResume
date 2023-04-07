@@ -23,14 +23,7 @@ public class CompanyForJobController {
         return ResponseEntity.ok( companyForJobService.findVacanciesApplyBycompanyName(companyName,applyType));
     }
 
-    @GetMapping("/company/company-for-job/student/{userId}/resume/{resumeId}")
-    public ResponseEntity<Object> findUserResume(
-            @PathVariable String userId,
-            @PathVariable String resumeId
-    ){
-//
-        return ResponseEntity.ok( companyForJobService.findUserResume(userId,resumeId));
-    }
+
     @PutMapping("/company/company-for-job/{applyId}")
     public ResponseEntity<Object> changeCompanyApplyType(
             @PathVariable String applyId,

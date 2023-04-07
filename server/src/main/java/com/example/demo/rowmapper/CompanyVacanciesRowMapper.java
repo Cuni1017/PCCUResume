@@ -1,7 +1,6 @@
 package com.example.demo.rowmapper;
 
-import com.example.demo.dto.vacancies.CompanyVacanciesDto;
-import com.example.demo.dto.vacancies.PageVacanciesDto;
+import com.example.demo.dto.CompanyVacanciesDto;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

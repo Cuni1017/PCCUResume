@@ -1,4 +1,4 @@
-package com.example.demo.dto.vacancies;
+package com.example.demo.dto;
 
 import com.example.demo.model.Company;
 import com.example.demo.model.vacancies.Vacancies;

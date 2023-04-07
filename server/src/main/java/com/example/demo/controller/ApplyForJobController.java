@@ -40,7 +40,7 @@ public class ApplyForJobController {
     ){
         return ResponseEntity.ok(applyForJobService.findUserApply(studentName));
     }
-    @PutMapping("/students/company-for-job/{applyId}")
+    @PutMapping("/students/apply-for-job/{applyId}")
     public ResponseEntity<Object> changeCompanyApplyType(
             @PathVariable String applyId,
             @RequestBody ChangeApplyTypeCategory changeApplyTypeCategory
