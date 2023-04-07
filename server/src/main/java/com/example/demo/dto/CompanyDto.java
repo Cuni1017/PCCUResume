@@ -1,5 +1,6 @@
 package com.example.demo.dto;
 
+import com.example.demo.model.Role;
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
@@ -34,4 +35,5 @@ public class CompanyDto {
     private String companyEmail;
 
     private String companyValidType;
+    private Role role;
 }

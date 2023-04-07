@@ -4,6 +4,7 @@ import com.example.demo.category.VacanciesCategory;
 import com.example.demo.dao.CompanyRepository;
 import com.example.demo.dao.CountyRepository;
 import com.example.demo.dao.SkillRepository;
+import com.example.demo.dao.UserRepository;
 import com.example.demo.dao.company.CompanyDao;
 import com.example.demo.dao.vacancies.VacanciesCountyRepository;
 import com.example.demo.dao.vacancies.VacanciesDao;
@@ -15,6 +16,7 @@ import com.example.demo.dto.CompanyVacanciesDto;
 import com.example.demo.dto.vacancies.PageVacanciesDto;
 import com.example.demo.dto.vacancies.VacanciesDto;
 import com.example.demo.model.Company;
+import com.example.demo.model.User;
 import com.example.demo.model.vacancies.*;
 import com.example.demo.service.CompanyService;
 
@@ -39,6 +41,7 @@ public class CompanyServiceImpl implements CompanyService {
     private final VacanciesSkillRepository vacanciesSkillRepository;
     private final CountyRepository countyRepository;
     private final SkillRepository skillRepository;
+    private final UserRepository userRepository;
     private final CompanyDao companyDao;
     private final VacanciesDao vacanciesDao;
     public static final String NOT_CHECK = "審核中";
@@ -234,6 +237,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public Object findCompanyByCompanyName(String companyName) {
         Company company = companyRepository.findByCompanyName(companyName).orElseThrow(()-> new RuntimeException("沒有此職缺"));
+        User user = userRepository.findById(company.getCompanyId()).orElseThrow(()-> new RuntimeException("沒有此使用者"));
         CompanyDto companyDto = CompanyDto.builder()
                 .companyId(company.getCompanyId())
                 .companyName(company.getCompanyName())
@@ -246,6 +250,7 @@ public class CompanyServiceImpl implements CompanyService {
                 .companyTitle(company.getCompanyTitle())
                 .companyUsername(company.getCompanyUsername())
                 .companyValidType(company.getCompanyValidType())
+                .role(user.getRole())
                 .build();
         RestDto restDto = RestDto.builder()
                 .data(companyDto)
