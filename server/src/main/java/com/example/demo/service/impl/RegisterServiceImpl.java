@@ -66,8 +66,7 @@ public class RegisterServiceImpl implements RegisterService {
                 .username(request.getStudentUsername())
                 .email(request.getStudentEmail())
                 .password(passwordEncoder.encode(request.getStudentPassword()))
-                .role(Role.STUDENT)
-
+                .role(Role.USER)
                 .build();
         userRepository.save(user);
         studentRepository.save(student);
@@ -101,7 +100,7 @@ public class RegisterServiceImpl implements RegisterService {
                 .username(request.getCompanyUsername())
                 .email(request.getCompanyEmail())
                 .password(passwordEncoder.encode(request.getCompanyPassword()))
-                .role(Role.COMPANY)
+                .role(Role.USER)
                 .build();
 
         userRepository.save(user);

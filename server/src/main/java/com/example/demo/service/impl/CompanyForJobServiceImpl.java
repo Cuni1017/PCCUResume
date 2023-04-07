@@ -220,7 +220,12 @@ public class CompanyForJobServiceImpl implements CompanyForJobService {
             message = message + student.getStudentName();
             message = message +",您應徵的實習職缺"+ vacancies.getVacanciesName()+"通知您去面試,詳細情況公司會跟您確認";
             return message;
-        } else {
+        } else if (applyType.contains("實習")) {
+            String message = "這裡很高興的通知";
+            message = message + student.getStudentName();
+            message = message +",您應徵的實習職缺"+ vacancies.getVacanciesName()+"通知您去面試,詳細情況公司會跟您確認";
+            return message;
+        }else {
             String message = "這裡很高興的通知";
             message = message + student.getStudentName();
             message = message +",您應徵的實習職缺"+ vacancies.getVacanciesName()+"成功,";
