@@ -26,6 +26,7 @@ export default async function handler(
         console.log(ANSWER);
       } catch (error) {
         console.log(error, "emailValidate");
+        return res.status(401).json({ message: "寄送失敗，帳號可能已被註冊" })
       }
     } else {
       if (CAPTCHA !== ANSWER)

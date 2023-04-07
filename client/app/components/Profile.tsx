@@ -13,6 +13,7 @@ const Profile = ({
   isProfileMenuShow: boolean;
 }) => {
   const { signout } = useAuth();
+  const { name, imageURL } = user;
 
   return (
     <div
@@ -22,14 +23,15 @@ const Profile = ({
     >
       <div className="mr-1 h-full flex items-center">
         <div className="rounded-full flex items-center overflow-hidden">
+          {/* https://images.unsplash.com/photo-1533738363-b7f9aef128ce?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80 */}
           <Image
-            src="https://images.unsplash.com/photo-1533738363-b7f9aef128ce?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80"
+            src={imageURL ? imageURL : "/PCCUResume.png"}
             width={35}
             height={35}
             alt="cat"
           ></Image>
         </div>
-        <div className="ml-1">{user.username}</div>
+        <div className="ml-1">{name}</div>
         <ExpandMoreIcon />
         {isProfileMenuShow ? (
           <div className="absolute top-16 right-0 cursor-auto z-10">

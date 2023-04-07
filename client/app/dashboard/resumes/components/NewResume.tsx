@@ -7,7 +7,6 @@ import { usePostResume } from "../../../../hooks/Resume/useResume";
 const NewResume = ({ userId }: { userId: string }) => {
   const mutation = usePostResume();
   const { mutate } = mutation;
-  // console.log(mutation);
 
   const [formData, setFormData] = useState({ name: "" });
 

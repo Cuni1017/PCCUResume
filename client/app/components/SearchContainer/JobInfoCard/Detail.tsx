@@ -18,6 +18,8 @@ const Detail = ({ vacancy }: { vacancy: Vacancy }) => {
     vacanciesWorkExperience,
     vacanciesEducation,
     county,
+    vacanciesDistrict,
+    vacanciesAddress,
   } = vacancy;
 
   return (
@@ -32,7 +34,18 @@ const Detail = ({ vacancy }: { vacancy: Vacancy }) => {
         <Tooltip title="工作地點" className="cursor-pointer">
           <LocationOnOutlinedIcon />
         </Tooltip>
-        <div className="flex flex-wrap">{county}</div>
+        <div className="flex flex-wrap">
+          {vacanciesDistrict && vacanciesAddress ? (
+            <Tooltip
+              title={`${county}${vacanciesDistrict}${vacanciesAddress}`}
+              className="cursor-pointer"
+            >
+              <div>{county}</div>
+            </Tooltip>
+          ) : (
+            <div>{county}</div>
+          )}
+        </div>
       </div>
       <div className="flex gap-3 w-full">
         <Tooltip title="薪資範圍" className="cursor-pointer">

@@ -5,7 +5,11 @@ import styles from "./page.module.css";
 const inter = Inter({ subsets: ["latin"] });
 
 const HomePage = async () => {
-  return <div>HomePage</div>;
+  return (
+    <div className="md:max-w-[860px] lg:max-w-[1140px] m-auto px-5 md:p-0">
+      HomePage
+    </div>
+  );
 };
 
 export default HomePage;

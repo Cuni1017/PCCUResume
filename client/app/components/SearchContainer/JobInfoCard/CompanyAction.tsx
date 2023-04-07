@@ -11,25 +11,41 @@ import PlayArrowOutlinedIcon from "@mui/icons-material/PlayArrowOutlined";
 import PauseIcon from "@mui/icons-material/Pause";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import ReportProblemIcon from "@mui/icons-material/ReportProblem";
+import SnackBar from "@/app/components/SnackBar";
 import { Vacancy } from ".";
 import MyModal from "../../MyModal";
 import MyButton from "../../MyButton";
+import { useDeleteJob } from "@/hooks/companyJob/useCompanyJob";
 
 const CompanyAction = ({ vacancy }: { vacancy: Vacancy }) => {
   const { companyName, vacanciesId, vacanciesWatchType } = vacancy;
 
+  const {
+    mutate: DeleteMutate,
+    isSuccess: isDeleteSuccess,
+    isError: isDeleteError,
+  } = useDeleteJob(companyName, vacanciesId as string);
   const [isOpen, setIsOpen] = useState(false); //DeleteCheckModal
   const vacancieState: "公開" | "暫停" | "隱藏" = vacanciesWatchType;
 
   const handleVisible = () => {};
   const handleToggleState = () => {};
   const handleDelete = () => {
+    if (!vacanciesId || !companyName) return;
     console.log("Sure Delete!");
+    console.log(vacanciesId, companyName);
+    DeleteMutate({ companyName, jobId: vacanciesId });
+    setIsOpen(false);
   };
 
   return (
-    <div className="bg-gray-100 px-5 py-2 flex justify-between">
-      <div></div>
+    <div className="bg-gray-100 px-5 py-2 flex justify-end">
+      {isDeleteSuccess ? (
+        <SnackBar information="成功刪除職缺!" type="success" />
+      ) : null}
+      {isDeleteError ? (
+        <SnackBar information="刪除職缺時發生錯誤!" type="error" />
+      ) : null}
       <div className="flex gap-1">
         {vacancieState === "隱藏" ? (
           <div className="border-solid border p-1 rounded text-sm text-[#aaa]">
@@ -98,10 +114,12 @@ const CompanyAction = ({ vacancy }: { vacancy: Vacancy }) => {
         <MyModal isOpen={isOpen} onClose={() => setIsOpen(false)}>
           <div className="flex flex-col gap-2">
             <div className="flex gap-2 items-center">
-              <div className="text-red">
+              <div className="text-red-500 flex items-center justify-center">
                 <ReportProblemIcon />
               </div>
-              <div className="text-xl">您確定嗎？</div>
+              <div className="flex items-center justify-center text-xl">
+                您確定嗎？
+              </div>
             </div>
             <div>
               職缺刪除後將無法復原（不過您仍然可以查看過去的應徵紀錄）。

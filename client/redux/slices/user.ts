@@ -6,6 +6,9 @@ const initialState = {
   name: "",
   role: "",
   imageURL: "",
+  email: "",
+  phone: "",
+  isValid: false
 };
 
 export interface User {
@@ -13,7 +16,10 @@ export interface User {
   username: string;
   name: string;
   role: string;
+  email: string;
+  phone: string;
   imageURL: string;
+  isValid: boolean; //是否被教師認證過
 }
 
 const userSlice = createSlice({
@@ -21,12 +27,15 @@ const userSlice = createSlice({
   initialState: initialState,
   reducers: {
     setUser(state, action) {
-      const { id, username, name, role, imageURL } = action.payload;
+      const { id, username, name, role, email, phone, imageURL, isValid } = action.payload;
       state.id = id;
       state.username = username;
       state.name = name;
       state.role = role;
+      state.email = email;
+      state.phone = phone;
       state.imageURL = imageURL;
+      state.isValid = isValid
     },
 
     cleanUser: () => initialState,

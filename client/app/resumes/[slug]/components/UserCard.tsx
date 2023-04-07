@@ -14,35 +14,41 @@ const UserCard = ({
     AQ: string;
   };
 }) => {
+  const { name, email, phone, headshot, AQ } = userInfo;
   return (
     <Card>
       <div className="py-3">
         <div className="flex flex-col justify-center items-center mb-5">
           <div className="rounded-full overflow-hidden w-[70px] h-[70px] cursor-pointer">
             <Image
-              src="https://images.unsplash.com/photo-1533738363-b7f9aef128ce?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80"
+              src={headshot ? headshot : "/PCCUResume.png"}
               width={70}
               height={70}
               alt="cat"
               priority
             ></Image>
           </div>
-          <div className="text-xl mt-1">{userInfo.name}</div>
+          <div className="text-xl mt-1">{name}</div>
         </div>
         <div className="px-4 flex flex-col items-center justify-center gap-3">
           <TextFiled
             label="信箱："
             name="email"
-            value={userInfo.email}
+            value={email || "請至主控台設定個人檔案"}
             disabled
           />
           <TextFiled
             label="手機："
             name="email"
-            value={userInfo.phone}
+            value={phone || "請至主控台設定個人檔案"}
             disabled
           />
-          <TextFiled label="學校：" name="email" value={userInfo.AQ} disabled />
+          <TextFiled
+            label="學歷："
+            name="email"
+            value={AQ || "請至主控台設定個人檔案"}
+            disabled
+          />
         </div>
       </div>
     </Card>

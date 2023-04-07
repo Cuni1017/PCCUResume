@@ -3,13 +3,7 @@ import HeaderLogo from "./HeaderLogo";
 import HeaderAction from "./HeaderAction";
 import HeaderNavigationBar from "./HeaderNavigationBar";
 
-const CompanyHeader = ({
-  page,
-  companyName,
-}: {
-  page: string;
-  companyName: string;
-}) => {
+const CompanyHeader = ({ companyName }: { companyName: string }) => {
   return (
     <div className="w-full rounded-b-md  overflow-hidden shadow-md">
       <HeaderBackground />
@@ -24,7 +18,7 @@ const CompanyHeader = ({
               <HeaderAction companyName={companyName} />
             </div>
             <div className="flex text-sm">
-              <HeaderNavigationBar page={page} companyName={companyName} />
+              <HeaderNavigationBar companyName={companyName} />
             </div>
           </div>
         </div>

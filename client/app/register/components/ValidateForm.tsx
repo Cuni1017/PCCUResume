@@ -46,8 +46,8 @@ const ValidateForm = ({
       alert(response.data.message);
       setResendTimeFn();
     } catch (error) {
-      alert("要求寄送失敗");
-      console.log(error);
+      alert("要求寄送失敗，帳號可能已被註冊");
+      // console.log(error);
     }
     setSending(false);
   };
@@ -64,7 +64,7 @@ const ValidateForm = ({
       }
     } catch (error) {
       alert("驗證碼錯誤");
-      console.log(error);
+      // console.log(error);
     }
   };
 

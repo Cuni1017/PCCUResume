@@ -6,6 +6,7 @@ import TaiwanPostalCode from "@/data/TaiwanPostalCode.json";
 import Grid from "@mui/material/Unstable_Grid2"; //v2
 
 interface Props {
+  errors?: { address?: boolean; district?: boolean; county?: boolean };
   county: keyof typeof TaiwanPostalCode;
   district: string;
   address: string;
@@ -16,8 +17,14 @@ interface Props {
 }
 
 const AddressPicker = (props: Props) => {
-  const { county, district, address, handleSelectChange, handleTextChange } =
-    props;
+  const {
+    county,
+    district,
+    address,
+    handleSelectChange,
+    handleTextChange,
+    errors,
+  } = props;
   const cities = useMemo(() => Object.keys(TaiwanPostalCode), []);
   const cityData = TaiwanPostalCode[county];
   const districts = Object.keys(cityData);
@@ -35,6 +42,7 @@ const AddressPicker = (props: Props) => {
           <InputLabel id="city-lable">縣市</InputLabel>
           <Select
             labelId="city-label"
+            error={errors ? errors.county : undefined}
             value={county}
             name="companyCounty"
             label="city"
@@ -49,6 +57,7 @@ const AddressPicker = (props: Props) => {
           <InputLabel id="district-lable">鄉/鎮/市/區</InputLabel>
           <Select
             labelId="district-label"
+            error={errors ? errors.district : undefined}
             value={district}
             name="companyDistrict"
             label="district"
@@ -62,6 +71,7 @@ const AddressPicker = (props: Props) => {
         <TextField
           label="地址"
           name="companyAddress"
+          error={errors ? errors.address : undefined}
           value={address}
           onChange={handleTextChange}
           variant="outlined"

@@ -115,9 +115,8 @@ export function useAuth(): UseAuth {
         handleComplete();
       }
     } catch (error: any) {
-      alert("此帳號已註冊過");
-      // alert(error.response.data.errorMessage);
-      console.log(error, "useAuth");
+      alert(error.response.data.errorMessage);
+      // console.log(error, "useAuth");
     }
     setIsFetching(false);
   };

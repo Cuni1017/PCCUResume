@@ -41,16 +41,16 @@ export default async function handler(
         valid: validator.isEmail(email),
         errorMessage: "Email is invalid",
       },
-      {
-        valid: validator.isLength(name, {
-          min: 1,
-        }),
-        errorMessage: "Name is invalid",
-      },
     ];
 
     switch (identity) {
       case "STD":
+        validationSchema.push({
+          valid: validator.isLength(name, {
+            min: 1,
+          }),
+          errorMessage: "Name is invalid",
+        });
         validationSchema.push({
           valid: validator.isLength(pccuId, {
             min: 1,
@@ -97,6 +97,12 @@ export default async function handler(
         });
         break;
       case "TCH":
+        validationSchema.push({
+          valid: validator.isLength(name, {
+            min: 1,
+          }),
+          errorMessage: "Name is invalid",
+        });
         validationSchema.push({
           valid: validator.isLength(teacherId, {
             min: 1,

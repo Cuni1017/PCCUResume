@@ -52,7 +52,7 @@ export default Action;
 export const SaveButton = (props: any) => {
   return (
     <MyButton
-      classnames="hover:bg-gray-300 flex items-center text-base"
+      classnames="hover:bg-gray-300 flex items-center text-sm md:text-base justify-center gap-1"
       {...props}
     >
       <BookmarkBorderOutlinedIcon />

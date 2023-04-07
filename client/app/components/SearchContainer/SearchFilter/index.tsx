@@ -30,7 +30,7 @@ const SearchFilterContainer = () => {
 
   useEffect(() => {
     if (!isInit) {
-      // debounceRouterPush(searchParamsList);
+      debounceRouterPush(searchParamsList);
     }
     setIsInit(false);
   }, [debounceRouterPush, searchParamsList]);
@@ -55,7 +55,7 @@ const SearchFilterContainer = () => {
     <div className="flex flex-col gap-1">
       <div className="text-sm">篩選條件</div>
       <div className="md:flex gap-2 flex-wrap justify-between md:justify-start grid grid-cols-2">
-        <button
+        {/* <button
           onClick={async () => {
             try {
               console.log(router.push);
@@ -66,7 +66,7 @@ const SearchFilterContainer = () => {
           }}
         >
           Test
-        </button>
+        </button> */}
         <LocationFilter
           searchParamsList={searchParamsList}
           setSearchParamsList={setSearchParamsList}

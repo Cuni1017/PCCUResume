@@ -42,7 +42,6 @@ const ResumePage = ({ params }: { params: any }) => {
   console.log(resume);
   console.log(resumeId);
 
-  
   return <div>ResumePage</div>;
 };
 

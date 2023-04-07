@@ -1,6 +1,7 @@
 import "./globals.css";
 import Providers from "./Providers";
 import Navbar from "./components/Navbar/Navbar";
+// import Footer from "./components/Footer/Footer";
 
 const __html = `
 /**
@@ -34,7 +35,7 @@ window.__REACT_DEVTOOLS_GLOBAL_HOOK__.inject = function inject(...args) {
                 return orignalMarkComponentSuspended.call(this, fiber, wakeable, lanes);
               } else {
                 // If "wakeable.then" is not a function, log a warning.
-                console.warn('React DevTools issue detected and mitigated!\nSee https://github.com/facebook/react/issues/25994 for more information.', { fiber, wakeable, lanes });
+                console.warn('React DevTools issue detected and mitigated! See https://github.com/facebook/react/issues/25994 for more information.', { fiber, wakeable, lanes });
               }
             },
             ...rest2
@@ -68,9 +69,9 @@ export default function RootLayout({
         <Providers>
           <div className="bg-gray-100 min-h-screen w-full min-w-[320px] font-sans">
             <Navbar />
-            <main className="md:max-w-[860px] lg:max-w-[1140px] m-auto">
-              {children}
-            </main>
+            {/* className="md:max-w-[860px] lg:max-w-[1140px] m-auto" */}
+            <main>{children}</main>
+            {/* <Footer /> */}
           </div>
         </Providers>
         <script dangerouslySetInnerHTML={{ __html }} />

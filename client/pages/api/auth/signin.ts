@@ -38,20 +38,65 @@ export default async function handler(
     }
 
     let token: null | string = null;
+    let user: any;
     try {
       const response = await axiosInstance.post("/login", {
         username,
         password,
       });
       const {
-        data: { token: JWT },
+        data: { data: { authenticationDto: { token: JWT }, object } },
       } = response;
       token = JWT;
+
+      let role = object.role;
+      let isValid: boolean = true;
+      // 未經認證的STD或CPN，role會是USER，但data的key會不一樣
+      if (object.role === "USER") {
+        if (object.id[0] === "S") {
+          role = "STUDENT"
+        } else if (object.id[0] === "C") {
+          role = "COMPANY"
+        }
+        isValid = false
+      }
+
+      switch (role) {
+        case "STUDENT":
+          user = {
+            id: object.studentId,
+            username: object.studentUsername,
+            name: object.studentName,
+            role: object.role,
+            imageURL: object.studentImageUrl,
+            isValid
+          }
+          break
+        case "COMPANY":
+          user = {
+            id: object.companyId,
+            username: object.companyUsername,
+            name: object.companyName,
+            role: object.role,
+            imageURL: object.companyImageUrl,
+            isValid
+          }
+          break
+        case "TEACHER":
+          user = {
+            id: object.teacherId,
+            username: object.teacherUsername,
+            name: object.teacherName,
+            role: object.role,
+            imageURL: object.teacherImageUrl,
+            isValid
+          }
+          break
+      }
     } catch (error) {
       console.log(error);
       return res.status(401).json({ errorMessage: error });
     }
-
     if (token) {
       setCookie("JWT", token, { req, res, maxAge: 24 * 60 * 60 * 1 }); //maxAge單位好像是秒
       const decoded = jwt.decode(token) as {
@@ -61,7 +106,7 @@ export default async function handler(
         imageURL: string;
         role: string;
       };
-      return res.status(200).json({ ...decoded });
+      return res.status(200).json(user);
     } else {
       return res.status(401).json({ errorMessage: "Unauthorized request" });
     }

@@ -10,10 +10,10 @@ export default async function handler(
   const { userId, resumeId } = req.query;
   const { endpoint, endpointId, formData } = req.body;
 
-  console.log(req.body);
+  // console.log(req.body);
 
-  console.log(userId, resumeId);
-  console.log(endpoint, endpointId, formData);
+  // console.log(userId, resumeId);
+  // console.log(endpoint, endpointId, formData);
 
   let neededData: string[];
   switch (endpoint) {

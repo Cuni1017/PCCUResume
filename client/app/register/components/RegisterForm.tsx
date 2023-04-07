@@ -149,9 +149,9 @@ const RegisterForm = (props: Props) => {
 
   return (
     <div className="mt-10 flex flex-col h-full">
-      <div className="flex items-center">
+      <div className="flex flex-col sm:flex-row items-center sm:justify-between flex-wrap">
         <h1 className="m-5">請輸入資訊</h1>
-        <Button variant="contained" onClick={handleBack} className="ml-auto">
+        <Button variant="contained" onClick={handleBack}>
           重新選擇身分
         </Button>
       </div>

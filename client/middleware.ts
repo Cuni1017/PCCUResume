@@ -40,5 +40,6 @@ export const config = {
     "/resumes/:path*",
     "/dashboard/:path*",
     "/admin/:path*",
+    "/apply-for-job/:path*"
   ],
 };

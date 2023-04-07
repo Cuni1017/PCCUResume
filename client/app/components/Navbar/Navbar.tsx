@@ -13,6 +13,8 @@ import { CircularProgress } from "@mui/material";
 import Button from "@mui/material/Button";
 import AuthModal from "../AuthModal/AuthModal";
 import Profile from "../Profile";
+import TanstackLinearProgress from "./TanstackLinearProgress";
+import AppLinearIndeterminate from "./AppLinearProgress";
 
 import { axiosInstanceNext } from "@/axiosInstance.ts";
 import MobileMenu from "../MobileMenu/MobileMenu";
@@ -24,8 +26,10 @@ const Navbar = () => {
   const router = useRouter();
 
   const user = useSelector((state: Store) => state.user);
-  const [loading, setLoading] = useState(true); //jwt
+  const appLoading = useSelector((state: Store) => state.appLoading);
   const dispatch = useDispatch();
+
+  const [loading, setLoading] = useState(true); //jwt
 
   const [windowSize, setWindowSize] = useState([0, 0]);
 
@@ -128,6 +132,8 @@ const Navbar = () => {
           </div>
         </div>
       </div>
+      <TanstackLinearProgress />
+      {appLoading.isLoading ? <AppLinearIndeterminate /> : null}
       <MobileMenu isMenuShow={isMenuShow} setIsMenuShow={setIsMenuShow} />
     </>
   );

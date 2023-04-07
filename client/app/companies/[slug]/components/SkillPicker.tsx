@@ -1,15 +1,13 @@
-"use client";
-
-import React, { useState, useEffect } from "react";
+import React, { useState, memo, useEffect, useRef } from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
-import Divider from "@mui/material/Divider";
 import { styled } from "@mui/material/styles";
 import Chip from "@mui/material/Chip";
-import Paper from "@mui/material/Paper";
-import TagFacesIcon from "@mui/icons-material/TagFaces";
+import ExpandMoreOutlinedIcon from "@mui/icons-material/ExpandMoreOutlined";
 import { axiosInstance } from "@/axiosInstance.ts";
+import { useGetSkills } from "@/hooks/useSkills";
+import SearchBar from "@/app/components/SearchContainer/SearchFilter/shared/SearchBar";
 
 const style = {
   width: "100%",
@@ -17,123 +15,205 @@ const style = {
   bgcolor: "background.paper",
 };
 
-interface Skill {
+export interface Skill {
   skillId: number;
   skillName: string;
 }
 
-const SkillPicker = () => {
-  const [skills, setSkills] = useState<Skill[]>([]);
-  const [data, setData] = useState<Skill[]>([
-    { skillId: 1, skillName: "React" },
-  ]);
+const SkillPicker = ({
+  techs,
+  error,
+  handleSkillChange,
+}: {
+  techs: string | Skill[];
+  error?: boolean;
+  handleSkillChange: (skillArray: Skill[]) => void;
+}) => {
+  const [skills, setSkills] = useState<Skill[] | null>(null); // 後端資料
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const dropDownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    console.log("fetch!");
+
     const fetchSkills = async () => {
-      const { data } = await axiosInstance.get("/vacancies/skills");
-      if (data) setSkills(data);
+      const { data }: { data: Skill[] } = await axiosInstance.get(
+        "/vacancies/skills"
+      );
+      if (JSON.stringify(data) !== JSON.stringify(skills)) setSkills(data);
     };
     fetchSkills();
+  }, [skills]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const dropdownElem = dropDownRef.current;
+      if (
+        dropdownElem !== null &&
+        !dropdownElem.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    window.addEventListener("click", handleClickOutside);
+    return () => window.removeEventListener("click", handleClickOutside);
   }, []);
 
-  const handleClick = (skillId: number, skillName: string) => {
-    if (data.every((skill) => skill.skillId !== skillId))
-      setData([...data, { skillId, skillName }]);
+  // 同步skillId到UI
+  useEffect(() => {
+    if (techs && skills && typeof techs === "string") {
+      const skillArray = techs.split(",").map((tech) => {
+        const skill = skills.find((skill) => skill.skillName === tech);
+        if (!skill) return;
+        const skillId = parseInt(skill?.skillId as unknown as string); //過來的skillId是string
+        return { skillId, skillName: skill.skillName };
+      });
+
+      if (skillArray) handleSkillChange(skillArray as Skill[]);
+    }
+  }, [skills]);
+
+  const handleOptionsClick = (skillId: number, skillName: string) => {
+    if (typeof techs === "string") {
+      handleSkillChange([{ skillId, skillName }] as Skill[]);
+      return;
+    }
+
+    if (techs.findIndex((tech) => tech.skillId === skillId) === -1) {
+      handleSkillChange([...techs, { skillId, skillName }] as Skill[]);
+    }
   };
 
-  console.log(data);
-
-  const renderedListItem = skills.map((skill) => (
-    <ListItem
-      button
-      divider
-      key={skill.skillId}
-      style={{ display: isOpen ? "flex" : "none" }}
-      onClick={() =>
-        handleClick(
-          parseInt(skill.skillId as unknown as string),
-          skill.skillName
-        )
-      }
-    >
-      <ListItemText primary={skill.skillName} />
-    </ListItem>
-  ));
-
   return (
-    <>
+    <div className="relative rounded" ref={dropDownRef}>
       <InputSkillChips
+        error={error}
         onClick={() => setIsOpen(!isOpen)}
-        chipData={data}
-        setChipData={setData}
+        chipData={typeof techs === "string" ? [] : techs}
+        setChipData={handleSkillChange}
       />
-      <List sx={style} component="nav" aria-label="skills">
-        <div className="flex flex-col max-h-[400px] overflow-auto">
-          {renderedListItem}
+
+      <List
+        sx={style}
+        className="border-solid border border-gray-300 p-0 absolute z-10 bottom-[-29rem]"
+        component="nav"
+        aria-label="skills"
+        style={{ display: isOpen ? "block" : "none" }}
+      >
+        <div className="p-4 border-solid border-t-0 border-r-0 border-l-0 border-b-solid  border-b-2 border-gray-300">
+          <SearchBar
+            value={searchTerm}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setSearchTerm(e.target.value)
+            }
+          />
+        </div>
+        <div className="flex flex-col h-[390px] overflow-auto">
+          <MemoSkillListItems
+            skills={skills}
+            searchTerm={searchTerm}
+            onClick={handleOptionsClick}
+          />
+          {/* {renderedListItem} */}
         </div>
         {/* divider、light */}
       </List>
-    </>
+    </div>
   );
 };
 
+const SkillListItems = ({
+  skills,
+  searchTerm,
+  onClick,
+}: {
+  skills: Skill[] | null;
+  searchTerm: string;
+  onClick: any;
+}) => {
+  const renderedListItem = skills ? (
+    skills
+      .filter((skill) =>
+        skill.skillName.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+      .map((skill) => (
+        <ListItem
+          button
+          divider
+          key={skill.skillId}
+          onClick={() =>
+            onClick(
+              parseInt(skill.skillId as unknown as string),
+              skill.skillName
+            )
+          }
+        >
+          <ListItemText primary={skill.skillName} />
+        </ListItem>
+      ))
+  ) : (
+    <div className="text-center">目前查無資料，若過久請重新整理</div>
+  );
+  return <>{renderedListItem}</>;
+};
+
+const MemoSkillListItems = memo(SkillListItems);
+
 const ChipListItem = styled("li")(({ theme }) => ({
-  margin: theme.spacing(0.5),
+  // margin: theme.spacing(0.5),
 }));
 
 const InputSkillChips = ({
+  error,
   onClick,
   chipData,
   setChipData,
 }: {
+  error?: boolean;
   onClick: () => void;
-  chipData: any;
-  setChipData: React.Dispatch<React.SetStateAction<Skill[]>>;
+  chipData: Skill[];
+  setChipData: (skillArray: Skill[]) => void;
 }) => {
   const handleDelete = (chipToDelete: Skill) => () => {
-    setChipData((chips) =>
-      chips.filter((chip) => chip.skillId !== chipToDelete.skillId)
+    const newArray = [...chipData].filter(
+      (chip) => chip.skillId !== chipToDelete.skillId
     );
+    setChipData(newArray);
   };
 
   return (
-    <Paper
+    <div
       onClick={onClick}
-      sx={{
-        display: "flex",
-        justifyContent: "start",
-        flexWrap: "wrap",
-        listStyle: "none",
-        p: 0.5,
-        m: 0,
-        mb: 1,
-      }}
-      component="ul"
-      className="cursor-pointer"
+      className={`relative cursor-pointer border-solid border ${
+        error ? "border-red-500" : "border-gray-300"
+      } flex list-none px-2 py-1 min-h-[2rem] rounded`}
     >
-      {chipData.map((data: Skill) => {
-        let icon;
+      <div className="grow flex flex-wrap items-center gap-1 ">
+        {chipData.map((data: Skill) => {
+          let icon;
 
-        // if (data.skillName === "React") {
-        //   icon = <TagFacesIcon />;
-        // }
+          // if (data.skillName === "React") {
+          //   icon = <TagFacesIcon />;
+          // }
 
-        return (
-          <ChipListItem key={data.skillId}>
-            <Chip
-              icon={icon}
-              label={data.skillName}
-              onDelete={
-                data.skillName === "React" ? undefined : handleDelete(data)
-              }
-            />
-          </ChipListItem>
-        );
-      })}
-    </Paper>
+          return (
+            <ChipListItem key={data.skillId}>
+              <Chip
+                icon={icon}
+                label={data.skillName}
+                onDelete={handleDelete(data)}
+              />
+            </ChipListItem>
+          );
+        })}
+      </div>
+      <div className="flex items-center justify-center">
+        <ExpandMoreOutlinedIcon />
+      </div>
+    </div>
   );
 };
 
-export default SkillPicker;
+export default memo(SkillPicker);

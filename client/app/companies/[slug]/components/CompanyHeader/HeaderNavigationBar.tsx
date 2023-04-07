@@ -1,12 +1,12 @@
-import Link from "next/link";
+"use client";
 
-const HeaderNavigationBar = ({
-  page,
-  companyName,
-}: {
-  page: string;
-  companyName: string;
-}) => {
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+const HeaderNavigationBar = ({ companyName }: { companyName: string }) => {
+  const pathnameList = usePathname()!.split("/");
+  const page = pathnameList.length === 3 ? "/" : `/${pathnameList[3]}`;
+
   return (
     <>
       <Link href={`/companies/${companyName}`}>

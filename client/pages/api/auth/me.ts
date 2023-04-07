@@ -20,20 +20,57 @@ export default async function handler(
     });
   }
 
-  try {
-    const {
-      data: {
-        data: { resume, student },
-      },
-    } = await axiosInstance.get(`/students/${payload.id}`, {
-      headers: {
-        Authorization: bearerToken,
-      },
-    });
+  console.log(payload, "123")
+  const { id, username, name } = payload
 
-  } catch (error) {
-    console.log(error, "me");
+  let user;
+  switch (payload.id[0]) {
+    case "S":
+      try {
+        const { data: { data: { studentId, studentName, studentUsername, studentEmail, studentNumber, studentImageUrl, pccuId, role } } } = await axiosInstance.get(`/students/${username}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+        user = {
+          id: studentId,
+          username: studentUsername,
+          name: studentName,
+          email: studentEmail,
+          phone: studentNumber,
+          role,
+          imageURL: studentImageUrl,
+          isValid: role !== "USER"
+        }
+      } catch (error) {
+        console.log(error, "me S")
+      }
+      break
+    case "C":
+      try {
+        const { data: { data: { companyId, companyName, companyUsername, companyEmail, companyNumber, companyImageUrl, role } } } = await axiosInstance.get(`/company/${name}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+        user = {
+          id: companyId,
+          username: companyUsername,
+          name: companyName,
+          email: companyEmail,
+          phone: companyNumber,
+          role,
+          imageURL: companyImageUrl,
+          isValid: role !== "USER"
+        }
+      } catch (error) {
+        console.log(error, "me C")
+      }
+      break
+    case "T":
+      break
   }
 
-  return res.status(200).json({ ...payload });
+  console.log(user)
+  return res.status(200).json(user);
 }
