@@ -1,4 +1,7 @@
 package com.example.demo.dao;
 
-public interface CompanyAboutRepository {
+import com.example.demo.model.CompanyAbout;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface CompanyAboutRepository extends JpaRepository<CompanyAbout,String> {
 }
