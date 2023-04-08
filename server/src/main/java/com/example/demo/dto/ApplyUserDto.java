@@ -20,7 +20,9 @@ public class ApplyUserDto {
     private String vacanciesId;
     private String userId;
     private LocalDate createTime;
-
+    private String applyBeforeTalk;
+    private String applyEmail;
+    private int applyNumber;
     private String applyType;
     private String companyId;
     private String resumeId;

@@ -15,6 +15,9 @@ public class ApplyUserRowMapper implements RowMapper<ApplyUserDto> {
         applyUserDto.setUserId(rs.getString("user_id"));
         applyUserDto.setCreateTime(rs.getDate("create_time").toLocalDate());
         applyUserDto.setApplyType(rs.getString("apply_type"));
+        applyUserDto.setApplyEmail(rs.getString("apply_email"));
+        applyUserDto.setApplyBeforeTalk(rs.getString("apply_before_talk"));
+        applyUserDto.setApplyNumber(rs.getInt("apply_number"));
         applyUserDto.setCompanyId(rs.getString("company_id"));
         applyUserDto.setResumeId(rs.getString("resume_id"));
         applyUserDto.setStudentRealName(rs.getString("student_name"));
