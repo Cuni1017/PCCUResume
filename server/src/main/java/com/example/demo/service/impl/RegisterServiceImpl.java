@@ -67,6 +67,7 @@ public class RegisterServiceImpl implements RegisterService {
                 .email(request.getStudentEmail())
                 .password(passwordEncoder.encode(request.getStudentPassword()))
                 .role(Role.USER)
+                .name(student.getStudentName())
                 .build();
         userRepository.save(user);
         studentRepository.save(student);
@@ -92,6 +93,9 @@ public class RegisterServiceImpl implements RegisterService {
         if(!companyRepository.findByCompanyUsername(request.getCompanyUsername()).isEmpty()){
             throw  new UserNotFoundException("這帳號被註冊過了");
         }
+        if(!companyRepository.findByCompanyName(request.getCompanyName()).isEmpty()){
+            throw  new UserNotFoundException("這COMPANYNAME被註冊過了");
+        }
         String companyId  = getId(companyRepository,"Company");
         Company company   = companyBuilder(request);
 
@@ -101,6 +105,7 @@ public class RegisterServiceImpl implements RegisterService {
                 .email(request.getCompanyEmail())
                 .password(passwordEncoder.encode(request.getCompanyPassword()))
                 .role(Role.USER)
+                .name(request.getCompanyName())
                 .build();
 
         userRepository.save(user);
@@ -130,6 +135,7 @@ public class RegisterServiceImpl implements RegisterService {
                 .email(request.getTeacherEmail())
                 .password(passwordEncoder.encode(request.getTeacherPassword()))
                 .role(Role.TEACHER)
+                .name(request.getTeacherName())
                 .build();
 
         userRepository.save(user);

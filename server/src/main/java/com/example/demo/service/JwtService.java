@@ -62,6 +62,7 @@ public class JwtService {
     extraClaims.put("username",userDetails.getUsername());
     extraClaims.put("id",userDetails.getId());
     extraClaims.put("role",userDetails.getRole());
+    extraClaims.put("name",userDetails.getName());
     return Jwts
         .builder()
         .setClaims(extraClaims)
