@@ -89,7 +89,7 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="bg-white border-0 border-b border-solid border-b-gray-200 h-16">
+      <div className="px-5 bg-white border-0 border-b border-solid border-b-gray-200 h-16">
         <div className="m-auto h-full sm:max-w-[600px] md:max-w-[860px] lg:max-w-[1140px] flex justify-between items-center">
           <div className="text-2xl flex items-center h-full">
             <div className="md:mr-8">

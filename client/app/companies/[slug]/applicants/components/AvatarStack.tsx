@@ -5,26 +5,20 @@ import MyDialog from "@/app/components/MyDialog";
 
 interface Props {
   users: ApplyUser[];
+  onClick: (user: ApplyUser) => void;
 }
 
-const AvatarStack = ({ users }: Props) => {
-  const handleClick = () => {
-    // setIsDialogOpen(true);
-  };
+const AvatarStack = ({ users, onClick }: Props) => {
+  const renderedAvatars = users.map((user) => (
+    <IconButton key={user.userId} onClick={() => onClick(user)}>
+      <Avatar
+        alt={user.studentRealName}
+        src={user.studentImageUrl ? user.studentImageUrl : " "}
+      />
+    </IconButton>
+  ));
 
-  return (
-    <div className="flex flex-wrap gap-2">
-      <IconButton onClick={handleClick}>
-        <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-      </IconButton>
-      <IconButton>
-        <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
-      </IconButton>
-      <IconButton>
-        <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
-      </IconButton>
-    </div>
-  );
+  return <div className="flex flex-wrap gap-2">{renderedAvatars}</div>;
 };
 
 export default AvatarStack;

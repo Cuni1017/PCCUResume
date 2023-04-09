@@ -23,11 +23,7 @@ const fetchJobs = async (companyName: string) => {
     },
     cache: "no-store",
   });
-  if (!res.ok) {
-    // notFound();
-    // throw new Error("Failed to fetch");
-  }
-  console.log(res);
+  if (!res.ok) notFound();
 
   return res.json();
 };
@@ -47,9 +43,7 @@ const CompanyJobs = async (props: any) => {
   const renderedJobs = vacancies
     .filter((vacancy: Vacancy) => vacancy.vacanciesName.includes(searchTerm))
     .map((vacancy: Vacancy) => {
-      return (
-        <JobInfoCard key={vacancy.vacanciesId} vacancy={vacancy} self={true} />
-      );
+      return <JobInfoCard key={vacancy.vacanciesId} vacancy={vacancy} />;
     });
 
   return (

@@ -6,7 +6,13 @@ import ApplyTrackCard from "./components/ApplyTrackCard";
 import { useGetApplies, usePutApply } from "@/hooks/companyJob/useApplicants";
 import { Vacancy } from "@/app/components/SearchContainer/JobInfoCard";
 import ContentAction from "../components/CompanyContent/ContentAction";
-import ApplyActionDialog from "./components/ApplyActionDialog";
+import ApplyActionDialog, { ApplyType } from "./components/ApplyActionDialog";
+import Link from "next/link";
+import MyButton from "@/app/components/MyButton";
+import SnackBar from "@/app/components/SnackBar";
+import { useSelector } from "react-redux";
+import { Store } from "@/redux/store";
+import UnAuthorizedPage from "@/app/components/UnAuthorizedPage";
 
 export interface ApplyUser {
   applyId: string;
@@ -17,14 +23,33 @@ export interface ApplyUser {
   studentEmail: string;
   studentImageUrl: string | null;
   studentRealName: string;
+  applyEmail: string;
+  applyNumber: number;
   studentUsername: string;
+  applyBeforeTalk: string;
   userId: string;
   vacanciesId: string;
 }
 
+export interface Company {
+  companyId: string;
+  companyName: string;
+  companyTitle: string;
+  companyNumber: number;
+  companyCounty: string;
+  companyDistrict: string;
+  companyAddress: string;
+  companyEmail: string;
+  companyImageUrl: string | null;
+}
+
 export interface Apply {
   applyUserDto: ApplyUser[];
-  vacancies: Vacancy;
+  fullVacanciesDto: Company & {
+    vacancies: Vacancy;
+    skills: string;
+    county: string;
+  };
 }
 
 const ApplicantsPage = (props: any) => {
@@ -32,12 +57,32 @@ const ApplicantsPage = (props: any) => {
     params: { slug: companyName },
   } = props;
 
+  const { name } = useSelector((store: Store) => store.user);
+
+  const [editApplyUser, setEditApplyUser] = useState<ApplyUser | null>(null);
+
   const { data: applies } = useGetApplies(companyName);
-  console.log(applies);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const { mutate: PutMutate, isSuccess: isPutSuccess } =
+    usePutApply(companyName);
+
+  const handlePutApply = ({
+    applyId,
+    applyType,
+  }: {
+    applyId: string;
+    applyType: ApplyType;
+  }) => {
+    PutMutate({ applyId, applyType });
+    setEditApplyUser(null);
+  };
+
+  if (name !== decodeURI(companyName)) return <UnAuthorizedPage />;
 
   return (
     <div className="flex flex-col gap-4">
+      {isPutSuccess && (
+        <SnackBar information={"成功處理要求！"} type="success" />
+      )}
       <CompanyHeader companyName={companyName} />
       <div className="px-3 md:p-0">
         <div className="flex justify-between items-center text-lg">
@@ -49,13 +94,36 @@ const ApplicantsPage = (props: any) => {
         <div className="mt-5">
           {applies.length > 0 ? (
             applies.map((apply: Apply) => (
-              <ApplyTrackCard key={apply.vacancies.vacanciesId} apply={apply} />
+              <ApplyTrackCard
+                key={apply.fullVacanciesDto.vacancies.vacanciesId}
+                apply={apply}
+                setEditApplyUser={setEditApplyUser}
+              />
             ))
           ) : (
-            <div>目前沒有任何職缺有應徵者</div>
+            <div className="flex flex-col gap-5">
+              <div className="text-slate-500 text-center">
+                目前沒有任何職缺有應徵者
+              </div>
+              <div className="flex flex-col gap-2 items-center">
+                透過人才搜尋功能來主動尋找合適者！
+                <div>
+                  <Link href={"/search"}>
+                    <MyButton classnames="text-lg hover:bg-gray-300 w-[8rem] h-[3rem]">
+                      徵才
+                    </MyButton>
+                  </Link>
+                </div>
+              </div>
+            </div>
           )}
         </div>
       </div>
+      <ApplyActionDialog
+        onSubmit={handlePutApply}
+        onClose={() => setEditApplyUser(null)}
+        applyUser={editApplyUser}
+      />
     </div>
   );
 };

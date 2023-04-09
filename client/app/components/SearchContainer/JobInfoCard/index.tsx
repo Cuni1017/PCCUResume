@@ -39,10 +39,9 @@ export interface Vacancy {
 
 interface Props {
   vacancy: Vacancy;
-  self?: boolean;
 }
 
-const JobInfoCard = ({ vacancy, self }: Props) => {
+const JobInfoCard = ({ vacancy }: Props) => {
   return (
     <Card>
       <div className="flex flex-col md:flex-row p-5 pb-0 gap-6">
@@ -56,7 +55,7 @@ const JobInfoCard = ({ vacancy, self }: Props) => {
       <div className="px-5 py-3 md:p-5">
         <Action vacancy={vacancy} />
       </div>
-      {self ? <CompanyAction vacancy={vacancy} /> : null}
+      <CompanyAction vacancy={vacancy} />
     </Card>
   );
 };

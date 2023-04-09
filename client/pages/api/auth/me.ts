@@ -20,7 +20,7 @@ export default async function handler(
     });
   }
 
-  console.log(payload, "123")
+  // console.log(payload, "123")
   const { id, username, name } = payload
 
   let user;
@@ -71,6 +71,6 @@ export default async function handler(
       break
   }
 
-  console.log(user)
+  // console.log(user)
   return res.status(200).json(user);
 }

@@ -16,9 +16,12 @@ import { Vacancy } from ".";
 import MyModal from "../../MyModal";
 import MyButton from "../../MyButton";
 import { useDeleteJob } from "@/hooks/companyJob/useCompanyJob";
+import { useSelector } from "react-redux";
+import { Store } from "@/redux/store";
 
 const CompanyAction = ({ vacancy }: { vacancy: Vacancy }) => {
   const { companyName, vacanciesId, vacanciesWatchType } = vacancy;
+  const { name } = useSelector((store: Store) => store.user);
 
   const {
     mutate: DeleteMutate,
@@ -37,6 +40,8 @@ const CompanyAction = ({ vacancy }: { vacancy: Vacancy }) => {
     DeleteMutate({ companyName, jobId: vacanciesId });
     setIsOpen(false);
   };
+
+  if (name !== companyName) return <></>;
 
   return (
     <div className="bg-gray-100 px-5 py-2 flex justify-end">

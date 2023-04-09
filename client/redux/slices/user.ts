@@ -19,7 +19,7 @@ export interface User {
   email: string;
   phone: string;
   imageURL: string;
-  isValid: boolean; //是否被教師認證過
+  isValid: boolean; //是否被認證過
 }
 
 const userSlice = createSlice({
