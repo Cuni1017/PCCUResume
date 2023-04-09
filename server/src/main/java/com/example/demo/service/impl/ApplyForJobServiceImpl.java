@@ -8,11 +8,13 @@ import com.example.demo.dao.StudentRepository;
 import com.example.demo.dao.UserHistoryMoveRepository;
 import com.example.demo.dao.apply.ApplyDao;
 import com.example.demo.dao.resume.ResumeRepository;
+import com.example.demo.dao.vacancies.VacanciesDao;
 import com.example.demo.dao.vacancies.VacanciesRepository;
 import com.example.demo.dto.ApplytypeVacnciesDto;
 import com.example.demo.dto.RestDto;
 import com.example.demo.dto.applyforjob.ApplyCompanyDto;
 import com.example.demo.dto.applyforjob.ApplyVacanciesDto;
+import com.example.demo.dto.vacancies.FullVacanciesDto;
 import com.example.demo.model.*;
 import com.example.demo.model.resume.Resume;
 import com.example.demo.model.vacancies.Vacancies;
@@ -41,6 +43,7 @@ public class ApplyForJobServiceImpl implements ApplyForJobService {
     private final  UserHistoryMoveRepository userHistoryMoveRepository;
     private final  ApplyRepository applyRepository;
     private final  CompanyRepository companyRepository;
+    private final VacanciesDao vacanciesDao;
 
     private final JavaMailSender mailSender;
 
@@ -109,16 +112,16 @@ public class ApplyForJobServiceImpl implements ApplyForJobService {
     }
 
     @Override
-    public Object findUserApply(String studentName) {
-        List<Vacancies> vacancies = applyRepository.findVacanciesByStudentName(studentName);
-        List<String> vacanciesIds = vacancies.stream().map((s)->s.getVacanciesId()).distinct().collect(Collectors.toList());
+    public Object findUserApply(String studentId) {
+        List<Apply> applies = applyRepository.findByUserId(studentId);
+        List<String> vacanciesIds = applies.stream().map((s)->s.getVacanciesId()).distinct().collect(Collectors.toList());
         List<ApplytypeVacnciesDto> applytypeVacnciesDtoLinkedList = new LinkedList<>();
         for(String vacanciesId :vacanciesIds){
             List<Apply> apply = applyRepository.findByVacanciesId(vacanciesId);
-            Vacancies vacancy = vacancies.stream().filter((s)->s.getVacanciesId()==vacanciesId).findFirst().orElseThrow(()->new RuntimeException("沒有此職缺"));
+            FullVacanciesDto fullVacanciesDto = vacanciesDao.findFullVacanciesById(vacanciesId);
             ApplytypeVacnciesDto applytypeVacnciesDto=ApplytypeVacnciesDto.builder()
                     .apply(apply)
-                    .vacancies(vacancy)
+                    .fullVacanciesDto(fullVacanciesDto)
                     .build();
             applytypeVacnciesDtoLinkedList.add(applytypeVacnciesDto);
         }

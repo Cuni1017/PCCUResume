@@ -96,7 +96,7 @@ public class CompanyForJobServiceImpl implements CompanyForJobService {
             case 面試中:
                 Apply progressApply =  changeApplyType(apply,newApplyType.toString());
                 try {
-                    sendApplyTypeMail(vacancies ,student,newApplyType.toString());
+                    sendApplyTypeMail(student.getStudentName(),vacancies.getVacanciesName() ,student.getStudentEmail(),newApplyType.toString());
                     RestDto restDto = RestDto.builder()
                             .data(progressApply)
                             .message("更新成功")
@@ -107,6 +107,21 @@ public class CompanyForJobServiceImpl implements CompanyForJobService {
                     return "郵件發送失敗: " + e.getMessage();
                 }
             case 廠商中斷實習:
+                Apply cutApply =  changeApplyType(apply,newApplyType.toString());
+                HistoryApply historyApply = getHistoryApply(cutApply);
+                historyApplyRepository.save(historyApply);
+                applyRepository.deleteById(applyId);
+                try {
+                    sendApplyTypeMail(student.getStudentName(),vacancies.getVacanciesName() ,student.getStudentEmail(),newApplyType.toString());
+                    RestDto restDto = RestDto.builder()
+                            .data(historyApply)
+                            .message("更新成功")
+                            .build();
+                    return restDto;
+                } catch (MailException e) {
+                    // 在這裡處理異常情況
+                    return "郵件發送失敗: " + e.getMessage();
+                }
             case 實習中:
                 Apply InApply =  changeApplyType(apply,newApplyType.toString());
                 int quantity = vacancies.getVacanciesQuantity();
@@ -115,15 +130,15 @@ public class CompanyForJobServiceImpl implements CompanyForJobService {
                 return getRestDto(InApply,"更新成功");
             case 應徵失敗,面試失敗,待學生同意中失敗:
                 Apply fileApply = changeApplyType(apply,ApplyType.應徵失敗.toString());
-                HistoryApply historyApply = getHistoryApply(fileApply);
+                HistoryApply historyApply1 = getHistoryApply(fileApply);
 
-                historyApplyRepository.save(historyApply);
+                historyApplyRepository.save(historyApply1);
                 applyRepository.deleteById(applyId);
 
                 try {
-                    sendApplyTypeMail(vacancies ,student,newApplyType.toString());
+                    sendApplyTypeMail(student.getStudentName(),vacancies.getVacanciesName() ,student.getStudentEmail(),newApplyType.toString());
                     RestDto restDto = RestDto.builder()
-                            .data(historyApply)
+                            .data(historyApply1)
                             .message("更新成功")
                             .build();
                     return restDto;
@@ -134,7 +149,7 @@ public class CompanyForJobServiceImpl implements CompanyForJobService {
             case   待學生同意中:
                 Apply sucessApply =  changeApplyType(apply,newApplyType.toString());
                 try {
-                    sendApplyTypeMail(vacancies ,student,newApplyType.toString());
+                    sendApplyTypeMail(student.getStudentName(),vacancies.getVacanciesName() ,student.getStudentEmail(),newApplyType.toString());
                     RestDto restDto = RestDto.builder()
                             .data(sucessApply)
                             .message("更新成功")
@@ -183,7 +198,7 @@ public class CompanyForJobServiceImpl implements CompanyForJobService {
 
     private Apply changeApplyType(Apply apply,String applyType) {
         apply.setApplyType(applyType);
-        if(!applyType.contains("失敗")){
+        if(!applyType.contains("失敗")||applyType.contains("中斷")){
             applyRepository.save(apply);
         }
         return apply;
@@ -198,41 +213,46 @@ public class CompanyForJobServiceImpl implements CompanyForJobService {
                 .build();
         return restDto;
     }
-    private void sendApplyTypeMail(Vacancies vacancies ,Student student,String applyType) throws MailException {
+    private void sendApplyTypeMail(String physiognomy,String vacanciesName ,String email,String applyType) throws MailException {
 
         MimeMessagePreparator messagePreparator = mimeMessage -> {
 
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
-                String message = getMessage(vacancies, student, applyType);
+                String message = getMessage(physiognomy, vacanciesName,email, applyType);
                 messageHelper.setFrom(MikeEmail.email.myEmail.toString());
-                messageHelper.setTo(student.getStudentEmail());
-                messageHelper.setSubject("pccu應徵" + vacancies.getVacanciesName() + "實習結果");
+                messageHelper.setTo(email);
+                messageHelper.setSubject("pccu通知有關" + physiognomy + "實習資訊");
                 messageHelper.setText(message);
         };
         mailSender.send(messagePreparator);
     }
 
-    private String getMessage(Vacancies vacancies, Student student, String applyType){
+    private String getMessage(String physiognomy,String vacanciesName, String email, String applyType){
         if (applyType.contains("失敗")) {
             String message = "這裡很遺憾的通知";
-            message = message + student.getStudentName();
-            message = message +",您應徵的實習職缺"+ vacancies.getVacanciesName()+"失敗,";
+            message = message + physiognomy;
+            message = message +",您應徵的實習職缺"+ vacanciesName +"失敗,";
             message = message +"這並不是你不夠好或是實力不足只是再不好的時機遇到我們會將您加入我們的人才儲備";
             return message;
         } else if (applyType.contains("面試")) {
             String message = "這裡很高興的通知";
-            message = message + student.getStudentName();
-            message = message +",您應徵的實習職缺"+ vacancies.getVacanciesName()+"通知您去面試,詳細情況公司會跟您確認";
+            message = message + physiognomy;
+            message = message +",您應徵的實習職缺"+ vacanciesName+"通知您去面試,詳細情況公司會跟您確認";
             return message;
-        } else if (applyType.contains("實習")) {
+        } else if (applyType.contains("中斷")) {
+            String message = "這裡很遺憾的通知";
+            message = message + physiognomy;
+            message = message +",您實習中的的實習職缺"+ vacanciesName+"中斷與您的實習合作,詳細情況公司會跟您確認";
+            return message;
+        }else if (applyType.contains("實習")) {
             String message = "這裡很高興的通知";
-            message = message + student.getStudentName();
-            message = message +",您應徵的實習職缺"+ vacancies.getVacanciesName()+"通知您去面試,詳細情況公司會跟您確認";
+            message = message + physiognomy;
+            message = message +",您應徵的實習職缺"+ vacanciesName+"通知您去面試,詳細情況公司會跟您確認";
             return message;
         }else {
             String message = "這裡很高興的通知";
-            message = message + student.getStudentName();
-            message = message +",您應徵的實習職缺"+ vacancies.getVacanciesName()+"成功,";
+            message = message + physiognomy;
+            message = message +",您應徵的實習職缺"+ vacanciesName+"成功,";
             message = message +"需要等你前往實習網站進行確認應徵動作,如沒有確認此職缺會消失";
             return message;
         }

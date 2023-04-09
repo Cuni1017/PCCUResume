@@ -34,11 +34,11 @@ public class ApplyForJobController {
     ){
         return ResponseEntity.ok(applyForJobService.createApply(userId,companyId,resumeId,vacanciesId,applyCategory));
     }
-    @GetMapping("/students/{studentName}/apply-for-job")
+    @GetMapping("/students/{studentId}/apply-for-job")
     public ResponseEntity<Object> findUserApply(
-            @PathVariable String studentName
+            @PathVariable String studentId
     ){
-        return ResponseEntity.ok(applyForJobService.findUserApply(studentName));
+        return ResponseEntity.ok(applyForJobService.findUserApply(studentId));
     }
     @PutMapping("/students/apply-for-job/{applyId}")
     public ResponseEntity<Object> changeCompanyApplyType(

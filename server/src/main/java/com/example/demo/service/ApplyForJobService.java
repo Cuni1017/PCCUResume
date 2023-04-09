@@ -7,5 +7,5 @@ public interface ApplyForJobService {
 
     Object createApply(String userId,String companyId, String resumeId,  String vacanciesId, ApplyCategory applyCategory);
 
-    Object findUserApply(String studentName);
+    Object findUserApply(String studentId);
 }

@@ -1,5 +1,6 @@
 package com.example.demo.dto;
 
+import com.example.demo.dto.vacancies.FullVacanciesDto;
 import com.example.demo.model.Apply;
 import com.example.demo.model.vacancies.Vacancies;
 import lombok.AllArgsConstructor;
@@ -15,5 +16,5 @@ import java.util.List;
 @AllArgsConstructor
 public class ApplytypeVacnciesDto {
    private List<Apply> apply;
-   private Vacancies vacancies;
+   private FullVacanciesDto fullVacanciesDto;
 }
