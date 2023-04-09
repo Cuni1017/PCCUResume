@@ -17,4 +17,6 @@ public interface CompanyService {
 
 
     Object findCompanyByCompanyName(String companyName);
+
+    Object findcompanyAboutByCompanyName(String companyName);
 }

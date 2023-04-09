@@ -259,6 +259,11 @@ public class CompanyServiceImpl implements CompanyService {
         return  restDto;
     }
 
+    @Override
+    public Object findcompanyAboutByCompanyName(String companyName) {
+        return null;
+    }
+
 
     private String getId(JpaRepository repository , String idType , int x){
         long userCount = repository.count();

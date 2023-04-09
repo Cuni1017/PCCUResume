@@ -7,12 +7,14 @@ import com.example.demo.dao.HistoryApplyRepository;
 import com.example.demo.dao.StudentRepository;
 import com.example.demo.dao.apply.ApplyDao;
 import com.example.demo.dao.resume.*;
+import com.example.demo.dao.vacancies.VacanciesDao;
 import com.example.demo.dao.vacancies.VacanciesRepository;
 import com.example.demo.dto.ApplyUserDto;
 import com.example.demo.dto.CompanyFoJobDto;
 import com.example.demo.dto.RestDto;
 import com.example.demo.dto.applyforjob.AllApplyDto;
 import com.example.demo.dto.resume.AllResumeDto;
+import com.example.demo.dto.vacancies.FullVacanciesDto;
 import com.example.demo.model.*;
 import com.example.demo.model.resume.*;
 import com.example.demo.model.vacancies.Vacancies;
@@ -42,6 +44,7 @@ public class CompanyForJobServiceImpl implements CompanyForJobService {
     private final HistoryApplyRepository historyApplyRepository;
     private final CompanyRepository companyRepository;
     private final JavaMailSender mailSender;
+    private final VacanciesDao vacanciesDao;
     private final ResumeRepository resumeRepository;
     private final RWorkHopeRepository rWorkHopeRepository;
     private final RSpecialSkillRepository rSpecialSkillRepository;
@@ -65,9 +68,9 @@ public class CompanyForJobServiceImpl implements CompanyForJobService {
 
         for(String vacanciesId : vacanciesIds){
             List<ApplyUserDto> applyUserDto = applyDao.findApplyVacanciesAndUserByVacanciesId(vacanciesId,applyType);
-            Vacancies vacancies = vacanciesRepository.findById(vacanciesId).orElseThrow(()->new RuntimeException("沒有此職缺"));
-            AllApplyDto allApplyDto=AllApplyDto.builder()
-                    .vacancies(vacancies)
+            FullVacanciesDto fullVacanciesDto = vacanciesDao.findFullVacanciesById(vacanciesId);
+            AllApplyDto       allApplyDto = AllApplyDto.builder()
+                    .fullVacanciesDto(fullVacanciesDto)
                     .ApplyUserDto(applyUserDto)
                     .build();
             allApplyDtoList.add(allApplyDto);
@@ -103,6 +106,7 @@ public class CompanyForJobServiceImpl implements CompanyForJobService {
                     // 在這裡處理異常情況
                     return "郵件發送失敗: " + e.getMessage();
                 }
+            case 廠商中斷實習:
             case 實習中:
                 Apply InApply =  changeApplyType(apply,newApplyType.toString());
                 int quantity = vacancies.getVacanciesQuantity();
