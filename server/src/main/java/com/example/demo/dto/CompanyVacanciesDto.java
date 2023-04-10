@@ -36,6 +36,7 @@ public class CompanyVacanciesDto {
     private String vacanciesSalaryType;
     private String vacanciesWatchType;
     private String teacherValidType;
+    private String vacanciesDistrict;
     private String skills;
     private String county;
 }
