@@ -81,6 +81,7 @@ public class ApplyForJobServiceImpl implements ApplyForJobService {
         Student student = studentRepository.findById(userId).orElseThrow(()->new RuntimeException("沒有此學生"+userId));
 
         checkVacancies(vacancies);
+        checkIsApply(student.getStudentId());
         plusApplyCount(vacancies);
         sendApplyEmail(student,vacancies.getVacanciesName(),company.getCompanyEmail(),applyCategory);
 
@@ -110,6 +111,21 @@ public class ApplyForJobServiceImpl implements ApplyForJobService {
                 .build();
         return restDto;
     }
+
+    private void checkIsApply(String studentId) {
+        List<Apply> applies = applyRepository.findByUserId(studentId);
+        if(applies != null){
+            for(Apply apply: applies){
+                LocalDate createTime = apply.getCreateTime();
+                LocalDate addThirtyDay = createTime.plusMonths(30);
+                if(addThirtyDay.isBefore(LocalDate.now())){
+                    throw new RuntimeException("30天內不得重複報名,除非公司已明缺通知應徵失敗");
+                }
+            }
+
+        }
+    }
+
 
     @Override
     public Object findUserApply(String studentId) {
