@@ -115,13 +115,7 @@ public class ApplyForJobServiceImpl implements ApplyForJobService {
     private void checkIsApply(String studentId) {
         List<Apply> applies = applyRepository.findByUserId(studentId);
         if(applies != null){
-            for(Apply apply: applies){
-                LocalDate createTime = apply.getCreateTime();
-                LocalDate addThirtyDay = createTime.plusMonths(30);
-                if(addThirtyDay.isBefore(LocalDate.now())){
-                    throw new RuntimeException("30天內不得重複報名,除非公司已明缺通知應徵失敗");
-                }
-            }
+           throw new RuntimeException("不得重複申請該職位");
 
         }
     }
