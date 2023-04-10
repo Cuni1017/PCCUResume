@@ -11,6 +11,7 @@ import { SaveButton } from "@/app/components/SearchContainer/JobInfoCard/Action"
 import MyButton from "../../../../components/MyButton";
 import { Vacancy } from "@/app/components/SearchContainer/JobInfoCard";
 import Lexical from "@/app/components/Lexical/App";
+import { notFound } from "next/navigation";
 
 const fetchJobById = async (vacancyId: string) => {
   const url = `http://localhost:8080/vacancies/${vacancyId}`;
@@ -22,7 +23,7 @@ const fetchJobById = async (vacancyId: string) => {
         "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiU1RVREVOVCIsImlkIjoiUzIwMjMwMzA4MjAiLCJ1c2VybmFtZSI6ImNvcnkiLCJzdWIiOiJjb3J5IiwiaWF0IjoxNjgwODYzNDM1LCJleHAiOjE2NzkxNjA0Njd9.tKWBTuGFs1GoD2xnM1hxWlXoztjsfbWSKBA5eJQaVc0",
     },
   });
-  if (!res.ok) throw new Error("Failed to fetch");
+  if (!res.ok) notFound();
 
   return res.json();
 };
@@ -58,6 +59,8 @@ const CompanyJobPage = async (props: any) => {
       vacanciesRequirement,
     },
   } = vacancy;
+
+  if (companyName !== decodeURI(params.slug)) notFound();
 
   const techs = skills.split(",");
 

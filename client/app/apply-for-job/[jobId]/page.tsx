@@ -13,6 +13,7 @@ import { getCookie } from "cookies-next";
 import MyButton from "@/app/components/MyButton";
 import SuccessCheck from "@/app/components/SuccessCheck";
 import MyDialog from "@/app/components/MyDialog";
+import UnAuthorizedPage from "@/app/components/UnAuthorizedPage";
 
 export interface Resume {
   resumeId: string;
@@ -53,6 +54,8 @@ const ApplyForJobPage = (props: any) => {
 
   useEffect(() => {
     const fetchApplyInfo = async () => {
+      if (user.role !== "STUDENT") return;
+
       const res = await axiosInstance.get(
         `students/${user.username}/apply-for-job/vacancies/${jobId}`,
         {
@@ -89,6 +92,8 @@ const ApplyForJobPage = (props: any) => {
     if (user.username) fetchApplyInfo();
   }, [jobId, user]);
 
+  if (user.role !== "STUDENT") return <UnAuthorizedPage />;
+
   if (!JobInfo || !STDInfo) return <div>Loading...</div>;
 
   const {
@@ -124,13 +129,12 @@ const ApplyForJobPage = (props: any) => {
       // router.replace("/dashboard/applications-jobs");
       setIsPostSuccess(true);
     }
-    console.log(res);
 
     dispatch(cancelAppIsLoading());
   };
 
   return (
-    <div className="px-5 md:p-0">
+    <div>
       <MyDialog isOpen={isPostSuccess} onClose={() => {}}>
         <div className="py-10 px-20 flex flex-col gap-2 justify-center items-center">
           <div className="text-2xl font-bold">成功寄出履歷</div>
@@ -155,7 +159,7 @@ const ApplyForJobPage = (props: any) => {
           </Link>
         </div>
       </MyDialog>
-      <div className="min-h-[2rem] bg-white">
+      <div className="min-h-[2rem] bg-white px-5 md:p-0">
         <div className="max-w-[600px] m-auto">
           <div className="flex flex-col gap-3 py-5">
             <div className="flex items-center gap-2">
@@ -196,13 +200,13 @@ const ApplyForJobPage = (props: any) => {
           </div>
         </div>
       </div>
-      <div className="max-w-[600px] m-auto py-5">
+      <div className="max-w-[600px] m-auto py-5 px-5 md:px-0">
         <div className="flex flex-col gap-5">
           <div className="text-lg text-slate-500">送出您的履歷</div>
           <div className="flex items-center gap-2">
             <div className="rounded-full overflow-hidden relative w-[4.5rem] h-[4.5rem]">
               <Image
-                src="https://images.unsplash.com/photo-1533738363-b7f9aef128ce?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80"
+                src={user.imageURL ? user.imageURL : "/PCCUResume.png"}
                 fill
                 sizes="100%"
                 alt="cat"

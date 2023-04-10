@@ -1,12 +1,41 @@
-import { axiosInstanceNext } from "@/axiosInstance.ts";
+import { axiosInstance, axiosInstanceNext } from "@/axiosInstance.ts";
 import { getCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { queryKeys } from "@/tanstack-query/constant";
 
 
 const JWT = getCookie("JWT");
 
+// -------company
+async function getCompany({
+  companyName
+}: {
+  companyName: string
+}) {
+  const { data } = await axiosInstance.get(
+    `company/${companyName}`,
+    {
+      headers: {
+        Authorization: `Bearer ${JWT}`,
+      },
+    }
+  );
+  return data.data;
+}
+
+export function useGetCompany(companyName: string) {
+  const query = useQuery({
+    queryKey: [companyName],
+    queryFn: () => getCompany({ companyName }),
+    staleTime: 200000,
+  });
+  const { data = [], isFetching } = query;
+  return { data, isFetching };
+}
+
+
+// -------companyJob
 async function postJob({
   companyName,
   formData,

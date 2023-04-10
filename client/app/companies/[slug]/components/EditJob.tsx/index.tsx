@@ -165,10 +165,10 @@ const EditJob = ({
   return (
     <div className="p-5 flex flex-col gap-3">
       {isPostSuccess ? (
-        <SnackBar information="成功新增職缺!" type="success" />
+        <SnackBar information="成功新增職缺！" type="success" />
       ) : null}
       {isPutSuccess ? (
-        <SnackBar information="成功修改職缺!" type="success" />
+        <SnackBar information="成功修改職缺！" type="success" />
       ) : null}
 
       <div className="mb-1">基本資訊</div>

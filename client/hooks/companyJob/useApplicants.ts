@@ -52,12 +52,12 @@ export function useGetApplies(companyName: string) {
   return { data, isFetching };
 }
 
-export function usePutApply(companyName: string, applyId: string) {
+export function usePutApply(companyName: string) {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: putApply,
     onSuccess: () => {
-      queryClient.invalidateQueries([companyName]); //jobId
+      queryClient.invalidateQueries([companyName]); //applyId
     },
   });
 
