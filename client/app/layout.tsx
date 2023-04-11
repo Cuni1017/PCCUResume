@@ -69,8 +69,8 @@ export default function RootLayout({
         <Providers>
           <div className="bg-gray-100 min-h-screen w-full min-w-[320px] font-sans">
             <Navbar />
-            {/* className="md:max-w-[860px] lg:max-w-[1140px] m-auto" */}
             <main>{children}</main>
+            {/* className="md:max-w-[860px] lg:max-w-[1140px] m-auto" */}
             {/* <Footer /> */}
           </div>
         </Providers>

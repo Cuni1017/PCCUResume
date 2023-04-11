@@ -1,24 +1,26 @@
 import React from "react";
 
-const Card = ({
+export const Button = ({
   children,
   classnames,
+  disabled,
   ...rest
 }: {
   children: React.ReactNode;
+  classnames: string;
+  disabled?: boolean;
   [key: string]: any;
 }) => {
   return (
     <div
-      // border border-solid
-      className={`border-gray-100 shadow rounded-md bg-white ${
+      {...rest}
+      className={`py-2 px-3 border-none cursor-pointer rounded ${
         classnames ? classnames : ""
       }`}
-      {...rest}
     >
       {children}
     </div>
   );
 };
 
-export default Card;
+export default Button;

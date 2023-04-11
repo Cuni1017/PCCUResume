@@ -47,6 +47,11 @@ const Profile = ({
                 </Link>
               </ProfileMenuItem>
               <ProfileMenuItem>
+                <Link href="/dashboard/companies">
+                  <div>我的公司</div>
+                </Link>
+              </ProfileMenuItem>
+              <ProfileMenuItem>
                 <div onClick={signout}>登出</div>
               </ProfileMenuItem>
             </div>

@@ -67,6 +67,8 @@ const JobsSearchHomePage = async (props: any) => {
   const eachPageJobQuantity = res.data.size;
   const vacancies: Vacancy[] = res.data.companyVacanciesDto;
 
+  console.log(vacancies);
+
   const totalPage = Math.ceil(totalJobs / eachPageJobQuantity);
   const currentPage = searchParams.page
     ? searchParams.page < 0

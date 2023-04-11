@@ -15,10 +15,11 @@ const style = {
   top: "30%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
   bgcolor: "background.paper",
   border: "1px solid #ddd",
+  p: "1rem",
   boxShadow: 24,
+  borderRadius: "0.25rem",
 };
 
 const CardFooter = ({ resume, userId }: { resume: Resume; userId: string }) => {
@@ -59,22 +60,22 @@ const CardFooter = ({ resume, userId }: { resume: Resume; userId: string }) => {
         </MyButton>
       </div>
       <Modal open={open} onClose={handleClose}>
-        <Box sx={style}>
-          <div className="text-2xl px-2 py-2 border-solid border-0 border-b border-gray-300">
-            刪除
+        <div className="bg-white rounded p-2 absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-150%] min-w-[300px] md:w-[400px]">
+          <div className="text-center font-bold text-xl px-2 py-2 border-solid border-0 border-b border-gray-300">
+            確定刪除 {resume.name}?
           </div>
-          <div className="flex gap-2 p-2 justify-between">
+          <div className="mt-6 grid grid-cols-2 gap-20 p-2 justify-between">
             <MyButton
               onClick={() => handleDelete()}
-              classnames="bg-[#e25555] hover:bg-[#df6e6e]  text-white h-[33px] flex items-center"
+              classnames="bg-[#e25555] hover:bg-[#df6e6e] text-white h-[33px] flex items-center justify-center"
             >
-              確認刪除
+              確認
             </MyButton>
             <MyButton onClick={handleClose} classnames="hover:bg-gray-200">
               取消
             </MyButton>
           </div>
-        </Box>
+        </div>
       </Modal>
     </>
   );

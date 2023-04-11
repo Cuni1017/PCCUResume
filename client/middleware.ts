@@ -40,6 +40,7 @@ export const config = {
     "/resumes/:path*",
     "/dashboard/:path*",
     "/admin/:path*",
-    "/apply-for-job/:path*"
+    "/apply-for-job/:path*",
+    "/companies/:slug/applicants"
   ],
 };

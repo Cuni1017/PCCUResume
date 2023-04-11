@@ -7,7 +7,6 @@ import { queryKeys } from "@/tanstack-query/constant";
 const JWT = getCookie("JWT");
 
 async function getApplies(companyName: string) {
-
   const { data } = await axiosInstance.get(
     `/company/${companyName}/company-for-job`,
     {
@@ -39,12 +38,33 @@ async function putApply({
   return data;
 }
 
+async function putApplyTime({
+  applyId,
+  applyStartTime,
+  applyEndTime
+}: {
+  applyId: string;
+  applyStartTime: string, //YYYY-MM-DD
+  applyEndTime: string
+}) {
+  console.log(`/company/company-for-job/${applyId}/insert-apply-time`)
+  const { data } = await axiosInstance.put(
+    `/company/company-for-job/${applyId}/insert-apply-time`,
+    { applyStartTime, applyEndTime },
+    {
+      headers: {
+        Authorization: `Bearer ${JWT}`,
+      },
+    }
+  );
+  return data;
+}
+
 export function useGetApplies(companyName: string) {
   const query = useQuery({
     queryKey: [companyName],
     queryFn: () => getApplies(companyName),
     staleTime: 200000,
-    // enabled: !!userId,
   });
 
   const { data = [], isFetching } = query
@@ -56,6 +76,18 @@ export function usePutApply(companyName: string) {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: putApply,
+    onSuccess: () => {
+      queryClient.invalidateQueries([companyName]); //applyId
+    },
+  });
+
+  return mutation;
+}
+
+export function usePutApplyTime(companyName: string) {
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: putApplyTime,
     onSuccess: () => {
       queryClient.invalidateQueries([companyName]); //applyId
     },

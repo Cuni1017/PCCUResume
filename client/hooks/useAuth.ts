@@ -47,8 +47,6 @@ export function useAuth(): UseAuth {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  // console.log(user);
-
   const signin = async (
     { username, password }: { username: string; password: string },
     handleClose: () => void
@@ -63,8 +61,8 @@ export function useAuth(): UseAuth {
         const { data } = res;
         dispatch(setUser(data));
         handleClose();
-        if (user.role === "USER") router.replace("/regiter");
-        else router.replace("/");
+        // if (user.role === "USER") router.replace("/regiter");
+        // else router.replace("/");
       }
     } catch (error) {
       console.log(error, "useAuth");

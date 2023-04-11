@@ -88,8 +88,9 @@ export function useGetResume(userId: string, resumeId: string) {
     staleTime: 200000,
     enabled: !!userId,
   });
-  const { data = [], isFetching } = query;
-  return { data, isFetching };
+
+  const { data = {}, isFetching, isError } = query;
+  return { data, isFetching, isError };
 }
 
 export function useGetResumes(userId: string) {
