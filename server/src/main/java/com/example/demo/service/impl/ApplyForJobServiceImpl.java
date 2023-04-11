@@ -144,8 +144,8 @@ public class ApplyForJobServiceImpl implements ApplyForJobService {
     }
 
     private void checkIsHandle(List<Apply> applies) {
+        applies.stream().filter((a)->a.getCreateTime().plusMonths(1).isAfter(LocalDate.now())).collect(Collectors.toList());
 
-        z
     }
 
     private void checkIsIntern(List<Apply> applies) {

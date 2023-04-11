@@ -128,7 +128,18 @@ public class CompanyForJobServiceImpl implements CompanyForJobService {
                 int quantity = vacancies.getVacanciesQuantity();
                 vacancies.setVacanciesQuantity(quantity--);
                 vacanciesRepository.save(vacancies);
-                return getRestDto(InApply,"更新成功");
+                try {
+                    sendApplyTypeMail(student.getStudentName(),vacancies.getVacanciesName() ,student.getStudentEmail(),newApplyType.toString());
+                    RestDto restDto = RestDto.builder()
+                            .data(InApply)
+                            .message("更新成功")
+                            .build();
+                    return restDto;
+                } catch (MailException e) {
+                    // 在這裡處理異常情況
+                    return "郵件發送失敗: " + e.getMessage();
+                }
+
             case 應徵失敗,面試失敗,待學生同意中失敗:
                 Apply fileApply = changeApplyType(apply,ApplyType.應徵失敗.toString());
                 HistoryApply historyApply1 = getHistoryApply(fileApply);
