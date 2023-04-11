@@ -2,10 +2,7 @@ package com.example.demo.service.impl;
 
 import com.example.demo.category.ApplyCategory;
 import com.example.demo.config.error.MailException;
-import com.example.demo.dao.ApplyRepository;
-import com.example.demo.dao.CompanyRepository;
-import com.example.demo.dao.StudentRepository;
-import com.example.demo.dao.UserHistoryMoveRepository;
+import com.example.demo.dao.*;
 import com.example.demo.dao.apply.ApplyDao;
 import com.example.demo.dao.resume.ResumeRepository;
 import com.example.demo.dao.vacancies.VacanciesDao;
@@ -44,7 +41,7 @@ public class ApplyForJobServiceImpl implements ApplyForJobService {
     private final  ApplyRepository applyRepository;
     private final  CompanyRepository companyRepository;
     private final VacanciesDao vacanciesDao;
-
+    private final HistoryApplyRepository historyApplyRepository;
     private final JavaMailSender mailSender;
 
     @Override
@@ -125,6 +122,7 @@ public class ApplyForJobServiceImpl implements ApplyForJobService {
     @Override
     public Object findUserApply(String studentId) {
         List<Apply> applies = applyRepository.findByUserId(studentId);
+        checkIsIntern(applies);
         List<String> vacanciesIds = applies.stream().map((s)->s.getVacanciesId()).distinct().collect(Collectors.toList());
         List<ApplytypeVacnciesDto> applytypeVacnciesDtoLinkedList = new LinkedList<>();
         for(String vacanciesId :vacanciesIds){
@@ -141,6 +139,20 @@ public class ApplyForJobServiceImpl implements ApplyForJobService {
                 .message("查詢成功")
                 .build();
         return restDto;
+    }
+
+    private void checkIsIntern(List<Apply> applies) {
+        List<Apply> isInternApplies = applies.stream().filter((apply) -> apply.getApplyType().equals(ApplyType.實習中.toString())).collect(Collectors.toList());
+        if(!isInternApplies.isEmpty() ){
+            Apply apply = isInternApplies.get(0);
+            List<Apply> notInternApplies =applies.stream().filter((a) -> !a.getApplyType().equals(ApplyType.實習中.toString())).collect(Collectors.toList());
+            for(Apply notInternApply:notInternApplies){
+                notInternApply.setApplyType(ApplyType.有實習成功其他職缺所以此應徵失敗.toString());
+                HistoryApply historyApply =getHistoryApply(notInternApply);
+                historyApplyRepository.save(historyApply);
+                applyRepository.deleteById(notInternApply.getApplyId());
+            }
+        }
     }
 
     private void checkVacancies(Vacancies vacancies) {
@@ -185,6 +197,21 @@ public class ApplyForJobServiceImpl implements ApplyForJobService {
             messageHelper.setText(message);
         };
         mailSender.send(messagePreparator);
+    }
+    private HistoryApply getHistoryApply(Apply apply) {
+        LocalDate now = LocalDate.now();
+        return HistoryApply.builder()
+                .applyId(apply.getApplyId())
+                .userId(apply.getUserId())
+                .resumeId(apply.getResumeId())
+                .vacanciesId(apply.getVacanciesId())
+                .companyId(apply.getCompanyId())
+                .createTime(apply.getCreateTime())
+                .applyType(apply.getApplyType())
+                .applyStartTime(apply.getApplyStartTime())
+                .applyEndTime(apply.getApplyEndTime())
+                .dieTime(now)
+                .build();
     }
 
 }
