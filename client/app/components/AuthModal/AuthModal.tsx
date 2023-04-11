@@ -50,7 +50,9 @@ export default function AuthModal({ isSignin }: { isSignin: boolean }) {
 
   const [disabled, setDisabled] = useState(true);
 
-  const handleClick = () => {
+  const handleSubmit = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+
     if (isSignin) {
       signin(
         { username: inputs.username, password: inputs.password },
@@ -66,27 +68,29 @@ export default function AuthModal({ isSignin }: { isSignin: boolean }) {
       </Button>
       <Modal open={open} onClose={handleClose}>
         <Box sx={style}>
-          <div className="uppercase font-bold text-center pb-2 border-0 border-b border-b-gray-200 border-solid">
-            <h2 className="text-2xl text-center m-0 font-bold">
-              {renderedContent("登入", "註冊")}
-            </h2>
-          </div>
-          <div className="m-auto h-[500px] p-2">
-            <AuthModalInputs
-              inputs={inputs}
-              handleChangeInput={handleChangeInput}
-              isSignin={isSignin}
-            />
-            <Button
-              variant="contained"
-              fullWidth
-              className="mt-4 bg-[#DC2626] hover:bg-[#991B1B] text-lg disabled:bg-gray-300 h-12"
-              onClick={handleClick}
-              disabled={false}
-            >
-              {renderedContent("登入", "註冊")}
-            </Button>
-          </div>
+          <form onSubmit={handleSubmit}>
+            <div className="uppercase font-bold text-center pb-2 border-0 border-b border-b-gray-200 border-solid">
+              <h2 className="text-2xl text-center m-0 font-bold">
+                {renderedContent("登入", "註冊")}
+              </h2>
+            </div>
+            <div className="m-auto h-[500px] p-2">
+              <AuthModalInputs
+                inputs={inputs}
+                handleChangeInput={handleChangeInput}
+                isSignin={isSignin}
+              />
+              <Button
+                variant="contained"
+                fullWidth
+                className="mt-4 bg-[#DC2626] hover:bg-[#991B1B] text-lg disabled:bg-gray-300 h-12"
+                type="submit"
+                disabled={false}
+              >
+                {renderedContent("登入", "註冊")}
+              </Button>
+            </div>
+          </form>
         </Box>
       </Modal>
     </>

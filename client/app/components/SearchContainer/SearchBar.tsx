@@ -5,6 +5,8 @@ import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import InputAdornment from "@mui/material/InputAdornment";
+import CloseIcon from "@mui/icons-material/Close";
+import IconButton from "@mui/material/IconButton";
 
 const debounce = (callback: any, time: number = 1500) => {
   let timer: any;
@@ -64,6 +66,16 @@ const SearchBar = () => {
           startAdornment: (
             <InputAdornment position="start">
               <SearchIcon />
+            </InputAdornment>
+          ),
+          endAdornment: (
+            <InputAdornment
+              position="end"
+              style={{ display: searchTerm ? "inline-flex" : "none" }}
+            >
+              <IconButton onClick={() => setSerchTerm("")}>
+                <CloseIcon />
+              </IconButton>
             </InputAdornment>
           ),
         }}

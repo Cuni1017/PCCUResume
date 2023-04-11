@@ -21,6 +21,7 @@ export default async function handler(
       if (response.status === 200) return res.status(200).json(response.data);
     } catch (error) {
       console.log(error, "GET resume");
+      return res.status(404).json({ errorMessage: "Not Found" })
     }
   }
 

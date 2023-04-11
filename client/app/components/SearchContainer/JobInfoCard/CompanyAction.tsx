@@ -15,13 +15,20 @@ import SnackBar from "@/app/components/SnackBar";
 import { Vacancy } from ".";
 import MyModal from "../../MyModal";
 import MyButton from "../../MyButton";
-import { useDeleteJob } from "@/hooks/companyJob/useCompanyJob";
+import { useDeleteJob, usePutJobState } from "@/hooks/companyJob/useCompanyJob";
 import { useSelector } from "react-redux";
 import { Store } from "@/redux/store";
 
 const CompanyAction = ({ vacancy }: { vacancy: Vacancy }) => {
-  const { companyName, vacanciesId, vacanciesWatchType } = vacancy;
+  const { companyName, vacanciesName, vacanciesId, vacanciesWatchType } =
+    vacancy;
   const { name } = useSelector((store: Store) => store.user);
+
+  const {
+    mutate: PutMutate,
+    isSuccess: isPutStateSuccess,
+    isError: isPutStateError,
+  } = usePutJobState(companyName, vacanciesId as string);
 
   const {
     mutate: DeleteMutate,
@@ -31,12 +38,15 @@ const CompanyAction = ({ vacancy }: { vacancy: Vacancy }) => {
   const [isOpen, setIsOpen] = useState(false); //DeleteCheckModal
   const vacancieState: "公開" | "暫停" | "隱藏" = vacanciesWatchType;
 
-  const handleVisible = () => {};
-  const handleToggleState = () => {};
+  const handleToggleState = (newVacancieState: "公開" | "暫停" | "隱藏") => {
+    PutMutate({
+      companyName,
+      jobId: vacanciesId as string,
+      jobState: newVacancieState,
+    });
+  };
   const handleDelete = () => {
     if (!vacanciesId || !companyName) return;
-    console.log("Sure Delete!");
-    console.log(vacanciesId, companyName);
     DeleteMutate({ companyName, jobId: vacanciesId });
     setIsOpen(false);
   };
@@ -44,22 +54,29 @@ const CompanyAction = ({ vacancy }: { vacancy: Vacancy }) => {
   if (name !== companyName) return <></>;
 
   return (
-    <div className="bg-gray-100 px-5 py-2 flex justify-end">
+    <div className="bg-gray-100 h-[1.5rem] px-5 py-2 flex items-center justify-end">
+      {isPutStateSuccess ? (
+        <SnackBar information="成功改變職缺狀態!" type="success" />
+      ) : null}
+      {isPutStateError ? (
+        <SnackBar information="改變職缺狀態時發生錯誤!" type="error" />
+      ) : null}
       {isDeleteSuccess ? (
         <SnackBar information="成功刪除職缺!" type="success" />
       ) : null}
       {isDeleteError ? (
         <SnackBar information="刪除職缺時發生錯誤!" type="error" />
       ) : null}
-      <div className="flex gap-1">
+
+      <div className="flex items-center gap-1">
         {vacancieState === "隱藏" ? (
-          <div className="border-solid border p-1 rounded text-sm text-[#aaa]">
+          <div className="w-[30px] border-solid border p-1 rounded text-sm text-[#aaa]">
             隱藏
           </div>
         ) : null}
 
         {vacancieState === "暫停" ? (
-          <div className="border-solid border p-1 rounded text-sm text-[#e6bc6b] bg-[hsla(40,71%,66%,.1)]">
+          <div className="w-[30px] border-solid border p-1 rounded text-sm text-[#e6bc6b] bg-[hsla(40,71%,66%,.1)]">
             暫停
           </div>
         ) : null}
@@ -83,13 +100,16 @@ const CompanyAction = ({ vacancy }: { vacancy: Vacancy }) => {
         </Link>
 
         {vacancieState === "隱藏" ? (
-          <Tooltip title="取消隱藏">
+          <Tooltip title="取消隱藏" onClick={() => handleToggleState("公開")}>
             <div className="flex items-center gap-1 cursor-pointer">
               <VisibilityOutlinedIcon />
             </div>
           </Tooltip>
         ) : (
-          <Tooltip title="隱藏（無法搜尋到，但有連結者仍可應徵）">
+          <Tooltip
+            title="隱藏（無法搜尋到，但有連結者仍可應徵）"
+            onClick={() => handleToggleState("隱藏")}
+          >
             <div className="flex items-center gap-1 cursor-pointer">
               <VisibilityOffOutlinedIcon />
             </div>
@@ -97,13 +117,13 @@ const CompanyAction = ({ vacancy }: { vacancy: Vacancy }) => {
         )}
 
         {vacancieState === "公開" || vacancieState === "隱藏" ? (
-          <Tooltip title="暫停">
+          <Tooltip title="暫停" onClick={() => handleToggleState("暫停")}>
             <div className="flex items-center gap-1 cursor-pointer">
               <PauseIcon />
             </div>
           </Tooltip>
         ) : (
-          <Tooltip title="開放">
+          <Tooltip title="開放" onClick={() => handleToggleState("公開")}>
             <div className="flex items-center gap-1 cursor-pointer">
               <PlayArrowOutlinedIcon />
             </div>

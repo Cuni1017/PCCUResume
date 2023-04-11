@@ -3,7 +3,11 @@
 import { useState } from "react";
 import CompanyHeader from "../components/CompanyHeader/CompanyHeader";
 import ApplyTrackCard from "./components/ApplyTrackCard";
-import { useGetApplies, usePutApply } from "@/hooks/companyJob/useApplicants";
+import {
+  useGetApplies,
+  usePutApply,
+  usePutApplyTime,
+} from "@/hooks/useApplicants";
 import { Vacancy } from "@/app/components/SearchContainer/JobInfoCard";
 import ContentAction from "../components/CompanyContent/ContentAction";
 import ApplyActionDialog, { ApplyType } from "./components/ApplyActionDialog";
@@ -27,6 +31,8 @@ export interface ApplyUser {
   applyNumber: number;
   studentUsername: string;
   applyBeforeTalk: string;
+  applyStartTime: string;
+  applyEndTime: string;
   userId: string;
   vacanciesId: string;
 }
@@ -57,13 +63,15 @@ const ApplicantsPage = (props: any) => {
     params: { slug: companyName },
   } = props;
 
-  const { name } = useSelector((store: Store) => store.user);
+  const { name, role } = useSelector((store: Store) => store.user);
 
   const [editApplyUser, setEditApplyUser] = useState<ApplyUser | null>(null);
 
   const { data: applies } = useGetApplies(companyName);
   const { mutate: PutMutate, isSuccess: isPutSuccess } =
     usePutApply(companyName);
+  const { mutate: PutTimeMutate, isSuccess: isPutTimeMutate } =
+    usePutApplyTime(companyName);
 
   const handlePutApply = ({
     applyId,
@@ -76,11 +84,25 @@ const ApplicantsPage = (props: any) => {
     setEditApplyUser(null);
   };
 
-  if (name !== decodeURI(companyName)) return <UnAuthorizedPage />;
+  const handlePutApplyTime = ({
+    applyId,
+    applyStartTime,
+    applyEndTime,
+  }: {
+    applyId: string;
+    applyStartTime: string;
+    applyEndTime: string;
+  }) => {
+    PutTimeMutate({ applyId, applyStartTime, applyEndTime });
+    setEditApplyUser(null);
+  };
+
+  if (!name || name !== decodeURI(companyName) || role !== "COMPANY")
+    return <UnAuthorizedPage />;
 
   return (
     <div className="flex flex-col gap-4">
-      {isPutSuccess && (
+      {(isPutSuccess || isPutTimeMutate) && (
         <SnackBar information={"成功處理要求！"} type="success" />
       )}
       <CompanyHeader companyName={companyName} />
@@ -91,7 +113,7 @@ const ApplicantsPage = (props: any) => {
             <ContentAction companyName={companyName} />
           </div>
         </div>
-        <div className="mt-5">
+        <div className="mt-5 flex flex-col gap-3">
           {applies.length > 0 ? (
             applies.map((apply: Apply) => (
               <ApplyTrackCard
@@ -121,6 +143,7 @@ const ApplicantsPage = (props: any) => {
       </div>
       <ApplyActionDialog
         onSubmit={handlePutApply}
+        onEditApplyTime={handlePutApplyTime}
         onClose={() => setEditApplyUser(null)}
         applyUser={editApplyUser}
       />

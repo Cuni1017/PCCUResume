@@ -40,38 +40,36 @@ const NavigationBar = () => {
   ];
 
   return (
-    <div className="border border-solid border-gray-100">
-      <Card>
-        <div className="header p-2">Header</div>
-        <ul className="list-none p-0">
+    <Card classnames="py-2">
+      <div className="p-2">Header</div>
+      <ul className="list-none p-0 my-0">
+        <NavigationBarItem
+          label={"我的"}
+          links={myLinks}
+          LabelIcon={PersonOutlineIcon}
+        />
+        {/* {role === "STUDENT" && ( */}
+        <>
+          <hr />
           <NavigationBarItem
-            label={"我的"}
-            links={myLinks}
-            LabelIcon={PersonOutlineIcon}
+            label={"求職"}
+            links={jobLinks}
+            LabelIcon={BusinessCenterIcon}
           />
-          {/* {role === "STUDENT" && ( */}
-          <>
-            <hr />
-            <NavigationBarItem
-              label={"求職"}
-              links={jobLinks}
-              LabelIcon={BusinessCenterIcon}
-            />
-          </>
-          {/* )} */}
-          {/* {role === "COMPANY" && ( */}
-          <>
-            <hr />
-            <NavigationBarItem
-              label={"招募"}
-              links={companiesLink}
-              LabelIcon={BusinessIcon}
-            />
-          </>
-          {/* )} */}
-        </ul>
-      </Card>
-    </div>
+        </>
+        {/* )} */}
+        {/* {role === "COMPANY" && ( */}
+        <>
+          <hr />
+          <NavigationBarItem
+            label={"招募"}
+            links={companiesLink}
+            LabelIcon={BusinessIcon}
+          />
+        </>
+        {/* )} */}
+      </ul>
+    </Card>
   );
 };
 

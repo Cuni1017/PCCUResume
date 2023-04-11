@@ -23,10 +23,10 @@ const fetchCompany = async (companyName: string) => {
 const CompanyPage = async (props: any) => {
   const {
     params: { slug: companyName },
-    searchParams,
   } = props;
 
   const data = await fetchCompany(companyName);
+  // console.log(data);
 
   return (
     <div className="flex flex-col gap-4">

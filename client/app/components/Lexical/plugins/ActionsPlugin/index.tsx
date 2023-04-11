@@ -29,6 +29,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import useModal from "../../hooks/useModal";
 import Button from "../../ui/Button";
+import MyButton from "@/app/components/MyButton";
 import { PLAYGROUND_TRANSFORMERS } from "../MarkdownTransformers";
 
 async function sendEditorState(editor: LexicalEditor): Promise<void> {
@@ -227,8 +228,8 @@ function ShowClearDialog({
     <>
       確定要刪除全部嗎？
       <div className="Modal__content flex justify-end gap-2">
-        <Button
-          className="text-white bg-red-500 hover:bg-red-600 focus:bg-red-700"
+        <MyButton
+          classnames="text-white bg-red-500 hover:bg-red-600 focus:bg-red-700"
           onClick={() => {
             editor.dispatchCommand(CLEAR_EDITOR_COMMAND, undefined);
             editor.focus();
@@ -236,15 +237,16 @@ function ShowClearDialog({
           }}
         >
           刪除
-        </Button>{" "}
-        <Button
+        </MyButton>
+        <MyButton
+          classnames="hover:bg-gray-300"
           onClick={() => {
             editor.focus();
             onClose();
           }}
         >
           取消
-        </Button>
+        </MyButton>
       </div>
     </>
   );
