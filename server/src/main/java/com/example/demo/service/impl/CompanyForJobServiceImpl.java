@@ -1,5 +1,6 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.category.ApplyTimeCategory;
 import com.example.demo.category.ChangeApplyTypeCategory;
 import com.example.demo.dao.ApplyRepository;
 import com.example.demo.dao.CompanyRepository;
@@ -166,16 +167,17 @@ public class CompanyForJobServiceImpl implements CompanyForJobService {
     }
 
     @Override
-    public Object updateApplyTime(String applyId, LocalDate applyStartTime, LocalDate applyEndTime) {
+    public Object updateApplyTime(String applyId,  ApplyTimeCategory applyTimeCategory) {
 
         Apply apply = getApplyById(applyId);
-        if(apply.getApplyType() != ApplyType.實習中.toString()){
+        if(!apply.getApplyType().equals(ApplyType.實習中.toString())){
             throw new RuntimeException("該應徵不是在實習中");
         }
-        apply.setApplyStartTime(applyStartTime);
-        apply.setApplyEndTime(applyEndTime);
+        apply.setApplyStartTime(applyTimeCategory.getApplyStartTime());
+        apply.setApplyEndTime(applyTimeCategory.getApplyEndTime());
         applyRepository.save(apply);
-        return apply;
+        RestDto restDto =getRestDto(apply,"更新成功");
+        return restDto;
     }
 
 

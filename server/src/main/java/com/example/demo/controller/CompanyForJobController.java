@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 
+import com.example.demo.category.ApplyTimeCategory;
 import com.example.demo.category.ChangeApplyTypeCategory;
 import com.example.demo.service.CompanyForJobService;
 import lombok.RequiredArgsConstructor;
@@ -36,11 +37,11 @@ public class CompanyForJobController {
     @PutMapping("/company/company-for-job/{applyId}/insert-apply-time")
     public ResponseEntity<Object> updateApplyTime(
             @PathVariable String applyId,
-            @RequestBody LocalDate applyStartTime,
-            @RequestBody LocalDate applyEndTime
+            @RequestBody ApplyTimeCategory applyTimeCategory
+
             ){
 
-        return ResponseEntity.ok( companyForJobService.updateApplyTime(applyId,applyStartTime,applyEndTime));
+        return ResponseEntity.ok( companyForJobService.updateApplyTime(applyId,applyTimeCategory));
 
     }
 }
