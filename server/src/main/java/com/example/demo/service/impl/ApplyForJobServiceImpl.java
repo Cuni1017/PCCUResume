@@ -79,6 +79,7 @@ public class ApplyForJobServiceImpl implements ApplyForJobService {
 
         checkVacancies(vacancies);
         checkIsApply(student.getStudentId(),vacancies.getVacanciesId());
+      
         plusApplyCount(vacancies);
         sendApplyEmail(student,vacancies.getVacanciesName(),company.getCompanyEmail(),applyCategory);
 
@@ -123,6 +124,7 @@ public class ApplyForJobServiceImpl implements ApplyForJobService {
     public Object findUserApply(String studentId) {
         List<Apply> applies = applyRepository.findByUserId(studentId);
         checkIsIntern(applies);
+        checkIsHandle(applies);
         List<String> vacanciesIds = applies.stream().map((s)->s.getVacanciesId()).distinct().collect(Collectors.toList());
         List<ApplytypeVacnciesDto> applytypeVacnciesDtoLinkedList = new LinkedList<>();
         for(String vacanciesId :vacanciesIds){
@@ -139,6 +141,11 @@ public class ApplyForJobServiceImpl implements ApplyForJobService {
                 .message("查詢成功")
                 .build();
         return restDto;
+    }
+
+    private void checkIsHandle(List<Apply> applies) {
+
+        z
     }
 
     private void checkIsIntern(List<Apply> applies) {
