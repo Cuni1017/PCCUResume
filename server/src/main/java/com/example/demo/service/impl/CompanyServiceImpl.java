@@ -1,6 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.category.VacanciesCategory;
+import com.example.demo.category.VacanciesWatchTypeCategory;
 import com.example.demo.dao.CompanyRepository;
 import com.example.demo.dao.CountyRepository;
 import com.example.demo.dao.SkillRepository;
@@ -262,6 +263,19 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public Object findcompanyAboutByCompanyName(String companyName) {
         return null;
+    }
+
+    @Override
+    public Object updateVacanciesWatchType(String vacanciesId, VacanciesWatchTypeCategory vacanciesWatchTypeCategory) {
+        Vacancies vacancies = vacanciesRepository.findById(vacanciesId).orElseThrow(()->new RuntimeException("沒有此職缺"));
+        vacancies.setVacanciesWatchType(vacanciesWatchTypeCategory.getWatchType());
+        System.out.println(vacanciesWatchTypeCategory.getWatchType());
+        vacanciesRepository.save(vacancies);
+        RestDto restDto = RestDto.builder()
+                .data(vacancies)
+                .message("更新成功")
+                .build();
+        return  restDto;
     }
 
 

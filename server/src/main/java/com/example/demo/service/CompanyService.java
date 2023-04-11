@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.category.VacanciesCategory;
+import com.example.demo.category.VacanciesWatchTypeCategory;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,4 +20,6 @@ public interface CompanyService {
     Object findCompanyByCompanyName(String companyName);
 
     Object findcompanyAboutByCompanyName(String companyName);
+
+    Object updateVacanciesWatchType(String vacanciesId, VacanciesWatchTypeCategory vacanciesWatchTypeCategory);
 }

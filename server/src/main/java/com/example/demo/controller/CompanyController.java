@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
 import com.example.demo.category.VacanciesCategory;
+import com.example.demo.category.VacanciesWatchTypeCategory;
+import com.example.demo.model.VacanciesWatchType;
 import com.example.demo.service.CompanyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -54,6 +56,14 @@ public class CompanyController {
             @RequestBody VacanciesCategory vacanciesCategory
     ) {
         return ResponseEntity.ok(companyService.updateVacancies(companyName,vacanciesId,vacanciesCategory));
+    }
+    @PutMapping("/company/vacancies/{vacanciesId}/vacancies-watch-type")
+    public ResponseEntity<Object> updateVacanciesWatchType(
+            @PathVariable String vacanciesId,
+            @RequestBody VacanciesWatchTypeCategory vacanciesWatchTypeCategory
+    ) {
+
+        return ResponseEntity.ok(companyService.updateVacanciesWatchType(vacanciesId,vacanciesWatchTypeCategory));
     }
     @DeleteMapping("/company/{companyName}/vacancies/{vacanciesId}")
     public ResponseEntity<Object> deleteVacancies(
