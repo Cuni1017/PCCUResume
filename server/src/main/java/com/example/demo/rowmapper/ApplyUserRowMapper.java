@@ -24,12 +24,14 @@ public class ApplyUserRowMapper implements RowMapper<ApplyUserDto> {
         applyUserDto.setStudentUsername(rs.getString("student_username"));
         applyUserDto.setStudentEmail(rs.getString("student_email"));
         applyUserDto.setStudentImageUrl(rs.getString("student_image_url"));
-        if(rs.getDate("apply_start_time")!=null){
-            applyUserDto.setApplyEndTime(rs.getDate("apply_start_time").toLocalDate());
+        if(rs.getDate("apply_start_time")==null){
+            applyUserDto.setApplyStartTime(null);
+
 
         }else{
-            applyUserDto.setApplyEndTime(null);
+            applyUserDto.setApplyStartTime(rs.getDate("apply_start_time").toLocalDate());
         }
+
         if(rs.getDate("apply_end_time")==null){
 
             applyUserDto.setApplyEndTime(null);
@@ -37,7 +39,6 @@ public class ApplyUserRowMapper implements RowMapper<ApplyUserDto> {
             applyUserDto.setApplyEndTime(rs.getDate("apply_end_time").toLocalDate());
         }
 
-        System.out.println(applyUserDto );
         return  applyUserDto;
 
     }
