@@ -1,4 +1,11 @@
-import React, { useState, memo, useEffect, useRef } from "react";
+import React, {
+  useState,
+  memo,
+  useEffect,
+  useRef,
+  useMemo,
+  useCallback,
+} from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
@@ -35,8 +42,6 @@ const SkillPicker = ({
   const dropDownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    console.log("fetch!");
-
     const fetchSkills = async () => {
       const { data }: { data: Skill[] } = await axiosInstance.get(
         "/vacancies/skills"
@@ -75,16 +80,30 @@ const SkillPicker = ({
     }
   }, [skills]);
 
-  const handleOptionsClick = (skillId: number, skillName: string) => {
-    if (typeof techs === "string") {
-      handleSkillChange([{ skillId, skillName }] as Skill[]);
-      return;
-    }
+  const handleOptionsClick = useCallback(
+    (skillId: number, skillName: string) => {
+      if (typeof techs === "string") {
+        handleSkillChange([{ skillId, skillName }] as Skill[]);
+        return;
+      }
 
-    if (techs.findIndex((tech) => tech.skillId === skillId) === -1) {
-      handleSkillChange([...techs, { skillId, skillName }] as Skill[]);
-    }
-  };
+      if (techs.findIndex((tech) => tech.skillId === skillId) === -1) {
+        handleSkillChange([...techs, { skillId, skillName }] as Skill[]);
+      }
+    },
+    [handleSkillChange, techs]
+  );
+
+  const renderedListItem = useMemo(
+    () => (
+      <SkillListItems
+        skills={skills}
+        searchTerm={searchTerm}
+        onClick={handleOptionsClick}
+      />
+    ),
+    [handleOptionsClick, searchTerm, skills]
+  );
 
   return (
     <div className="relative rounded" ref={dropDownRef}>
@@ -94,7 +113,6 @@ const SkillPicker = ({
         chipData={typeof techs === "string" ? [] : techs}
         setChipData={handleSkillChange}
       />
-
       <List
         sx={style}
         className="border-solid border border-gray-300 p-0 absolute z-10 bottom-[-29rem]"
@@ -111,12 +129,13 @@ const SkillPicker = ({
           />
         </div>
         <div className="flex flex-col h-[390px] overflow-auto">
-          <MemoSkillListItems
+          {}
+          {/* <SkillListItems
             skills={skills}
             searchTerm={searchTerm}
             onClick={handleOptionsClick}
-          />
-          {/* {renderedListItem} */}
+          /> */}
+          {renderedListItem}
         </div>
         {/* divider、light */}
       </List>
@@ -156,10 +175,8 @@ const SkillListItems = ({
   ) : (
     <div className="text-center">目前查無資料，若過久請重新整理</div>
   );
-  return <>{renderedListItem}</>;
+  return <div>{renderedListItem}</div>;
 };
-
-const MemoSkillListItems = memo(SkillListItems);
 
 const ChipListItem = styled("li")(({ theme }) => ({
   // margin: theme.spacing(0.5),
@@ -216,4 +233,4 @@ const InputSkillChips = ({
   );
 };
 
-export default memo(SkillPicker);
+export default SkillPicker;

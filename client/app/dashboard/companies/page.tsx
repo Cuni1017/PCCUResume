@@ -8,9 +8,13 @@ import { useSelector } from "react-redux";
 import Link from "next/link";
 import Image from "next/image";
 import MyButton from "@/app/components/MyButton";
+import UnAuthorizedPage from "@/app/components/UnAuthorizedPage";
 
 const CompaniesPage = () => {
-  const { name } = useSelector((store: Store) => store.user);
+  const { name, role } = useSelector((store: Store) => store.user);
+  if (role !== "COMPANY") return <UnAuthorizedPage />;
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const { data } = useGetCompany(name);
   const {
     companyCounty,

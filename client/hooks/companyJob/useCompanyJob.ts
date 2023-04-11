@@ -76,6 +76,27 @@ async function putJob({
   return data;
 }
 
+async function putJobState({
+  companyName,
+  jobId,
+  jobState,
+}: {
+  companyName: string;
+  jobId: string;
+  jobState: "公開" | "暫停" | "隱藏"
+}) {
+  const { data } = await axiosInstanceNext.put(
+    `/api/companies/${companyName}/jobs/${jobId}/jobState`,
+    { jobState },
+    {
+      headers: {
+        Authorization: `Bearer ${JWT}`,
+      },
+    }
+  );
+  return data;
+}
+
 async function deleteJob({
   companyName,
   jobId,
@@ -117,6 +138,20 @@ export function usePutJob(companyName: string, jobId: string) {
     onSuccess: () => {
       queryClient.invalidateQueries([companyName]); //jobId
       setTimeout(() => router.push(`companies/${companyName}/jobs`), 1500)
+    },
+  });
+
+  return mutation;
+}
+
+export function usePutJobState(companyName: string, jobId: string) {
+  const router = useRouter()
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: putJobState,
+    onSuccess: () => {
+      queryClient.invalidateQueries([companyName]); //jobId
+      router.refresh()
     },
   });
 

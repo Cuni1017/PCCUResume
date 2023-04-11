@@ -18,11 +18,12 @@ const AuthModalInputs = ({ inputs, handleChangeInput, isSignin }: Props) => {
     <div className="w-full">
       <div className="mt-4 flex flex-col gap-4">
         <AuthTextField
-          id="outlined-basic"
+          id="username"
           label="Username"
           variant="outlined"
           name="username"
           value={inputs.username}
+          autoComplete="username"
           onChange={(
             e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
           ) => {
@@ -30,12 +31,13 @@ const AuthModalInputs = ({ inputs, handleChangeInput, isSignin }: Props) => {
           }}
         />
         <AuthTextField
-          id="outlined-basic"
+          id="password"
           label="Password"
           variant="outlined"
           name="password"
           type="password"
           value={inputs.password}
+          autoComplete="current-password"
           onChange={(
             e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
           ) => {

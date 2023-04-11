@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import { Store } from "@/redux/store";
 import { useGetResume } from "../../../../hooks/Resume/useResume";
@@ -11,12 +11,16 @@ import Rautobiography from "../components/Rautobiography";
 import RspecialSkill from "../components/RspecialSkill";
 import RworkExperience from "../components/RworkExperience";
 import RworkHope from "../components/RworkHope";
+import UnAuthorizedPage from "@/app/components/UnAuthorizedPage";
+import { notFound } from "next/navigation";
 
 const ResumePage = ({ params }: { params: any }) => {
   const user = useSelector((state: Store) => state.user);
-
   const resumeId = params.slug;
-  const { data: resume, isFetching } = useGetResume(user.id, resumeId);
+
+  // if (user.role !== "STUDENT") return <UnAuthorizedPage />;
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const { data: resume, isFetching, isError } = useGetResume(user.id, resumeId);
   const {
     number, //電話號碼
     school, //學校
@@ -35,6 +39,9 @@ const ResumePage = ({ params }: { params: any }) => {
     headshot: user.imageURL,
     AQ: school, //academic qualifications 學歷
   };
+
+  if (isError) notFound();
+  if (user.id !== resume.userId) return <UnAuthorizedPage />;
 
   return (
     <div className="flex flex-col gap-2 p-4 md:px-0">

@@ -82,7 +82,23 @@ const ApplyTrackCard = ({ apply, setEditApplyUser }: Props) => {
         </Link>
         <div className="flex items-center">
           <Tooltip title="職缺狀態">
-            <div className="cursor-pointer">{vacanciesWatchType}</div>
+            <div className="cursor-pointer">
+              {vacanciesWatchType === "隱藏" ? (
+                <div className="border-solid border p-1 rounded text-sm text-[#aaa]">
+                  隱藏
+                </div>
+              ) : null}
+              {vacanciesWatchType === "暫停" ? (
+                <div className="border-solid border p-1 rounded text-sm text-[#e6bc6b] bg-[hsla(40,71%,66%,.1)]">
+                  暫停
+                </div>
+              ) : null}
+              {vacanciesWatchType === "公開" ? (
+                <div className="border-solid border p-1 rounded text-sm text-[#6bafe6]">
+                  公開
+                </div>
+              ) : null}
+            </div>
           </Tooltip>
         </div>
       </div>
@@ -278,10 +294,10 @@ const ApplyTrackCard = ({ apply, setEditApplyUser }: Props) => {
                     <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
                       <div className="flex justify-center sm:min-w-[5rem]">
                         <MyButton classnames="text-white bg-lime-500 w-full">
-                          延長實習
+                          調整時間
                         </MyButton>
                       </div>
-                      <div>延長該學生的實習時間。</div>
+                      <div>調整該學生的實習時間。</div>
                     </div>
                     <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
                       <div className="flex justify-center sm:min-w-[5rem]">
@@ -294,7 +310,7 @@ const ApplyTrackCard = ({ apply, setEditApplyUser }: Props) => {
                   </div>
                 </div>
                 <div className="flex flex-col gap-2">
-                  <div className="text-base">面試者：</div>
+                  <div className="text-base">實習者：</div>
                   {interningUsers.length > 0 ? (
                     <AvatarStack
                       users={interningUsers}
@@ -315,7 +331,7 @@ const ApplyTrackCard = ({ apply, setEditApplyUser }: Props) => {
           <VacancyDetails
             vacancy={{
               ...vacancies,
-              county: `${companyCounty}${vacanciesDistrict}${vacanciesAddress}`,
+              county: `${companyCounty}`,
             }}
           />
         </div>

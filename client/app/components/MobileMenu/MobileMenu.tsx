@@ -76,7 +76,7 @@ const MobileMenuLink = ({
       <div
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
-        className={`py-2 ${hovered ? "bg-gray-100" : ""}`}
+        className={`p-2 ${hovered ? "bg-gray-100" : ""}`}
       >
         {link.label}
       </div>

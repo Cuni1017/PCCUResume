@@ -6,18 +6,8 @@ import Avatar from "@mui/material/Avatar";
 import Link from "next/link";
 import Image from "next/image";
 import CloseIcon from "@mui/icons-material/Close";
-
-interface Props {
-  onSubmit: ({
-    applyId,
-    applyType,
-  }: {
-    applyId: string;
-    applyType: ApplyType;
-  }) => void;
-  onClose: () => void;
-  applyUser: ApplyUser | null;
-}
+import MyDatePicker from "@/app/components/MyDatePicker";
+import dayjs, { Dayjs } from "dayjs";
 
 const applyActions = {
   拒絕應徵: { description: "拒絕該學生應徵此職缺。", outcome: "應徵失敗" },
@@ -31,8 +21,8 @@ const applyActions = {
     outcome: "待學生同意中",
   },
   面試拒絕: { description: "該學生在面試中被拒。", outcome: "面試失敗" },
-  中斷實習: { description: "中斷該學生的實習", outcome: "實習中斷" },
-  延長實習: { description: "延長該學生的實習時間", outcome: "實習中" },
+  調整實習時間: { description: "調整該學生的實習時間。", outcome: "實習中" },
+  中斷實習: { description: "中斷該學生的實習。", outcome: "實習中斷" },
 };
 
 export type ApplyType =
@@ -45,10 +35,37 @@ export type ApplyType =
   | "待學生同意中失敗";
 export type ApplyAction = keyof typeof applyActions;
 
-const ApplyActionDialog = ({ onSubmit, onClose, applyUser }: Props) => {
+interface Props {
+  applyUser: ApplyUser | null;
+  onSubmit: ({
+    applyId,
+    applyType,
+  }: {
+    applyId: string;
+    applyType: ApplyType;
+  }) => void;
+  onEditApplyTime: ({
+    applyId,
+    applyStartTime,
+    applyEndTime,
+  }: {
+    applyId: string;
+    applyStartTime: string;
+    applyEndTime: string;
+  }) => void;
+  onClose: () => void;
+}
+
+const ApplyActionDialog = ({
+  applyUser,
+  onSubmit,
+  onEditApplyTime,
+  onClose,
+}: Props) => {
   const [isShowHeadshot, setIsShowHeadShot] = useState(false);
   const [showDoubleCheckDialog, setShowDoubleCheckDialog] =
     useState<ApplyAction | null>(null);
+  const [isShowDatePicker, setIsShowDatePicker] = useState(false);
 
   if (!applyUser) return <></>;
   const {
@@ -64,12 +81,11 @@ const ApplyActionDialog = ({ onSubmit, onClose, applyUser }: Props) => {
     studentUsername,
     applyEmail,
     applyNumber,
+    applyStartTime,
+    applyEndTime,
     userId,
     vacanciesId,
   } = applyUser;
-
-  // let studentImageUrl =
-  //   "https://plus.unsplash.com/premium_photo-1667030489905-d8e6309ebe0e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8Y2F0fGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60";
 
   const handleClick = (applyAction: ApplyAction) => {
     setShowDoubleCheckDialog(applyAction);
@@ -79,13 +95,17 @@ const ApplyActionDialog = ({ onSubmit, onClose, applyUser }: Props) => {
     <MyDialog isOpen={!!applyUser} onClose={onClose}>
       <DoubleCheckDialog
         isOpen={!!showDoubleCheckDialog}
-        onSure={() =>
+        onSure={() => {
+          if (showDoubleCheckDialog === "調整實習時間") {
+            setIsShowDatePicker(true);
+            return;
+          }
           onSubmit({
             applyId,
             applyType: applyActions[showDoubleCheckDialog as ApplyAction]
               .outcome as ApplyType,
-          })
-        }
+          });
+        }}
         onClose={() => setShowDoubleCheckDialog(null)}
         title={showDoubleCheckDialog as string}
         content={
@@ -94,6 +114,21 @@ const ApplyActionDialog = ({ onSubmit, onClose, applyUser }: Props) => {
             : ""
         }
       />
+      {isShowDatePicker ? (
+        <DatePickerDialog
+          applyStartTime={applyStartTime}
+          applyEndTime={applyEndTime}
+          isOpen={isShowDatePicker}
+          onClose={() => setIsShowDatePicker(false)}
+          onSure={(applyStartTime: string, applyEndTime: string) => {
+            onEditApplyTime({ applyId, applyStartTime, applyEndTime });
+            setIsShowDatePicker(false);
+            setShowDoubleCheckDialog(null);
+          }}
+          title={"調整實習時間"}
+        />
+      ) : null}
+
       {studentImageUrl && (
         <ImageDialog
           imageURL={studentImageUrl}
@@ -109,7 +144,7 @@ const ApplyActionDialog = ({ onSubmit, onClose, applyUser }: Props) => {
           <CloseIcon />
         </button>
       </div>
-      <div className="flex flex-col gap-5 p-5 max-w-[20rem] sm:max-w-none sm:w-[30rem]">
+      <div className="flex flex-col gap-5 p-5 min-w-[60vw] sm:min-w-0 max-w-[20rem] sm:max-w-none sm:w-[30rem]">
         <div className="flex gap-2">
           <div onClick={() => setIsShowHeadShot(true)}>
             <Avatar
@@ -133,12 +168,29 @@ const ApplyActionDialog = ({ onSubmit, onClose, applyUser }: Props) => {
           <div className="font-bold">聯絡電話： </div>
           <div className="flex items-center">+886 {applyNumber}</div>
         </div>
-        <div className="flex flex-col gap-2">
-          <div className="font-bold">求職信：</div>
-          <div className="text-sm indent-8 whitespace-pre-wrap">
-            {applyBeforeTalk}
+        {applyType === "實習中" ? (
+          <>
+            <div className="flex flex-col sm:flex-row gap-2">
+              <div className="font-bold">實習開始時間：</div>
+              <div className="text-sm">
+                {applyStartTime ? applyStartTime : "您尚未填寫"}
+              </div>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-2">
+              <div className="font-bold">實習結束時間：</div>
+              <div className="text-sm">
+                {applyEndTime ? applyEndTime : "您尚未填寫"}
+              </div>
+            </div>
+          </>
+        ) : (
+          <div className="flex flex-col gap-2">
+            <div className="font-bold">求職信：</div>
+            <div className="text-sm indent-8 whitespace-pre-wrap">
+              {applyBeforeTalk}
+            </div>
           </div>
-        </div>
+        )}
 
         <div className="flex justify-end">
           <Link href={`/resumes/${resumeId}`} target="_blank">
@@ -185,12 +237,104 @@ const ApplyActionDialog = ({ onSubmit, onClose, applyUser }: Props) => {
             </MyButton>
           </div>
         )}
+
+        {applyType === "實習中" && (
+          <div className="flex flex-col sm:grid grid-cols-2 gap-3 justify-around">
+            <MyButton
+              onClick={() => handleClick("調整實習時間")}
+              classnames="text-white bg-lime-500 hover:bg-lime-600 focus:bg-lime-700"
+            >
+              調整實習時間
+            </MyButton>
+            <MyButton
+              onClick={() => handleClick("中斷實習")}
+              classnames="text-white bg-red-500 hover:bg-red-600 focus:bg-red-700"
+            >
+              中斷實習
+            </MyButton>
+          </div>
+        )}
       </div>
     </MyDialog>
   );
 };
 
-const DoubleCheckDialog = ({
+const DatePickerDialog = ({
+  applyStartTime,
+  applyEndTime,
+  title,
+  isOpen,
+  onSure,
+  onClose,
+}: {
+  applyStartTime: string;
+  applyEndTime: string;
+  title: string;
+  isOpen: boolean;
+  onSure: (applyStartTime: string, applyEndTime: string) => void;
+  onClose: () => void;
+}) => {
+  const [startTime, setStartTime] = useState<Dayjs | null>(
+    applyStartTime ? dayjs(applyStartTime) : null
+  );
+  const [endTime, setEndTime] = useState<Dayjs | null>(
+    applyEndTime ? dayjs(applyEndTime) : null
+  );
+
+  return (
+    <MyDialog isOpen={isOpen} onClose={onClose}>
+      <div className="max-w-[300px] sm:max-w-none sm:w-[400px] p-3">
+        <div className="text-xl text-center font-bold">{title}</div>
+        <hr className="w-full" />
+        <div className="flex flex-col md:flex-row gap-2">
+          <div>
+            <div className="md:text-center mb-2">開始時間</div>
+            <MyDatePicker
+              value={startTime}
+              onChange={(newValue: any, onChange: any) => {
+                setStartTime(newValue);
+              }}
+            />
+          </div>
+          <div>
+            <div className="md:text-center mb-2">結束時間</div>
+            <MyDatePicker
+              value={endTime}
+              onChange={(newValue: any, onChange: any) => {
+                setEndTime(newValue);
+              }}
+            />
+          </div>
+        </div>
+        <div className="mt-6 flex flex-col sm:grid grid-cols-2 gap-3 sm:gap-10">
+          <MyButton
+            onClick={() =>
+              onSure(
+                startTime!.format("YYYY-MM-DD"),
+                endTime!.format("YYYY-MM-DD")
+              )
+            }
+            classnames="text-white bg-green-500 hover:bg-green-600 focus:bg-green-700"
+          >
+            確認
+          </MyButton>
+          <MyButton
+            onClick={() => {
+              setStartTime(applyStartTime ? dayjs(applyStartTime) : null);
+              setEndTime(applyEndTime ? dayjs(applyEndTime) : null);
+              onClose();
+            }}
+            classnames="hover:bg-gray-300"
+          >
+            取消
+          </MyButton>
+        </div>
+      </div>
+    </MyDialog>
+  );
+};
+
+export const DoubleCheckDialog = ({
   title,
   content,
   isOpen,

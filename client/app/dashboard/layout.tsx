@@ -6,12 +6,17 @@ import UnAuthorizedPage from "../components/UnAuthorizedPage";
 import NavigationSideBar from "./components/NavigationBar";
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
-  const user = useSelector((store: Store) => store.user);
+  const { id, name, role } = useSelector((store: Store) => store.user);
 
-  if (!user.id || !user.name) return <UnAuthorizedPage />;
+  if (
+    !id ||
+    !name ||
+    (role !== "COMPANY" && window.location.pathname.includes("/companies"))
+  )
+    return <UnAuthorizedPage />;
 
   return (
-    <main className="md:max-w-[860px] lg:max-w-[1140px] m-auto px-5 md:p-0">
+    <main className="md:max-w-[860px] lg:max-w-[1140px] m-auto px-3 md:p-0">
       <div className="max-w-[600px] md:max-w-none md:w-full mx-auto mt-5">
         <div className="flex flex-col md:flex-row justify-between">
           <div className="w-full md:w-[30%]">

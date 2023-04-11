@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import SkillPicker from "../../components/SkillPicker";
 import {
   FormControl,
@@ -97,19 +97,19 @@ const EditJob = ({
   const [formData, setFormData] = useState<Vacancy>(
     vacancy ? vacancy : initialVacancy
   );
-  const [techs, setTechs] = useState([{ skillId: 1, skillName: "React" }]); // !測試獨立useState
+  // const [skills, setSkills] = useState([{ skillId: 1, skillName: "React" }]); // !測試獨立useState
   const [errors, setErrors] = useState(initialErrors);
 
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSkillChange = (skillArray: Skill[]) => {
+  const handleSkillChange = useCallback((skillArray: Skill[]) => {
     setFormData({
       ...formData,
       skills: skillArray,
     });
-  };
+  }, []);
 
   const handleSubmit = () => {
     let errorsObj = { ...initialErrors };
@@ -133,7 +133,7 @@ const EditJob = ({
       return;
     }
 
-    vacancy
+    vacancy && jobId
       ? PutMutate({ companyName, formData, jobId })
       : PostMutate({ companyName, formData });
   };

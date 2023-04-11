@@ -21,6 +21,8 @@ export default async function handler(
 
   if (req.method === "PUT") {
     const formData = req.body
+    console.log(formData)
+
     const countyId = getCountyId(county)
     if (countyId < 1) return res.status(400).json({ errorMessage: "錯誤的城市ID" })
     formData.county = [countyId];

@@ -40,10 +40,16 @@ const Detail = ({ vacancy }: { vacancy: Vacancy }) => {
               title={`${county}${vacanciesDistrict}${vacanciesAddress}`}
               className="cursor-pointer"
             >
-              <div>{county}</div>
+              <div>
+                {county}
+                {vacanciesDistrict}
+              </div>
             </Tooltip>
           ) : (
-            <div>{county}</div>
+            <div>
+              {county}
+              {vacanciesDistrict}
+            </div>
           )}
         </div>
       </div>
