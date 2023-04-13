@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -34,5 +36,7 @@ public class Student {
     private String studentImageNewName;
     @Column(name = "pccu_id")
     private String pccuId;
+    @Column(name = "student_create_time")
+    private LocalDate studentCreateTime;
 
 }

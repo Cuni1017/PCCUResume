@@ -100,6 +100,7 @@ public class ApplyForJobServiceImpl implements ApplyForJobService {
                 .applyBeforeTalk(applyCategory.getApplyBeforeTalk())
                 .createTime(LocalDate.now())
                 .applyType(ApplyType.應徵中.toString())
+                .applyUpdateTime(LocalDate.now())
                 .build();
         applyRepository.save(apply);
         userHistoryMoveRepository.save(userHistoryMove);

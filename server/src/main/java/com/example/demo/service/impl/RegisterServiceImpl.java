@@ -24,6 +24,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Service
@@ -198,6 +199,7 @@ public class RegisterServiceImpl implements RegisterService {
                 .studentPassword(passwordEncoder.encode(request.getStudentPassword()))
                 .studentNumber(request.getStudentNumber())
                 .pccuId(request.getPccuId())
+                .studentCreateTime(LocalDate.now())
                 .build();
         return student;
     }
@@ -214,6 +216,7 @@ public class RegisterServiceImpl implements RegisterService {
                 .companyDistrict(request.getCompanyDistrict())
                 .companyAddress(request.getCompanyAddress())
                 .companyEmail(request.getCompanyEmail())
+                .companyCreateTime(LocalDate.now())
                 .build();
         return company;
     }

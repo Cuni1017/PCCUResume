@@ -88,95 +88,59 @@ public class CompanyForJobServiceImpl implements CompanyForJobService {
     @Modifying
     @Override
     public Object  changeApply(String applyId, ChangeApplyTypeCategory changeApplyTypeCategory) {
-
+        //
         ApplyType  newApplyType = ApplyType.valueOf(changeApplyTypeCategory.getApplyType().toString());
         Apply      apply        = getApplyById(applyId);
         Student    student      = studentRepository.findById(apply.getUserId()).orElseThrow(()->new RuntimeException("沒有此學生"));
         Vacancies  vacancies    = vacanciesRepository.findById(apply.getVacanciesId()).orElseThrow(()->new RuntimeException("沒有此職缺"));
+        try{
+            return  CheckApplyType(newApplyType,apply,student,vacancies,applyId);
+        }catch (MailException e){
+            return "郵件發送失敗: " + e.getMessage();
+        }
+    }
+    /*
+        檢查她是怎樣的狀態並把他分門別類,分別寄信並把會差生的MailException一層一層傳上來
+
+    */
+    private RestDto CheckApplyType(ApplyType newApplyType, Apply apply, Student student, Vacancies vacancies,String applyId) throws MailException{
         switch (newApplyType){
             case 面試中:
                 Apply progressApply =  changeApplyType(apply,newApplyType.toString());
-                try {
-                    sendApplyTypeMail(student.getStudentName(),vacancies.getVacanciesName() ,student.getStudentEmail(),newApplyType.toString());
-                    RestDto restDto = RestDto.builder()
-                            .data(progressApply)
-                            .message("更新成功")
-                            .build();
-                    return restDto;
-                } catch (MailException e) {
-                    // 在這裡處理異常情況
-                    return "郵件發送失敗: " + e.getMessage();
-                }
+                sendApplyTypeMail(student.getStudentName(),vacancies.getVacanciesName() ,student.getStudentEmail(),newApplyType.toString());
+                return  getRestDto(progressApply,"更新成功");
             case 廠商中斷實習:
                 Apply cutApply =  changeApplyType(apply,newApplyType.toString());
                 HistoryApply historyApply = getHistoryApply(cutApply);
                 historyApplyRepository.save(historyApply);
                 applyRepository.deleteById(applyId);
-                try {
-                    sendApplyTypeMail(student.getStudentName(),vacancies.getVacanciesName() ,student.getStudentEmail(),newApplyType.toString());
-                    RestDto restDto = RestDto.builder()
-                            .data(historyApply)
-                            .message("更新成功")
-                            .build();
-                    return restDto;
-                } catch (MailException e) {
-                    // 在這裡處理異常情況
-                    return "郵件發送失敗: " + e.getMessage();
-                }
+                sendApplyTypeMail(student.getStudentName(),vacancies.getVacanciesName() ,student.getStudentEmail(),newApplyType.toString());
+                return getRestDto(historyApply,"更新成功");
             case 實習中:
                 Apply InApply =  changeApplyType(apply,newApplyType.toString());
                 int quantity = vacancies.getVacanciesQuantity();
                 vacancies.setVacanciesQuantity(quantity--);
                 vacanciesRepository.save(vacancies);
-                try {
-                    sendApplyTypeMail(student.getStudentName(),vacancies.getVacanciesName() ,student.getStudentEmail(),newApplyType.toString());
-                    RestDto restDto = RestDto.builder()
-                            .data(InApply)
-                            .message("更新成功")
-                            .build();
-                    return restDto;
-                } catch (MailException e) {
-                    // 在這裡處理異常情況
-                    return "郵件發送失敗: " + e.getMessage();
-                }
+                sendApplyTypeMail(student.getStudentName(),vacancies.getVacanciesName() ,student.getStudentEmail(),newApplyType.toString());
+                return getRestDto(InApply,"更新成功");
 
             case 應徵失敗,面試失敗,待學生同意中失敗:
-                Apply fileApply = changeApplyType(apply,ApplyType.應徵失敗.toString());
+                Apply fileApply = changeApplyType(apply,newApplyType.toString());
                 HistoryApply historyApply1 = getHistoryApply(fileApply);
-
                 historyApplyRepository.save(historyApply1);
                 applyRepository.deleteById(applyId);
-
-                try {
-                    sendApplyTypeMail(student.getStudentName(),vacancies.getVacanciesName() ,student.getStudentEmail(),newApplyType.toString());
-                    RestDto restDto = RestDto.builder()
-                            .data(historyApply1)
-                            .message("更新成功")
-                            .build();
-                    return restDto;
-                } catch (MailException e) {
-                    // 在這裡處理異常情況
-                    return "郵件發送失敗: " + e.getMessage();
-                }
+                sendApplyTypeMail(student.getStudentName(),vacancies.getVacanciesName() ,student.getStudentEmail(),newApplyType.toString());
+                return getRestDto(fileApply,"更新成功");
             case   待學生同意中:
                 Apply sucessApply =  changeApplyType(apply,newApplyType.toString());
-                try {
-                    sendApplyTypeMail(student.getStudentName(),vacancies.getVacanciesName() ,student.getStudentEmail(),newApplyType.toString());
-                    RestDto restDto = RestDto.builder()
-                            .data(sucessApply)
-                            .message("更新成功")
-                            .build();
-                    return restDto;
-                } catch (MailException e) {
-                    // 在這裡處理異常情況
-                    return "郵件發送失敗: " + e.getMessage();
-                }
+                return getRestDto(sucessApply,"更新成功");
             default:
                 throw new RuntimeException("輸入近來不是保留詞");
         }
-
     }
-
+    /*
+        更新使用者實習時間,如果不是實習中不能使用會報錯
+    */
     @Override
     public Object updateApplyTime(String applyId,  ApplyTimeCategory applyTimeCategory) {
 
@@ -184,6 +148,7 @@ public class CompanyForJobServiceImpl implements CompanyForJobService {
         if(!apply.getApplyType().equals(ApplyType.實習中.toString())){
             throw new RuntimeException("該應徵不是在實習中");
         }
+        apply.setApplyUpdateTime(LocalDate.now());
         apply.setApplyStartTime(applyTimeCategory.getApplyStartTime());
         apply.setApplyEndTime(applyTimeCategory.getApplyEndTime());
         applyRepository.save(apply);
@@ -191,7 +156,9 @@ public class CompanyForJobServiceImpl implements CompanyForJobService {
         return restDto;
     }
 
-
+    /*
+       新增歷史應徵把他function化把apply丟進來
+    */
 
     private HistoryApply getHistoryApply(Apply apply) {
         LocalDate now = LocalDate.now();
@@ -208,17 +175,26 @@ public class CompanyForJobServiceImpl implements CompanyForJobService {
                 .dieTime(now)
                 .build();
     }
-
+    /*
+       因為失敗或中斷會進到歷史職缺改變狀態它有獨特的applytype所以不儲存
+    */
     private Apply changeApplyType(Apply apply,String applyType) {
         apply.setApplyType(applyType);
+        apply.setApplyUpdateTime(LocalDate.now());
         if(!applyType.contains("失敗")||applyType.contains("中斷")){
             applyRepository.save(apply);
         }
         return apply;
     }
+    /*
+       找applyid
+    */
     private Apply getApplyById(String Id){
         return applyRepository.findById(Id).orElseThrow(()->new RuntimeException("沒有此應徵"));
     }
+    /*
+      回傳統一格式
+   */
     private RestDto getRestDto(Object o,String message){
         RestDto restDto = RestDto.builder()
                 .message(message)
@@ -226,6 +202,9 @@ public class CompanyForJobServiceImpl implements CompanyForJobService {
                 .build();
         return restDto;
     }
+    /*
+     寄信
+  */
     private void sendApplyTypeMail(String physiognomy,String vacanciesName ,String email,String applyType) throws MailException {
 
         MimeMessagePreparator messagePreparator = mimeMessage -> {
@@ -239,7 +218,9 @@ public class CompanyForJobServiceImpl implements CompanyForJobService {
         };
         mailSender.send(messagePreparator);
     }
-
+    /*
+         不同狀態要送出區的內容不同
+      */
     private String getMessage(String physiognomy,String vacanciesName, String email, String applyType){
         if (applyType.contains("失敗")) {
             String message = "這裡很遺憾的通知";

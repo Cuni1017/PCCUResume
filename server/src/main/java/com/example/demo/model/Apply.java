@@ -44,5 +44,7 @@ public class Apply {
     private LocalDate applyStartTime;
     @Column(name = "apply_end_time")
     private LocalDate applyEndTime;
+    @Column(name = "apply_update_time")
+    private LocalDate applyUpdateTime;
 
 }
