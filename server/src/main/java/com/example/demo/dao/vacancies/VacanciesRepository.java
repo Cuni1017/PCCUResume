@@ -9,12 +9,14 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 
 @Repository
 public interface VacanciesRepository extends JpaRepository<Vacancies,String>,PagingAndSortingRepository<Vacancies, String> {
+    List<Vacancies> findByVacanciesUpdateTimeAfterAndTeacherValidType(LocalDate VacanciesUpdate,String TeacherValidType);
 //    @Query(value = "SELECT c.company_id, c.company_name,\n" +
 //            " v.vacancies_id, v.teacher_id, v.vacancies_name, v.vacancies_time, v.vacancies_county,\n" +
 //            " v.vacancies_content, v.vacancies_work_experience, v.vacancies_Education, v.vacancies_department,\n" +

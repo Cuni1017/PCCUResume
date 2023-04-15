@@ -52,4 +52,5 @@ public interface ResumeService {
 
     Object deleteSubject(String studentId, String resumeId, String subjectId);
 
+    Object findByResumeId(String resumeId);
 }

@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +27,15 @@ public class ApplyDao {
                 map.put("companyName",companyName);
                 return  namedParameterJdbcTemplate.queryForList(sql,map, String.class);
     }
+    public List<String> findApplyVacanciesIdByCreateTime(LocalDate createTime){
+        String sql =  "SELECT v.vacancies_id FROM vacancies v \n" +
+                "INNER JOIN apply a ON a.vacancies_id = v.vacancies_id \n"+
+                "INNER JOIN company c ON c.company_id = v.company_id \n"+
+                "WHERE c.company_create_time > :createTime";
+        Map<String,Object> map= new HashMap<>();
+        map.put("createTime",createTime);
+        return  namedParameterJdbcTemplate.queryForList(sql,map, String.class);
+    }
     public  ApplyCompanyDto findByVacanciesId(String vacanciesId) {
         String sql = "SELECT c.company_id, c.company_name, c.company_image_url,\n" +
                 " v.vacancies_id, v.vacancies_name \n" +
@@ -37,6 +47,31 @@ public class ApplyDao {
         return namedParameterJdbcTemplate.queryForObject(sql,map, new ApplyCompanyRowMapper());
     }
     public  List<ApplyUserDto> findApplyVacanciesAndUserByVacanciesId(String vacanciesId, String applyType) {
+        String sql = "SELECT a.apply_id,a.vacancies_id,a.user_id,a.create_time,\n" +
+                "a.apply_type,a.company_id,a.resume_id,a.apply_email,a.apply_number,a.apply_before_talk, s.student_name ,s.student_email,s.student_image_url" +
+                ",s.student_username,a.apply_start_time,a.apply_end_time\n" +
+                "  FROM apply a INNER JOIN student s ON a.user_id = s.student_id\n" +
+                "  WHERE a.vacancies_id = :vacanciesId ";
+        if(applyType != null){
+            sql = sql + " AND a.apply_type = :applyType";
+        }
+        Map<String,Object> map= new HashMap<>();
+        map.put("vacanciesId",vacanciesId);
+        map.put("applyType",applyType);
+        return namedParameterJdbcTemplate.query(sql,map, new ApplyUserRowMapper());
+    }
+    public  List<ApplyUserDto> findApplyVacanciesAndUserByVacanciesId(String vacanciesId) {
+        String sql = "SELECT a.apply_id,a.vacancies_id,a.user_id,a.create_time,\n" +
+                "a.apply_type,a.company_id,a.resume_id,a.apply_email,a.apply_number,a.apply_before_talk, s.student_name ,s.student_email,s.student_image_url" +
+                ",s.student_username,a.apply_start_time,a.apply_end_time\n" +
+                "  FROM apply a INNER JOIN student s ON a.user_id = s.student_id\n" +
+                "  WHERE a.vacancies_id = :vacanciesId ";
+        Map<String,Object> map= new HashMap<>();
+        map.put("vacanciesId",vacanciesId);
+
+        return namedParameterJdbcTemplate.query(sql,map, new ApplyUserRowMapper());
+    }
+    public  List<ApplyUserDto> findApplyAndStudentByVacanciesId(String vacanciesId, String applyType) {
         String sql = "SELECT a.apply_id,a.vacancies_id,a.user_id,a.create_time,\n" +
                 "a.apply_type,a.company_id,a.resume_id,a.apply_email,a.apply_number,a.apply_before_talk, s.student_name ,s.student_email,s.student_image_url" +
                 ",s.student_username,a.apply_start_time,a.apply_end_time\n" +

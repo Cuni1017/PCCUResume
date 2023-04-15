@@ -93,6 +93,40 @@ public class ResumeServiceImpl implements ResumeService {
 
     }
     @Override
+    public Object findByResumeId(String resumeId) {
+        Resume resume =resumeRepository.findByResumeId(resumeId);
+        RAutobiography rAutobiography =rAutobiographyRepository.findByResumeId(resumeId);
+        List<RLicense> rLicense =rLicenseRepository.findByResumeId(resumeId);
+        List<RProjectAchievements> rProjectAchievements =rProjectAchievementsRepository.findByResumeId(resumeId);
+        List<RSpecialSkill> rSpecialSkill = rSpecialSkillRepository.findByResumeId(resumeId);
+        List<RWorkExperience> rWorkExperience=rWorkExperienceRepository.findByResumeId(resumeId);
+        RWorkHope rworkHope = rWorkHopeRepository.findByResumeId(resumeId);
+        List<RSubject> rsubject = rSubjectRepository.findByResumeId(resumeId);
+        System.out.println(rAutobiography);
+
+        AllResumeDto allResume = AllResumeDto.builder()
+                .name(resume.name)
+                .userId(resume.getUserId())
+                .resumeId(resumeId)
+                .school(resume.school)
+                .rProjectAchievements(rProjectAchievements)
+                .rAutobiography(rAutobiography)
+                .rSpecialSkill(rSpecialSkill)
+                .rLicense(rLicense)
+                .rWorkHope(rworkHope)
+                .rWorkExperience(rWorkExperience)
+                .rSubject(rsubject)
+                .build();
+
+        RestDto restResponse = RestDto.builder()
+                .data(allResume)
+                .message("查詢成功")
+                .build();
+        return restResponse;
+
+
+    }
+    @Override
     public Object createBasicResume(ResumeRequest Request, String studentId) {
         String resumeId = getId(resumeRepository , "Resume",1);
 

@@ -30,6 +30,13 @@ public class ResumeController {
         }
 
     }
+    @GetMapping("/students/resumes/{resumeId}")
+    public ResponseEntity<Object> findByResumeId(
+            @PathVariable String resumeId
+    ) {
+            return ResponseEntity.ok(resumeService.findByResumeId(resumeId));
+
+    }
     @DeleteMapping("/students/{studentId}/resumes/{resumeId}")
     public ResponseEntity<Object> deleteAllResumeById(
             @PathVariable String studentId,

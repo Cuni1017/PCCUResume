@@ -12,6 +12,7 @@ import java.util.Optional;
 public interface RSpecialSkillRepository extends JpaRepository<RSpecialSkill,String> {
 
     List<RSpecialSkill> findByUserIdAndResumeId(String studentId, String resumeId);
+    List<RSpecialSkill> findByResumeId(String resumeId);
     @Modifying
     @Transactional
     void deleteByUserIdAndResumeId(String userId, String resumeId);

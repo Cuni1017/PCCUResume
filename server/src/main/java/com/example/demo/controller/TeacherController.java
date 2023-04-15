@@ -11,10 +11,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class TeacherController {
     private final TeacherService teacherService;
-    @GetMapping("/teacher/{teacherId}/news")
+    @GetMapping("/teacher/V1/news")
     public ResponseEntity<Object> findNewsById(
             @PathVariable String teacherId
     ) {
-        return ResponseEntity.ok(teacherService.findNewsById(teacherId));
+        return ResponseEntity.ok(teacherService.findNewsById());
     }
+    public ResponseEntity<Object> findStudentReview(
+
+    ) {
+        return ResponseEntity.ok(teacherService.findStudentReview());
+    }
+
 }
