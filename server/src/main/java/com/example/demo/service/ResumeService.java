@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 
+import com.example.demo.category.RSkillCategory;
 import com.example.demo.category.resume.post.*;
 
 
@@ -53,4 +54,10 @@ public interface ResumeService {
     Object deleteSubject(String studentId, String resumeId, String subjectId);
 
     Object findByResumeId(String resumeId);
+
+    Object createSkill(RSkillCategory request, String studentId, String resumeId);
+
+    Object updateSkill(RSkillCategory request, String studentId, String resumeId, String skillId);
+
+    Object deleteSkill(String studentId, String resumeId, String skillId);
 }

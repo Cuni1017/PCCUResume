@@ -31,6 +31,6 @@ public interface CompanyRepository extends JpaRepository<Company,String> {
     List<Object[]> findVacancies(@Param("companyId") String companyId);
 
     Optional<Company> findByCompanyName(String companyName);
-    @Query(nativeQuery = true ,value = "select s.* from company c inner join user u on u.id = c.company_id WHERE c.company_create_time > :creatTime and u.role = :role")
-    List<Company> findByCreateTimeAfterAndRole(LocalDate beforeFiveDay, String toString);
+    @Query(value = "select s.* from company c inner join user u on u.id = c.company_id WHERE c.company_create_time > :createTime and u.role = :role",nativeQuery = true )
+    List<Company> findByCreateTimeAfterAndRole(LocalDate createTime, String role);
 }

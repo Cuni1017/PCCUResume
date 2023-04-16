@@ -1,7 +1,11 @@
 package com.example.demo.service;
 
-public interface TeacherService {
-    Object findNewsById();
+import com.example.demo.category.TeacherValidTypeCategory;
 
-    Object findStudentReview();
+public interface TeacherService {
+    Object findNewsById(String teacherId);
+
+    Object findStudentReview(String teacherId);
+
+    Object updateStudentReview(String teacherId, String studentId, TeacherValidTypeCategory teacherValidTypeCategory);
 }

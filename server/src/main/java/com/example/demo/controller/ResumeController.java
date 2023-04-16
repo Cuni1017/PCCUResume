@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 
 
+import com.example.demo.category.RSkillCategory;
 import com.example.demo.category.resume.post.*;
 
 import com.example.demo.service.ResumeService;
@@ -89,6 +90,7 @@ public class ResumeController {
     ) {
         return ResponseEntity.ok(resumeService.deleteWorkHope(studentId,resumeId,workHopeId));
     }
+
     @PostMapping("/students/{studentId}/resumes/{resumeId}/special-skill")
     public ResponseEntity<Object> writeSpecialSkill(
             @RequestBody RSpecialSkillRequest request,
@@ -243,6 +245,32 @@ public class ResumeController {
             @PathVariable String subjectId
     ) {
         return ResponseEntity.ok(resumeService. deleteSubject(studentId,resumeId,subjectId));
+    }
+    @PostMapping("/students/{studentId}/resumes/{resumeId}/skill")
+    public ResponseEntity<Object> writeSkill(
+            @RequestBody RSkillCategory request,
+            @PathVariable String studentId,
+            @PathVariable String resumeId
+    ) {
+        return ResponseEntity.ok(resumeService.createSkill(request,studentId,resumeId));
+    }
+    @PutMapping("/students/{studentId}/resumes/{resumeId}/skill/{skillId}")
+    public ResponseEntity<Object> updateSkill(
+            @RequestBody RSkillCategory request,
+            @PathVariable String studentId,
+            @PathVariable String resumeId,
+            @PathVariable String skillId
+    ) {
+        return ResponseEntity.ok(resumeService.updateSkill(request,studentId,resumeId,skillId));
+    }
+    @DeleteMapping("/students/{studentId}/resumes/{resumeId}/skill/{skillId}")
+    public ResponseEntity<Object> deleteSkill(
+
+            @PathVariable String studentId,
+            @PathVariable String resumeId,
+            @PathVariable String skillId
+    ) {
+        return ResponseEntity.ok(resumeService.deleteSkill(studentId,resumeId,skillId));
     }
 
 

@@ -1,12 +1,15 @@
 package com.example.demo.service.impl;
 
 
+import com.example.demo.category.RSkillCategory;
 import com.example.demo.category.resume.post.*;
 import com.example.demo.config.error.UserNotFoundException;
 import com.example.demo.dao.StudentRepository;
 import com.example.demo.dao.UserRepository;
 import com.example.demo.dao.resume.*;
 
+import com.example.demo.dto.StudentDto;
+import com.example.demo.model.Skill;
 import com.example.demo.model.Student;
 import com.example.demo.model.User;
 import com.example.demo.model.resume.*;
@@ -37,8 +40,9 @@ public class ResumeServiceImpl implements ResumeService {
     private final RProjectAchievementsRepository rProjectAchievementsRepository;
     private final RAutobiographyRepository rAutobiographyRepository;
     private final RWorkExperienceRepository rWorkExperienceRepository;
-
+    private final RSkillRepository rSkillRepository;
     private final RSubjectRepository rSubjectRepository;
+
     @Override
     public Object findUserById(String studentId) {
         User user =userRepository.findById(studentId).orElseThrow(() -> new UserNotFoundException("studentId:查無使用者"));
@@ -68,6 +72,9 @@ public class ResumeServiceImpl implements ResumeService {
         List<RWorkExperience> rWorkExperience=rWorkExperienceRepository.findByUserIdAndResumeId(userId,resumeId);
         RWorkHope rworkHope = rWorkHopeRepository.findByUserIdAndResumeId(userId,resumeId);
         List<RSubject> rsubject = rSubjectRepository.findByUserIdAndResumeId(userId,resumeId);
+        List<RSkill> rSkills = rSkillRepository.findByResumeId(resumeId);
+        Student student = studentRepository.findById(resume.getUserId()).orElseThrow(()->new RuntimeException("沒有此學生"));
+
         System.out.println(rAutobiography);
 
         AllResumeDto allResume = AllResumeDto.builder()
@@ -75,6 +82,7 @@ public class ResumeServiceImpl implements ResumeService {
                 .userId(userId)
                 .resumeId(resumeId)
                 .school(resume.school)
+                .imageUrl(student.getStudentImageUrl())
                 .rProjectAchievements(rProjectAchievements)
                 .rAutobiography(rAutobiography)
                 .rSpecialSkill(rSpecialSkill)
@@ -82,6 +90,7 @@ public class ResumeServiceImpl implements ResumeService {
                 .rWorkHope(rworkHope)
                 .rWorkExperience(rWorkExperience)
                 .rSubject(rsubject)
+                .rSkills(rSkills)
                 .build();
 
         RestDto restResponse = RestDto.builder()
@@ -102,11 +111,14 @@ public class ResumeServiceImpl implements ResumeService {
         List<RWorkExperience> rWorkExperience=rWorkExperienceRepository.findByResumeId(resumeId);
         RWorkHope rworkHope = rWorkHopeRepository.findByResumeId(resumeId);
         List<RSubject> rsubject = rSubjectRepository.findByResumeId(resumeId);
-        System.out.println(rAutobiography);
+        List<RSkill> rSkills = rSkillRepository.findByResumeId(resumeId);
+        Student student = studentRepository.findById(resume.getUserId()).orElseThrow(()->new RuntimeException("沒有此學生"));
+
 
         AllResumeDto allResume = AllResumeDto.builder()
                 .name(resume.name)
                 .userId(resume.getUserId())
+                .imageUrl(student.getStudentImageUrl())
                 .resumeId(resumeId)
                 .school(resume.school)
                 .rProjectAchievements(rProjectAchievements)
@@ -116,6 +128,7 @@ public class ResumeServiceImpl implements ResumeService {
                 .rWorkHope(rworkHope)
                 .rWorkExperience(rWorkExperience)
                 .rSubject(rsubject)
+                .rSkills(rSkills)
                 .build();
 
         RestDto restResponse = RestDto.builder()
@@ -126,6 +139,9 @@ public class ResumeServiceImpl implements ResumeService {
 
 
     }
+
+
+
     @Override
     public Object createBasicResume(ResumeRequest Request, String studentId) {
         String resumeId = getId(resumeRepository , "Resume",1);
@@ -158,6 +174,7 @@ public class ResumeServiceImpl implements ResumeService {
         rWorkExperienceRepository.deleteByUserIdAndResumeId( studentId, resumeId );
         rWorkHopeRepository.deleteByUserIdAndResumeId( studentId, resumeId );
         rSubjectRepository.deleteByUserIdAndResumeId( studentId, resumeId );
+        rSkillRepository.deleteByResumeId(resumeId);
         RestDto restResponse = RestDto.builder()
                 .data(resumeId)
                 .message("刪除此id下全部履歷")
@@ -496,11 +513,13 @@ public class ResumeServiceImpl implements ResumeService {
                .subjectName(request.getSubjectName())
                .subjectScore(request.getSubjectScore())
                .subjectRank(request.getSubjectRank())
+               .subjectTalk(request.getSubjectTalk())
+               .subjectTotalPeople(request.getSubjectTotalPeople())
                 .build();
         rSubjectRepository.save(rSubject);
         RestDto restResponse = RestDto.builder()
                 .data(rSubject)
-                .message("查詢成功")
+                .message("新建成功")
                 .build();
         return restResponse;
     }
@@ -509,11 +528,11 @@ public class ResumeServiceImpl implements ResumeService {
     public Object editSubject(RSubjectRequest request, String studentId, String resumeId, String subjectId) {
         RSubject rSubject =RSubject.builder()
                 .Id(subjectId)
-                .resumeId(resumeId)
-                .userId(studentId)
                 .subjectName(request.getSubjectName())
                 .subjectScore(request.getSubjectScore())
                 .subjectRank(request.getSubjectRank())
+                .subjectTalk(request.getSubjectTalk())
+                .subjectTotalPeople(request.getSubjectTotalPeople())
                 .build();
         rSubjectRepository.save(rSubject);
         RestDto restResponse = RestDto.builder()
@@ -527,6 +546,46 @@ public class ResumeServiceImpl implements ResumeService {
     public Object deleteSubject(String studentId, String resumeId, String subjectId) {
         RestDto restResponse = RestDto.builder()
                 .data(subjectId)
+                .message("刪除成功")
+                .build();
+        return restResponse;
+    }
+    @Override
+    public Object createSkill(RSkillCategory request, String studentId, String resumeId) {
+        String skillId = getId(rSkillRepository,"skill",2);
+        RSkill rSkill = RSkill.builder()
+                .skillId(skillId)
+                .skillName(request.skillName)
+                .resumeId(resumeId)
+                .build();
+        rSkillRepository.save(rSkill);
+        RestDto restResponse = RestDto.builder()
+                .data(rSkill)
+                .message("新建成功")
+                .build();
+        return restResponse;
+    }
+
+    @Override
+    public Object updateSkill(RSkillCategory request, String studentId, String resumeId, String skillId) {
+        RSkill rSkill = RSkill.builder()
+                .skillId(skillId)
+                .skillName(request.skillName)
+                .resumeId(resumeId)
+                .build();
+        rSkillRepository.save(rSkill);
+        RestDto restResponse = RestDto.builder()
+                .data(rSkill)
+                .message("更新成功")
+                .build();
+        return restResponse;
+    }
+
+    @Override
+    public Object deleteSkill(String studentId, String resumeId, String skillId) {
+        rSkillRepository.deleteById(skillId);
+        RestDto restResponse = RestDto.builder()
+                .data(skillId)
                 .message("刪除成功")
                 .build();
         return restResponse;
