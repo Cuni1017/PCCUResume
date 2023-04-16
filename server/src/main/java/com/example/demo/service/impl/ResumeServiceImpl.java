@@ -176,7 +176,7 @@ public class ResumeServiceImpl implements ResumeService {
         rWorkExperienceRepository.deleteByUserIdAndResumeId( studentId, resumeId );
         rWorkHopeRepository.deleteByUserIdAndResumeId( studentId, resumeId );
         rSubjectRepository.deleteByUserIdAndResumeId( studentId, resumeId );
-        rSkillRepository.deleteByResumeId(resumeId);
+        resumeDao.deleteByResumeId(resumeId);
         RestDto restResponse = RestDto.builder()
                 .data(resumeId)
                 .message("刪除此id下全部履歷")
@@ -554,44 +554,32 @@ public class ResumeServiceImpl implements ResumeService {
     }
     @Override
     public Object createSkill(RSkillCategory request, String studentId, String resumeId) {
-        String skillId = getId(rSkillRepository,"skill",2);
-        RSkillId rSkillId = RSkillId.builder()
-                .resumeId(resumeId)
-                .rSkillId(skillId)
-                .skillId(request.skillId)
-                .build();
-        RSkill rSkill = RSkill.builder()
-                .rSkillId(rSkillId)
-                .build();
-        rSkillRepository.save(rSkill);
+
+        for (int i = 0;i<request.getSkillIds().size();i++){
+            String skillId = getId(rSkillRepository,"skill",2);
+            RSkillId rSkillId = RSkillId.builder()
+                    .resumeId(resumeId)
+                    .rSkillId(skillId)
+                    .skillId(request.getSkillIds().get(i))
+                    .build();
+            RSkill rSkill = RSkill.builder()
+                    .rSkillId(rSkillId)
+                    .build();
+            rSkillRepository.save(rSkill);
+        }
+
         RestDto restResponse = RestDto.builder()
-                .data(rSkill)
+                .data(request)
                 .message("新建成功")
                 .build();
         return restResponse;
     }
 
-    @Override
-    public Object updateSkill(RSkillCategory request, String studentId, String resumeId, String skillId) {
-        RSkillId rSkillId = RSkillId.builder()
-                .resumeId(resumeId)
-                .rSkillId(skillId)
-                .skillId(request.skillId)
-                .build();
-        RSkill rSkill = RSkill.builder()
-                .rSkillId(rSkillId)
-                .build();
-        rSkillRepository.save(rSkill);
-        RestDto restResponse = RestDto.builder()
-                .data(rSkill)
-                .message("更新成功")
-                .build();
-        return restResponse;
-    }
+
 
     @Override
     public Object deleteSkill(String studentId, String resumeId, String skillId) {
-        rSkillRepository.deleteById(skillId);
+        resumeDao.deleteById(skillId);
         RestDto restResponse = RestDto.builder()
                 .data(skillId)
                 .message("刪除成功")

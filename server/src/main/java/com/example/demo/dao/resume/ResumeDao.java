@@ -22,4 +22,17 @@ public class ResumeDao {
         return  namedParameterJdbcTemplate.query(sql,map, new RskillDtoRowMapper());
 
     }
+    public void deleteById(String skillId){
+        String sql = "Delete rs.* from r_skill rs where r_skill_id = :skillId";
+        Map<String,Object> map= new HashMap<>();
+        map.put("skillId",skillId);
+        namedParameterJdbcTemplate.update(sql,map);
+    }
+
+    public void deleteByResumeId(String resumeId) {
+        String sql = "Delete rs.* from r_skill rs where resume_id = :resumeId";
+        Map<String,Object> map= new HashMap<>();
+        map.put("resumeId",resumeId);
+        namedParameterJdbcTemplate.update(sql,map);
+    }
 }

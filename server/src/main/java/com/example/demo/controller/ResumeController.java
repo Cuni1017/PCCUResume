@@ -31,7 +31,7 @@ public class ResumeController {
         }
 
     }
-    @GetMapping("/students/resumes/{resumeId}")
+    @GetMapping("v1/resumes/{resumeId}")
     public ResponseEntity<Object> findByResumeId(
             @PathVariable String resumeId
     ) {
@@ -254,15 +254,7 @@ public class ResumeController {
     ) {
         return ResponseEntity.ok(resumeService.createSkill(request,studentId,resumeId));
     }
-    @PutMapping("/students/{studentId}/resumes/{resumeId}/skill/{skillId}")
-    public ResponseEntity<Object> updateSkill(
-            @RequestBody RSkillCategory request,
-            @PathVariable String studentId,
-            @PathVariable String resumeId,
-            @PathVariable String skillId
-    ) {
-        return ResponseEntity.ok(resumeService.updateSkill(request,studentId,resumeId,skillId));
-    }
+
     @DeleteMapping("/students/{studentId}/resumes/{resumeId}/skill/{skillId}")
     public ResponseEntity<Object> deleteSkill(
 

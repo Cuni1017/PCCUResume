@@ -10,7 +10,5 @@ import java.util.List;
 
 public interface RSkillRepository extends JpaRepository<RSkill,String> {
 
-    @Modifying
-    @Transactional
-    void deleteByResumeId(String resumeId);
+
 }
