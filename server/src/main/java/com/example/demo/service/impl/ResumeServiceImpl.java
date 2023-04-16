@@ -555,10 +555,13 @@ public class ResumeServiceImpl implements ResumeService {
     @Override
     public Object createSkill(RSkillCategory request, String studentId, String resumeId) {
         String skillId = getId(rSkillRepository,"skill",2);
-        RSkill rSkill = RSkill.builder()
-                .rSkillId(skillId)
-                .skillId(request.skillId)
+        RSkillId rSkillId = RSkillId.builder()
                 .resumeId(resumeId)
+                .rSkillId(request.skillId)
+                .skillId(skillId)
+                .build();
+        RSkill rSkill = RSkill.builder()
+                .rSkillId(rSkillId)
                 .build();
         rSkillRepository.save(rSkill);
         RestDto restResponse = RestDto.builder()
@@ -570,10 +573,13 @@ public class ResumeServiceImpl implements ResumeService {
 
     @Override
     public Object updateSkill(RSkillCategory request, String studentId, String resumeId, String skillId) {
-        RSkill rSkill = RSkill.builder()
-                .rSkillId(skillId)
-                .skillId(request.skillId)
+        RSkillId rSkillId = RSkillId.builder()
                 .resumeId(resumeId)
+                .rSkillId(request.skillId)
+                .skillId(skillId)
+                .build();
+        RSkill rSkill = RSkill.builder()
+                .rSkillId(rSkillId)
                 .build();
         rSkillRepository.save(rSkill);
         RestDto restResponse = RestDto.builder()
