@@ -25,5 +25,5 @@ public class AllResumeDto {
     private RAutobiography rAutobiography;
     private List<RLicense> rLicense;
     private List<RSubject> rSubject;
-    private List<RSkill> rSkills;
+    private List<RSkillDto> rSkills;
 }

@@ -22,7 +22,7 @@ public class RSkill {
 
     @Column(name = "resume_id")
     public String resumeId;
-    @Column(name = "skill_name")
-    public String skillName;
+    @Column(name = "r_skill_id")
+    public String rSkillId;
 
 }

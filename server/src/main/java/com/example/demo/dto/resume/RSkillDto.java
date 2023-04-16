@@ -1,4 +1,4 @@
-package com.example.demo.category;
+package com.example.demo.dto.resume;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,8 +7,10 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class RSkillCategory {
-    public String skillId;
+@AllArgsConstructor
+public class RSkillDto {
+    String rSkillId;
+    String skillId;
+    String skillName;
 }

@@ -9,6 +9,7 @@ import com.example.demo.dao.UserRepository;
 import com.example.demo.dao.resume.*;
 
 import com.example.demo.dto.StudentDto;
+import com.example.demo.dto.resume.RSkillDto;
 import com.example.demo.model.Skill;
 import com.example.demo.model.Student;
 import com.example.demo.model.User;
@@ -42,6 +43,7 @@ public class ResumeServiceImpl implements ResumeService {
     private final RWorkExperienceRepository rWorkExperienceRepository;
     private final RSkillRepository rSkillRepository;
     private final RSubjectRepository rSubjectRepository;
+    private final ResumeDao resumeDao;
 
     @Override
     public Object findUserById(String studentId) {
@@ -72,7 +74,7 @@ public class ResumeServiceImpl implements ResumeService {
         List<RWorkExperience> rWorkExperience=rWorkExperienceRepository.findByUserIdAndResumeId(userId,resumeId);
         RWorkHope rworkHope = rWorkHopeRepository.findByUserIdAndResumeId(userId,resumeId);
         List<RSubject> rsubject = rSubjectRepository.findByUserIdAndResumeId(userId,resumeId);
-        List<RSkill> rSkills = rSkillRepository.findByResumeId(resumeId);
+        List<RSkillDto> rSkills = resumeDao.findByResumeId(resumeId);
         Student student = studentRepository.findById(resume.getUserId()).orElseThrow(()->new RuntimeException("沒有此學生"));
 
         System.out.println(rAutobiography);
@@ -111,7 +113,7 @@ public class ResumeServiceImpl implements ResumeService {
         List<RWorkExperience> rWorkExperience=rWorkExperienceRepository.findByResumeId(resumeId);
         RWorkHope rworkHope = rWorkHopeRepository.findByResumeId(resumeId);
         List<RSubject> rsubject = rSubjectRepository.findByResumeId(resumeId);
-        List<RSkill> rSkills = rSkillRepository.findByResumeId(resumeId);
+        List<RSkillDto> rSkills = resumeDao.findByResumeId(resumeId);
         Student student = studentRepository.findById(resume.getUserId()).orElseThrow(()->new RuntimeException("沒有此學生"));
 
 
@@ -554,8 +556,8 @@ public class ResumeServiceImpl implements ResumeService {
     public Object createSkill(RSkillCategory request, String studentId, String resumeId) {
         String skillId = getId(rSkillRepository,"skill",2);
         RSkill rSkill = RSkill.builder()
-                .skillId(skillId)
-                .skillName(request.skillName)
+                .rSkillId(skillId)
+                .skillId(request.skillId)
                 .resumeId(resumeId)
                 .build();
         rSkillRepository.save(rSkill);
@@ -569,8 +571,8 @@ public class ResumeServiceImpl implements ResumeService {
     @Override
     public Object updateSkill(RSkillCategory request, String studentId, String resumeId, String skillId) {
         RSkill rSkill = RSkill.builder()
-                .skillId(skillId)
-                .skillName(request.skillName)
+                .rSkillId(skillId)
+                .skillId(request.skillId)
                 .resumeId(resumeId)
                 .build();
         rSkillRepository.save(rSkill);
