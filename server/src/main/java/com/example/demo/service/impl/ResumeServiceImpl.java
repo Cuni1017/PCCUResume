@@ -557,8 +557,8 @@ public class ResumeServiceImpl implements ResumeService {
         String skillId = getId(rSkillRepository,"skill",2);
         RSkillId rSkillId = RSkillId.builder()
                 .resumeId(resumeId)
-                .rSkillId(request.skillId)
-                .skillId(skillId)
+                .rSkillId(skillId)
+                .skillId(request.skillId)
                 .build();
         RSkill rSkill = RSkill.builder()
                 .rSkillId(rSkillId)
@@ -575,8 +575,8 @@ public class ResumeServiceImpl implements ResumeService {
     public Object updateSkill(RSkillCategory request, String studentId, String resumeId, String skillId) {
         RSkillId rSkillId = RSkillId.builder()
                 .resumeId(resumeId)
-                .rSkillId(request.skillId)
-                .skillId(skillId)
+                .rSkillId(skillId)
+                .skillId(request.skillId)
                 .build();
         RSkill rSkill = RSkill.builder()
                 .rSkillId(rSkillId)
