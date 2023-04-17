@@ -74,4 +74,6 @@ public class Vacancies {
 
     @Column(name = "vacancies_watch_type")
     private String vacanciesWatchType;
+    @Column(name = "vacancies_update_time")
+    private LocalDate vacanciesUpdateTime;
 }

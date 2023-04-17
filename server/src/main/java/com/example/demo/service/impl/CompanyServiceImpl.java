@@ -76,6 +76,7 @@ public class CompanyServiceImpl implements CompanyService {
                 .teacherValidType(NOT_CHECK)
                 .vacanciesCondition(vacanciesCategory.getVacanciesCondition())
                 .vacanciesWatchType(vacanciesCategory.getVacanciesWatchType())
+                .vacanciesUpdateTime(LocalDate.now())
                 .build();
         for(int i = 0;i < (vacanciesCategory.getCounty().size());i++){
             VacanciesCountyId vacanciesCountyId = VacanciesCountyId.builder()
@@ -183,6 +184,7 @@ public class CompanyServiceImpl implements CompanyService {
                 .teacherValidType(NOT_CHECK)
                 .vacanciesCondition(vacanciesCategory.getVacanciesCondition())
                 .vacanciesWatchType(vacanciesCategory.getVacanciesWatchType())
+                .vacanciesUpdateTime(LocalDate.now())
                 .build();
         vacanciesRepository.save(vacancies);
         vacanciesSkillRepository.deleteByVacanciesId(vacanciesId);
@@ -269,6 +271,7 @@ public class CompanyServiceImpl implements CompanyService {
     public Object updateVacanciesWatchType(String vacanciesId, VacanciesWatchTypeCategory vacanciesWatchTypeCategory) {
         Vacancies vacancies = vacanciesRepository.findById(vacanciesId).orElseThrow(()->new RuntimeException("沒有此職缺"));
         vacancies.setVacanciesWatchType(vacanciesWatchTypeCategory.getWatchType());
+        vacancies.setVacanciesUpdateTime(LocalDate.now());
         System.out.println(vacanciesWatchTypeCategory.getWatchType());
         vacanciesRepository.save(vacancies);
         RestDto restDto = RestDto.builder()

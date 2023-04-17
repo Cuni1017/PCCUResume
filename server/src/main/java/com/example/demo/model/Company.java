@@ -9,6 +9,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -41,7 +43,8 @@ public class Company {
     private String companyEmail;
     @Column(name = "company_valid_type")
     private String companyValidType;
-
+    @Column(name = "company_create_time")
+    private LocalDate companyCreateTime;
 
 
 
