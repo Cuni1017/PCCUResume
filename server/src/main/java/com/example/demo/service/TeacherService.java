@@ -8,4 +8,6 @@ public interface TeacherService {
     Object findStudentReview(String teacherId);
 
     Object updateStudentReview(String teacherId, String studentId, TeacherValidTypeCategory teacherValidTypeCategory);
+
+    Object findStudentByRole(String teacherId, String studentId);
 }

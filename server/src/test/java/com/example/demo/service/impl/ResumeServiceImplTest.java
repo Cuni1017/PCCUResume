@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
@@ -44,6 +45,13 @@ class ResumeServiceImplTest {
                     .build();
             System.out.println(rSkill);
         }
+
+
+    }@Test
+    public void streamTest(){
+        List<Integer> i = List.of(1,2,3);
+        Stream x =  i.stream();
+        System.out.println(x);
 
 
     }

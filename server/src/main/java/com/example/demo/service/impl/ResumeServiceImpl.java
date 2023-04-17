@@ -575,16 +575,30 @@ public class ResumeServiceImpl implements ResumeService {
         return restResponse;
     }
 
-
-
     @Override
-    public Object deleteSkill(String studentId, String resumeId, String skillId) {
-        resumeDao.deleteById(skillId);
+    public Object updateSkill(String studentId, String resumeId, String skillId, RSkillCategory request) {
+        deleteSkillBySkillId(skillId);
+        for (int i = 0;i<request.getSkillIds().size();i++){
+            RSkillId rSkillId = RSkillId.builder()
+                    .resumeId(resumeId)
+                    .rSkillId(skillId)
+                    .skillId(request.getSkillIds().get(i))
+                    .build();
+            RSkill rSkill = RSkill.builder()
+                    .rSkillId(rSkillId)
+                    .build();
+            rSkillRepository.save(rSkill);
+        }
         RestDto restResponse = RestDto.builder()
-                .data(skillId)
-                .message("刪除成功")
+                .data(request)
+                .message("更新成功")
                 .build();
         return restResponse;
+    }
+
+
+    private void deleteSkillBySkillId(String skillId) {
+        resumeDao.deleteById(skillId);
     }
 
 
