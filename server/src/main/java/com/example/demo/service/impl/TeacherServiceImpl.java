@@ -71,7 +71,7 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public Object updateStudentReview(String teacherId, String studentId, TeacherValidTypeCategory teacherValidTypeCategory) {
+    public Object updateRole(String teacherId, String studentId, TeacherValidTypeCategory teacherValidTypeCategory) {
             User user = userRepository.findById(studentId).orElseThrow(()->new RuntimeException("使用者不存在"));
             user.setRole(Role.STUDENT);
             userRepository.save(user);

@@ -81,6 +81,8 @@ public class ResumeServiceImpl implements ResumeService {
 
         AllResumeDto allResume = AllResumeDto.builder()
                 .name(resume.name)
+                .realName(student.getStudentName())
+                .number(student.getStudentNumber())
                 .userId(userId)
                 .resumeId(resumeId)
                 .school(resume.school)
@@ -119,6 +121,8 @@ public class ResumeServiceImpl implements ResumeService {
 
         AllResumeDto allResume = AllResumeDto.builder()
                 .name(resume.name)
+                .realName(student.getStudentName())
+                .number(student.getStudentNumber())
                 .userId(resume.getUserId())
                 .imageUrl(student.getStudentImageUrl())
                 .resumeId(resumeId)
@@ -554,20 +558,20 @@ public class ResumeServiceImpl implements ResumeService {
     }
     @Override
     public Object createSkill(RSkillCategory request, String studentId, String resumeId) {
-
-        for (int i = 0;i<request.getSkillIds().size();i++){
-            String skillId = getId(rSkillRepository,"skill",2);
-            RSkillId rSkillId = RSkillId.builder()
-                    .resumeId(resumeId)
-                    .rSkillId(skillId)
-                    .skillId(request.getSkillIds().get(i))
-                    .build();
-            RSkill rSkill = RSkill.builder()
-                    .rSkillId(rSkillId)
-                    .build();
-            rSkillRepository.save(rSkill);
+        if(request.getSkillIds()!= null) {
+            for (int i = 0; i < request.getSkillIds().size(); i++) {
+                String skillId = getId(rSkillRepository, "skill", 2);
+                RSkillId rSkillId = RSkillId.builder()
+                        .resumeId(resumeId)
+                        .rSkillId(skillId)
+                        .skillId(request.getSkillIds().get(i))
+                        .build();
+                RSkill rSkill = RSkill.builder()
+                        .rSkillId(rSkillId)
+                        .build();
+                rSkillRepository.save(rSkill);
+            }
         }
-
         RestDto restResponse = RestDto.builder()
                 .data(request)
                 .message("新建成功")
@@ -578,16 +582,18 @@ public class ResumeServiceImpl implements ResumeService {
     @Override
     public Object updateSkill(String studentId, String resumeId, String skillId, RSkillCategory request) {
         deleteSkillBySkillId(skillId);
-        for (int i = 0;i<request.getSkillIds().size();i++){
-            RSkillId rSkillId = RSkillId.builder()
-                    .resumeId(resumeId)
-                    .rSkillId(skillId)
-                    .skillId(request.getSkillIds().get(i))
-                    .build();
-            RSkill rSkill = RSkill.builder()
-                    .rSkillId(rSkillId)
-                    .build();
-            rSkillRepository.save(rSkill);
+        if(request.getSkillIds()!= null) {
+            for (int i = 0;i<request.getSkillIds().size();i++){
+                RSkillId rSkillId = RSkillId.builder()
+                        .resumeId(resumeId)
+                        .rSkillId(skillId)
+                        .skillId(request.getSkillIds().get(i))
+                        .build();
+                RSkill rSkill = RSkill.builder()
+                        .rSkillId(rSkillId)
+                        .build();
+                rSkillRepository.save(rSkill);
+            }
         }
         RestDto restResponse = RestDto.builder()
                 .data(request)
