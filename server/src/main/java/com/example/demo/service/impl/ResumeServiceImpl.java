@@ -534,6 +534,8 @@ public class ResumeServiceImpl implements ResumeService {
     public Object editSubject(RSubjectRequest request, String studentId, String resumeId, String subjectId) {
         RSubject rSubject =RSubject.builder()
                 .Id(subjectId)
+                .resumeId(resumeId)
+                .userId(studentId)
                 .subjectName(request.getSubjectName())
                 .subjectScore(request.getSubjectScore())
                 .subjectRank(request.getSubjectRank())
