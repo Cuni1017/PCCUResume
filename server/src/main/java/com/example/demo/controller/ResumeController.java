@@ -31,7 +31,7 @@ public class ResumeController {
         }
 
     }
-    @GetMapping("v1/resumes/{resumeId}")
+    @GetMapping("/v1/resumes/{resumeId}")
     public ResponseEntity<Object> findByResumeId(
             @PathVariable String resumeId
     ) {

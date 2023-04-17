@@ -77,6 +77,13 @@ public class TeacherServiceImpl implements TeacherService {
             userRepository.save(user);
             return getRestDto(Role.STUDENT,"更新成功");
     }
+
+    @Override
+    public Object findStudentByRole(String teacherId, String studentId) {
+        List<Student> students = studentRepository.findByRole(Role.STUDENT_USER.toString());
+        return getRestDto(students,"查詢成功");
+    }
+
     private void updateRole(String id ){
 
     }

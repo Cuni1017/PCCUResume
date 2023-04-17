@@ -16,7 +16,7 @@ import java.util.Map;
 public class ResumeDao {
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     public List<RSkillDto> findByResumeId(String resumeId){
-        String sql = "select rs.r_skill_id,s.* from RSkill rs inner join skill s on rs.skill_id = s.skill_id where rs.resume_id = :resumeId";
+        String sql = "select rs.r_skill_id,s.* from r_skill rs inner join skill s on rs.skill_id = s.skill_id where rs.resume_id = :resumeId";
         Map<String,Object> map= new HashMap<>();
         map.put("resumeId",resumeId);
         return  namedParameterJdbcTemplate.query(sql,map, new RskillDtoRowMapper());
