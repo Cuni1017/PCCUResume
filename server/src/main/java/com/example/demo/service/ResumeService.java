@@ -57,5 +57,5 @@ public interface ResumeService {
 
     Object createSkill(RSkillCategory request, String studentId, String resumeId);
 
-    Object updateSkill(String studentId, String resumeId, String skillId, RSkillCategory request);
+    Object updateSkill(String studentId, String resumeId, RSkillCategory request);
 }

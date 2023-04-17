@@ -580,10 +580,11 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    public Object updateSkill(String studentId, String resumeId, String skillId, RSkillCategory request) {
-        deleteSkillBySkillId(skillId);
+    public Object updateSkill(String studentId, String resumeId,  RSkillCategory request) {
+        deleteSkillBySkillId(resumeId);
         if(request.getSkillIds()!= null) {
             for (int i = 0;i<request.getSkillIds().size();i++){
+                String skillId = getId(rSkillRepository, "skill", 2);
                 RSkillId rSkillId = RSkillId.builder()
                         .resumeId(resumeId)
                         .rSkillId(skillId)
@@ -603,8 +604,8 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
 
-    private void deleteSkillBySkillId(String skillId) {
-        resumeDao.deleteById(skillId);
+    private void deleteSkillBySkillId(String resumeId) {
+        resumeDao.deleteByResumeId(resumeId);
     }
 
 

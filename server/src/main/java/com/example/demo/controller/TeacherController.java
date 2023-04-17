@@ -25,12 +25,26 @@ public class TeacherController {
         return ResponseEntity.ok(teacherService.findStudentByRole(teacherId,studentId));
     }
     @PutMapping("/v1/teacher/{teacherId}/student-review/{studentId}")
-    public ResponseEntity<Object> updateRole(
+    public ResponseEntity<Object> updateStudentRole(
             @PathVariable String teacherId,
             @PathVariable String studentId,
             @RequestBody TeacherValidTypeCategory teacherValidTypeCategory
             ) {
-        return ResponseEntity.ok(teacherService.updateRole(teacherId,studentId,teacherValidTypeCategory));
+        return ResponseEntity.ok(teacherService.updateStudentRole(teacherId,studentId,teacherValidTypeCategory));
+    }
+    @GetMapping("/v1/teacher/{teacherId}/company-review/{companyId}")
+    public ResponseEntity<Object> findCompanyByRole(
+            @PathVariable String teacherId,
+            @PathVariable String companyId
+    ) {
+        return ResponseEntity.ok(teacherService.findCompanyByRole(teacherId,companyId));
+    }
+    @PutMapping("/v1/teacher/{teacherId}/company-review/{companyId}")
+    public ResponseEntity<Object> updateCompanyByRole(
+            @PathVariable String teacherId,
+            @PathVariable String companyId
+    ) {
+        return ResponseEntity.ok(teacherService.updateCompanyByRole(teacherId,companyId));
     }
 //    @PutMapping("/v1/teacher/{teacherId}/company-review/{studentId}")
 //    public ResponseEntity<Object> updateStudentReview(

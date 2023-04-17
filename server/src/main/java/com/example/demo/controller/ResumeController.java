@@ -254,14 +254,13 @@ public class ResumeController {
     ) {
         return ResponseEntity.ok(resumeService.createSkill(request,studentId,resumeId));
     }
-    @PutMapping("/students/{studentId}/resumes/{resumeId}/skill/{skillId}")
+    @PutMapping("/students/{studentId}/resumes/{resumeId}/skill")
     public ResponseEntity<Object> updateSkill(
             @RequestBody RSkillCategory request,
             @PathVariable String studentId,
-            @PathVariable String resumeId,
-            @PathVariable String skillId
+            @PathVariable String resumeId
     ) {
-        return ResponseEntity.ok(resumeService.updateSkill(studentId,resumeId,skillId,request));
+        return ResponseEntity.ok(resumeService.updateSkill(studentId,resumeId,request));
     }
 
 
