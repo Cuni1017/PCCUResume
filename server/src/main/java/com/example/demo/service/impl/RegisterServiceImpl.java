@@ -67,7 +67,7 @@ public class RegisterServiceImpl implements RegisterService {
                 .username(request.getStudentUsername())
                 .email(request.getStudentEmail())
                 .password(passwordEncoder.encode(request.getStudentPassword()))
-                .role(Role.USER)
+                .role(Role.STUDENT_USER)
                 .name(student.getStudentName())
                 .build();
         userRepository.save(user);
@@ -80,7 +80,7 @@ public class RegisterServiceImpl implements RegisterService {
                 .studentNumber(student.getStudentNumber())
                 .studentUsername(student.getStudentUsername())
                 .pccuId(student.getPccuId())
-                .role(user.getRole().toString())
+                .role(Role.STUDENT_USER.toString())
                 .build();
         RestDto restResponse = RestDto.builder()
                 .data(studentResponse)
@@ -105,7 +105,7 @@ public class RegisterServiceImpl implements RegisterService {
                 .username(request.getCompanyUsername())
                 .email(request.getCompanyEmail())
                 .password(passwordEncoder.encode(request.getCompanyPassword()))
-                .role(Role.USER)
+                .role(Role.COMPANY_USER)
                 .name(request.getCompanyName())
                 .build();
 

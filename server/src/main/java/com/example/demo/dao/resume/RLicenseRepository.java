@@ -12,6 +12,7 @@ import java.util.Optional;
 public interface RLicenseRepository extends JpaRepository<RLicense,String> {
 
     List<RLicense> findByUserIdAndResumeId(String userId, String resumeId);
+    List<RLicense> findByResumeId( String resumeId);
     @Modifying
     @Transactional
     void deleteByUserIdAndResumeId(String userId, String resumeId);

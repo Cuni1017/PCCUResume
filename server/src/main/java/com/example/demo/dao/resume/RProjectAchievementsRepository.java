@@ -12,6 +12,7 @@ import java.util.Optional;
 public interface RProjectAchievementsRepository extends JpaRepository<RProjectAchievements,String> {
 
     List<RProjectAchievements> findByUserIdAndResumeId(String userId, String resumeId);
+    List<RProjectAchievements> findByResumeId( String resumeId);
     @Modifying
     @Transactional
     void deleteByUserIdAndResumeId(String userId, String resumeId);

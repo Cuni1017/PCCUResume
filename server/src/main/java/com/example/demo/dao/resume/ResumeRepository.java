@@ -31,6 +31,7 @@ public interface ResumeRepository extends JpaRepository<Resume,String> {
 
     Resume findByUserIdAndResumeId(String studentId,String resumeId);
     List<Resume> findByUserId(String resumeId);
+    Resume findByResumeId(String resumeId);
     Long countByUserId(String userId);
     @Modifying
     @Transactional

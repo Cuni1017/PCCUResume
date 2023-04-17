@@ -31,4 +31,9 @@ public class RSubject {
     private int subjectScore ;
     @Column(name = "subject_rank")
     private int subjectRank;
+    @Column(name = "subject_total_people")
+    private int subjectTotalPeople;
+    @Column(name = "subject_talk")
+    private String subjectTalk;
+
 }

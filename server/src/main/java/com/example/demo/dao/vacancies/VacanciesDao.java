@@ -173,4 +173,5 @@ public class VacanciesDao {
         return  row;
         }
 
+
 }

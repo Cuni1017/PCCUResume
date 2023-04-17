@@ -11,6 +11,7 @@ import java.util.Optional;
 public interface RWorkHopeRepository extends JpaRepository<RWorkHope,String> {
 
     RWorkHope findByUserIdAndResumeId(String studentId, String resumeId);
+    RWorkHope findByResumeId( String resumeId);
     @Modifying
     @Transactional
     void deleteByUserIdAndResumeId(String userId, String resumeId);

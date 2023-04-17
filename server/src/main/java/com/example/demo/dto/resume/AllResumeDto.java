@@ -15,6 +15,7 @@ public class AllResumeDto {
     private  String name;
     private  String resumeId;
     private String userId;
+    private String imageUrl;
     private String number;
     private School school;
     private RWorkHope rWorkHope;
@@ -24,4 +25,5 @@ public class AllResumeDto {
     private RAutobiography rAutobiography;
     private List<RLicense> rLicense;
     private List<RSubject> rSubject;
+    private List<RSkillDto> rSkills;
 }
