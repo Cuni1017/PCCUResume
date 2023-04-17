@@ -7,7 +7,11 @@ public interface TeacherService {
 
     Object findStudentReview(String teacherId);
 
-    Object updateRole(String teacherId, String studentId, TeacherValidTypeCategory teacherValidTypeCategory);
+    Object updateStudentRole(String teacherId, String studentId, TeacherValidTypeCategory teacherValidTypeCategory);
 
     Object findStudentByRole(String teacherId, String studentId);
+
+    Object findCompanyByRole(String teacherId, String companyId);
+
+    Object updateCompanyByRole(String teacherId, String companyId);
 }

@@ -71,11 +71,9 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public Object updateRole(String teacherId, String studentId, TeacherValidTypeCategory teacherValidTypeCategory) {
-            User user = userRepository.findById(studentId).orElseThrow(()->new RuntimeException("使用者不存在"));
-            user.setRole(Role.STUDENT);
-            userRepository.save(user);
-            return getRestDto(Role.STUDENT,"更新成功");
+    public Object updateStudentRole(String teacherId, String studentId, TeacherValidTypeCategory teacherValidTypeCategory) {
+        User user = updateRole(studentId,teacherId);
+        return getRestDto(user,"更新成功");
     }
 
     @Override
@@ -84,9 +82,29 @@ public class TeacherServiceImpl implements TeacherService {
         return getRestDto(students,"查詢成功");
     }
 
-    private void updateRole(String id ){
-
+    @Override
+    public Object findCompanyByRole(String teacherId, String companyId) {
+        List<Company> companies = companyRepository.findByRole(Role.COMPANY_USER.toString());
+        return getRestDto(companies,"查詢成功");
     }
+
+    @Override
+    public Object updateCompanyByRole(String teacherId, String companyId) {
+        User user = updateRole(companyId,teacherId);
+        return getRestDto(user,"更新成功");
+    }
+
+    private User updateRole(String userId, String teacherId) {
+        User user = userRepository.findById(userId).orElseThrow(()->new RuntimeException("使用者不存在"));
+        if(userId.startsWith("S")){
+            user.setRole(Role.STUDENT);
+        }else{
+            user.setRole(Role.COMPANY);
+        }
+        userRepository.save(user);
+        return  user;
+    }
+
 
     private RestDto getRestDto(Object o, String message){
         RestDto restDto = RestDto.builder()
