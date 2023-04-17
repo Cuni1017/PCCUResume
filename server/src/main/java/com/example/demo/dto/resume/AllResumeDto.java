@@ -13,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class AllResumeDto {
     private  String name;
+    private  String realName;
     private  String resumeId;
     private String userId;
     private String imageUrl;
