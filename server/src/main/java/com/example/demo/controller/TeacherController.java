@@ -12,15 +12,16 @@ public class TeacherController {
     private final TeacherService teacherService;
     @GetMapping("/v1/teacher/{teacherId}/news")
     public ResponseEntity<Object> findNewsById(
-            @PathVariable String teacherId
-    ) {
-        return ResponseEntity.ok(teacherService.findNewsById(teacherId));
-    }
-    @GetMapping("/v1/teacher/student-review/{studentId}")
-    public ResponseEntity<Object> findStudentByRole(
 
     ) {
-        return ResponseEntity.ok(teacherService.findStudentByRole());
+        return ResponseEntity.ok(teacherService.findNewsById());
+    }
+    @GetMapping("/v1/teacher/student-review")
+    public ResponseEntity<Object> findStudentByRole(
+            @RequestParam int page,
+            @RequestParam int limit
+    ) {
+        return ResponseEntity.ok(teacherService.findStudentByRole(page , limit));
     }
 
     //回來要改不是teachervalidtpe 是role
@@ -32,10 +33,12 @@ public class TeacherController {
             ) {
         return ResponseEntity.ok(teacherService.updateStudentRole(teacherId,studentId,roleCategory));
     }
-    @GetMapping("/v1/teacher/company-review/{companyId}")
+    @GetMapping("/v1/teacher/company-review")
     public ResponseEntity<Object> findCompanyByRole(
+            @RequestParam int page,
+            @RequestParam int limit
     ) {
-        return ResponseEntity.ok(teacherService.findCompanyByRole());
+        return ResponseEntity.ok(teacherService.findCompanyByRole(page , limit));
     }
     @PutMapping("/v1/teacher/{teacherId}/company-review/{companyId}")
     public ResponseEntity<Object> updateCompanyByRole(
@@ -45,12 +48,13 @@ public class TeacherController {
     ) {
         return ResponseEntity.ok(teacherService.updateCompanyByRole(teacherId,companyId,roleCategory));
     }
-    @GetMapping("/v1/teacher/{teacherId}/vacancies-review")
+    @GetMapping("/v1/teacher/vacancies-review")
     public ResponseEntity<Object> findVacanciesByTeacherValidType(
-            @PathVariable String teacherId
+            @RequestParam int page,
+            @RequestParam int limit
 
     ) {
-        return ResponseEntity.ok(teacherService.findVacanciesByTeacherValidType(teacherId));
+        return ResponseEntity.ok(teacherService.findVacanciesByTeacherValidType(page ,limit));
     }
 //    @PutMapping("/v1/teacher/{teacherId}/company-review/{studentId}")
 //    public ResponseEntity<Object> updateStudentReview(

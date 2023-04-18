@@ -100,13 +100,14 @@ public class VacanciesDao {
                 "INNER JOIN skill s  ON s.skill_id = vs.skill_id \n"+
                 "INNER JOIN vacancies_county vc  ON vc.vacancies_id = v.vacancies_id \n"+
                 "INNER JOIN county ct  ON ct.county_id = vc.county_id \n"+
-                "WHERE 1=1 ";
+                "WHERE 1=1  AND v.teacher_valid_type = '審核中'";
 
         sql = sql + " group by v.vacancies_id";
-        sql = sql + " order by :order";
+
         sql = sql + " LIMIT :limit OFFSET :offset";
 
         Map<String,Object> map= new HashMap<>();
+        map.put("limit",selectLimit);
         map.put("offset",selectOffset);
         System.out.println(sql);
         return namedParameterJdbcTemplate.query(sql,map,new CompanyVacanciesRowMapper());
