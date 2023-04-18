@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class TeacherController {
     private final TeacherService teacherService;
-    @GetMapping("/v1/teacher/{teacherId}/news")
+    @GetMapping("/v1/teacher/news")
     public ResponseEntity<Object> findNewsById(
 
     ) {
