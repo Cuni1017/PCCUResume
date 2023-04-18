@@ -46,12 +46,12 @@ public class TeacherController {
             @PathVariable String companyId,
             @RequestBody RoleCategory roleCategory
     ) {
-        return ResponseEntity.ok(teacherService.updateCompanyByRole(teacherId,companyId,roleCategory);
+        return ResponseEntity.ok(teacherService.updateCompanyByRole(teacherId,companyId,roleCategory));
     }
     @GetMapping("/v1/teacher/{teacherId}/vacancies-review")
     public ResponseEntity<Object> findVacanciesByTeacherValidType(
-            @PathVariable String teacherId,
-            @PathVariable String vacanciesId
+            @PathVariable String teacherId
+
     ) {
         return ResponseEntity.ok(teacherService.findVacanciesByTeacherValidType(teacherId));
     }
