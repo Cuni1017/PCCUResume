@@ -16,12 +16,11 @@ public class TeacherController {
     ) {
         return ResponseEntity.ok(teacherService.findNewsById(teacherId));
     }
-    @GetMapping("/v1/teacher/{teacherId}/student-review/{studentId}")
+    @GetMapping("/v1/teacher/student-review/{studentId}")
     public ResponseEntity<Object> findStudentByRole(
-            @PathVariable String teacherId,
-            @PathVariable String studentId
+
     ) {
-        return ResponseEntity.ok(teacherService.findStudentByRole(teacherId,studentId));
+        return ResponseEntity.ok(teacherService.findStudentByRole());
     }
 
     //回來要改不是teachervalidtpe 是role
@@ -33,12 +32,10 @@ public class TeacherController {
             ) {
         return ResponseEntity.ok(teacherService.updateStudentRole(teacherId,studentId,roleCategory));
     }
-    @GetMapping("/v1/teacher/{teacherId}/company-review/{companyId}")
+    @GetMapping("/v1/teacher/company-review/{companyId}")
     public ResponseEntity<Object> findCompanyByRole(
-            @PathVariable String teacherId,
-            @PathVariable String companyId
     ) {
-        return ResponseEntity.ok(teacherService.findCompanyByRole(teacherId,companyId));
+        return ResponseEntity.ok(teacherService.findCompanyByRole());
     }
     @PutMapping("/v1/teacher/{teacherId}/company-review/{companyId}")
     public ResponseEntity<Object> updateCompanyByRole(

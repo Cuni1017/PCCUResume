@@ -9,9 +9,9 @@ public interface TeacherService {
 
     Object updateStudentRole(String teacherId, String studentId, RoleCategory roleCategory);
 
-    Object findStudentByRole(String teacherId, String studentId);
+    Object findStudentByRole();
 
-    Object findCompanyByRole(String teacherId, String companyId);
+    Object findCompanyByRole();
 
     Object updateCompanyByRole(String teacherId, String companyId,RoleCategory roleCategory);
 

@@ -77,13 +77,13 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public Object findStudentByRole(String teacherId, String studentId) {
+    public Object findStudentByRole() {
         List<Student> students = studentRepository.findByRole(Role.STUDENT_USER.toString());
         return getRestDto(students,"查詢成功");
     }
 
     @Override
-    public Object findCompanyByRole(String teacherId, String companyId) {
+    public Object findCompanyByRole() {
         List<Company> companies = companyRepository.findByRole(Role.COMPANY_USER.toString());
         return getRestDto(companies,"查詢成功");
     }
@@ -96,7 +96,7 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public Object findVacanciesByTeacherValidType(String teacherId) {
-//        List<VacanciesDto>
+//        List<CompanyVacanciesDto>
         return null;
     }
 
