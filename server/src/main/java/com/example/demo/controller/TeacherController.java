@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.category.TeacherValidTypeCategory;
-import com.example.demo.model.TeacherValidType;
+import com.example.demo.category.RoleCategory;
 import com.example.demo.service.TeacherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -30,9 +29,9 @@ public class TeacherController {
     public ResponseEntity<Object> updateStudentRole(
             @PathVariable String teacherId,
             @PathVariable String studentId,
-            @RequestBody TeacherValidTypeCategory teacherValidTypeCategory
+            @RequestBody RoleCategory roleCategory
             ) {
-        return ResponseEntity.ok(teacherService.updateStudentRole(teacherId,studentId,teacherValidTypeCategory));
+        return ResponseEntity.ok(teacherService.updateStudentRole(teacherId,studentId,roleCategory));
     }
     @GetMapping("/v1/teacher/{teacherId}/company-review/{companyId}")
     public ResponseEntity<Object> findCompanyByRole(
@@ -44,16 +43,17 @@ public class TeacherController {
     @PutMapping("/v1/teacher/{teacherId}/company-review/{companyId}")
     public ResponseEntity<Object> updateCompanyByRole(
             @PathVariable String teacherId,
-            @PathVariable String companyId
+            @PathVariable String companyId,
+            @RequestBody RoleCategory roleCategory
     ) {
-        return ResponseEntity.ok(teacherService.updateCompanyByRole(teacherId,companyId));
+        return ResponseEntity.ok(teacherService.updateCompanyByRole(teacherId,companyId,roleCategory);
     }
-    @GetMapping("/v1/teacher/{teacherId}/vacancies-review/{vacanciesId}")
+    @GetMapping("/v1/teacher/{teacherId}/vacancies-review")
     public ResponseEntity<Object> findVacanciesByTeacherValidType(
             @PathVariable String teacherId,
             @PathVariable String vacanciesId
     ) {
-        return ResponseEntity.ok(teacherService.findVacanciesByTeacherValidType(teacherId,vacanciesId));
+        return ResponseEntity.ok(teacherService.findVacanciesByTeacherValidType(teacherId));
     }
 //    @PutMapping("/v1/teacher/{teacherId}/company-review/{studentId}")
 //    public ResponseEntity<Object> updateStudentReview(

@@ -1,6 +1,6 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.category.TeacherValidTypeCategory;
+import com.example.demo.category.RoleCategory;
 import com.example.demo.dao.ApplyRepository;
 import com.example.demo.dao.CompanyRepository;
 import com.example.demo.dao.StudentRepository;
@@ -71,8 +71,8 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public Object updateStudentRole(String teacherId, String studentId, TeacherValidTypeCategory teacherValidTypeCategory) {
-        User user = updateRole(studentId,teacherId);
+    public Object updateStudentRole(String teacherId, String studentId, RoleCategory roleCategory) {
+        User user = updateRole(studentId,teacherId,roleCategory);
         return getRestDto(user,"更新成功");
     }
 
@@ -89,23 +89,23 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public Object updateCompanyByRole(String teacherId, String companyId) {
-        User user = updateRole(companyId,teacherId);
+    public Object updateCompanyByRole(String teacherId, String companyId,RoleCategory roleCategory) {
+        User user = updateRole(companyId,teacherId,roleCategory);
         return getRestDto(user,"更新成功");
     }
 
     @Override
-    public Object findVacanciesByTeacherValidType(String teacherId, String vacanciesId) {
-        List<VacanciesDto>
-                return
+    public Object findVacanciesByTeacherValidType(String teacherId) {
+//        List<VacanciesDto>
+        return null;
     }
 
-    private User updateRole(String userId, String teacherId) {
+    private User updateRole(String userId, String teacherId,RoleCategory roleCategory) {
         User user = userRepository.findById(userId).orElseThrow(()->new RuntimeException("使用者不存在"));
         if(userId.startsWith("S")){
-            user.setRole(Role.STUDENT);
+            user.setRole(roleCategory.getRole());
         }else{
-            user.setRole(Role.COMPANY);
+            user.setRole(roleCategory.getRole());
         }
         userRepository.save(user);
         return  user;
