@@ -14,9 +14,12 @@ public interface RSubjectRepository extends JpaRepository<RSubject,String> {
     @Modifying
     @Transactional
     void deleteByUserIdAndResumeId(String userId, String resumeId);
-//    @Modifying
-//    @Transactional
-//    void deleteByUserIdAndResumeIdAndId(String userId, String resumeId,String id);
+    @Modifying
+    @Transactional
+    void deleteByUserIdAndResumeIdAndId(String userId, String resumeId,String id);
+    @Modifying
+    @Transactional
+    void deleteByResumeId(String resumeId);
     List<RSubject> findByResumeId(String resumeId);
     List<RSubject> findByUserIdAndResumeId(String userId, String resumeId);
 }

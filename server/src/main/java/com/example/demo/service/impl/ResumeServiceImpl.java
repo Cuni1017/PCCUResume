@@ -552,6 +552,7 @@ public class ResumeServiceImpl implements ResumeService {
 
     @Override
     public Object deleteSubject(String studentId, String resumeId, String subjectId) {
+        rSubjectRepository.deleteByResumeId(resumeId);
         RestDto restResponse = RestDto.builder()
                 .data(subjectId)
                 .message("刪除成功")

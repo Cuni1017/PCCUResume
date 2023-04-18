@@ -94,6 +94,12 @@ public class TeacherServiceImpl implements TeacherService {
         return getRestDto(user,"更新成功");
     }
 
+    @Override
+    public Object findVacanciesByTeacherValidType(String teacherId, String vacanciesId) {
+        List<VacanciesDto>
+                return
+    }
+
     private User updateRole(String userId, String teacherId) {
         User user = userRepository.findById(userId).orElseThrow(()->new RuntimeException("使用者不存在"));
         if(userId.startsWith("S")){

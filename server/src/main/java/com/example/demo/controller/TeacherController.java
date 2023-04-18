@@ -24,6 +24,8 @@ public class TeacherController {
     ) {
         return ResponseEntity.ok(teacherService.findStudentByRole(teacherId,studentId));
     }
+
+    //回來要改不是teachervalidtpe 是role
     @PutMapping("/v1/teacher/{teacherId}/student-review/{studentId}")
     public ResponseEntity<Object> updateStudentRole(
             @PathVariable String teacherId,
@@ -45,6 +47,13 @@ public class TeacherController {
             @PathVariable String companyId
     ) {
         return ResponseEntity.ok(teacherService.updateCompanyByRole(teacherId,companyId));
+    }
+    @GetMapping("/v1/teacher/{teacherId}/vacancies-review/{vacanciesId}")
+    public ResponseEntity<Object> findVacanciesByTeacherValidType(
+            @PathVariable String teacherId,
+            @PathVariable String vacanciesId
+    ) {
+        return ResponseEntity.ok(teacherService.findVacanciesByTeacherValidType(teacherId,vacanciesId));
     }
 //    @PutMapping("/v1/teacher/{teacherId}/company-review/{studentId}")
 //    public ResponseEntity<Object> updateStudentReview(

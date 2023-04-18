@@ -14,4 +14,6 @@ public interface TeacherService {
     Object findCompanyByRole(String teacherId, String companyId);
 
     Object updateCompanyByRole(String teacherId, String companyId);
+
+    Object findVacanciesByTeacherValidType(String teacherId, String vacanciesId);
 }

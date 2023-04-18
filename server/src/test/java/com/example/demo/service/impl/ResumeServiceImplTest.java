@@ -49,9 +49,7 @@ class ResumeServiceImplTest {
 
     }@Test
     public void streamTest(){
-        List<Integer> i = List.of(1,2,3);
-        Stream x =  i.stream();
-        System.out.println(x);
+
 
 
     }
