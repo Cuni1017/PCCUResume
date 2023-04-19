@@ -39,7 +39,7 @@ public class TeacherServiceImpl implements TeacherService {
     private final VacanciesDao vacanciesDao ;
     @Override
     public Object findNewsById() {
-        LocalDate beforeFiveDay = LocalDate.now();
+        LocalDate beforeFiveDay = LocalDate.now().minusDays(5);
         List<Student> students      = studentRepository.findByCreateTimeAfterAndRole(beforeFiveDay, Role.STUDENT_USER.toString());
         List<Company> companies     = companyRepository.findByCreateTimeAfterAndRole(beforeFiveDay, Role.COMPANY_USER.toString());
         List<Vacancies> vacancies = vacanciesRepository.findByVacanciesUpdateTimeAfterAndTeacherValidType(beforeFiveDay, TeacherValidType.審核中.toString());
