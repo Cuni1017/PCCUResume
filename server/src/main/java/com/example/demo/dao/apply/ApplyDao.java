@@ -27,11 +27,11 @@ public class ApplyDao {
                 map.put("companyName",companyName);
                 return  namedParameterJdbcTemplate.queryForList(sql,map, String.class);
     }
-    public List<String> findApplyVacanciesIdByUpdateTime(LocalDate updateTime){
+    public List<String> findApplyVacanciesIdByApplyUpdateTime(LocalDate updateTime){
         String sql =  "SELECT v.vacancies_id FROM vacancies v \n" +
                 "INNER JOIN apply a ON a.vacancies_id = v.vacancies_id \n"+
                 "INNER JOIN company c ON c.company_id = v.company_id \n"+
-                "WHERE v.vacancies_update_time > :updateTime";
+                "WHERE a.apply_update_time > :updateTime";
         Map<String,Object> map= new HashMap<>();
         map.put("updateTime",updateTime);
         return  namedParameterJdbcTemplate.queryForList(sql,map, String.class);
