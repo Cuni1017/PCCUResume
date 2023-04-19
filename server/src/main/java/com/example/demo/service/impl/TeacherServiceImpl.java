@@ -1,6 +1,6 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.category.TeacherValidTypeCategory;
+import com.example.demo.category.RoleCategory;
 import com.example.demo.dao.ApplyRepository;
 import com.example.demo.dao.CompanyRepository;
 import com.example.demo.dao.StudentRepository;
@@ -9,10 +9,12 @@ import com.example.demo.dao.apply.ApplyDao;
 import com.example.demo.dao.vacancies.VacanciesDao;
 import com.example.demo.dao.vacancies.VacanciesRepository;
 import com.example.demo.dto.ApplyUserDto;
+import com.example.demo.dto.CompanyVacanciesDto;
 import com.example.demo.dto.NewsDto;
 import com.example.demo.dto.RestDto;
 import com.example.demo.dto.applyforjob.AllApplyDto;
 import com.example.demo.dto.vacancies.FullVacanciesDto;
+import com.example.demo.dto.vacancies.PageVacanciesDto;
 import com.example.demo.dto.vacancies.VacanciesDto;
 import com.example.demo.model.*;
 import com.example.demo.model.vacancies.Vacancies;
@@ -36,7 +38,7 @@ public class TeacherServiceImpl implements TeacherService {
     private final ApplyDao applyDao;
     private final VacanciesDao vacanciesDao ;
     @Override
-    public Object findNewsById(String teacherId) {
+    public Object findNewsById() {
         LocalDate beforeFiveDay = LocalDate.now();
         List<Student> students      = studentRepository.findByCreateTimeAfterAndRole(beforeFiveDay, Role.STUDENT_USER.toString());
         List<Company> companies     = companyRepository.findByCreateTimeAfterAndRole(beforeFiveDay, Role.COMPANY_USER.toString());
@@ -64,48 +66,58 @@ public class TeacherServiceImpl implements TeacherService {
         return  newsDto;
     }
 
-    @Override
-    public Object findStudentReview(String teacherId) {
-        List<Student> students = studentRepository.findByRole(Role.STUDENT_USER.toString());
-        return getRestDto(students,"查詢成功");
-    }
+
 
     @Override
-    public Object updateStudentRole(String teacherId, String studentId, TeacherValidTypeCategory teacherValidTypeCategory) {
-        User user = updateRole(studentId,teacherId);
+    public Object updateStudentRole(String teacherId, String studentId, RoleCategory roleCategory) {
+        User user = updateRole(studentId,teacherId,roleCategory);
         return getRestDto(user,"更新成功");
     }
 
     @Override
-    public Object findStudentByRole(String teacherId, String studentId) {
-        List<Student> students = studentRepository.findByRole(Role.STUDENT_USER.toString());
+    public Object findStudentByRole(int page , int limit) {
+        int selectOffset = getSelectOffset(page,limit);
+        int selectLimit = getSelectLimit(page,limit);
+        List<Student> students = studentRepository.findByRole(Role.STUDENT_USER.toString(),selectLimit,selectOffset);
         return getRestDto(students,"查詢成功");
     }
 
     @Override
-    public Object findCompanyByRole(String teacherId, String companyId) {
-        List<Company> companies = companyRepository.findByRole(Role.COMPANY_USER.toString());
+    public Object findCompanyByRole(int page , int limit) {
+        int selectOffset = getSelectOffset(page,limit);
+        int selectLimit = getSelectLimit(page,limit);
+        List<Company> companies = companyRepository.findByRole(Role.COMPANY_USER.toString(),selectLimit,selectOffset);
         return getRestDto(companies,"查詢成功");
     }
 
     @Override
-    public Object updateCompanyByRole(String teacherId, String companyId) {
-        User user = updateRole(companyId,teacherId);
+    public Object updateCompanyByRole(String teacherId, String companyId,RoleCategory roleCategory) {
+        User user = updateRole(companyId,teacherId,roleCategory);
         return getRestDto(user,"更新成功");
     }
 
     @Override
-    public Object findVacanciesByTeacherValidType(String teacherId, String vacanciesId) {
-        List<VacanciesDto>
-                return
+    public Object findVacanciesByTeacherValidType(int page , int limit) {
+        int selectOffset = getSelectOffset(page,limit);
+        int selectLimit = getSelectLimit(page,limit);
+        List<CompanyVacanciesDto> companyVacanciesDtos = vacanciesDao.findPageVacanciesReview(selectLimit,selectOffset);
+        long total = companyVacanciesDtos.stream().count();
+        int intTotal = (int)total;
+        PageVacanciesDto pageVacanciesDto = PageVacanciesDto.builder()
+                .companyVacanciesDto(companyVacanciesDtos)
+                .page(page)
+                .size(limit)
+                .total(intTotal)
+                .build();
+        return getRestDto(pageVacanciesDto,"查詢成功");
     }
 
-    private User updateRole(String userId, String teacherId) {
+    private User updateRole(String userId, String teacherId,RoleCategory roleCategory) {
         User user = userRepository.findById(userId).orElseThrow(()->new RuntimeException("使用者不存在"));
         if(userId.startsWith("S")){
-            user.setRole(Role.STUDENT);
+            user.setRole(roleCategory.getRole());
         }else{
-            user.setRole(Role.COMPANY);
+            user.setRole(roleCategory.getRole());
         }
         userRepository.save(user);
         return  user;
@@ -118,5 +130,11 @@ public class TeacherServiceImpl implements TeacherService {
                 .data(o)
                 .build();
         return restDto;
+    }
+    private int getSelectOffset(int page,int limit){
+        return (page-1)*limit;
+    }
+    private int getSelectLimit(int page,int limit){
+        return page*limit;
     }
 }

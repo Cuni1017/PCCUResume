@@ -18,6 +18,6 @@ public interface StudentRepository extends JpaRepository<Student,String> {
     @Query(nativeQuery = true ,value = "select s.* from Student s inner join user u on u.id = s.student_id WHERE s.student_create_time > :creatTime and u.role = :role")
     List<Student> findByCreateTimeAfterAndRole(LocalDate creatTime ,String role);
 
-    @Query(value = "select s.* from Student s inner join user u on s.user_id = u.user_id where  u.role = :role",nativeQuery = true)
-    List<Student>  findByRole(String role);
+    @Query(value = "select s.* from Student s inner join user u on s.student_id = u.id where  u.role = :role LIMIT :limit OFFSET :offset",nativeQuery = true)
+    List<Student>  findByRole(String role,int limit, int offset);
 }

@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.category.TeacherValidTypeCategory;
-import com.example.demo.model.TeacherValidType;
+import com.example.demo.category.RoleCategory;
 import com.example.demo.service.TeacherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -11,18 +10,18 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class TeacherController {
     private final TeacherService teacherService;
-    @GetMapping("/v1/teacher/{teacherId}/news")
+    @GetMapping("/v1/teacher/news")
     public ResponseEntity<Object> findNewsById(
-            @PathVariable String teacherId
+
     ) {
-        return ResponseEntity.ok(teacherService.findNewsById(teacherId));
+        return ResponseEntity.ok(teacherService.findNewsById());
     }
-    @GetMapping("/v1/teacher/{teacherId}/student-review/{studentId}")
+    @GetMapping("/v1/teacher/student-review")
     public ResponseEntity<Object> findStudentByRole(
-            @PathVariable String teacherId,
-            @PathVariable String studentId
+            @RequestParam int page,
+            @RequestParam int limit
     ) {
-        return ResponseEntity.ok(teacherService.findStudentByRole(teacherId,studentId));
+        return ResponseEntity.ok(teacherService.findStudentByRole(page , limit));
     }
 
     //回來要改不是teachervalidtpe 是role
@@ -30,30 +29,32 @@ public class TeacherController {
     public ResponseEntity<Object> updateStudentRole(
             @PathVariable String teacherId,
             @PathVariable String studentId,
-            @RequestBody TeacherValidTypeCategory teacherValidTypeCategory
+            @RequestBody RoleCategory roleCategory
             ) {
-        return ResponseEntity.ok(teacherService.updateStudentRole(teacherId,studentId,teacherValidTypeCategory));
+        return ResponseEntity.ok(teacherService.updateStudentRole(teacherId,studentId,roleCategory));
     }
-    @GetMapping("/v1/teacher/{teacherId}/company-review/{companyId}")
+    @GetMapping("/v1/teacher/company-review")
     public ResponseEntity<Object> findCompanyByRole(
-            @PathVariable String teacherId,
-            @PathVariable String companyId
+            @RequestParam int page,
+            @RequestParam int limit
     ) {
-        return ResponseEntity.ok(teacherService.findCompanyByRole(teacherId,companyId));
+        return ResponseEntity.ok(teacherService.findCompanyByRole(page , limit));
     }
     @PutMapping("/v1/teacher/{teacherId}/company-review/{companyId}")
     public ResponseEntity<Object> updateCompanyByRole(
             @PathVariable String teacherId,
-            @PathVariable String companyId
+            @PathVariable String companyId,
+            @RequestBody RoleCategory roleCategory
     ) {
-        return ResponseEntity.ok(teacherService.updateCompanyByRole(teacherId,companyId));
+        return ResponseEntity.ok(teacherService.updateCompanyByRole(teacherId,companyId,roleCategory));
     }
-    @GetMapping("/v1/teacher/{teacherId}/vacancies-review/{vacanciesId}")
+    @GetMapping("/v1/teacher/vacancies-review")
     public ResponseEntity<Object> findVacanciesByTeacherValidType(
-            @PathVariable String teacherId,
-            @PathVariable String vacanciesId
+            @RequestParam int page,
+            @RequestParam int limit
+
     ) {
-        return ResponseEntity.ok(teacherService.findVacanciesByTeacherValidType(teacherId,vacanciesId));
+        return ResponseEntity.ok(teacherService.findVacanciesByTeacherValidType(page ,limit));
     }
 //    @PutMapping("/v1/teacher/{teacherId}/company-review/{studentId}")
 //    public ResponseEntity<Object> updateStudentReview(

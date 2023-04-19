@@ -1,19 +1,18 @@
 package com.example.demo.service;
 
-import com.example.demo.category.TeacherValidTypeCategory;
+import com.example.demo.category.RoleCategory;
 
 public interface TeacherService {
-    Object findNewsById(String teacherId);
+    Object findNewsById();
 
-    Object findStudentReview(String teacherId);
 
-    Object updateStudentRole(String teacherId, String studentId, TeacherValidTypeCategory teacherValidTypeCategory);
+    Object updateStudentRole(String teacherId, String studentId, RoleCategory roleCategory);
 
-    Object findStudentByRole(String teacherId, String studentId);
+    Object findStudentByRole(int page , int limit);
 
-    Object findCompanyByRole(String teacherId, String companyId);
+    Object findCompanyByRole(int page , int limit);
 
-    Object updateCompanyByRole(String teacherId, String companyId);
+    Object updateCompanyByRole(String teacherId, String companyId,RoleCategory roleCategory);
 
-    Object findVacanciesByTeacherValidType(String teacherId, String vacanciesId);
+    Object findVacanciesByTeacherValidType(int page , int limit);
 }
