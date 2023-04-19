@@ -35,7 +35,9 @@ class TeacherServiceImplTest {
     public void findByVacanciesUpdateTimeAfterAndTeacherValidType(){
         LocalDate localDate = LocalDate.of(2023,4,6);
         List<Vacancies> vacancies =  vacanciesRepository.findByVacanciesUpdateTimeAfterAndTeacherValidType(localDate,"審核中");
+        List<Student> students      = studentRepository.findByCreateTimeAfterAndRole(localDate, Role.STUDENT_USER.toString());
         System.out.println(vacancies);
+        System.out.println(students);
     }
     @Test
     public void findVacanciesByTeacherValidType(){
