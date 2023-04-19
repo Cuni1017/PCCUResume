@@ -43,7 +43,7 @@ public class TeacherServiceImpl implements TeacherService {
         List<Student> students      = studentRepository.findByCreateTimeAfterAndRole(beforeFiveDay, Role.STUDENT_USER.toString());
         List<Company> companies     = companyRepository.findByCreateTimeAfterAndRole(beforeFiveDay, Role.COMPANY_USER.toString());
         List<Vacancies> vacancies = vacanciesRepository.findByVacanciesUpdateTimeAfterAndTeacherValidType(beforeFiveDay, TeacherValidType.審核中.toString());
-        List<String> vacanciesIds = applyDao.findApplyVacanciesIdByCreateTime(beforeFiveDay);
+        List<String> vacanciesIds = applyDao.findApplyVacanciesIdByUpdateTime(beforeFiveDay);
 
         List<AllApplyDto> allApplyDtoList = new LinkedList<>();
         vacanciesIds = vacanciesIds.stream().distinct().collect(Collectors.toList());
