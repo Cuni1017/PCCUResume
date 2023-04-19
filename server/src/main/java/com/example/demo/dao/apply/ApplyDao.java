@@ -60,6 +60,19 @@ public class ApplyDao {
         map.put("applyType",applyType);
         return namedParameterJdbcTemplate.query(sql,map, new ApplyUserRowMapper());
     }
+    public  List<ApplyUserDto> findApplyReview(String vacanciesId, String applyType) {
+        String sql = "SELECT a.apply_id,a.vacancies_id,a.user_id,a.create_time,\n" +
+                "a.apply_type,a.company_id,a.resume_id,a.apply_email,a.apply_number,a.apply_before_talk, s.student_name ,s.student_email,s.student_image_url" +
+                ",s.student_username,a.apply_start_time,a.apply_end_time\n" +
+                "  FROM apply a INNER JOIN student s ON a.user_id = s.student_id\n" ;
+        if(applyType != null){
+            sql = sql + " AND a.apply_type = :applyType";
+        }
+        Map<String,Object> map= new HashMap<>();
+        map.put("vacanciesId",vacanciesId);
+        map.put("applyType",applyType);
+        return namedParameterJdbcTemplate.query(sql,map, new ApplyUserRowMapper());
+    }
     public  List<ApplyUserDto> findApplyVacanciesAndUserByVacanciesId(String vacanciesId) {
         String sql = "SELECT a.apply_id,a.vacancies_id,a.user_id,a.create_time,\n" +
                 "a.apply_type,a.company_id,a.resume_id,a.apply_email,a.apply_number,a.apply_before_talk, s.student_name ,s.student_email,s.student_image_url" +

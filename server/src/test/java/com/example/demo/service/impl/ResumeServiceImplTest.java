@@ -7,6 +7,7 @@ import com.example.demo.dto.RestDto;
 import com.example.demo.model.Student;
 import com.example.demo.model.resume.RSkill;
 import com.example.demo.model.resume.RSkillId;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,9 +15,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -49,8 +48,18 @@ class ResumeServiceImplTest {
 
     }@Test
     public void streamTest(){
-
-
+//        String s = "-     3213";
+//        List<Character> charList = new LinkedList<>();
+//        for(int i =0 ; i<s.length();i++){
+//            if( (s.charAt(i)<=57&&s.charAt(i)>=48)||s.charAt(i) == 45){
+//                charList.add(s.charAt(i));
+//            }
+//        }
+//        char[] charArray = new char[charList.size()];
+//        charList.toArray(charArray);
+//        System.out.println(charArray);
+//        int z = Integer.parseInt(new String(charArray));
+//        System.out.println(z);
 
     }
     private String getId(JpaRepository repository , String idType , int x){

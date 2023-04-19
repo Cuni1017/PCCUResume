@@ -63,7 +63,7 @@ public class TeacherServiceImpl implements TeacherService {
                 .companies(companies)
                 .vacancies(vacancies)
                 .build();
-        return  newsDto;
+        return  getRestDto(newsDto,"查詢成功");
     }
 
 
@@ -112,6 +112,21 @@ public class TeacherServiceImpl implements TeacherService {
         return getRestDto(pageVacanciesDto,"查詢成功");
     }
 
+    @Override
+    public Object UpdateVacanciesByTeacherValidType(String teacherId, String vacanciesId, TeacherValidType teacherValidType) {
+        Vacancies vacancies = vacanciesRepository.findById(vacanciesId).orElseThrow(()->new RuntimeException("沒有此職缺"));
+        vacancies.setTeacherValidType(teacherValidType.toString());
+        vacancies.setTeacherId(teacherId);
+        vacanciesRepository.save(vacancies);
+        return getRestDto(vacancies,"更新成功");
+    }
+
+    @Override
+    public Object findApply(String teacherId, int page, int limit) {
+        return null;
+    }
+
+
     private User updateRole(String userId, String teacherId,RoleCategory roleCategory) {
         User user = userRepository.findById(userId).orElseThrow(()->new RuntimeException("使用者不存在"));
         if(userId.startsWith("S")){
@@ -120,6 +135,7 @@ public class TeacherServiceImpl implements TeacherService {
             user.setRole(roleCategory.getRole());
         }
         userRepository.save(user);
+
         return  user;
     }
 
