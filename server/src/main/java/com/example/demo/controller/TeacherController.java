@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.category.RoleCategory;
+import com.example.demo.model.TeacherValidType;
 import com.example.demo.service.TeacherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -55,6 +56,24 @@ public class TeacherController {
 
     ) {
         return ResponseEntity.ok(teacherService.findVacanciesByTeacherValidType(page ,limit));
+    }
+    @PutMapping("/v1/teacher/{teacherId}/vacancies-review/{vacanciesId}")
+    public ResponseEntity<Object> UpdateVacanciesByTeacherValidType(
+            @PathVariable String teacherId,
+            @PathVariable String vacanciesId,
+            @RequestBody  TeacherValidType teacherValidType
+
+    ) {
+        return ResponseEntity.ok(teacherService.UpdateVacanciesByTeacherValidType(teacherId ,vacanciesId,teacherValidType));
+    }
+    @GetMapping("/v1/teacher/{teacherId}/apply-review")
+    public ResponseEntity<Object> findApply(
+            @PathVariable String teacherId,
+            @RequestParam int page,
+            @RequestParam int limit
+
+    ) {
+        return ResponseEntity.ok(teacherService.findApply(teacherId,page ,limit));
     }
 //    @PutMapping("/v1/teacher/{teacherId}/company-review/{studentId}")
 //    public ResponseEntity<Object> updateStudentReview(

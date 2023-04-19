@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.category.RoleCategory;
+import com.example.demo.model.TeacherValidType;
 
 public interface TeacherService {
     Object findNewsById();
@@ -15,4 +16,9 @@ public interface TeacherService {
     Object updateCompanyByRole(String teacherId, String companyId,RoleCategory roleCategory);
 
     Object findVacanciesByTeacherValidType(int page , int limit);
+
+
+    Object UpdateVacanciesByTeacherValidType(String teacherId, String vacanciesId, TeacherValidType teacherValidType);
+
+    Object findApply(String teacherId, int page, int limit);
 }
