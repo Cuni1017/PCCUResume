@@ -12,6 +12,12 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class TeacherController {
     private final TeacherService teacherService;
+    @GetMapping("/v1/teacher/{teacherId}")
+    public ResponseEntity<Object> findTeacher(
+            @PathVariable String teacherId
+    ) {
+        return ResponseEntity.ok(teacherService.findById(teacherId));
+    }
     @GetMapping("/v1/teacher/news")
     public ResponseEntity<Object> findNewsById(
 

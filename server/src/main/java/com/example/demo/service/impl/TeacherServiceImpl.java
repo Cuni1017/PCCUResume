@@ -2,17 +2,11 @@ package com.example.demo.service.impl;
 
 import com.example.demo.category.ChangeApplyTypeCategory;
 import com.example.demo.category.RoleCategory;
-import com.example.demo.dao.ApplyRepository;
-import com.example.demo.dao.CompanyRepository;
-import com.example.demo.dao.StudentRepository;
-import com.example.demo.dao.UserRepository;
+import com.example.demo.dao.*;
 import com.example.demo.dao.apply.ApplyDao;
 import com.example.demo.dao.vacancies.VacanciesDao;
 import com.example.demo.dao.vacancies.VacanciesRepository;
-import com.example.demo.dto.ApplyUserDto;
-import com.example.demo.dto.CompanyVacanciesDto;
-import com.example.demo.dto.NewsDto;
-import com.example.demo.dto.RestDto;
+import com.example.demo.dto.*;
 import com.example.demo.dto.applyforjob.AllApplyDto;
 import com.example.demo.dto.vacancies.FullVacanciesDto;
 import com.example.demo.dto.vacancies.PageVacanciesDto;
@@ -38,6 +32,20 @@ public class TeacherServiceImpl implements TeacherService {
     private final UserRepository userRepository;
     private final ApplyDao applyDao;
     private final VacanciesDao vacanciesDao ;
+    private final TeacherRepository teacherRepository;
+    @Override
+    public Object findById(String teacherId) {
+        Teacher teacher = teacherRepository.findByTeacherId(teacherId).orElseThrow(()->new RuntimeException("沒有此教師"));
+        User user = userRepository.findById(teacherId).orElseThrow(()->new RuntimeException("沒有此使用者"));
+        TeacherDto teacherDto = TeacherDto.builder()
+                .teacherId(teacher.getTeacherId())
+                .teacherImageUrl(teacher.getTeacherImageUrl())
+                .teacherUsername(teacher.getTeacherUsername())
+                .teacherName(teacher.getTeacherName())
+                .role(user.getRole().toString())
+                .build();
+        return getRestDto(teacherDto,"查詢成功");
+    }
     @Override
     public Object findNewsById() {
         LocalDate beforeFiveDay = LocalDate.now().minusDays(5);
@@ -138,6 +146,8 @@ public class TeacherServiceImpl implements TeacherService {
         }
         return getRestDto(allApplyDtoList,"查詢成功");
     }
+
+
 
 
     private User updateRole(String userId, String teacherId,RoleCategory roleCategory) {

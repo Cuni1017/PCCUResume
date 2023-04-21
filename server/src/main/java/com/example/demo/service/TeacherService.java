@@ -22,4 +22,6 @@ public interface TeacherService {
     Object UpdateVacanciesByTeacherValidType(String teacherId, String vacanciesId, TeacherValidType teacherValidType);
 
     Object findApply(String teacherId, ChangeApplyTypeCategory changeApplyTypeCategory);
+
+    Object findById(String teacherId);
 }
