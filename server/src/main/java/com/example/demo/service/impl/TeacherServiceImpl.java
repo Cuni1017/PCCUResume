@@ -1,5 +1,6 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.category.ChangeApplyTypeCategory;
 import com.example.demo.category.RoleCategory;
 import com.example.demo.dao.ApplyRepository;
 import com.example.demo.dao.CompanyRepository;
@@ -118,12 +119,24 @@ public class TeacherServiceImpl implements TeacherService {
         vacancies.setTeacherValidType(teacherValidType.toString());
         vacancies.setTeacherId(teacherId);
         vacanciesRepository.save(vacancies);
+
         return getRestDto(vacancies,"更新成功");
     }
 
     @Override
-    public Object findApply(String teacherId, int page, int limit) {
-        return null;
+    public Object findApply(String teacherId, ChangeApplyTypeCategory changeApplyTypeCategory) {
+        List<String> vacanciesIds = applyDao.findApplyVacanciesId();
+        List<AllApplyDto> allApplyDtoList = new LinkedList<>();
+        for(String vacanciesId : vacanciesIds){
+            List<ApplyUserDto> applyUserDto = applyDao.findApplyVacanciesAndUserByVacanciesId(vacanciesId);
+            FullVacanciesDto fullVacanciesDto = vacanciesDao.findFullVacanciesById(vacanciesId);
+            AllApplyDto       allApplyDto = AllApplyDto.builder()
+                    .fullVacanciesDto(fullVacanciesDto)
+                    .ApplyUserDto(applyUserDto)
+                    .build();
+            allApplyDtoList.add(allApplyDto);
+        }
+        return getRestDto(allApplyDtoList,"查詢成功");
     }
 
 

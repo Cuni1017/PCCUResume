@@ -27,6 +27,13 @@ public class ApplyDao {
                 map.put("companyName",companyName);
                 return  namedParameterJdbcTemplate.queryForList(sql,map, String.class);
     }
+    public List<String> findApplyVacanciesId(){
+        String sql =  "SELECT v.vacancies_id FROM vacancies v \n" +
+                "INNER JOIN apply a ON a.vacancies_id = v.vacancies_id \n"+
+                "INNER JOIN company c ON c.company_id = v.company_id ";
+        Map<String,Object> map= new HashMap<>();
+        return  namedParameterJdbcTemplate.queryForList(sql,map, String.class);
+    }
     public List<String> findApplyVacanciesIdByApplyUpdateTime(LocalDate updateTime){
         String sql =  "SELECT v.vacancies_id FROM vacancies v \n" +
                 "INNER JOIN apply a ON a.vacancies_id = v.vacancies_id \n"+
@@ -64,7 +71,8 @@ public class ApplyDao {
         String sql = "SELECT a.apply_id,a.vacancies_id,a.user_id,a.create_time,\n" +
                 "a.apply_type,a.company_id,a.resume_id,a.apply_email,a.apply_number,a.apply_before_talk, s.student_name ,s.student_email,s.student_image_url" +
                 ",s.student_username,a.apply_start_time,a.apply_end_time\n" +
-                "  FROM apply a INNER JOIN student s ON a.user_id = s.student_id\n" ;
+                "  FROM apply a " +
+                "INNER JOIN student s ON a.user_id = s.student_id WHERE 1 = 1";
         if(applyType != null){
             sql = sql + " AND a.apply_type = :applyType";
         }

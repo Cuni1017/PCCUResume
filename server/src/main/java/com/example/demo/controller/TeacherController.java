@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.category.ChangeApplyTypeCategory;
 import com.example.demo.category.RoleCategory;
 import com.example.demo.model.TeacherValidType;
 import com.example.demo.service.TeacherService;
@@ -69,11 +70,10 @@ public class TeacherController {
     @GetMapping("/v1/teacher/{teacherId}/apply-review")
     public ResponseEntity<Object> findApply(
             @PathVariable String teacherId,
-            @RequestParam int page,
-            @RequestParam int limit
+            @RequestBody ChangeApplyTypeCategory changeApplyTypeCategory
 
-    ) {
-        return ResponseEntity.ok(teacherService.findApply(teacherId,page ,limit));
+            ) {
+        return ResponseEntity.ok(teacherService.findApply(teacherId,changeApplyTypeCategory));
     }
 //    @PutMapping("/v1/teacher/{teacherId}/company-review/{studentId}")
 //    public ResponseEntity<Object> updateStudentReview(
