@@ -6,20 +6,22 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @RequiredArgsConstructor
-public class WebConfig implements WebMvcConfigurer {
+public class    WebConfig implements WebMvcConfigurer {
     private HttpServletRequest request;
-    private String getRealFilePath(){
+    private String getStudentRealFilePath(){
         String realPath = request.getServletContext().getRealPath("");
-        String uploadPath = realPath + "upload\\";
+        String uploadPath = realPath + "StudentUpload\\";
         return uploadPath;
     }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        String path = getRealFilePath();
-        registry.addResourceHandler("/images/**").addResourceLocations("file:"+path);
+//        String Studentpath = getStudentRealFilePath();
+//        registry.addResourceHandler("/images/**").addResourceLocations("file:"+path);
+
         //System.out.println("file:"+fileSavePath);
     }
+
 
 
 }

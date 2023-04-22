@@ -24,4 +24,6 @@ public interface TeacherService {
     Object findApply(String teacherId, ChangeApplyTypeCategory changeApplyTypeCategory);
 
     Object findById(String teacherId);
+
+    Object updateApply(String teacherId, String applyId,ChangeApplyTypeCategory changeApplyTypeCategory);
 }

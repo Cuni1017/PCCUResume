@@ -46,6 +46,9 @@ public class TeacherServiceImpl implements TeacherService {
                 .build();
         return getRestDto(teacherDto,"查詢成功");
     }
+
+
+
     @Override
     public Object findNewsById() {
         LocalDate beforeFiveDay = LocalDate.now().minusDays(5);
@@ -125,6 +128,7 @@ public class TeacherServiceImpl implements TeacherService {
     public Object UpdateVacanciesByTeacherValidType(String teacherId, String vacanciesId, TeacherValidType teacherValidType) {
         Vacancies vacancies = vacanciesRepository.findById(vacanciesId).orElseThrow(()->new RuntimeException("沒有此職缺"));
         vacancies.setTeacherValidType(teacherValidType.toString());
+        vacancies.setVacanciesUpdateTime(LocalDate.now());
         vacancies.setTeacherId(teacherId);
         vacanciesRepository.save(vacancies);
 
@@ -145,6 +149,14 @@ public class TeacherServiceImpl implements TeacherService {
             allApplyDtoList.add(allApplyDto);
         }
         return getRestDto(allApplyDtoList,"查詢成功");
+    }
+    @Override
+    public Object updateApply(String teacherId,String applyId, ChangeApplyTypeCategory changeApplyTypeCategory) {
+        Apply apply = applyRepository.findById(applyId).orElseThrow(()->new RuntimeException("沒有此apply"));
+        apply.setApplyUpdateTime(LocalDate.now());
+        apply.setApplyType(changeApplyTypeCategory.getApplyType().toString());
+        applyRepository.save(apply);
+        return getRestDto(apply,"更新成功");
     }
 
 

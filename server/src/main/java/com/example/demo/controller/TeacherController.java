@@ -81,6 +81,15 @@ public class TeacherController {
             ) {
         return ResponseEntity.ok(teacherService.findApply(teacherId,changeApplyTypeCategory));
     }
+    @PutMapping("/v1/teacher/{teacherId}/apply-review/{applyId}")
+    public ResponseEntity<Object> updateApply(
+            @PathVariable String teacherId,
+            @PathVariable String applyId,
+            @RequestBody ChangeApplyTypeCategory changeApplyTypeCategory
+
+    ) {
+        return ResponseEntity.ok(teacherService.updateApply(teacherId,applyId,changeApplyTypeCategory));
+    }
 //    @PutMapping("/v1/teacher/{teacherId}/company-review/{studentId}")
 //    public ResponseEntity<Object> updateStudentReview(
 //            @PathVariable String teacherId,
