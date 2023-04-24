@@ -14,7 +14,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CompanyVacanciesDto {
+public class    CompanyVacanciesDto {
     private String companyId;
     private String companyName;
     private String companyImageUrl;
