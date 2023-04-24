@@ -94,7 +94,7 @@ public class TeacherController {
             @PathVariable String teacherId,
             @RequestParam int page,
             @RequestParam int limit,
-            @RequestBody ChangeApplyTypeCategory changeApplyTypeCategory
+            @RequestBody(required = false) ChangeApplyTypeCategory changeApplyTypeCategory
 
             ) {
         return ResponseEntity.ok(teacherService.findApply(teacherId,changeApplyTypeCategory,page,limit));

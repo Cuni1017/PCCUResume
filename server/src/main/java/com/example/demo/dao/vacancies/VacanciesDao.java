@@ -2,6 +2,7 @@
 
 import com.example.demo.dto.CompanyVacanciesDto;
 import com.example.demo.dto.vacancies.FullVacanciesDto;
+import com.example.demo.model.TeacherValidType;
 import com.example.demo.model.vacancies.Vacancies;
 import com.example.demo.rowmapper.CompanyVacanciesRowMapper;
 import com.example.demo.rowmapper.FullVacanciesRowMapper;
@@ -9,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -113,7 +115,7 @@ public class VacanciesDao {
         System.out.println(sql);
         return namedParameterJdbcTemplate.query(sql,map,new CompanyVacanciesRowMapper());
     }
-    public List<CompanyVacanciesDto> findApplyVacanciesIdByApplyUpdateTime(String fiveDays){
+    public List<CompanyVacanciesDto> findApplyVacanciesIdByApplyUpdateTime(LocalDate fiveDays, String teacherValidType){
         String sql ="SELECT c.company_id, c.company_name, c.company_image_url,\n"+
                 "v.vacancies_id, v.teacher_id, v.vacancies_name, v.vacancies_time, v.vacancies_description,v.vacancies_requirement,\n"+
                 "v.vacancies_work_experience,v.vacancies_district ,v.vacancies_Education, v.vacancies_department,\n"+
@@ -125,9 +127,10 @@ public class VacanciesDao {
                 "INNER JOIN skill s  ON s.skill_id = vs.skill_id \n"+
                 "INNER JOIN vacancies_county vc  ON vc.vacancies_id = v.vacancies_id \n"+
                 "INNER JOIN county ct  ON ct.county_id = vc.county_id \n"+
-                "WHERE 1=1  AND v.vacancies_update_time > :fiveDays";
+                "WHERE 1=1  AND v.vacancies_update_time > :fiveDays AND v.teacher_valid_type = :teacherValidType";
         Map<String,Object> map= new HashMap<>();
-        map.put("search",fiveDays);
+        map.put("fiveDays",fiveDays);
+        map.put("teacherValidType",teacherValidType);
         System.out.println(sql);
         return namedParameterJdbcTemplate.query(sql,map,new CompanyVacanciesRowMapper());
     }
