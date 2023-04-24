@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.category.ChangeApplyTypeCategory;
 import com.example.demo.category.RoleCategory;
 import com.example.demo.model.TeacherValidType;
 import com.example.demo.service.TeacherService;
@@ -11,6 +12,12 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class TeacherController {
     private final TeacherService teacherService;
+    @GetMapping("/v1/teacher/{teacherId}")
+    public ResponseEntity<Object> findTeacher(
+            @PathVariable String teacherId
+    ) {
+        return ResponseEntity.ok(teacherService.findById(teacherId));
+    }
     @GetMapping("/v1/teacher/news")
     public ResponseEntity<Object> findNewsById(
 
@@ -69,11 +76,19 @@ public class TeacherController {
     @GetMapping("/v1/teacher/{teacherId}/apply-review")
     public ResponseEntity<Object> findApply(
             @PathVariable String teacherId,
-            @RequestParam int page,
-            @RequestParam int limit
+            @RequestBody ChangeApplyTypeCategory changeApplyTypeCategory
+
+            ) {
+        return ResponseEntity.ok(teacherService.findApply(teacherId,changeApplyTypeCategory));
+    }
+    @PutMapping("/v1/teacher/{teacherId}/apply-review/{applyId}")
+    public ResponseEntity<Object> updateApply(
+            @PathVariable String teacherId,
+            @PathVariable String applyId,
+            @RequestBody ChangeApplyTypeCategory changeApplyTypeCategory
 
     ) {
-        return ResponseEntity.ok(teacherService.findApply(teacherId,page ,limit));
+        return ResponseEntity.ok(teacherService.updateApply(teacherId,applyId,changeApplyTypeCategory));
     }
 //    @PutMapping("/v1/teacher/{teacherId}/company-review/{studentId}")
 //    public ResponseEntity<Object> updateStudentReview(

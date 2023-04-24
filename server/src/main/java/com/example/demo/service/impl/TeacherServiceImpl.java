@@ -1,17 +1,12 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.category.ChangeApplyTypeCategory;
 import com.example.demo.category.RoleCategory;
-import com.example.demo.dao.ApplyRepository;
-import com.example.demo.dao.CompanyRepository;
-import com.example.demo.dao.StudentRepository;
-import com.example.demo.dao.UserRepository;
+import com.example.demo.dao.*;
 import com.example.demo.dao.apply.ApplyDao;
 import com.example.demo.dao.vacancies.VacanciesDao;
 import com.example.demo.dao.vacancies.VacanciesRepository;
-import com.example.demo.dto.ApplyUserDto;
-import com.example.demo.dto.CompanyVacanciesDto;
-import com.example.demo.dto.NewsDto;
-import com.example.demo.dto.RestDto;
+import com.example.demo.dto.*;
 import com.example.demo.dto.applyforjob.AllApplyDto;
 import com.example.demo.dto.vacancies.FullVacanciesDto;
 import com.example.demo.dto.vacancies.PageVacanciesDto;
@@ -37,13 +32,30 @@ public class TeacherServiceImpl implements TeacherService {
     private final UserRepository userRepository;
     private final ApplyDao applyDao;
     private final VacanciesDao vacanciesDao ;
+    private final TeacherRepository teacherRepository;
+    @Override
+    public Object findById(String teacherId) {
+        Teacher teacher = teacherRepository.findByTeacherId(teacherId).orElseThrow(()->new RuntimeException("沒有此教師"));
+        User user = userRepository.findById(teacherId).orElseThrow(()->new RuntimeException("沒有此使用者"));
+        TeacherDto teacherDto = TeacherDto.builder()
+                .teacherId(teacher.getTeacherId())
+                .teacherImageUrl(teacher.getTeacherImageUrl())
+                .teacherUsername(teacher.getTeacherUsername())
+                .teacherName(teacher.getTeacherName())
+                .role(user.getRole().toString())
+                .build();
+        return getRestDto(teacherDto,"查詢成功");
+    }
+
+
+
     @Override
     public Object findNewsById() {
         LocalDate beforeFiveDay = LocalDate.now().minusDays(5);
         List<Student> students      = studentRepository.findByCreateTimeAfterAndRole(beforeFiveDay, Role.STUDENT_USER.toString());
         List<Company> companies     = companyRepository.findByCreateTimeAfterAndRole(beforeFiveDay, Role.COMPANY_USER.toString());
         List<Vacancies> vacancies = vacanciesRepository.findByVacanciesUpdateTimeAfterAndTeacherValidType(beforeFiveDay, TeacherValidType.審核中.toString());
-        List<String> vacanciesIds = applyDao.findApplyVacanciesIdByUpdateTime(beforeFiveDay);
+        List<String> vacanciesIds = applyDao.findApplyVacanciesIdByApplyUpdateTime(beforeFiveDay);
 
         List<AllApplyDto> allApplyDtoList = new LinkedList<>();
         vacanciesIds = vacanciesIds.stream().distinct().collect(Collectors.toList());
@@ -116,15 +128,38 @@ public class TeacherServiceImpl implements TeacherService {
     public Object UpdateVacanciesByTeacherValidType(String teacherId, String vacanciesId, TeacherValidType teacherValidType) {
         Vacancies vacancies = vacanciesRepository.findById(vacanciesId).orElseThrow(()->new RuntimeException("沒有此職缺"));
         vacancies.setTeacherValidType(teacherValidType.toString());
+        vacancies.setVacanciesUpdateTime(LocalDate.now());
         vacancies.setTeacherId(teacherId);
         vacanciesRepository.save(vacancies);
+
         return getRestDto(vacancies,"更新成功");
     }
 
     @Override
-    public Object findApply(String teacherId, int page, int limit) {
-        return null;
+    public Object findApply(String teacherId, ChangeApplyTypeCategory changeApplyTypeCategory) {
+        List<String> vacanciesIds = applyDao.findApplyVacanciesId();
+        List<AllApplyDto> allApplyDtoList = new LinkedList<>();
+        for(String vacanciesId : vacanciesIds){
+            List<ApplyUserDto> applyUserDto = applyDao.findApplyVacanciesAndUserByVacanciesId(vacanciesId);
+            FullVacanciesDto fullVacanciesDto = vacanciesDao.findFullVacanciesById(vacanciesId);
+            AllApplyDto       allApplyDto = AllApplyDto.builder()
+                    .fullVacanciesDto(fullVacanciesDto)
+                    .ApplyUserDto(applyUserDto)
+                    .build();
+            allApplyDtoList.add(allApplyDto);
+        }
+        return getRestDto(allApplyDtoList,"查詢成功");
     }
+    @Override
+    public Object updateApply(String teacherId,String applyId, ChangeApplyTypeCategory changeApplyTypeCategory) {
+        Apply apply = applyRepository.findById(applyId).orElseThrow(()->new RuntimeException("沒有此apply"));
+        apply.setApplyUpdateTime(LocalDate.now());
+        apply.setApplyType(changeApplyTypeCategory.getApplyType().toString());
+        applyRepository.save(apply);
+        return getRestDto(apply,"更新成功");
+    }
+
+
 
 
     private User updateRole(String userId, String teacherId,RoleCategory roleCategory) {
