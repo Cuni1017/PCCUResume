@@ -31,4 +31,5 @@ public class ApplyUserDto {
     private String studentEmail;
     private String studentUsername;
     private String studentImageUrl;
+    private LocalDate applyUpdateTime;
 }

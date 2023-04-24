@@ -72,11 +72,12 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public Object findNewsById() {
         LocalDate beforeFiveDay = LocalDate.now().minusDays(5);
+        System.out.println(beforeFiveDay);
         List<Student> students      = studentRepository.findByCreateTimeAfterAndRole(beforeFiveDay, Role.STUDENT_USER.toString());
         List<Company> companies     = companyRepository.findByCreateTimeAfterAndRole(beforeFiveDay, Role.COMPANY_USER.toString());
-        List<CompanyVacanciesDto> vacancies = vacanciesDao.findApplyVacanciesIdByApplyUpdateTime(beforeFiveDay, TeacherValidType.審核中.toString());
-        List<String> vacanciesIds = applyDao.findApplyVacanciesIdByApplyUpdateTime(beforeFiveDay);
+        List<CompanyVacanciesDto> vacancies = vacanciesDao.findApplyVacanciesByVacanciesUpdateTime(beforeFiveDay, TeacherValidType.審核中.toString());
 
+        List<String> vacanciesIds = applyDao.findApplyVacanciesIdByApplyUpdateTime(beforeFiveDay);
         List<AllApplyDto> allApplyDtoList = new LinkedList<>();
         vacanciesIds = vacanciesIds.stream().distinct().collect(Collectors.toList());
 
@@ -210,9 +211,11 @@ public class TeacherServiceImpl implements TeacherService {
             List<AllApplyDto> allApplyDtoList = new LinkedList<>();
             int selectOffset = getSelectOffset(page,limit);
             int selectLimit = getSelectLimit(page,limit);
-            List<ApplyUserDto> applyUserDto = applyDao.findApplyVacanciesAndUserByapplyType(changeApplyTypeCategory.getApplyType().toString());
+            List<ApplyUserDto> applyUserDto = applyDao.findApplyVacanciesAndUserByapplyType(changeApplyTypeCategory.getApplyType());
+        System.out.println(applyUserDto);
             List<String> vacanciesIds = applyUserDto.stream().map(a->a.getVacanciesId()).distinct().collect(Collectors.toList());
             for(String vacanciesId:vacanciesIds){
+                System.out.println(vacanciesId);
                 List<ApplyUserDto> applyUserDtos = applyUserDto.stream().filter(s ->s.getVacanciesId() == vacanciesId).collect(Collectors.toList());
                 FullVacanciesDto fullVacanciesDto = vacanciesDao.findFullVacanciesById(vacanciesId);
                 AllApplyDto  allApplyDto = AllApplyDto.builder()
