@@ -134,6 +134,7 @@ public class VacanciesDao {
         if(teacherValidType != null){
             sql = sql +" AND v.teacher_valid_type = :teacherValidType";
         }
+        sql = sql + " GROUP BY v.vacancies_id";
         Map<String,Object> map= new HashMap<>();
         map.put("fiveDays",fiveDays);
         map.put("teacherValidType",teacherValidType);

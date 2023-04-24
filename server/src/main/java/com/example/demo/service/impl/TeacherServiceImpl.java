@@ -72,6 +72,7 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public Object findNewsById() {
         LocalDate beforeFiveDay = LocalDate.now().minusDays(5);
+
         System.out.println(beforeFiveDay);
         List<Student> students      = studentRepository.findByCreateTimeAfterAndRole(beforeFiveDay, Role.STUDENT_USER.toString());
         List<Company> companies     = companyRepository.findByCreateTimeAfterAndRole(beforeFiveDay, Role.COMPANY_USER.toString());
