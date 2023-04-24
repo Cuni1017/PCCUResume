@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.category.ChangeApplyTypeCategory;
 import com.example.demo.category.RoleCategory;
+import com.example.demo.category.resume.post.SearchCategory;
 import com.example.demo.model.TeacherValidType;
 import com.example.demo.service.TeacherService;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +42,13 @@ public class TeacherController {
             ) {
         return ResponseEntity.ok(teacherService.updateStudentRole(teacherId,studentId,roleCategory));
     }
+    @DeleteMapping("/v1/teacher/{teacherId}/student-review/{studentId}")
+    public ResponseEntity<Object> deleteStudentRole(
+            @PathVariable String teacherId,
+            @PathVariable String studentId
+    ) {
+        return ResponseEntity.ok(teacherService.deleteStudentRole(teacherId,studentId));
+    }
     @GetMapping("/v1/teacher/company-review")
     public ResponseEntity<Object> findCompanyByRole(
             @RequestParam int page,
@@ -56,13 +64,21 @@ public class TeacherController {
     ) {
         return ResponseEntity.ok(teacherService.updateCompanyByRole(teacherId,companyId,roleCategory));
     }
+    @DeleteMapping("/v1/teacher/{teacherId}/company-review/{companyId}")
+    public ResponseEntity<Object> deleteCompanyByRole(
+            @PathVariable String teacherId,
+            @PathVariable String companyId
+    ) {
+        return ResponseEntity.ok(teacherService.deleteCompanyByRole(teacherId,companyId));
+    }
     @GetMapping("/v1/teacher/vacancies-review")
     public ResponseEntity<Object> findVacanciesByTeacherValidType(
             @RequestParam int page,
-            @RequestParam int limit
+            @RequestParam int limit,
+            @RequestBody SearchCategory searchCategory
 
     ) {
-        return ResponseEntity.ok(teacherService.findVacanciesByTeacherValidType(page ,limit));
+        return ResponseEntity.ok(teacherService.findVacanciesByTeacherValidType(page ,limit,searchCategory));
     }
     @PutMapping("/v1/teacher/{teacherId}/vacancies-review/{vacanciesId}")
     public ResponseEntity<Object> UpdateVacanciesByTeacherValidType(
@@ -76,10 +92,12 @@ public class TeacherController {
     @GetMapping("/v1/teacher/{teacherId}/apply-review")
     public ResponseEntity<Object> findApply(
             @PathVariable String teacherId,
+            @RequestParam int page,
+            @RequestParam int limit,
             @RequestBody ChangeApplyTypeCategory changeApplyTypeCategory
 
             ) {
-        return ResponseEntity.ok(teacherService.findApply(teacherId,changeApplyTypeCategory));
+        return ResponseEntity.ok(teacherService.findApply(teacherId,changeApplyTypeCategory,page,limit));
     }
     @PutMapping("/v1/teacher/{teacherId}/apply-review/{applyId}")
     public ResponseEntity<Object> updateApply(
