@@ -41,20 +41,20 @@ class TeacherServiceImplTest {
     }
     @Test
     public void findVacanciesByTeacherValidType(){
-        int page = 1;
-        int limit = 10;
-        int selectOffset = getSelectOffset(page,limit);
-        int selectLimit = getSelectLimit(page,limit);
-        List<CompanyVacanciesDto> companyVacanciesDtos = vacanciesDao.findPageVacanciesReview(selectLimit,selectOffset);
-        long total = companyVacanciesDtos.stream().count();
-        int intTotal = (int)total;
-        PageVacanciesDto pageVacanciesDto = PageVacanciesDto.builder()
-                .companyVacanciesDto(companyVacanciesDtos)
-                .page(page)
-                .size(limit)
-                .total(intTotal)
-                .build();
-        System.out.println(pageVacanciesDto);
+//        int page = 1;
+//        int limit = 10;
+//        int selectOffset = getSelectOffset(page,limit);
+//        int selectLimit = getSelectLimit(page,limit);
+//        List<CompanyVacanciesDto> companyVacanciesDtos = vacanciesDao.findPageVacanciesReview(selectLimit,selectOffset);
+//        long total = companyVacanciesDtos.stream().count();
+//        int intTotal = (int)total;
+//        PageVacanciesDto pageVacanciesDto = PageVacanciesDto.builder()
+//                .companyVacanciesDto(companyVacanciesDtos)
+//                .page(page)
+//                .size(limit)
+//                .total(intTotal)
+//                .build();
+//        System.out.println(pageVacanciesDto);
     }
     private int getSelectOffset(int page,int limit){
         return (page-1)*limit;

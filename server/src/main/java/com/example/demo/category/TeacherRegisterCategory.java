@@ -11,8 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TeacherRegisterCategory {
 
-    private String teacherId;
-
     private String teacherUsername;
 
     private String teacherPassword;
