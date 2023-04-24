@@ -2,20 +2,20 @@ package com.example.demo.dto;
 
 import com.example.demo.dto.applyforjob.AllApplyDto;
 import com.example.demo.model.Company;
-import com.example.demo.model.Student;
-import com.example.demo.model.vacancies.Vacancies;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
 @Data
+@RequiredArgsConstructor
 @AllArgsConstructor
 @Builder
-public class NewsDto {
-    List<Student> students;
-    List<Company> companies;
-    List<CompanyVacanciesDto> CompanyVacanciesDto;
-    List<AllApplyDto> allApplyDtoList;
+public class ApplyReviewDto {
+    private  List<AllApplyDto> allApplyDtoList1;
+    private int page;
+    private int limit;
+    private long total;
 }

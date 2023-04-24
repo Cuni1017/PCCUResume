@@ -74,14 +74,14 @@ public class TeacherServiceImpl implements TeacherService {
         LocalDate beforeFiveDay = LocalDate.now().minusDays(5);
         List<Student> students      = studentRepository.findByCreateTimeAfterAndRole(beforeFiveDay, Role.STUDENT_USER.toString());
         List<Company> companies     = companyRepository.findByCreateTimeAfterAndRole(beforeFiveDay, Role.COMPANY_USER.toString());
-        List<Vacancies> vacancies = vacanciesRepository.findByVacanciesUpdateTimeAfterAndTeacherValidType(beforeFiveDay, TeacherValidType.審核中.toString());
+        List<CompanyVacanciesDto> vacancies = vacanciesDao.findApplyVacanciesIdByApplyUpdateTime(beforeFiveDay, TeacherValidType.審核中.toString());
         List<String> vacanciesIds = applyDao.findApplyVacanciesIdByApplyUpdateTime(beforeFiveDay);
 
         List<AllApplyDto> allApplyDtoList = new LinkedList<>();
         vacanciesIds = vacanciesIds.stream().distinct().collect(Collectors.toList());
 
         for(String vacanciesId : vacanciesIds){
-            List<ApplyUserDto> applyUserDto = applyDao.findApplyVacanciesAndUserByVacanciesId(vacanciesId);
+            List<ApplyUserDto> applyUserDto = applyDao.findApplyVacanciesAndUserByVacanciesId(vacanciesId,null);
             FullVacanciesDto fullVacanciesDto = vacanciesDao.findFullVacanciesById(vacanciesId);
             AllApplyDto       allApplyDto = AllApplyDto.builder()
                     .fullVacanciesDto(fullVacanciesDto)
@@ -93,7 +93,7 @@ public class TeacherServiceImpl implements TeacherService {
                 .allApplyDtoList(allApplyDtoList)
                 .students(students)
                 .companies(companies)
-                .vacancies(vacancies)
+                .CompanyVacanciesDto(vacancies)
                 .build();
         return  getRestDto(newsDto,"查詢成功");
     }
@@ -132,7 +132,15 @@ public class TeacherServiceImpl implements TeacherService {
         int selectOffset = getSelectOffset(page,limit);
         int selectLimit = getSelectLimit(page,limit);
         List<Student> students = studentRepository.findByRole(Role.STUDENT_USER.toString(),selectLimit,selectOffset);
-        return getRestDto(students,"查詢成功");
+        Long total = students.stream().count();
+
+        StudentReviewDto studentReviewDto = StudentReviewDto.builder()
+                .students(students)
+                .limit(limit)
+                .page(page)
+                .total(total)
+                .build();
+        return getRestDto(studentReviewDto,"查詢成功");
     }
 
     @Override
@@ -140,6 +148,13 @@ public class TeacherServiceImpl implements TeacherService {
         int selectOffset = getSelectOffset(page,limit);
         int selectLimit = getSelectLimit(page,limit);
         List<Company> companies = companyRepository.findByRole(Role.COMPANY_USER.toString(),selectLimit,selectOffset);
+        Long total = companies.stream().count();
+        CompanyReview companyReview = CompanyReview.builder()
+                .companies(companies)
+                .limit(limit)
+                .page(page)
+                .total(total)
+                .build();
         return getRestDto(companies,"查詢成功");
     }
 
@@ -191,21 +206,30 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public Object findApply(String teacherId, ChangeApplyTypeCategory changeApplyTypeCategory,int page,int limit) {
-        List<String> vacanciesIds = applyDao.findApplyVacanciesId();
-        List<AllApplyDto> allApplyDtoList = new LinkedList<>();
-        int selectOffset = getSelectOffset(page,limit);
-        int selectLimit = getSelectLimit(page,limit);
-        for(String vacanciesId : vacanciesIds){
-            List<ApplyUserDto> applyUserDto = applyDao.findApplyVacanciesAndUserByVacanciesId(vacanciesId);
-            FullVacanciesDto fullVacanciesDto = vacanciesDao.findFullVacanciesById(vacanciesId);
-            AllApplyDto       allApplyDto = AllApplyDto.builder()
-                    .fullVacanciesDto(fullVacanciesDto)
-                    .ApplyUserDto(applyUserDto)
-                    .build();
-            allApplyDtoList.add(allApplyDto);
-        }
+
+            List<AllApplyDto> allApplyDtoList = new LinkedList<>();
+            int selectOffset = getSelectOffset(page,limit);
+            int selectLimit = getSelectLimit(page,limit);
+            List<ApplyUserDto> applyUserDto = applyDao.findApplyVacanciesAndUserByapplyType(changeApplyTypeCategory.getApplyType().toString());
+            List<String> vacanciesIds = applyUserDto.stream().map(a->a.getVacanciesId()).distinct().collect(Collectors.toList());
+            for(String vacanciesId:vacanciesIds){
+                List<ApplyUserDto> applyUserDtos = applyUserDto.stream().filter(s ->s.getVacanciesId() == vacanciesId).collect(Collectors.toList());
+                FullVacanciesDto fullVacanciesDto = vacanciesDao.findFullVacanciesById(vacanciesId);
+                AllApplyDto  allApplyDto = AllApplyDto.builder()
+                        .fullVacanciesDto(fullVacanciesDto)
+                        .ApplyUserDto(applyUserDtos)
+                        .build();
+                allApplyDtoList.add(allApplyDto);
+            }
+        long total   =allApplyDtoList.stream().count();
         List<AllApplyDto> allApplyDtoList1 = allApplyDtoList.stream().limit(selectLimit).skip(selectOffset).collect(Collectors.toList());
-        return getRestDto(allApplyDtoList1,"查詢成功");
+        ApplyReviewDto applyReviewDto = ApplyReviewDto.builder()
+                .allApplyDtoList1(allApplyDtoList1)
+                .limit(limit)
+                .page(page)
+                .total(total)
+                .build();
+        return getRestDto(applyReviewDto,"查詢成功");
     }
     @Override
     public Object updateApply(String teacherId,String applyId, ChangeApplyTypeCategory changeApplyTypeCategory) {
