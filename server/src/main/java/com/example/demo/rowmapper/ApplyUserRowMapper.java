@@ -24,6 +24,7 @@ public class ApplyUserRowMapper implements RowMapper<ApplyUserDto> {
         applyUserDto.setStudentUsername(rs.getString("student_username"));
         applyUserDto.setStudentEmail(rs.getString("student_email"));
         applyUserDto.setStudentImageUrl(rs.getString("student_image_url"));
+        applyUserDto.setApplyUpdateTime(rs.getDate("apply_update_time").toLocalDate());
         if(rs.getDate("apply_start_time")==null){
             applyUserDto.setApplyStartTime(null);
 

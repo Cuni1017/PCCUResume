@@ -49,6 +49,7 @@ public class FullVacanciesRowMapper implements RowMapper<FullVacanciesDto> {
                 .teacherValidType(rs.getString("teacher_valid_type"))
                 .vacanciesCondition(rs.getString("vacancies_condition"))
                 .vacanciesWatchType(rs.getString("vacancies_watch_type"))
+                .vacanciesUpdateTime(rs.getDate("vacancies_update_time").toLocalDate())
                 .build();
         String skills = rs.getString("skills");
         String county = rs.getString("county");

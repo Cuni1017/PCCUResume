@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChangeApplyTypeCategory {
-    private ApplyType applyType;
+    private String applyType;
 }

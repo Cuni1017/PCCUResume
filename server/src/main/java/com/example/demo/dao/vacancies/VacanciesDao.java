@@ -30,10 +30,10 @@ public class VacanciesDao {
                 "c.company_county,c.company_district,c.company_address,c.company_email,c.company_image_url,v.*," +
                 " group_concat(DISTINCT s.skill_name) skills, group_concat(DISTINCT ct.county_name) county\n"+
                 "FROM vacancies v INNER JOIN company c ON c.company_id = v.company_id \n"+
-                "INNER JOIN vacancies_skill vs ON vs.vacancies_id = v.vacancies_id \n"+
-                "INNER JOIN skill s  ON s.skill_id = vs.skill_id \n"+
-                "INNER JOIN vacancies_county vc  ON vc.vacancies_id = v.vacancies_id \n"+
-                "INNER JOIN county ct  ON ct.county_id = vc.county_id \n"+
+                "LEFT JOIN vacancies_skill vs ON vs.vacancies_id = v.vacancies_id \n"+
+                "LEFT JOIN skill s  ON s.skill_id = vs.skill_id \n"+
+                "LEFT JOIN vacancies_county vc  ON vc.vacancies_id = v.vacancies_id \n"+
+                "LEFT JOIN county ct  ON ct.county_id = vc.county_id \n"+
                 "WHERE 1=1 AND  v.vacancies_id = :vacanciesId group by v.vacancies_id";
 
         Map<String,Object> map= new HashMap<>();
@@ -51,12 +51,12 @@ public class VacanciesDao {
                 "v.vacancies_work_experience,v.vacancies_district ,v.vacancies_Education, v.vacancies_department,\n"+
                 "v.vacancies_quantity, v.vacancies_create_time, v.apply_count,v.teacher_valid_type,v.vacancies_watch_type,\n"+
                 "group_concat(DISTINCT s.skill_name) skills, group_concat(DISTINCT ct.county_name) county,\n"+
-                "v.vacancies_view,v.vacancies_down_salary,v.vacancies_top_salary,v.vacancies_salary_type\n"+
+                "v.vacancies_view,v.vacancies_down_salary,v.vacancies_top_salary,v.vacancies_salary_type,v.vacancies_update_time\n"+
                 "FROM vacancies v INNER JOIN company c ON c.company_id = v.company_id \n"+
-                "INNER JOIN vacancies_skill vs ON vs.vacancies_id = v.vacancies_id \n"+
-                "INNER JOIN skill s  ON s.skill_id = vs.skill_id \n"+
-                "INNER JOIN vacancies_county vc  ON vc.vacancies_id = v.vacancies_id \n"+
-                "INNER JOIN county ct  ON ct.county_id = vc.county_id \n"+
+                "LEFT JOIN vacancies_skill vs ON vs.vacancies_id = v.vacancies_id \n"+
+                "LEFT JOIN skill s  ON s.skill_id = vs.skill_id \n"+
+                "LEFT JOIN vacancies_county vc  ON vc.vacancies_id = v.vacancies_id \n"+
+                "LEFT JOIN county ct  ON ct.county_id = vc.county_id \n"+
                 "WHERE 1=1 ";
                 if(county != null){
                     sql = sql + " AND ct.county_name IN (:county)";
@@ -94,16 +94,19 @@ public class VacanciesDao {
         String sql ="SELECT c.company_id, c.company_name, c.company_image_url,\n"+
                 "v.vacancies_id, v.teacher_id, v.vacancies_name, v.vacancies_time, v.vacancies_description,v.vacancies_requirement,\n"+
                 "v.vacancies_work_experience,v.vacancies_district ,v.vacancies_Education, v.vacancies_department,\n"+
-                "v.vacancies_quantity, v.vacancies_create_time, v.apply_count,v.teacher_valid_type,v.vacancies_watch_type,\n"+
+                "v.vacancies_quantity, v.vacancies_create_time, v.apply_count,v.teacher_valid_type,v.vacancies_watch_type,v.vacancies_update_time\n"+
                 "group_concat(DISTINCT s.skill_name) skills, group_concat(DISTINCT ct.county_name) county,\n"+
                 "v.vacancies_view,v.vacancies_down_salary,v.vacancies_top_salary,v.vacancies_salary_type\n"+
                 "FROM vacancies v INNER JOIN company c ON c.company_id = v.company_id \n"+
-                "INNER JOIN vacancies_skill vs ON vs.vacancies_id = v.vacancies_id \n"+
-                "INNER JOIN skill s  ON s.skill_id = vs.skill_id \n"+
-                "INNER JOIN vacancies_county vc  ON vc.vacancies_id = v.vacancies_id \n"+
-                "INNER JOIN county ct  ON ct.county_id = vc.county_id \n"+
-                "WHERE 1=1  AND v.teacher_valid_type = '審核中' OR c.company_name = :search OR v.vacancies_name = :search";
+                "LEFT JOIN vacancies_skill vs ON vs.vacancies_id = v.vacancies_id \n"+
+                "LEFT JOIN skill s  ON s.skill_id = vs.skill_id \n"+
+                "LEFT JOIN vacancies_county vc  ON vc.vacancies_id = v.vacancies_id \n"+
+                "LEFT JOIN county ct  ON ct.county_id = vc.county_id \n"+
+                "WHERE 1=1  AND v.teacher_valid_type = '審核中' ";
 
+        if(search!= null){
+            sql = sql + " OR c.company_name = :search OR v.vacancies_name = :search";
+        }
         sql = sql + " group by v.vacancies_id";
 
         sql = sql + " LIMIT :limit OFFSET :offset";
@@ -115,19 +118,22 @@ public class VacanciesDao {
         System.out.println(sql);
         return namedParameterJdbcTemplate.query(sql,map,new CompanyVacanciesRowMapper());
     }
-    public List<CompanyVacanciesDto> findApplyVacanciesIdByApplyUpdateTime(LocalDate fiveDays, String teacherValidType){
+    public List<CompanyVacanciesDto> findApplyVacanciesByVacanciesUpdateTime(LocalDate fiveDays, String teacherValidType){
         String sql ="SELECT c.company_id, c.company_name, c.company_image_url,\n"+
                 "v.vacancies_id, v.teacher_id, v.vacancies_name, v.vacancies_time, v.vacancies_description,v.vacancies_requirement,\n"+
                 "v.vacancies_work_experience,v.vacancies_district ,v.vacancies_Education, v.vacancies_department,\n"+
                 "v.vacancies_quantity, v.vacancies_create_time, v.apply_count,v.teacher_valid_type,v.vacancies_watch_type,\n"+
                 "group_concat(DISTINCT s.skill_name) skills, group_concat(DISTINCT ct.county_name) county,\n"+
-                "v.vacancies_view,v.vacancies_down_salary,v.vacancies_top_salary,v.vacancies_salary_type\n"+
+                "v.vacancies_view,v.vacancies_down_salary,v.vacancies_top_salary,v.vacancies_salary_type,v.vacancies_update_time\n"+
                 "FROM vacancies v INNER JOIN company c ON c.company_id = v.company_id \n"+
-                "INNER JOIN vacancies_skill vs ON vs.vacancies_id = v.vacancies_id \n"+
-                "INNER JOIN skill s  ON s.skill_id = vs.skill_id \n"+
-                "INNER JOIN vacancies_county vc  ON vc.vacancies_id = v.vacancies_id \n"+
-                "INNER JOIN county ct  ON ct.county_id = vc.county_id \n"+
-                "WHERE 1=1  AND v.vacancies_update_time > :fiveDays AND v.teacher_valid_type = :teacherValidType";
+                "LEFT JOIN vacancies_skill vs ON vs.vacancies_id = v.vacancies_id \n"+
+                "LEFT JOIN skill s  ON s.skill_id = vs.skill_id \n"+
+                "LEFT JOIN vacancies_county vc  ON vc.vacancies_id = v.vacancies_id \n"+
+                "LEFT JOIN county ct  ON ct.county_id = vc.county_id \n"+
+                "WHERE 1=1  AND v.vacancies_update_time > :fiveDays ";
+        if(teacherValidType != null){
+            sql = sql +" AND v.teacher_valid_type = :teacherValidType";
+        }
         Map<String,Object> map= new HashMap<>();
         map.put("fiveDays",fiveDays);
         map.put("teacherValidType",teacherValidType);
@@ -141,12 +147,12 @@ public class VacanciesDao {
                 "v.vacancies_work_experience, v.vacancies_Education, v.vacancies_department,\n"+
                 "v.vacancies_quantity, v.vacancies_create_time, v.apply_count,\n"+
                 "group_concat(DISTINCT s.skill_name) skills, group_concat(DISTINCT ct.county_name) county,\n"+
-                "v.vacancies_view,v.vacancies_down_salary,v.vacancies_top_salary,v.vacancies_salary_type\n"+
+                "v.vacancies_view,v.vacancies_down_salary,v.vacancies_top_salary,v.vacancies_salary_type,v.vacancies_update_time\n"+
                 "FROM vacancies v INNER JOIN company c ON c.company_id = v.company_id \n"+
-                "INNER JOIN vacancies_skill vs ON vs.vacancies_id = v.vacancies_id \n"+
-                "INNER JOIN skill s  ON s.skill_id = vs.skill_id \n"+
-                "INNER JOIN vacancies_county vc  ON vc.vacancies_id = v.vacancies_id \n"+
-                "INNER JOIN county ct  ON ct.county_id = vc.county_id \n"+
+                "LEFT JOIN vacancies_skill vs ON vs.vacancies_id = v.vacancies_id \n"+
+                "LEFT JOIN skill s  ON s.skill_id = vs.skill_id \n"+
+                "LEFT JOIN vacancies_county vc  ON vc.vacancies_id = v.vacancies_id \n"+
+                "LEFT JOIN county ct  ON ct.county_id = vc.county_id \n"+
                 "WHERE 1=1 ";
         if(county != null){
             sql = sql + " AND ct.county_name IN (:county)";

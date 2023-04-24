@@ -34,6 +34,7 @@ public class CompanyVacanciesRowMapper implements RowMapper<CompanyVacanciesDto>
         companyVacanciesDto.setVacanciesWatchType(rs.getString("vacancies_watch_type"));
         companyVacanciesDto .setSkills(rs.getString("skills"));
         companyVacanciesDto .setCounty(rs.getString("county"));
+        companyVacanciesDto .setVacanciesUpdateTime(rs.getDate("vacancies_update_time").toLocalDate());
         return companyVacanciesDto ;
     }
 }
