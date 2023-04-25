@@ -90,7 +90,7 @@ public class VacanciesDao {
         System.out.println(sql);
         return namedParameterJdbcTemplate.query(sql,map,new CompanyVacanciesRowMapper());
     }
-    public List<CompanyVacanciesDto> findPageVacanciesReview(int selectLimit, int selectOffset,String search){
+    public List<CompanyVacanciesDto> findPageVacanciesReview(int selectLimit, int selectOffset,String search,String teacherValidType){
         String sql ="SELECT c.company_id, c.company_name, c.company_image_url,\n"+
                 "v.vacancies_id, v.teacher_id, v.vacancies_name, v.vacancies_time, v.vacancies_description,v.vacancies_requirement,\n"+
                 "v.vacancies_work_experience,v.vacancies_district ,v.vacancies_Education, v.vacancies_department,\n"+
@@ -102,7 +102,7 @@ public class VacanciesDao {
                 "LEFT JOIN skill s  ON s.skill_id = vs.skill_id \n"+
                 "LEFT JOIN vacancies_county vc  ON vc.vacancies_id = v.vacancies_id \n"+
                 "LEFT JOIN county ct  ON ct.county_id = vc.county_id \n"+
-                "WHERE 1=1  AND v.teacher_valid_type = '審核中' ";
+                "WHERE 1=1  AND v.teacher_valid_type = :teacherValidType ";
 
         if(search!= null){
             sql = sql + " OR c.company_name = :search OR v.vacancies_name = :search";
@@ -112,6 +112,7 @@ public class VacanciesDao {
         sql = sql + " LIMIT :limit OFFSET :offset";
 
         Map<String,Object> map= new HashMap<>();
+        map.put("teacherValidType",teacherValidType);
         map.put("limit",selectLimit);
         map.put("offset",selectOffset);
         map.put("search",search);

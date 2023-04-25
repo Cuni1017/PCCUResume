@@ -32,4 +32,10 @@ public interface TeacherService {
     Object deleteCompanyByRole(String teacherId, String companyId);
 
     Object deleteStudentRole(String teacherId, String studentId);
+
+    Object findStudentCheckByRole(int page, int limit);
+
+    Object findCompanyCheckByRole(int page, int limit);
+
+    Object findVacanciesCheckByTeacherValidType(int page, int limit, SearchCategory searchCategory);
 }

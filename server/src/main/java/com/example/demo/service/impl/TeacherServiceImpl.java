@@ -113,12 +113,13 @@ public class TeacherServiceImpl implements TeacherService {
     }
     @Override
     public Object deleteStudentRole(String teacherId, String studentId) {
-        userRepository.deleteById(studentId);
-        studentRepository.deleteById(studentId);
         Student student = studentRepository.findById(studentId).orElseThrow(()->new RuntimeException("沒有此學生"));
         String message = getMessage("student",student.getStudentName() ,student.getStudentEmail());
         sendApplyTypeMail("student",student.getStudentName() ,student.getStudentEmail(),message);
         List<Resume> resumes = resumeRepository.findByUserId(studentId);
+        userRepository.deleteById(studentId);
+        studentRepository.deleteById(studentId);
+
         for(int i =0 ; i<= resumes.size();i++){
             String resumeId = resumes.get(i).getResumeId();
             resumeRepository.deleteByUserIdAndResumeId(studentId,resumeId);
@@ -133,6 +134,8 @@ public class TeacherServiceImpl implements TeacherService {
         }
         return getRestDto(studentId,"刪除成功");
     }
+
+
 
     @Override
     public Object findStudentByRole(int page , int limit) {
@@ -151,6 +154,23 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
+    public Object findStudentCheckByRole(int page, int limit) {
+        int selectOffset = getSelectOffset(page,limit);
+        int selectLimit = getSelectLimit(page,limit);
+        List<Student> students = studentRepository.findByRole(Role.STUDENT.toString(),selectLimit,selectOffset);
+        Long total = students.stream().count();
+
+        StudentReviewDto studentReviewDto = StudentReviewDto.builder()
+                .students(students)
+                .limit(limit)
+                .page(page)
+                .total(total)
+                .build();
+        return getRestDto(studentReviewDto,"查詢成功");
+    }
+
+
+    @Override
     public Object findCompanyByRole(int page , int limit) {
         int selectOffset = getSelectOffset(page,limit);
         int selectLimit = getSelectLimit(page,limit);
@@ -164,6 +184,23 @@ public class TeacherServiceImpl implements TeacherService {
                 .build();
         return getRestDto(companies,"查詢成功");
     }
+
+    @Override
+    public Object findCompanyCheckByRole(int page, int limit) {
+        int selectOffset = getSelectOffset(page,limit);
+        int selectLimit = getSelectLimit(page,limit);
+        List<Company> companies = companyRepository.findByRole(Role.COMPANY.toString(),selectLimit,selectOffset);
+        Long total = companies.stream().count();
+        CompanyReview companyReview = CompanyReview.builder()
+                .companies(companies)
+                .limit(limit)
+                .page(page)
+                .total(total)
+                .build();
+        return getRestDto(companies,"查詢成功");
+    }
+
+
 
     @Override
     public Object updateCompanyByRole(String teacherId, String companyId,RoleCategory roleCategory) {
@@ -189,7 +226,7 @@ public class TeacherServiceImpl implements TeacherService {
         int selectOffset = getSelectOffset(page,limit);
         int selectLimit = getSelectLimit(page,limit);
         String search = searchCategory.getSearchName();
-        List<CompanyVacanciesDto> companyVacanciesDtos = vacanciesDao.findPageVacanciesReview(selectLimit,selectOffset,search);
+        List<CompanyVacanciesDto> companyVacanciesDtos = vacanciesDao.findPageVacanciesReview(selectLimit,selectOffset,search,TeacherValidType.審核中.toString());
         long total = companyVacanciesDtos.stream().count();
         int intTotal = (int)total;
         PageVacanciesDto pageVacanciesDto = PageVacanciesDto.builder()
@@ -200,7 +237,22 @@ public class TeacherServiceImpl implements TeacherService {
                 .build();
         return getRestDto(pageVacanciesDto,"查詢成功");
     }
-
+    @Override
+    public Object findVacanciesCheckByTeacherValidType(int page, int limit, SearchCategory searchCategory) {
+        int selectOffset = getSelectOffset(page,limit);
+        int selectLimit = getSelectLimit(page,limit);
+        String search = searchCategory.getSearchName();
+        List<CompanyVacanciesDto> companyVacanciesDtos = vacanciesDao.findPageVacanciesReview(selectLimit,selectOffset,search,TeacherValidType.審核通過.toString());
+        long total = companyVacanciesDtos.stream().count();
+        int intTotal = (int)total;
+        PageVacanciesDto pageVacanciesDto = PageVacanciesDto.builder()
+                .companyVacanciesDto(companyVacanciesDtos)
+                .page(page)
+                .size(limit)
+                .total(intTotal)
+                .build();
+        return getRestDto(pageVacanciesDto,"查詢成功");
+    }
     @Override
     public Object UpdateVacanciesByTeacherValidType(String teacherId, String vacanciesId, TeacherValidTypeCategory teacherValidTypeCategory) {
         Vacancies vacancies = vacanciesRepository.findById(vacanciesId).orElseThrow(()->new RuntimeException("沒有此職缺"));
