@@ -140,7 +140,7 @@ public class TeacherServiceImpl implements TeacherService {
 
 
     @Override
-    public Object findStudentByRole(int page , int limit) {
+    public Object findStudentByRole(int page , int limit,String search) {
         int selectOffset = getSelectOffset(page,limit);
         int selectLimit = getSelectLimit(page,limit);
         List<Student> students = studentRepository.findByRole(Role.STUDENT_USER.toString(),selectLimit,selectOffset);
