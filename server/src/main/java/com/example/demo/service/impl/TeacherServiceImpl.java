@@ -119,19 +119,21 @@ public class TeacherServiceImpl implements TeacherService {
         List<Resume> resumes = resumeRepository.findByUserId(studentId);
         userRepository.deleteById(studentId);
         studentRepository.deleteById(studentId);
-
-        for(int i =0 ; i<= resumes.size();i++){
-            String resumeId = resumes.get(i).getResumeId();
-            resumeRepository.deleteByUserIdAndResumeId(studentId,resumeId);
-            rAutobiographyRepository.deleteByUserIdAndResumeId( studentId, resumeId );
-            rLicenseRepository.deleteByUserIdAndResumeId( studentId, resumeId );
-            rProjectAchievementsRepository.deleteByUserIdAndResumeId( studentId, resumeId );
-            rSpecialSkillRepository.deleteByUserIdAndResumeId( studentId, resumeId );
-            rWorkExperienceRepository.deleteByUserIdAndResumeId( studentId, resumeId );
-            rWorkHopeRepository.deleteByUserIdAndResumeId( studentId, resumeId );
-            rSubjectRepository.deleteByUserIdAndResumeId( studentId, resumeId );
-            resumeDao.deleteByResumeId(resumeId);
+        if(resumes.isEmpty()){
+            for(int i =0 ; i< resumes.size();i++){
+                String resumeId = resumes.get(i).getResumeId();
+                resumeRepository.deleteByUserIdAndResumeId(studentId,resumeId);
+                rAutobiographyRepository.deleteByUserIdAndResumeId( studentId, resumeId );
+                rLicenseRepository.deleteByUserIdAndResumeId( studentId, resumeId );
+                rProjectAchievementsRepository.deleteByUserIdAndResumeId( studentId, resumeId );
+                rSpecialSkillRepository.deleteByUserIdAndResumeId( studentId, resumeId );
+                rWorkExperienceRepository.deleteByUserIdAndResumeId( studentId, resumeId );
+                rWorkHopeRepository.deleteByUserIdAndResumeId( studentId, resumeId );
+                rSubjectRepository.deleteByUserIdAndResumeId( studentId, resumeId );
+                resumeDao.deleteByResumeId(resumeId);
+            }
         }
+
         return getRestDto(studentId,"刪除成功");
     }
 
