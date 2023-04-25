@@ -20,6 +20,7 @@ public class TeacherController {
     ) {
         return ResponseEntity.ok(teacherService.findById(teacherId));
     }
+
     @GetMapping("/v1/teacher/news")
     public ResponseEntity<Object> findNewsById(
 
@@ -28,6 +29,13 @@ public class TeacherController {
     }
     @GetMapping("/v1/teacher/student-review")
     public ResponseEntity<Object> findStudentByRole(
+            @RequestParam int page,
+            @RequestParam int limit
+    ) {
+        return ResponseEntity.ok(teacherService.findStudentByRole(page , limit));
+    }
+    @GetMapping("/v1/teacher/student-check")
+    public ResponseEntity<Object> findStudentCheckByRole(
             @RequestParam int page,
             @RequestParam int limit
     ) {

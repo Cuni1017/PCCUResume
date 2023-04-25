@@ -29,6 +29,8 @@ public class Teacher {
     public String teacherName;
     @Column(name="teacher_email")
     public String teacherEmail;
+    @Column(name="teacher_number")
+    public String teacherNumber;
     @Column(name="teacher_image_url")
     public String teacherImageUrl;
 

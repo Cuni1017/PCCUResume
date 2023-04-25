@@ -54,6 +54,7 @@ public class TeacherServiceImpl implements TeacherService {
     private final RSubjectRepository rSubjectRepository;
     private final ResumeDao resumeDao;
     private final JavaMailSender mailSender;
+    private final   HistoryApplyRepository historyApplyRepository;
     @Override
     public Object findById(String teacherId) {
         Teacher teacher = teacherRepository.findByTeacherId(teacherId).orElseThrow(()->new RuntimeException("沒有此教師"));
@@ -63,6 +64,8 @@ public class TeacherServiceImpl implements TeacherService {
                 .teacherImageUrl(teacher.getTeacherImageUrl())
                 .teacherUsername(teacher.getTeacherUsername())
                 .teacherName(teacher.getTeacherName())
+                .teacherEmail(teacher.getTeacherEmail())
+                .teacherNumber(teacher.teacherNumber)
                 .role(user.getRole().toString())
                 .build();
         return getRestDto(teacherDto,"查詢成功");
@@ -113,7 +116,8 @@ public class TeacherServiceImpl implements TeacherService {
         userRepository.deleteById(studentId);
         studentRepository.deleteById(studentId);
         Student student = studentRepository.findById(studentId).orElseThrow(()->new RuntimeException("沒有此學生"));
-        sendApplyTypeMail("student",student.getStudentName() ,student.getStudentEmail());
+        String message = getMessage("student",student.getStudentName() ,student.getStudentEmail());
+        sendApplyTypeMail("student",student.getStudentName() ,student.getStudentEmail(),message);
         List<Resume> resumes = resumeRepository.findByUserId(studentId);
         for(int i =0 ; i<= resumes.size();i++){
             String resumeId = resumes.get(i).getResumeId();
@@ -169,7 +173,8 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public Object deleteCompanyByRole(String teacherId, String companyId) {
         Company company = companyRepository.findById(companyId).orElseThrow(()->new RuntimeException("每有此公司"));
-        sendApplyTypeMail("company",company.getCompanyName() ,company.getCompanyEmail());
+        String message = getMessage("company",company.getCompanyName() ,company.getCompanyEmail());
+        sendApplyTypeMail("company",company.getCompanyName() ,company.getCompanyEmail(),message);
         userRepository.deleteById(companyId);
         companyRepository.deleteById(companyId);
         vacanciesRepository.deleteByCompanyId(companyId);
@@ -213,7 +218,7 @@ public class TeacherServiceImpl implements TeacherService {
             List<AllApplyDto> allApplyDtoList = new LinkedList<>();
             int selectOffset = getSelectOffset(page,limit);
             int selectLimit = getSelectLimit(page,limit);
-            List<ApplyUserDto> applyUserDto = applyDao.findApplyVacanciesAndUserByapplyType(changeApplyTypeCategory.getApplyType());
+            List<ApplyUserDto> applyUserDto = applyDao.findApplyVacanciesAndUserByapplyType(changeApplyTypeCategory.getApplyType().toString());
         System.out.println(applyUserDto);
             List<String> vacanciesIds = applyUserDto.stream().map(a->a.getVacanciesId()).distinct().collect(Collectors.toList());
             for(String vacanciesId:vacanciesIds){
@@ -239,10 +244,55 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public Object updateApply(String teacherId,String applyId, ChangeApplyTypeCategory changeApplyTypeCategory) {
         Apply apply = applyRepository.findById(applyId).orElseThrow(()->new RuntimeException("沒有此apply"));
-        apply.setApplyUpdateTime(LocalDate.now());
-        apply.setApplyType(changeApplyTypeCategory.getApplyType().toString());
-        applyRepository.save(apply);
+        Student    student      = studentRepository.findById(apply.getUserId()).orElseThrow(()->new RuntimeException("沒有此學生"));
+        Vacancies  vacancies    = vacanciesRepository.findById(apply.getVacanciesId()).orElseThrow(()->new RuntimeException("沒有此職缺"));
+        changeApplyType(apply,changeApplyTypeCategory.getApplyType().toString() );
+        CheckApplyType(changeApplyTypeCategory.getApplyType(), apply, student,vacancies,applyId);
         return getRestDto(apply,"更新成功");
+    }
+    private Apply changeApplyType(Apply apply,String applyType) {
+        apply.setApplyType(applyType);
+        apply.setApplyUpdateTime(LocalDate.now());
+        if(!applyType.contains("失敗")||applyType.contains("中斷")){
+            applyRepository.save(apply);
+        }
+        return apply;
+    }
+    private RestDto CheckApplyType(ApplyType newApplyType, Apply apply, Student student,Vacancies vacancies,String applyId) throws MailException{
+        String message = getMessage(student.getStudentName(),vacancies.getVacanciesName(), newApplyType.toString());
+        switch (newApplyType){
+            case 面試中:
+                Apply progressApply =  changeApplyType(apply,newApplyType.toString());
+                sendApplyTypeMail(student.getStudentName(),vacancies.getVacanciesName() ,student.getStudentEmail(),message);
+                return  getRestDto(progressApply,"更新成功");
+            case 廠商中斷實習:
+                Apply cutApply =  changeApplyType(apply,newApplyType.toString());
+                HistoryApply historyApply = getHistoryApply(cutApply);
+                historyApplyRepository.save(historyApply);
+                applyRepository.deleteById(applyId);
+                sendApplyTypeMail(student.getStudentName(),vacancies.getVacanciesName() ,student.getStudentEmail(),message);
+                return getRestDto(historyApply,"更新成功");
+            case 實習中:
+                Apply InApply =  changeApplyType(apply,newApplyType.toString());
+                int quantity = vacancies.getVacanciesQuantity();
+                vacancies.setVacanciesQuantity(quantity--);
+                vacanciesRepository.save(vacancies);
+                sendApplyTypeMail(student.getStudentName(),vacancies.getVacanciesName() ,student.getStudentEmail(),message);
+                return getRestDto(InApply,"更新成功");
+
+            case 應徵失敗,面試失敗,待學生同意中失敗:
+                Apply fileApply = changeApplyType(apply,newApplyType.toString());
+                HistoryApply historyApply1 = getHistoryApply(fileApply);
+                historyApplyRepository.save(historyApply1);
+                applyRepository.deleteById(applyId);
+                sendApplyTypeMail(student.getStudentName(),vacancies.getVacanciesName() ,student.getStudentEmail(),newApplyType.toString());
+                return getRestDto(fileApply,"更新成功");
+            case   待學生同意中:
+                Apply sucessApply =  changeApplyType(apply,newApplyType.toString());
+                return getRestDto(sucessApply,"更新成功");
+            default:
+                throw new RuntimeException("輸入近來不是保留詞");
+        }
     }
 
 
@@ -267,12 +317,11 @@ public class TeacherServiceImpl implements TeacherService {
                 .build();
         return restDto;
     }
-    private void sendApplyTypeMail(String physiognomy,String name ,String email) throws MailException {
+    private void sendApplyTypeMail(String physiognomy,String name ,String email,String message) throws MailException {
 
         MimeMessagePreparator messagePreparator = mimeMessage -> {
 
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
-            String message = getMessage(physiognomy, name,email);
             messageHelper.setFrom(MikeEmail.email.myEmail.toString());
             messageHelper.setTo(email);
             messageHelper.setSubject("pccu通知有關" + physiognomy + "實習資訊");
@@ -284,6 +333,51 @@ public class TeacherServiceImpl implements TeacherService {
         String message = "這裡很遺憾的通知";
         message = message +"pccu實習您申請的"+ physiognomy +"帳號:" +name+"不通過已被刪除";
         return message;
+    }
+    private String getMessage(String physiognomy,String vacanciesName, String email, String applyType){
+        if (applyType.contains("失敗")) {
+            String message = "這裡很遺憾的通知";
+            message = message + physiognomy;
+            message = message +",您應徵的實習職缺"+ vacanciesName +"失敗,";
+            message = message +"這並不是你不夠好或是實力不足只是再不好的時機遇到我們會將您加入我們的人才儲備";
+            return message;
+        } else if (applyType.contains("面試")) {
+            String message = "這裡很高興的通知";
+            message = message + physiognomy;
+            message = message +",您應徵的實習職缺"+ vacanciesName+"通知您去面試,詳細情況公司會跟您確認";
+            return message;
+        } else if (applyType.contains("中斷")) {
+            String message = "這裡很遺憾的通知";
+            message = message + physiognomy;
+            message = message +",您實習中的的實習職缺"+ vacanciesName+"中斷與您的實習合作,詳細情況公司會跟您確認";
+            return message;
+        }else if (applyType.contains("實習")) {
+            String message = "這裡很高興的通知";
+            message = message + physiognomy;
+            message = message +",您應徵的實習職缺"+ vacanciesName+"通知您去面試,詳細情況公司會跟您確認";
+            return message;
+        }else {
+            String message = "這裡很高興的通知";
+            message = message + physiognomy;
+            message = message +",您應徵的實習職缺"+ vacanciesName+"成功,";
+            message = message +"需要等你前往實習網站進行確認應徵動作,如沒有確認此職缺會消失";
+            return message;
+        }
+    }
+    private HistoryApply getHistoryApply(Apply apply) {
+        LocalDate now = LocalDate.now();
+        return HistoryApply.builder()
+                .applyId(apply.getApplyId())
+                .userId(apply.getUserId())
+                .resumeId(apply.getResumeId())
+                .vacanciesId(apply.getVacanciesId())
+                .companyId(apply.getCompanyId())
+                .createTime(apply.getCreateTime())
+                .applyType(apply.getApplyType())
+                .applyStartTime(apply.getApplyStartTime())
+                .applyEndTime(apply.getApplyEndTime())
+                .dieTime(now)
+                .build();
     }
     private int getSelectOffset(int page,int limit){
         return (page-1)*limit;
