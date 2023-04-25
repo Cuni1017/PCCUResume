@@ -14,5 +14,7 @@ public class TeacherDto {
     private String teacherUsername;
     private String teacherName;
     private String teacherImageUrl;
+    private String teacherEmail;
+    private String teacherNumber;
     private String role;
 }

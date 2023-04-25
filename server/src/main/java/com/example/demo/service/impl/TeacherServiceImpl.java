@@ -63,6 +63,8 @@ public class TeacherServiceImpl implements TeacherService {
                 .teacherImageUrl(teacher.getTeacherImageUrl())
                 .teacherUsername(teacher.getTeacherUsername())
                 .teacherName(teacher.getTeacherName())
+                .teacherEmail(teacher.getTeacherEmail())
+                .teacherNumber(teacher.teacherNumber)
                 .role(user.getRole().toString())
                 .build();
         return getRestDto(teacherDto,"查詢成功");

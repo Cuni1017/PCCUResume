@@ -229,6 +229,7 @@ public class RegisterServiceImpl implements RegisterService {
                 .teacherUsername(request.getTeacherUsername())
                 .teacherPassword(passwordEncoder.encode(request.getTeacherPassword()))
                 .teacherEmail(request.getTeacherEmail())
+                .teacherNumber(request.getTeacherNumber())
                 .build();
         return teacher;
     }

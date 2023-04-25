@@ -18,4 +18,5 @@ public class TeacherRegisterCategory {
     private String teacherName;
 
     private String teacherEmail;
+    private String teacherNumber;
 }
