@@ -202,7 +202,7 @@ public class TeacherServiceImpl implements TeacherService {
                 .page(page)
                 .total(total)
                 .build();
-        return getRestDto(companies,"查詢成功");
+        return getRestDto(companyReview,"查詢成功");
     }
 
 
