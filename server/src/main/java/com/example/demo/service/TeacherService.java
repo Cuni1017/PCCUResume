@@ -18,12 +18,12 @@ public interface TeacherService {
 
     Object updateCompanyByRole(String teacherId, String companyId,RoleCategory roleCategory);
 
-    Object findVacanciesByTeacherValidType(int page , int limit, SearchCategory searchCategory);
+    Object findVacanciesByTeacherValidType(int page , int limit, String search,String validType);
 
 
     Object UpdateVacanciesByTeacherValidType(String teacherId, String vacanciesId, TeacherValidTypeCategory teacherValidTypeCategory);
 
-    Object findApply(String teacherId, ChangeApplyTypeCategory changeApplyTypeCategory,int page,int limit);
+    Object findApply( String changeApplyType,int page,int limit);
 
     Object findById(String teacherId);
 
@@ -37,5 +37,5 @@ public interface TeacherService {
 
     Object findCompanyCheckByRole(int page, int limit);
 
-    Object findVacanciesCheckByTeacherValidType(int page, int limit, SearchCategory searchCategory);
+    Object findVacanciesCheckByTeacherValidType(int page, int limit, String search,String validType);
 }

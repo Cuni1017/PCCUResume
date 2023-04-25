@@ -224,11 +224,11 @@ public class TeacherServiceImpl implements TeacherService {
 
 
     @Override
-    public Object findVacanciesByTeacherValidType(int page , int limit, SearchCategory searchCategory) {
+    public Object findVacanciesByTeacherValidType(int page , int limit, String search,String validType) {
         int selectOffset = getSelectOffset(page,limit);
         int selectLimit = getSelectLimit(page,limit);
-        String search = searchCategory.getSearchName();
-        List<CompanyVacanciesDto> companyVacanciesDtos = vacanciesDao.findPageVacanciesReview(selectLimit,selectOffset,search,TeacherValidType.審核中.toString());
+
+        List<CompanyVacanciesDto> companyVacanciesDtos = vacanciesDao.findPageVacanciesReview(selectLimit,selectOffset,search,validType);
         long total = companyVacanciesDtos.stream().count();
         int intTotal = (int)total;
         PageVacanciesDto pageVacanciesDto = PageVacanciesDto.builder()
@@ -240,11 +240,11 @@ public class TeacherServiceImpl implements TeacherService {
         return getRestDto(pageVacanciesDto,"查詢成功");
     }
     @Override
-    public Object findVacanciesCheckByTeacherValidType(int page, int limit, SearchCategory searchCategory) {
+    public Object findVacanciesCheckByTeacherValidType(int page, int limit, String search,String validType) {
         int selectOffset = getSelectOffset(page,limit);
         int selectLimit = getSelectLimit(page,limit);
-        String search = searchCategory.getSearchName();
-        List<CompanyVacanciesDto> companyVacanciesDtos = vacanciesDao.findPageVacanciesReview(selectLimit,selectOffset,search,TeacherValidType.審核通過.toString());
+//        String search = searchCategory.getSearchName();
+        List<CompanyVacanciesDto> companyVacanciesDtos = vacanciesDao.findPageVacanciesReview(selectLimit,selectOffset,search,validType);
         long total = companyVacanciesDtos.stream().count();
         int intTotal = (int)total;
         PageVacanciesDto pageVacanciesDto = PageVacanciesDto.builder()
@@ -267,12 +267,12 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public Object findApply(String teacherId, ChangeApplyTypeCategory changeApplyTypeCategory,int page,int limit) {
+    public Object findApply( String changeApplyType,int page,int limit) {
 
             List<AllApplyDto> allApplyDtoList = new LinkedList<>();
             int selectOffset = getSelectOffset(page,limit);
             int selectLimit = getSelectLimit(page,limit);
-            List<ApplyUserDto> applyUserDto = applyDao.findApplyVacanciesAndUserByapplyType(changeApplyTypeCategory.getApplyType().toString());
+            List<ApplyUserDto> applyUserDto = applyDao.findApplyVacanciesAndUserByapplyType(changeApplyType);
         System.out.println(applyUserDto);
             List<String> vacanciesIds = applyUserDto.stream().map(a->a.getVacanciesId()).distinct().collect(Collectors.toList());
             for(String vacanciesId:vacanciesIds){
