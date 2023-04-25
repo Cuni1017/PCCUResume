@@ -18,6 +18,7 @@ public class StudentDtoRowMapper implements RowMapper<StudentDto> {
         studentDto.setStudentName(rs.getString("student_name"));
         studentDto.setStudentNumber(rs.getString("student_number"));
         studentDto.setStudentUsername(rs.getString("student_username"));
+        studentDto.setPccuId(rs.getString("pccu_id"));
         studentDto.setRole(rs.getString("role"));
         return studentDto;
     }
