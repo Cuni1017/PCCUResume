@@ -39,7 +39,7 @@ public class TeacherController {
             @RequestParam int page,
             @RequestParam int limit
     ) {
-        return ResponseEntity.ok(teacherService.findStudentByRole(page , limit));
+        return ResponseEntity.ok(teacherService.findStudentCheckByRole(page , limit));
     }
 
     //回來要改不是teachervalidtpe 是role
@@ -65,6 +65,13 @@ public class TeacherController {
     ) {
         return ResponseEntity.ok(teacherService.findCompanyByRole(page , limit));
     }
+    @GetMapping("/v1/teacher/company-check")
+    public ResponseEntity<Object> findCompanyCheckByRole(
+            @RequestParam int page,
+            @RequestParam int limit
+    ) {
+        return ResponseEntity.ok(teacherService.findCompanyCheckByRole(page , limit));
+    }
     @PutMapping("/v1/teacher/{teacherId}/company-review/{companyId}")
     public ResponseEntity<Object> updateCompanyByRole(
             @PathVariable String teacherId,
@@ -88,6 +95,15 @@ public class TeacherController {
 
     ) {
         return ResponseEntity.ok(teacherService.findVacanciesByTeacherValidType(page ,limit,searchCategory));
+    }
+    @GetMapping("/v1/teacher/vacancies-check")
+    public ResponseEntity<Object> findVacanciesCheckByTeacherValidType(
+            @RequestParam int page,
+            @RequestParam int limit,
+            @RequestBody SearchCategory searchCategory
+
+    ) {
+        return ResponseEntity.ok(teacherService.findVacanciesCheckByTeacherValidType(page ,limit,searchCategory));
     }
     @PutMapping("/v1/teacher/{teacherId}/vacancies-review/{vacanciesId}")
     public ResponseEntity<Object> UpdateVacanciesByTeacherValidType(
