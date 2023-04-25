@@ -38,9 +38,10 @@ public class TeacherController {
     @GetMapping("/v1/teacher/student-check")
     public ResponseEntity<Object> findStudentCheckByRole(
             @RequestParam(defaultValue = "1" ) int page,
-            @RequestParam(defaultValue = "10" ) int limit
+            @RequestParam(defaultValue = "10" ) int limit,
+            @RequestParam(required = false) String search
     ) {
-        return ResponseEntity.ok(teacherService.findStudentCheckByRole(page , limit));
+        return ResponseEntity.ok(teacherService.findStudentCheckByRole(page , limit,search));
     }
 
     //回來要改不是teachervalidtpe 是role
