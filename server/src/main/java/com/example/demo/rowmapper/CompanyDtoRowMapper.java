@@ -20,7 +20,7 @@ public class CompanyDtoRowMapper implements RowMapper<CompanyDto> {
         companyDto.setCompanyTitle(rs.getString("company_title"));
         companyDto.setCompanyUsername(rs.getString("company_username"));
         companyDto.setCompanyCounty(rs.getString("company_county"));
-        companyDto.setCompanyDistrict(rs.getString("company_address"));
+        companyDto.setCompanyDistrict(rs.getString("company_district"));
         companyDto.setCompanyAddress(rs.getString("company_address"));
         companyDto.setRole(rs.getString("role"));
         return companyDto;
