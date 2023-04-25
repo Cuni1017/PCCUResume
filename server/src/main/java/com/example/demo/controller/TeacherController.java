@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.category.ChangeApplyTypeCategory;
 import com.example.demo.category.RoleCategory;
+import com.example.demo.category.TeacherValidTypeCategory;
 import com.example.demo.category.resume.post.SearchCategory;
 import com.example.demo.model.TeacherValidType;
 import com.example.demo.service.TeacherService;
@@ -84,10 +85,10 @@ public class TeacherController {
     public ResponseEntity<Object> UpdateVacanciesByTeacherValidType(
             @PathVariable String teacherId,
             @PathVariable String vacanciesId,
-            @RequestBody  TeacherValidType teacherValidType
+            @RequestBody TeacherValidTypeCategory teacherValidTypeCategory
 
     ) {
-        return ResponseEntity.ok(teacherService.UpdateVacanciesByTeacherValidType(teacherId ,vacanciesId,teacherValidType));
+        return ResponseEntity.ok(teacherService.UpdateVacanciesByTeacherValidType(teacherId ,vacanciesId,teacherValidTypeCategory));
     }
     @GetMapping("/v1/teacher/{teacherId}/apply-review")
     public ResponseEntity<Object> findApply(

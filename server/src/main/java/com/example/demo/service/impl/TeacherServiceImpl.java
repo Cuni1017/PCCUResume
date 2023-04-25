@@ -3,6 +3,7 @@ package com.example.demo.service.impl;
 import com.example.demo.category.ApplyCategory;
 import com.example.demo.category.ChangeApplyTypeCategory;
 import com.example.demo.category.RoleCategory;
+import com.example.demo.category.TeacherValidTypeCategory;
 import com.example.demo.category.resume.post.SearchCategory;
 import com.example.demo.dao.*;
 import com.example.demo.dao.apply.ApplyDao;
@@ -104,8 +105,8 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public Object updateStudentRole(String teacherId, String studentId, RoleCategory roleCategory) {
-        User user = updateRole(studentId,teacherId,roleCategory);
-        return getRestDto(user,"更新成功");
+        updateRole(studentId,teacherId,roleCategory);
+        return getRestDto(roleCategory.getRole(),"更新成功");
     }
     @Override
     public Object deleteStudentRole(String teacherId, String studentId) {
@@ -162,8 +163,8 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public Object updateCompanyByRole(String teacherId, String companyId,RoleCategory roleCategory) {
-        User user = updateRole(companyId,teacherId,roleCategory);
-        return getRestDto(user,"更新成功");
+        updateRole(companyId,teacherId,roleCategory);
+        return getRestDto(roleCategory.getRole(),"更新成功");
     }
     @Override
     public Object deleteCompanyByRole(String teacherId, String companyId) {
@@ -196,9 +197,9 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public Object UpdateVacanciesByTeacherValidType(String teacherId, String vacanciesId, TeacherValidType teacherValidType) {
+    public Object UpdateVacanciesByTeacherValidType(String teacherId, String vacanciesId, TeacherValidTypeCategory teacherValidTypeCategory) {
         Vacancies vacancies = vacanciesRepository.findById(vacanciesId).orElseThrow(()->new RuntimeException("沒有此職缺"));
-        vacancies.setTeacherValidType(teacherValidType.toString());
+        vacancies.setTeacherValidType(teacherValidTypeCategory.getTeacherValidType().toString());
         vacancies.setVacanciesUpdateTime(LocalDate.now());
         vacancies.setTeacherId(teacherId);
         vacanciesRepository.save(vacancies);
@@ -247,7 +248,7 @@ public class TeacherServiceImpl implements TeacherService {
 
 
 
-    private User updateRole(String userId, String teacherId,RoleCategory roleCategory) {
+    private void updateRole(String userId, String teacherId,RoleCategory roleCategory) {
         User user = userRepository.findById(userId).orElseThrow(()->new RuntimeException("使用者不存在"));
         if(userId.startsWith("S")){
             user.setRole(roleCategory.getRole());
@@ -256,7 +257,6 @@ public class TeacherServiceImpl implements TeacherService {
         }
         userRepository.save(user);
 
-        return  user;
     }
 
 
