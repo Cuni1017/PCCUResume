@@ -104,8 +104,8 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public Object updateStudentRole(String teacherId, String studentId, RoleCategory roleCategory) {
-        User user = updateRole(studentId,teacherId,roleCategory);
-        return getRestDto(user,"更新成功");
+        updateRole(studentId,teacherId,roleCategory);
+        return getRestDto(roleCategory.getRole(),"更新成功");
     }
     @Override
     public Object deleteStudentRole(String teacherId, String studentId) {
@@ -162,8 +162,8 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public Object updateCompanyByRole(String teacherId, String companyId,RoleCategory roleCategory) {
-        User user = updateRole(companyId,teacherId,roleCategory);
-        return getRestDto(user,"更新成功");
+        updateRole(companyId,teacherId,roleCategory);
+        return getRestDto(roleCategory.getRole(),"更新成功");
     }
     @Override
     public Object deleteCompanyByRole(String teacherId, String companyId) {
@@ -247,7 +247,7 @@ public class TeacherServiceImpl implements TeacherService {
 
 
 
-    private User updateRole(String userId, String teacherId,RoleCategory roleCategory) {
+    private void updateRole(String userId, String teacherId,RoleCategory roleCategory) {
         User user = userRepository.findById(userId).orElseThrow(()->new RuntimeException("使用者不存在"));
         if(userId.startsWith("S")){
             user.setRole(roleCategory.getRole());
@@ -256,7 +256,6 @@ public class TeacherServiceImpl implements TeacherService {
         }
         userRepository.save(user);
 
-        return  user;
     }
 
 
