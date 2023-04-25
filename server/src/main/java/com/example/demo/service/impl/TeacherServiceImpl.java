@@ -333,7 +333,9 @@ public class TeacherServiceImpl implements TeacherService {
                 vacanciesRepository.save(vacancies);
                 sendApplyTypeMail(student.getStudentName(),vacancies.getVacanciesName() ,student.getStudentEmail(),message);
                 return getRestDto(InApply,"更新成功");
-
+            case 應徵中:
+                Apply findApply = changeApplyType(apply,newApplyType.toString());
+                return getRestDto(findApply,"更新成功");
             case 應徵失敗,面試失敗,待學生同意中失敗:
                 Apply fileApply = changeApplyType(apply,newApplyType.toString());
                 HistoryApply historyApply1 = getHistoryApply(fileApply);
