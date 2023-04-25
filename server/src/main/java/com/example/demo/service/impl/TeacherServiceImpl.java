@@ -3,6 +3,7 @@ package com.example.demo.service.impl;
 import com.example.demo.category.ApplyCategory;
 import com.example.demo.category.ChangeApplyTypeCategory;
 import com.example.demo.category.RoleCategory;
+import com.example.demo.category.TeacherValidTypeCategory;
 import com.example.demo.category.resume.post.SearchCategory;
 import com.example.demo.dao.*;
 import com.example.demo.dao.apply.ApplyDao;
@@ -196,9 +197,9 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public Object UpdateVacanciesByTeacherValidType(String teacherId, String vacanciesId, TeacherValidType teacherValidType) {
+    public Object UpdateVacanciesByTeacherValidType(String teacherId, String vacanciesId, TeacherValidTypeCategory teacherValidTypeCategory) {
         Vacancies vacancies = vacanciesRepository.findById(vacanciesId).orElseThrow(()->new RuntimeException("沒有此職缺"));
-        vacancies.setTeacherValidType(teacherValidType.toString());
+        vacancies.setTeacherValidType(teacherValidTypeCategory.getTeacherValidType().toString());
         vacancies.setVacanciesUpdateTime(LocalDate.now());
         vacancies.setTeacherId(teacherId);
         vacanciesRepository.save(vacancies);
