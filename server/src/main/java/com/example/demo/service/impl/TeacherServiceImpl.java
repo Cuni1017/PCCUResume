@@ -227,11 +227,11 @@ public class TeacherServiceImpl implements TeacherService {
 
 
     @Override
-    public Object findVacanciesByTeacherValidType(int page , int limit, String search,String validType) {
+    public Object findVacanciesByTeacherValidType(int page , int limit, String search) {
         int selectOffset = getSelectOffset(page,limit);
         int selectLimit = getSelectLimit(page,limit);
 
-        List<CompanyVacanciesDto> companyVacanciesDtos = vacanciesDao.findPageVacanciesReview(selectLimit,selectOffset,search,validType);
+        List<CompanyVacanciesDto> companyVacanciesDtos = vacanciesDao.findPageVacanciesReview(selectLimit,selectOffset,search,TeacherValidType.審核中.toString());
         long total = companyVacanciesDtos.stream().count();
         int intTotal = (int)total;
         PageVacanciesDto pageVacanciesDto = PageVacanciesDto.builder()
@@ -243,11 +243,11 @@ public class TeacherServiceImpl implements TeacherService {
         return getRestDto(pageVacanciesDto,"查詢成功");
     }
     @Override
-    public Object findVacanciesCheckByTeacherValidType(int page, int limit, String search,String validType) {
+    public Object findVacanciesCheckByTeacherValidType(int page, int limit, String search) {
         int selectOffset = getSelectOffset(page,limit);
         int selectLimit = getSelectLimit(page,limit);
 //        String search = searchCategory.getSearchName();
-        List<CompanyVacanciesDto> companyVacanciesDtos = vacanciesDao.findPageVacanciesReview(selectLimit,selectOffset,search,validType);
+        List<CompanyVacanciesDto> companyVacanciesDtos = vacanciesDao.findPageVacanciesReview(selectLimit,selectOffset,search,TeacherValidType.審核通過.toString());
         long total = companyVacanciesDtos.stream().count();
         int intTotal = (int)total;
         PageVacanciesDto pageVacanciesDto = PageVacanciesDto.builder()

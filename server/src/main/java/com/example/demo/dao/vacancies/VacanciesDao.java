@@ -107,7 +107,7 @@ public class VacanciesDao {
             sql = sql +" AND v.teacher_valid_type = :teacherValidType ";
         }
         if(search!= null){
-            sql = sql + " AND (c.company_name = :search OR v.vacancies_name = :search)";
+            sql = sql + " OR c.company_name = :search OR v.vacancies_name = :search";
         }
         sql = sql + " group by v.vacancies_id";
 
