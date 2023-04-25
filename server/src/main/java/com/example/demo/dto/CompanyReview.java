@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class CompanyReview {
-    private List<Company> companies;
+    private List<CompanyDto> CompanyDto;
     private int page;
     private int limit;
     private long total;

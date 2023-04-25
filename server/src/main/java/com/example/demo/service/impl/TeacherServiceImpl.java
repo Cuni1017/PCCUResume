@@ -7,6 +7,7 @@ import com.example.demo.category.TeacherValidTypeCategory;
 import com.example.demo.category.resume.post.SearchCategory;
 import com.example.demo.dao.*;
 import com.example.demo.dao.apply.ApplyDao;
+import com.example.demo.dao.company.CompanyDao;
 import com.example.demo.dao.resume.*;
 import com.example.demo.dao.vacancies.VacanciesDao;
 import com.example.demo.dao.vacancies.VacanciesRepository;
@@ -56,6 +57,7 @@ public class TeacherServiceImpl implements TeacherService {
     private final JavaMailSender mailSender;
     private final   HistoryApplyRepository historyApplyRepository;
     private final  StudentDao studentDao;
+    private final CompanyDao companyDao;
     @Override
     public Object findById(String teacherId) {
         Teacher teacher = teacherRepository.findByTeacherId(teacherId).orElseThrow(()->new RuntimeException("沒有此教師"));
@@ -174,13 +176,13 @@ public class TeacherServiceImpl implements TeacherService {
 
 
     @Override
-    public Object findCompanyByRole(int page , int limit) {
+    public Object findCompanyByRole(int page , int limit,String search) {
         int selectOffset = getSelectOffset(page,limit);
         int selectLimit = getSelectLimit(page,limit);
-        List<Company> companies = companyRepository.findByRole(Role.COMPANY_USER.toString(),selectLimit,selectOffset);
+        List<CompanyDto> companies = companyDao.findByRole(Role.COMPANY_USER.toString(),selectLimit,selectOffset,search);
         Long total = companies.stream().count();
         CompanyReview companyReview = CompanyReview.builder()
-                .companies(companies)
+                .CompanyDto(companies)
                 .limit(limit)
                 .page(page)
                 .total(total)
@@ -189,13 +191,13 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public Object findCompanyCheckByRole(int page, int limit) {
+    public Object findCompanyCheckByRole(int page, int limit , String search) {
         int selectOffset = getSelectOffset(page,limit);
         int selectLimit = getSelectLimit(page,limit);
-        List<Company> companies = companyRepository.findByRole(Role.COMPANY.toString(),selectLimit,selectOffset);
+        List<CompanyDto> companies = companyDao.findByRole(Role.COMPANY.toString(),selectLimit,selectOffset,search);
         Long total = companies.stream().count();
         CompanyReview companyReview = CompanyReview.builder()
-                .companies(companies)
+                .CompanyDto(companies)
                 .limit(limit)
                 .page(page)
                 .total(total)

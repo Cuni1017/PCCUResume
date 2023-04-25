@@ -1,8 +1,13 @@
 package com.example.demo.dao.company;
 
+import com.example.demo.dto.CompanyDto;
 import com.example.demo.dto.CompanyVacanciesDto;
+import com.example.demo.model.Company;
+import com.example.demo.rowmapper.CompanyDtoRowMapper;
 import com.example.demo.rowmapper.CompanyVacanciesRowMapper;
+import com.example.demo.rowmapper.StudentDtoRowMapper;
 import lombok.AllArgsConstructor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
@@ -53,5 +58,23 @@ public class CompanyDao {
         sql = COUNT_BEFORE + sql +COUNT_AFTER;
         Integer CompanyVacanciesCount =  namedParameterJdbcTemplate.queryForObject(sql,map,Integer.class);
         return CompanyVacanciesCount;
+    }
+
+    public List<CompanyDto> findByRole(String role, int limit, int offset , String search){
+        String sql = "select c.*,u.* from company c inner join user u on c.company_id = u.id \n" +
+                "where 1 = 1";
+        Map<String,Object> map= new HashMap<>();
+        if( role != null){
+            sql = sql + " AND u.role = :role";
+        }
+        if( search != null){
+            sql = sql + " OR s.company _name = :search ";
+        }
+        sql = sql + " LIMIT :limit OFFSET :offset";
+        map.put("role",role);
+        map.put("limit",limit);
+        map.put("offset",offset);
+        map.put("search",search);
+        return namedParameterJdbcTemplate.query(sql,map,new CompanyDtoRowMapper());
     }
 }

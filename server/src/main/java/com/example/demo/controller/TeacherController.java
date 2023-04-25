@@ -29,16 +29,16 @@ public class TeacherController {
     }
     @GetMapping("/v1/teacher/student-review")
     public ResponseEntity<Object> findStudentByRole(
-            @RequestParam(defaultValue = "1" ) int page,
-            @RequestParam(defaultValue = "10" ) int limit,
+            @RequestParam(required = false,defaultValue = "1" ) int page,
+            @RequestParam(required = false,defaultValue = "10" ) int limit,
              @RequestParam(required = false) String search
     ) {
         return ResponseEntity.ok(teacherService.findStudentByRole(page , limit,search));
     }
     @GetMapping("/v1/teacher/student-check")
     public ResponseEntity<Object> findStudentCheckByRole(
-            @RequestParam(defaultValue = "1" ) int page,
-            @RequestParam(defaultValue = "10" ) int limit,
+            @RequestParam(required = false,defaultValue = "1" ) int page,
+            @RequestParam(required = false,defaultValue = "10" ) int limit,
             @RequestParam(required = false) String search
     ) {
         return ResponseEntity.ok(teacherService.findStudentCheckByRole(page , limit,search));
@@ -62,17 +62,19 @@ public class TeacherController {
     }
     @GetMapping("/v1/teacher/company-review")
     public ResponseEntity<Object> findCompanyByRole(
-            @RequestParam(defaultValue = "1" ) int page,
-            @RequestParam(defaultValue = "10" ) int limit
+            @RequestParam(required = false,defaultValue = "1" ) int page,
+            @RequestParam(required = false,defaultValue = "10" ) int limit,
+            @RequestParam(required = false) String search
     ) {
-        return ResponseEntity.ok(teacherService.findCompanyByRole(page , limit));
+        return ResponseEntity.ok(teacherService.findCompanyByRole(page , limit,search));
     }
     @GetMapping("/v1/teacher/company-check")
     public ResponseEntity<Object> findCompanyCheckByRole(
-            @RequestParam(defaultValue = "1" ) int page,
-            @RequestParam(defaultValue = "10" ) int limit
+            @RequestParam(required = false,defaultValue = "1" ) int page,
+            @RequestParam(required = false,defaultValue = "10" ) int limit,
+            @RequestParam(required = false) String search
     ) {
-        return ResponseEntity.ok(teacherService.findCompanyCheckByRole(page , limit));
+        return ResponseEntity.ok(teacherService.findCompanyCheckByRole(page , limit,search));
     }
     @PutMapping("/v1/teacher/{teacherId}/company-review/{companyId}")
     public ResponseEntity<Object> updateCompanyByRole(
@@ -91,8 +93,8 @@ public class TeacherController {
     }
     @GetMapping("/v1/teacher/vacancies-review")
     public ResponseEntity<Object> findVacanciesByTeacherValidType(
-            @RequestParam(defaultValue = "1" ) int page,
-            @RequestParam(defaultValue = "10" ) int limit,
+            @RequestParam(required = false,defaultValue = "1" ) int page,
+            @RequestParam(required = false,defaultValue = "10" ) int limit,
             @RequestParam(required = false) String search,
             @RequestParam(required = false) String validType
 
@@ -101,8 +103,8 @@ public class TeacherController {
     }
     @GetMapping("/v1/teacher/vacancies-check")
     public ResponseEntity<Object> findVacanciesCheckByTeacherValidType(
-            @RequestParam(defaultValue = "1" ) int page,
-            @RequestParam(defaultValue = "10" ) int limit,
+            @RequestParam(required = false,defaultValue = "1" ) int page,
+            @RequestParam(required = false,defaultValue = "10" ) int limit,
             @RequestParam(required = false) String search,
             @RequestParam(required = false) String validType
 
@@ -120,8 +122,8 @@ public class TeacherController {
     }
     @GetMapping("/v1/teacher/apply-review")
     public ResponseEntity<Object> findApply(
-            @RequestParam int page,
-            @RequestParam int limit,
+            @RequestParam(required = false,defaultValue = "1" ) int page,
+            @RequestParam(required = false,defaultValue = "10" ) int limit,
             @RequestParam(required = false) String  changeApplyType
 
             ) {

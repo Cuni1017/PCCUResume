@@ -24,7 +24,7 @@ public class StudentDao {
             sql = sql + " AND u.role = :role";
         }
         if( search != null){
-            sql = sql + " AND (s.student_name = :search OR s.pccu_id = :search)";
+            sql = sql + " OR s.student_name = :search OR s.pccu_id = :search";
         }
         sql = sql + " LIMIT :limit OFFSET :offset";
         map.put("role",role);
