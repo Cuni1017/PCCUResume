@@ -29,15 +29,16 @@ public class TeacherController {
     }
     @GetMapping("/v1/teacher/student-review")
     public ResponseEntity<Object> findStudentByRole(
-            @RequestParam int page,
-            @RequestParam int limit
+            @RequestParam(defaultValue = "1" ) int page,
+            @RequestParam(defaultValue = "10" ) int limit
+//             @RequestParam(defaultValue = "10" ) int limit
     ) {
         return ResponseEntity.ok(teacherService.findStudentByRole(page , limit));
     }
     @GetMapping("/v1/teacher/student-check")
     public ResponseEntity<Object> findStudentCheckByRole(
-            @RequestParam int page,
-            @RequestParam int limit
+            @RequestParam(defaultValue = "1" ) int page,
+            @RequestParam(defaultValue = "10" ) int limit
     ) {
         return ResponseEntity.ok(teacherService.findStudentCheckByRole(page , limit));
     }
@@ -60,15 +61,15 @@ public class TeacherController {
     }
     @GetMapping("/v1/teacher/company-review")
     public ResponseEntity<Object> findCompanyByRole(
-            @RequestParam int page,
-            @RequestParam int limit
+            @RequestParam(defaultValue = "1" ) int page,
+            @RequestParam(defaultValue = "10" ) int limit
     ) {
         return ResponseEntity.ok(teacherService.findCompanyByRole(page , limit));
     }
     @GetMapping("/v1/teacher/company-check")
     public ResponseEntity<Object> findCompanyCheckByRole(
-            @RequestParam int page,
-            @RequestParam int limit
+            @RequestParam(defaultValue = "1" ) int page,
+            @RequestParam(defaultValue = "10" ) int limit
     ) {
         return ResponseEntity.ok(teacherService.findCompanyCheckByRole(page , limit));
     }
@@ -89,21 +90,23 @@ public class TeacherController {
     }
     @GetMapping("/v1/teacher/vacancies-review")
     public ResponseEntity<Object> findVacanciesByTeacherValidType(
-            @RequestParam int page,
-            @RequestParam int limit,
-            @RequestBody SearchCategory searchCategory
+            @RequestParam(defaultValue = "1" ) int page,
+            @RequestParam(defaultValue = "10" ) int limit,
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) String validType
 
     ) {
-        return ResponseEntity.ok(teacherService.findVacanciesByTeacherValidType(page ,limit,searchCategory));
+        return ResponseEntity.ok(teacherService.findVacanciesByTeacherValidType(page ,limit,search,validType));
     }
     @GetMapping("/v1/teacher/vacancies-check")
     public ResponseEntity<Object> findVacanciesCheckByTeacherValidType(
-            @RequestParam int page,
-            @RequestParam int limit,
-            @RequestBody SearchCategory searchCategory
+            @RequestParam(defaultValue = "1" ) int page,
+            @RequestParam(defaultValue = "10" ) int limit,
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) String validType
 
     ) {
-        return ResponseEntity.ok(teacherService.findVacanciesCheckByTeacherValidType(page ,limit,searchCategory));
+        return ResponseEntity.ok(teacherService.findVacanciesCheckByTeacherValidType(page ,limit,search,validType));
     }
     @PutMapping("/v1/teacher/{teacherId}/vacancies-review/{vacanciesId}")
     public ResponseEntity<Object> UpdateVacanciesByTeacherValidType(
@@ -114,15 +117,14 @@ public class TeacherController {
     ) {
         return ResponseEntity.ok(teacherService.UpdateVacanciesByTeacherValidType(teacherId ,vacanciesId,teacherValidTypeCategory));
     }
-    @GetMapping("/v1/teacher/{teacherId}/apply-review")
+    @GetMapping("/v1/teacher/apply-review")
     public ResponseEntity<Object> findApply(
-            @PathVariable String teacherId,
             @RequestParam int page,
             @RequestParam int limit,
-            @RequestBody(required = false) ChangeApplyTypeCategory changeApplyTypeCategory
+            @RequestParam(required = false) String  changeApplyType
 
             ) {
-        return ResponseEntity.ok(teacherService.findApply(teacherId,changeApplyTypeCategory,page,limit));
+        return ResponseEntity.ok(teacherService.findApply(changeApplyType,page,limit));
     }
     @PutMapping("/v1/teacher/{teacherId}/apply-review/{applyId}")
     public ResponseEntity<Object> updateApply(
