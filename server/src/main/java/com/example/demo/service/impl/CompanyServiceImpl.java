@@ -252,8 +252,7 @@ public class CompanyServiceImpl implements CompanyService {
                 .companyNumber(company.getCompanyNumber())
                 .companyTitle(company.getCompanyTitle())
                 .companyUsername(company.getCompanyUsername())
-                .companyValidType(company.getCompanyValidType())
-                .role(user.getRole())
+                .role(user.getRole().toString())
                 .build();
         RestDto restDto = RestDto.builder()
                 .data(companyDto)

@@ -33,7 +33,6 @@ public interface CompanyRepository extends JpaRepository<Company,String> {
     Optional<Company> findByCompanyName(String companyName);
     @Query(value = "select c.* from company c inner join user u on c.company_id  = u.id WHERE c.company_create_time > :createTime and u.role = :role",nativeQuery = true )
     List<Company> findByCreateTimeAfterAndRole(LocalDate createTime, String role);
-    @Query(value = "select c.* from company c inner join user u on c.company_id = u.id where  u.role = :role LIMIT :limit OFFSET :offset ",nativeQuery = true)
-    List<Company> findByRole(String role,int limit,int offset );
+
 
 }

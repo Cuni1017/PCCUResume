@@ -34,6 +34,5 @@ public class CompanyDto {
 
     private String companyEmail;
 
-    private String companyValidType;
-    private Role role;
+    private String role;
 }

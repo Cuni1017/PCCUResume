@@ -14,7 +14,7 @@ public interface TeacherService {
 
     Object findStudentByRole(int page , int limit,String search);
 
-    Object findCompanyByRole(int page , int limit);
+    Object findCompanyByRole(int page , int limit,String search);
 
     Object updateCompanyByRole(String teacherId, String companyId,RoleCategory roleCategory);
 
@@ -35,7 +35,7 @@ public interface TeacherService {
 
     Object findStudentCheckByRole(int page, int limit,String search);
 
-    Object findCompanyCheckByRole(int page, int limit);
+    Object findCompanyCheckByRole(int page, int limit,String search);
 
     Object findVacanciesCheckByTeacherValidType(int page, int limit, String search,String validType);
 }
