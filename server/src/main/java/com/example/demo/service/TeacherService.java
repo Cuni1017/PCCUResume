@@ -12,7 +12,7 @@ public interface TeacherService {
 
     Object updateStudentRole(String teacherId, String studentId, RoleCategory roleCategory);
 
-    Object findStudentByRole(int page , int limit);
+    Object findStudentByRole(int page , int limit,String search);
 
     Object findCompanyByRole(int page , int limit);
 

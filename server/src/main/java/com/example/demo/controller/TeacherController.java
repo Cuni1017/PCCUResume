@@ -30,10 +30,10 @@ public class TeacherController {
     @GetMapping("/v1/teacher/student-review")
     public ResponseEntity<Object> findStudentByRole(
             @RequestParam(defaultValue = "1" ) int page,
-            @RequestParam(defaultValue = "10" ) int limit
-//             @RequestParam(defaultValue = "10" ) int limit
+            @RequestParam(defaultValue = "10" ) int limit,
+             @RequestParam(required = false) String search
     ) {
-        return ResponseEntity.ok(teacherService.findStudentByRole(page , limit));
+        return ResponseEntity.ok(teacherService.findStudentByRole(page , limit,search));
     }
     @GetMapping("/v1/teacher/student-check")
     public ResponseEntity<Object> findStudentCheckByRole(

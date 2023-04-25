@@ -76,7 +76,7 @@ public class VacanciesDao {
                 sql = sql + " AND v.vacancies_watch_type = '公開'";
                 sql = sql + " group by v.vacancies_id";
                 sql = sql + " order by :order";
-                sql = sql + " LIMIT :limit OFFSET :offset";
+
 
         Map<String,Object> map= new HashMap<>();
         map.put("county",county);
@@ -107,7 +107,7 @@ public class VacanciesDao {
             sql = sql +" AND v.teacher_valid_type = :teacherValidType ";
         }
         if(search!= null){
-            sql = sql + " OR c.company_name = :search OR v.vacancies_name = :search";
+            sql = sql + " AND (c.company_name = :search OR v.vacancies_name = :search)";
         }
         sql = sql + " group by v.vacancies_id";
 
