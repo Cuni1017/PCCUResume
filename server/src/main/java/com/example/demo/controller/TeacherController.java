@@ -99,17 +99,17 @@ public class TeacherController {
             @RequestParam(required = false) String validType
 
     ) {
-        return ResponseEntity.ok(teacherService.findVacanciesByTeacherValidType(page ,limit,search,validType));
+        return ResponseEntity.ok(teacherService.findVacanciesByTeacherValidType(page ,limit,search));
     }
     @GetMapping("/v1/teacher/vacancies-check")
     public ResponseEntity<Object> findVacanciesCheckByTeacherValidType(
             @RequestParam(required = false,defaultValue = "1" ) int page,
             @RequestParam(required = false,defaultValue = "10" ) int limit,
-            @RequestParam(required = false) String search,
-            @RequestParam(required = false) String validType
+            @RequestParam(required = false) String search
+
 
     ) {
-        return ResponseEntity.ok(teacherService.findVacanciesCheckByTeacherValidType(page ,limit,search,validType));
+        return ResponseEntity.ok(teacherService.findVacanciesCheckByTeacherValidType(page ,limit,search));
     }
     @PutMapping("/v1/teacher/{teacherId}/vacancies-review/{vacanciesId}")
     public ResponseEntity<Object> UpdateVacanciesByTeacherValidType(
