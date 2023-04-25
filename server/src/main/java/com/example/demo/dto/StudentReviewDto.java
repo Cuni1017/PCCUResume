@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class StudentReviewDto {
-    private List<Student> students;
+    private List<StudentDto> StudentDtos;
     private int page;
     private int limit;
     private long total;

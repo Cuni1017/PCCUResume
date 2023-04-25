@@ -33,7 +33,7 @@ public interface TeacherService {
 
     Object deleteStudentRole(String teacherId, String studentId);
 
-    Object findStudentCheckByRole(int page, int limit);
+    Object findStudentCheckByRole(int page, int limit,String search);
 
     Object findCompanyCheckByRole(int page, int limit);
 

@@ -55,6 +55,7 @@ public class TeacherServiceImpl implements TeacherService {
     private final ResumeDao resumeDao;
     private final JavaMailSender mailSender;
     private final   HistoryApplyRepository historyApplyRepository;
+    private final  StudentDao studentDao;
     @Override
     public Object findById(String teacherId) {
         Teacher teacher = teacherRepository.findByTeacherId(teacherId).orElseThrow(()->new RuntimeException("沒有此教師"));
@@ -143,11 +144,11 @@ public class TeacherServiceImpl implements TeacherService {
     public Object findStudentByRole(int page , int limit,String search) {
         int selectOffset = getSelectOffset(page,limit);
         int selectLimit = getSelectLimit(page,limit);
-        List<Student> students = studentRepository.findByRole(Role.STUDENT_USER.toString(),selectLimit,selectOffset);
-        Long total = students.stream().count();
+        List<StudentDto> StudentDtos = studentDao.findByRole(Role.STUDENT_USER.toString(),selectLimit,selectOffset,search);
+        Long total = StudentDtos.stream().count();
 
         StudentReviewDto studentReviewDto = StudentReviewDto.builder()
-                .students(students)
+                .StudentDtos(StudentDtos)
                 .limit(limit)
                 .page(page)
                 .total(total)
@@ -156,14 +157,14 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public Object findStudentCheckByRole(int page, int limit) {
+    public Object findStudentCheckByRole(int page, int limit,String search) {
         int selectOffset = getSelectOffset(page,limit);
         int selectLimit = getSelectLimit(page,limit);
-        List<Student> students = studentRepository.findByRole(Role.STUDENT.toString(),selectLimit,selectOffset);
-        Long total = students.stream().count();
+        List<StudentDto> StudentDtos = studentDao.findByRole(Role.STUDENT.toString(),selectLimit,selectOffset,search);
+        Long total = StudentDtos.stream().count();
 
         StudentReviewDto studentReviewDto = StudentReviewDto.builder()
-                .students(students)
+                .StudentDtos(StudentDtos)
                 .limit(limit)
                 .page(page)
                 .total(total)
