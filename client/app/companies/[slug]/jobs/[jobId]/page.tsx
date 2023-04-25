@@ -5,11 +5,11 @@ import Link from "next/link";
 import JobBreadcrumbs from "../../components/JobBreadcrumbs";
 import TinyJobInfoCard from "@/app/components/SearchContainer/TinyJobInfoCard";
 import Mybutton from "../../../../components/MyButton";
-import Detail from "@/app/components/SearchContainer/JobInfoCard/Detail";
-import SkillTag from "@/app/components/SearchContainer/JobInfoCard/SkillTag";
-import { SaveButton } from "@/app/components/SearchContainer/JobInfoCard/Action";
+import Detail from "@/app/components/JobInfoCard/Detail";
+import SkillTag from "@/app/components/JobInfoCard/SkillTag";
+import { SaveButton } from "@/app/components/JobInfoCard/Action";
 import MyButton from "../../../../components/MyButton";
-import { Vacancy } from "@/app/components/SearchContainer/JobInfoCard";
+import { Vacancy } from "@/app/components/JobInfoCard";
 import Lexical from "@/app/components/Lexical/App";
 import { notFound } from "next/navigation";
 

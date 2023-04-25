@@ -4,6 +4,7 @@ import Detail from "./Detail";
 import Action from "./Action";
 import CompanyAction from "./CompanyAction";
 import { Skill } from "@/app/companies/[slug]/components/SkillPicker";
+import Info from "./Info";
 
 export interface Vacancy {
   // #: 沒用到
@@ -25,9 +26,10 @@ export interface Vacancy {
   vacanciesQuantity: number; // 招收人數
   vacanciesDistrict: string; // 區
   vacanciesAddress: string; // 地址
-  vacanciesCreateTime?: string; // 創建時間 #
+  vacanciesCreateTime?: string; // 創建時間
+  vacanciesUpdateTime?: string; // 更新時間
   applyCount?: number; // 已應徵人數(投履歷就算)
-  vacanciesView?: number; // 瀏覽次數
+  vacanciesView: number; // 瀏覽次數
   vacanciesDownSalary: number; // 底薪
   vacanciesTopSalary: number; // 最高薪水
   vacanciesSalaryType: "hour" | "month"; // 薪水型態(時or月)
@@ -39,11 +41,22 @@ export interface Vacancy {
 
 interface Props {
   vacancy: Vacancy;
+  classnames?: string;
+  disableActions?: boolean;
+  disableBackground?: boolean;
 }
 
-const JobInfoCard = ({ vacancy }: Props) => {
+const JobInfoCard = ({
+  vacancy,
+  classnames,
+  disableActions,
+  disableBackground,
+}: Props) => {
   return (
-    <Card>
+    <Card
+      classnames={classnames ? classnames : ""}
+      disableBackground={disableBackground}
+    >
       <div className="flex flex-col md:flex-row p-5 pb-0 gap-6">
         <div className="w-full md:w-8/12">
           <Content vacancy={vacancy} />
@@ -53,7 +66,15 @@ const JobInfoCard = ({ vacancy }: Props) => {
         </div>
       </div>
       <div className="px-5 py-3 md:p-5">
-        <Action vacancy={vacancy} />
+        <div className="flex flex-col md:flex-row md:items-center gap-3">
+          <div className="flex md:w-8/12 gap-3">
+            <div className="hidden lg:block w-2/12"></div>
+            <div className="flex w-full items-center gap-2 text-sm text-slate-700">
+              <Info vacancy={vacancy} />
+            </div>
+          </div>
+          {disableActions ? null : <Action vacancy={vacancy} />}
+        </div>
       </div>
       <CompanyAction vacancy={vacancy} />
     </Card>

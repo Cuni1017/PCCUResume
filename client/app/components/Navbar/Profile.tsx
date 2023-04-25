@@ -1,5 +1,5 @@
 import { User } from "@/redux/slices/user";
-import { useAuth } from "../../hooks/useAuth";
+import { useAuth } from "../../../hooks/useAuth";
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
@@ -23,12 +23,11 @@ const Profile = ({
     >
       <div className="mr-1 h-full flex items-center">
         <div className="rounded-full flex items-center overflow-hidden">
-          {/* https://images.unsplash.com/photo-1533738363-b7f9aef128ce?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80 */}
           <Image
             src={imageURL ? imageURL : "/PCCUResume.png"}
             width={35}
             height={35}
-            alt="cat"
+            alt={name}
           ></Image>
         </div>
         <div className="ml-1 hidden sm:block text-sm">{name}</div>

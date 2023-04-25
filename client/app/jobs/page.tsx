@@ -1,6 +1,4 @@
-import JobInfoCard, {
-  Vacancy,
-} from "../components/SearchContainer/JobInfoCard";
+import JobInfoCard, { Vacancy } from "../components/JobInfoCard";
 import NotFoundCard from "../components/SearchContainer/NotFoundCard";
 import PaginationBar from "../components/SearchContainer/PaginationBar";
 
@@ -48,6 +46,7 @@ const fetchJobs = async (searchParams: any) => {
       "Cache-Control": "no-store",
       "Content-Type": "application/json",
     },
+    cache: "no-store",
   });
 
   if (!res.ok) {
@@ -66,8 +65,6 @@ const JobsSearchHomePage = async (props: any) => {
   const totalJobs = res.data.total;
   const eachPageJobQuantity = res.data.size;
   const vacancies: Vacancy[] = res.data.companyVacanciesDto;
-
-  console.log(vacancies);
 
   const totalPage = Math.ceil(totalJobs / eachPageJobQuantity);
   const currentPage = searchParams.page

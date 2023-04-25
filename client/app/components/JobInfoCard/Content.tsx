@@ -16,7 +16,7 @@ const Content = ({ vacancy }: { vacancy: Vacancy }) => {
   } = vacancy;
 
   // @ts-ignore
-  const techs: string[] = skills.split(",");
+  const techs: string[] = skills ? skills.split(",") : [];
 
   const renderedSkillTag = techs.map((tech) => (
     <SkillTag key={tech} skill={tech} />
@@ -82,9 +82,11 @@ const Content = ({ vacancy }: { vacancy: Vacancy }) => {
             : `${vacanciesDescription} ${vacanciesRequirement}`}
         </div>
         <div className="overflow-hidden">
-          <div className="pb-4 mb-[-1.5rem] overflow-x-scroll z-10">
+          <div className="pb-6   mb-[-1.5rem] overflow-x-scroll z-10">
             <div className="relative">
-              <div className="flex gap-1 z-10">{renderedSkillTag}</div>
+              <div className="flex gap-1 z-10 whitespace-nowrap">
+                {renderedSkillTag}
+              </div>
               {/* <div
                 className="absolute w-full"
                 style={{

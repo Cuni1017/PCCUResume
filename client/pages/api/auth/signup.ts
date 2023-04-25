@@ -24,6 +24,8 @@ export default async function handler(
       companyAddress,
     } = req.body;
 
+    console.log(req.body)
+
     const validationSchema = [
       {
         valid: validator.isLength(username, {

@@ -12,7 +12,7 @@ import AvatarStack from "./AvatarStack";
 import MyButton from "@/app/components/MyButton";
 import ApplyNumber from "./ApplyNumber";
 import Link from "next/link";
-import VacancyDetails from "@/app/components/SearchContainer/JobInfoCard/Detail";
+import VacancyDetails from "@/app/components/JobInfoCard/Detail";
 
 interface Props {
   apply: Apply;

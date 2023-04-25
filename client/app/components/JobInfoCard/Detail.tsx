@@ -41,14 +41,12 @@ const Detail = ({ vacancy }: { vacancy: Vacancy }) => {
               className="cursor-pointer"
             >
               <div>
-                {county}
-                {vacanciesDistrict}
+                {county} {vacanciesDistrict}
               </div>
             </Tooltip>
           ) : (
             <div>
-              {county}
-              {vacanciesDistrict}
+              {county} {vacanciesDistrict}
             </div>
           )}
         </div>

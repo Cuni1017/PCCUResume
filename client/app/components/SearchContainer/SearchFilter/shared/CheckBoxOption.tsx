@@ -13,7 +13,7 @@ const CheckBoxOption = ({
   category: string;
   searchParamsList: string[] | undefined;
   setSearchParamsList: Dispatch<SetStateAction<string[] | undefined>>;
-}) => {
+}) => { 
   const handleClick = () => {
     if (!searchParamsList) {
       setSearchParamsList([`${category}=${encodeURI(label)}`]);

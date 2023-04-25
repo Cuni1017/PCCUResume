@@ -10,7 +10,7 @@ const TextFiled = ({
 }: {
   label: string;
   name: string;
-  value: string;
+  value: string | number;
   onChange?: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   [keys: string]: any;
 }) => {
@@ -24,7 +24,7 @@ const TextFiled = ({
         size="small"
         name={name}
         fullWidth
-        value={value}
+        value={value || ""}
         onChange={onChange}
         {...rest}
       />

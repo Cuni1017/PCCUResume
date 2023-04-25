@@ -5,7 +5,7 @@ import HeaderNavigationBar from "./HeaderNavigationBar";
 
 const CompanyHeader = ({ companyName }: { companyName: string }) => {
   return (
-    <div className="w-full rounded-b-md  overflow-hidden shadow-md">
+    <div className="w-full rounded-b-md overflow-hidden shadow-md">
       <HeaderBackground />
       <div className="w-full md:h-[84px] bg-white relative">
         <div className="max-w-[24rem] sm:max-w-[36rem] md:max-w-none m-auto px-3 relative">

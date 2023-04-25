@@ -72,12 +72,14 @@ export function useGetApplies(companyName: string) {
   return { data, isFetching };
 }
 
-export function usePutApply(companyName: string) {
+export function usePutApply(companyName: string, studentId?: string) {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: putApply,
     onSuccess: () => {
-      queryClient.invalidateQueries([companyName]); //applyId
+      queryClient.invalidateQueries([companyName]);
+      studentId ?
+        queryClient.invalidateQueries([studentId]) : null;
     },
   });
 

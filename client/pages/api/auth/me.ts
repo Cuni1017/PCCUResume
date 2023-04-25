@@ -68,6 +68,25 @@ export default async function handler(
       }
       break
     case "T":
+      try {
+        const { data: { data: { teacherId, teacherName, teacherUsername, teacherImageUrl, role } } } = await axiosInstance.get(`/v1/teacher/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+        user = {
+          id: teacherId,
+          username: teacherUsername,
+          name: teacherName,
+          // email: teacherEmail,
+          // phone: teacherNumber,
+          role,
+          imageURL: teacherImageUrl,
+          isValid: role !== "USER"
+        }
+      } catch (error) {
+        console.log(error, "me C")
+      }
       break
   }
 

@@ -16,15 +16,7 @@ const fetchJobById = async (vacancyId: string) => {
   });
   if (!res.ok) throw new Error("Failed to fetch");
 
-  const resJson = await res.json();
-  const vacancy = {
-    ...resJson.vacancies,
-    skills: resJson.skills,
-    county: resJson.county,
-  };
-
-  // return res.json();
-  return vacancy;
+  return res.json();
 };
 
 const JobEditPage = async (props: any) => {
@@ -39,12 +31,12 @@ const JobEditPage = async (props: any) => {
 
   if (!user || user.name !== companyName) return <UnAuthorizedPage />;
 
-  const vacancy = await fetchJobById(params.jobId);
-  // const vacancy = {
-  //   ...data.vacancies,
-  //   skills: data.skills,
-  //   county: data.county,
-  // };
+  const { data } = await fetchJobById(params.jobId);
+  const vacancy = {
+    ...data.vacancies,
+    skills: data.skills,
+    county: data.county,
+  };
 
   return (
     <div className="pt-5 px-3 md:px-0 m-auto h-full sm:max-w-[600px] md:max-w-[860px] lg:max-w-[1140px]">

@@ -28,23 +28,3 @@ export function useGetApplies(studentId: string) {
   const { data = [], isFetching } = query
   return { data, isFetching }
 }
-
-
-// async function postJob({
-//   companyName,
-//   formData,
-// }: {
-//   companyName: string;
-//   formData: any;
-// }) {
-//   const { data } = await axiosInstance.post(
-//     `/api/companies/${companyName}/jobs`,
-//     { ...formData },
-//     {
-//       headers: {
-//         Authorization: `Bearer ${JWT}`,
-//       },
-//     }
-//   );
-//   return data;
-// }

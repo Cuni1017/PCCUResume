@@ -37,5 +37,5 @@ export default async function handler(
     return res.status(200).json({ message: "寄送成功" });
   }
 
-  return res.status(404).json({ errorMessage: "Unknown endpoint" });
+  return res.status(405).json({ errorMessage: "Method not allow" });
 }

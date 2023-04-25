@@ -7,10 +7,10 @@ import { useGetApplies } from "@/hooks/studentJob/useStudentJob";
 import { Store } from "@/redux/store";
 import { useSelector } from "react-redux";
 import { Company } from "@/app/companies/[slug]/applicants/page";
-import { Vacancy } from "@/app/components/SearchContainer/JobInfoCard";
+import { Vacancy } from "@/app/components/JobInfoCard";
 import Card from "@/app/components/Card";
-import SkillTag from "@/app/components/SearchContainer/JobInfoCard/SkillTag";
-import VacancyDetail from "@/app/components/SearchContainer/JobInfoCard/Detail";
+import SkillTag from "@/app/components/JobInfoCard/SkillTag";
+import VacancyDetail from "@/app/components/JobInfoCard/Detail";
 import MyButton from "@/app/components/MyButton";
 import {
   ApplyType,
@@ -26,7 +26,7 @@ const ApplicationsJobs = () => {
   const user = useSelector((store: Store) => store.user);
 
   const { data: applies, isFetching } = useGetApplies(user.id);
-  console.log(applies);
+  // console.log(applies);
 
   const renderedApplyCards = applies.map((apply: Apply) => (
     <ApplyCard key={apply.apply[0].applyId} apply={apply} />
@@ -77,8 +77,11 @@ const ApplyCard = ({ apply }: { apply: Apply }) => {
     applyEmail,
     applyNumber,
     applyBeforeTalk,
+    userId,
     applyId,
   } = apply.apply[0];
+
+  console.log(userId);
 
   const {
     companyEmail,
@@ -104,7 +107,7 @@ const ApplyCard = ({ apply }: { apply: Apply }) => {
     },
   } = apply.fullVacanciesDto;
 
-  const { mutate, isSuccess } = usePutApply(companyName);
+  const { mutate, isSuccess } = usePutApply(companyName, userId);
 
   const renderedSkillTags = skills
     .split(",")

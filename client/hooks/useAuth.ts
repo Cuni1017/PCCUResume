@@ -51,6 +51,7 @@ export function useAuth(): UseAuth {
     { username, password }: { username: string; password: string },
     handleClose: () => void
   ) => {
+    setIsFetching(true)
     try {
       const res = await axiosInstanceNext.post("/api/auth/signin", {
         username,
@@ -67,6 +68,7 @@ export function useAuth(): UseAuth {
     } catch (error) {
       console.log(error, "useAuth");
     }
+    setIsFetching(false)
   };
 
   const signup = async ({
@@ -122,7 +124,7 @@ export function useAuth(): UseAuth {
   const signout = () => {
     Cookies.remove("JWT");
     dispatch(cleanUser());
-    router.replace("/");
+    router.push("/");
   };
 
   return { signin, signup, signout, isFetching };

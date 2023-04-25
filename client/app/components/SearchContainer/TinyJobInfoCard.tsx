@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlined";
 import { getSalaryText } from "@/util/getSalaryText";
-import { Vacancy } from "@/app/components/SearchContainer/JobInfoCard";
+import { Vacancy } from "@/app/components/JobInfoCard";
 import Tooltip from "@mui/material/Tooltip";
 
 interface Props {

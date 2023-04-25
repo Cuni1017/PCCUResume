@@ -60,6 +60,7 @@
     "@tailwindcss/line-clamp": "^0.4.2",
     "@types/js-cookie": "^3.0.3",
     "@types/jsonwebtoken": "^9.0.1",
+    "@types/lodash-es": "^4.17.7",
     "@types/prettier": "^2.7.2",
     "@types/validator": "^13.7.12",
     "autoprefixer": "^10.4.13",

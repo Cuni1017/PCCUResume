@@ -1,4 +1,6 @@
-import React, { ChangeEvent, useCallback, useEffect, useState } from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import Card from "../../../components/Card";
 import { MuiChipsInput } from "mui-chips-input";
 import EditIcon from "@mui/icons-material/Edit";
@@ -27,16 +29,11 @@ interface Props {
   userId: string;
   resumeId: string;
   workHope: WorkHope;
+  isEditMode: boolean;
 }
 
-const RWorkHope = ({ userId, resumeId, workHope }: Props) => {
-  const [data, setData] = useState({
-    id: "",
-    resumeId,
-    userId,
-    type: "", //希望職類
-    date: "", //上班時段
-  });
+const RWorkHope = ({ userId, resumeId, workHope, isEditMode }: Props) => {
+  const [data, setData] = useState(workHope);
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
@@ -51,11 +48,12 @@ const RWorkHope = ({ userId, resumeId, workHope }: Props) => {
           text="編輯"
           isEditing={isEditing}
           setIsEditing={() => setIsEditing(!isEditing)}
+          isEditMode={isEditMode}
         />
       </ResumeItemHeader>
       <ResumeItemContent>
         <>
-          {isEditing ? (
+          {isEditing && isEditMode ? (
             <WorkHopeEditCard
               workHope={data}
               setIsEditing={setIsEditing}
@@ -87,7 +85,6 @@ const WorkHopeEditCard = ({
   const { mutate: PutMutate } = usePutResumeDetail(data.resumeId);
 
   const handleSave = () => {
-
     if (data.id !== "") {
       PutMutate({
         userId,
@@ -198,6 +195,7 @@ const WorkHopeEditCard = ({
           size="small"
           fullWidth
           placeholder="請輸入並按下Enter"
+          className="mt-2"
         />
       </div>
       <div>
@@ -220,12 +218,12 @@ const WorkHopeCard = ({ workHope }: { workHope: WorkHope }) => {
     } else {
       return (
         <div className="flex flex-col gap-2">
-          <div className="flex">
-            <div className="">上班時段：</div>
+          <div className="flex flex-col gap-1 md:flex-row">
+            <div>上班時段：</div>
             <div>{workHope.date}</div>
           </div>
-          <div className="flex">
-            <div className="">期望職類：</div>
+          <div className="flex flex-col gap-1 md:flex-row">
+            <div>期望職類：</div>
             <div>{workHope.type}</div>
           </div>
         </div>

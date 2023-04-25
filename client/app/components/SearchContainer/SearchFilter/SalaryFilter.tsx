@@ -87,7 +87,7 @@ const SalaryFilter = () => {
   );
 
   useEffect(() => {
-    // debounceSalaryRangeChange(salaryRange);
+    debounceSalaryRangeChange(salaryRange);
   }, [debounceSalaryRangeChange, salaryRange]);
 
   const handleSliderChange = (event: Event, newValue: number | number[]) => {

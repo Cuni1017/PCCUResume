@@ -35,6 +35,12 @@ export default async function handler(
     case "work-experience":
       neededData = ["name", "department", "companyName"];
       break;
+    case "subject":
+      neededData = ["subjectName", "subjectTalk", "subjectScore", "subjectRank", "subjectTotalPeople"]
+      break;
+    case "skill":
+      neededData = ["skillIds"]
+      break;
     default:
       return res.status(400).json({ errorMessage: "Unknown Endpoint" });
   }
@@ -64,7 +70,7 @@ export default async function handler(
   } else if (req.method === "PUT") {
     try {
       const response = await axiosInstance.put(
-        `/students/${userId}/resumes/${resumeId}/${endpoint}/${endpointId}`,
+        `/students/${userId}/resumes/${resumeId}/${endpoint}${endpointId ? `/${endpointId}` : ""}`,
         formData,
         options
       );

@@ -1,3 +1,5 @@
+"use client";
+
 import React, { ChangeEvent, useEffect, useState } from "react";
 import Card from "../../../components/Card";
 import EditIcon from "@mui/icons-material/Edit";
@@ -9,7 +11,7 @@ import ResumeItemContent from "./shared/ResumeItemContent";
 import HeaderController from "./shared/HeaderController";
 import MyButton from "../../../components/MyButton";
 import Modal from "@mui/material/Modal";
-import TextFiled from "./shared/TextFiled";
+import TextFiled from "./shared/TextField";
 import { DateField } from "@mui/x-date-pickers/DateField";
 import dayjs, { Dayjs } from "dayjs";
 import Checkbox from "@mui/material/Checkbox";
@@ -20,6 +22,7 @@ import {
   usePostResumeDetail,
   usePutResumeDetail,
 } from "@/hooks/Resume/useResumeDetail";
+import ResumeDetailActions from "./shared/ResumeDetailActions";
 
 const style = {
   position: "absolute",
@@ -50,15 +53,18 @@ interface Props {
   userId: string;
   resumeId: string;
   workExperience: WorkExperice[];
+  isEditMode: boolean;
 }
 
-const RworkExperience = ({ userId, resumeId, workExperience }: Props) => {
-  const [data, setData] = useState<WorkExperice[]>([]);
+const RworkExperience = ({
+  userId,
+  resumeId,
+  workExperience,
+  isEditMode,
+}: Props) => {
+  const [data, setData] = useState<WorkExperice[]>(workExperience);
   const [isEditing, setIsEditing] = useState<null | number>(null); // 編輯data裡第幾個或無
 
-  const handleNewEX = () => {
-    setIsEditing(data.length + 1);
-  };
   const handleEdit = (index: number) => {
     setIsEditing(index);
   };
@@ -77,34 +83,32 @@ const RworkExperience = ({ userId, resumeId, workExperience }: Props) => {
   };
 
   const handleSave = (WEId: string, WE: WorkExperice) => {
-    console.log(WE, "save");
-
-    if (!WE.id) {
-      console.log("No Id");
-      PostMutate({
-        userId,
-        resumeId,
-        endpoint: "work-experience",
-        formData: {
-          name: WE.name,
-          department: WE.department,
-          companyName: WE.companyName,
-        },
-      });
-    } else {
-      console.log("Yes Id");
-      PutMutate({
-        userId,
-        resumeId,
-        endpoint: "work-experience",
-        endpointId: WE.id,
-        formData: {
-          name: WE.name,
-          department: WE.department,
-          companyName: WE.companyName,
-        },
-      });
-    }
+    WE.id
+      ? PutMutate({
+          userId,
+          resumeId,
+          endpoint: "work-experience",
+          endpointId: WE.id,
+          formData: {
+            name: WE.name,
+            department: WE.department,
+            companyName: WE.companyName,
+            startTime: WE.startTime,
+            endTime: WE.endTime,
+          },
+        })
+      : PostMutate({
+          userId,
+          resumeId,
+          endpoint: "work-experience",
+          formData: {
+            name: WE.name,
+            department: WE.department,
+            companyName: WE.companyName,
+            startTime: WE.startTime,
+            endTime: WE.endTime,
+          },
+        });
 
     setIsEditing(null);
   };
@@ -124,6 +128,7 @@ const RworkExperience = ({ userId, resumeId, workExperience }: Props) => {
           index={index}
           handleEdit={handleEdit}
           handleDelete={handleDelete}
+          isEditMode={isEditMode}
         />
       ));
     } else {
@@ -142,6 +147,7 @@ const RworkExperience = ({ userId, resumeId, workExperience }: Props) => {
             if (isEditing === null) setIsEditing(data.length);
             else setIsEditing(null);
           }}
+          isEditMode={isEditMode}
         />
       </ResumeItemHeader>
       <ResumeItemContent>
@@ -270,7 +276,7 @@ const WorkExperienceEditCard = ({
             value={startTime}
             name="startTime"
             format={"YYYY／MM／DD"}
-            error={data.startTime > data.endTime ? true : undefined}
+            // error={data.startTime > data.endTime ? true : undefined}
             onChange={(newValue: any, context: any) => {
               if (context.validationError == null) {
                 setStartTime(newValue);
@@ -286,7 +292,7 @@ const WorkExperienceEditCard = ({
             value={endTime}
             name="endTime"
             format={"YYYY／MM／DD"}
-            error={data.startTime > data.endTime ? true : undefined}
+            // error={data.startTime > data.endTime ? true : undefined}
             disabled={stillwork ? true : undefined}
             onChange={(newValue: any, context: any) => {
               if (context.validationError == null) {
@@ -342,6 +348,7 @@ interface WorkExperienceCardProps {
   handleEdit: (index: number) => void;
   handleDelete: (WEId: string) => void;
   index: number;
+  isEditMode: boolean;
 }
 
 const WorkExperienceCard = ({
@@ -349,63 +356,41 @@ const WorkExperienceCard = ({
   handleEdit,
   handleDelete,
   index,
+  isEditMode,
 }: WorkExperienceCardProps) => {
+  const [hovered, setHovered] = useState(false);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   return (
-    <div className="w-full md:max-w-[700px] flex">
+    <div
+      className="w-full md:max-w-[700px] flex"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
       <div className="w-full grow">
         <div className="font-bold text-lg">{WE.name}</div>
         <div className="font-bold">
           {WE.companyName} {WE.department}
         </div>
         <div className="text-slate-700 text-sm">
-          {/* {WE.startTime.substring(0, 10)}－{WE.endTime.substring(0, 10)} */}
+          {WE.startTime.substring(0, 10)}－{WE.endTime.substring(0, 10)}
         </div>
       </div>
-      <div className="flex justify-end items-center gap-3 text-gray-500">
-        <div
-          className="cursor-pointer hover:text-gray-800"
-          onClick={() => handleEdit(index)}
-        >
-          <EditIcon />
+      {isEditMode && hovered ? (
+        <div className="flex justify-end items-center gap-3 text-gray-500">
+          <ResumeDetailActions
+            onEditClick={() => handleEdit(index)}
+            onDelete={() => {
+              handleDelete(WE.id);
+              setOpen(false);
+              setHovered(false);
+            }}
+            onClose={() => setHovered(false)}
+          />
         </div>
-        <div className="cursor-pointer hover:text-red-800" onClick={handleOpen}>
-          <DeleteIcon />
-        </div>
-      </div>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <div>
-            <div className="font-bold text-xl">確定刪除嗎？</div>
-            <div className="text-sm">資料刪除後無法還原喔！確定刪除？</div>
-            <div className="flex justify-center gap-10 mt-5">
-              <MyButton
-                onClick={() => {
-                  handleDelete(WE.id);
-                  setOpen(false);
-                }}
-                classnames="bg-[#e25555] hover:bg-red-800 text-white w-[100px]"
-              >
-                確定
-              </MyButton>
-              <MyButton
-                onClick={handleClose}
-                classnames="hover:bg-gray-300 w-[100px]"
-              >
-                取消
-              </MyButton>
-            </div>
-          </div>
-        </Box>
-      </Modal>
+      ) : null}
     </div>
   );
 };

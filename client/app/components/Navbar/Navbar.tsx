@@ -12,7 +12,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { CircularProgress } from "@mui/material";
 import Button from "@mui/material/Button";
 import AuthModal from "../AuthModal/AuthModal";
-import Profile from "../Profile";
+import Profile from "./Profile";
 import TanstackLinearProgress from "./TanstackLinearProgress";
 import AppLinearIndeterminate from "./AppLinearProgress";
 
@@ -47,6 +47,7 @@ const Navbar = () => {
   const checkJWT = useCallback(async () => {
     try {
       const JWT = getCookie("JWT");
+
       if (JWT) {
         const res = await axiosInstanceNext.get("/api/auth/me", {
           headers: {
