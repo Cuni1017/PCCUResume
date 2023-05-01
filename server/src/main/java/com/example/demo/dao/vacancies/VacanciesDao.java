@@ -104,10 +104,12 @@ public class VacanciesDao {
                 "LEFT JOIN county ct  ON ct.county_id = vc.county_id \n"+
                 "WHERE 1=1  ";
         if(teacherValidType != null){
+
             sql = sql +" AND v.teacher_valid_type = :teacherValidType ";
         }
         if(search!= null){
-            sql = sql + " OR c.company_name = :search OR v.vacancies_name = :search";
+            search = "%" + search + "%";
+            sql = sql + " AND (c.company_name like :search OR v.vacancies_name like :search)";
         }
         sql = sql + " group by v.vacancies_id";
 

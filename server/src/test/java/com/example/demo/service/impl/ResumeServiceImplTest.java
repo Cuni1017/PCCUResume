@@ -48,18 +48,21 @@ class ResumeServiceImplTest {
 
     }@Test
     public void streamTest(){
-//        String s = "-     3213";
-//        List<Character> charList = new LinkedList<>();
-//        for(int i =0 ; i<s.length();i++){
-//            if( (s.charAt(i)<=57&&s.charAt(i)>=48)||s.charAt(i) == 45){
-//                charList.add(s.charAt(i));
-//            }
-//        }
-//        char[] charArray = new char[charList.size()];
-//        charList.toArray(charArray);
-//        System.out.println(charArray);
-//        int z = Integer.parseInt(new String(charArray));
-//        System.out.println(z);
+        int[] x = new int[]{1,2,8,6,9,7};
+        for (int i = 1 ; i<=x.length-1 ; i++){
+            int key = x[i];
+            int j = i-1;
+            while(j >= 0 && key >x[j] ){
+                int change = x[j];
+                x[j] = x[j+1];
+                x[j+1] = change;
+                j--;
+            }
+        }
+        for (int i = 0 ; i<x.length ; i++) {
+            System.out.println(x[i]);
+        }
+
 
     }
     private String getId(JpaRepository repository , String idType , int x){

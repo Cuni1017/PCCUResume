@@ -6,6 +6,7 @@ import com.example.demo.model.Company;
 import com.example.demo.rowmapper.CompanyDtoRowMapper;
 import com.example.demo.rowmapper.CompanyVacanciesRowMapper;
 import com.example.demo.rowmapper.StudentDtoRowMapper;
+
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -68,7 +69,9 @@ public class CompanyDao {
             sql = sql + " AND u.role = :role";
         }
         if( search != null){
-            sql = sql + " OR s.company _name = :search ";
+            search = "%" + search + "%";
+            sql = sql + " AND c.company_name LIKE :search ";
+            System.out.println(sql);
         }
         sql = sql + " LIMIT :limit OFFSET :offset";
         map.put("role",role);
