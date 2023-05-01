@@ -8,6 +8,8 @@ import Image from "next/image";
 import CloseIcon from "@mui/icons-material/Close";
 import MyDatePicker from "@/app/components/MyDatePicker";
 import dayjs, { Dayjs } from "dayjs";
+import CircularProgress from "@mui/material/CircularProgress";
+import ApplyCoverLetter from "./ApplyCoverLetter";
 
 const applyActions = {
   拒絕應徵: { description: "拒絕該學生應徵此職缺。", outcome: "應徵失敗" },
@@ -22,7 +24,7 @@ const applyActions = {
   },
   面試拒絕: { description: "該學生在面試中被拒。", outcome: "面試失敗" },
   調整實習時間: { description: "調整該學生的實習時間。", outcome: "實習中" },
-  中斷實習: { description: "中斷該學生的實習。", outcome: "實習中斷" },
+  中斷實習: { description: "中斷該學生的實習。", outcome: "廠商中斷實習" },
 };
 
 export type ApplyType =
@@ -32,7 +34,9 @@ export type ApplyType =
   | "實習中"
   | "應徵失敗"
   | "面試失敗"
-  | "待學生同意中失敗";
+  | "待學生同意中失敗"
+  | "廠商中斷實習";
+// | 廠商超時未處理, 學生超時未處理, 有實習成功其他職缺所以此應徵失敗 (平台處理
 export type ApplyAction = keyof typeof applyActions;
 
 interface Props {
@@ -62,7 +66,6 @@ const ApplyActionDialog = ({
   onEditApplyTime,
   onClose,
 }: Props) => {
-  const [isShowHeadshot, setIsShowHeadShot] = useState(false);
   const [showDoubleCheckDialog, setShowDoubleCheckDialog] =
     useState<ApplyAction | null>(null);
   const [isShowDatePicker, setIsShowDatePicker] = useState(false);
@@ -105,6 +108,7 @@ const ApplyActionDialog = ({
             applyType: applyActions[showDoubleCheckDialog as ApplyAction]
               .outcome as ApplyType,
           });
+          setShowDoubleCheckDialog(null);
         }}
         onClose={() => setShowDoubleCheckDialog(null)}
         title={showDoubleCheckDialog as string}
@@ -128,14 +132,6 @@ const ApplyActionDialog = ({
           title={"調整實習時間"}
         />
       ) : null}
-
-      {studentImageUrl && (
-        <ImageDialog
-          imageURL={studentImageUrl}
-          isOpen={isShowHeadshot}
-          onClose={() => setIsShowHeadShot(false)}
-        />
-      )}
       <div className="absolute right-2 top-2">
         <button
           onClick={onClose}
@@ -144,53 +140,9 @@ const ApplyActionDialog = ({
           <CloseIcon />
         </button>
       </div>
-      <div className="flex flex-col gap-5 p-5 min-w-[60vw] sm:min-w-0 max-w-[20rem] sm:max-w-none sm:w-[30rem]">
-        <div className="flex gap-2">
-          <div onClick={() => setIsShowHeadShot(true)}>
-            <Avatar
-              className={`${studentImageUrl ? "cursor-pointer" : ""}`}
-              alt={studentRealName}
-              src={studentImageUrl ? studentImageUrl : " "}
-            />
-          </div>
-          <Link
-            href={`/me/${studentRealName}`}
-            className="flex items-center hover:underline"
-          >
-            <div>{studentRealName}</div>
-          </Link>
-        </div>
-        <div className="flex flex-col sm:flex-row md:items-center gap-2">
-          <div className="font-bold">電子信箱： </div>
-          <div className="flex items-center">{applyEmail}</div>
-        </div>
-        <div className="flex flex-col sm:flex-row md:items-center gap-2">
-          <div className="font-bold">聯絡電話： </div>
-          <div className="flex items-center">+886 {applyNumber}</div>
-        </div>
-        {applyType === "實習中" ? (
-          <>
-            <div className="flex flex-col sm:flex-row gap-2">
-              <div className="font-bold">實習開始時間：</div>
-              <div className="text-sm">
-                {applyStartTime ? applyStartTime : "您尚未填寫"}
-              </div>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-2">
-              <div className="font-bold">實習結束時間：</div>
-              <div className="text-sm">
-                {applyEndTime ? applyEndTime : "您尚未填寫"}
-              </div>
-            </div>
-          </>
-        ) : (
-          <div className="flex flex-col gap-2">
-            <div className="font-bold">求職信：</div>
-            <div className="text-sm indent-8 whitespace-pre-wrap">
-              {applyBeforeTalk}
-            </div>
-          </div>
-        )}
+
+      <ApplyCoverLetter applyUser={applyUser}>
+
 
         <div className="flex justify-end">
           <Link href={`/resumes/${resumeId}`} target="_blank">
@@ -254,7 +206,7 @@ const ApplyActionDialog = ({
             </MyButton>
           </div>
         )}
-      </div>
+      </ApplyCoverLetter>
     </MyDialog>
   );
 };
@@ -338,15 +290,28 @@ export const DoubleCheckDialog = ({
   title,
   content,
   isOpen,
+  isLoading,
   onSure,
   onClose,
+  type,
 }: {
   title: string;
   content: string;
+  isLoading?: boolean;
   isOpen: boolean;
   onSure: () => void;
   onClose: () => void;
+  type?: "danger" | "success" | "primary";
 }) => {
+  const onSureBtnStyle =
+    type === "danger"
+      ? `bg-red-500 hover:bg-red-600 focus:bg-red-700`
+      : type === "primary"
+      ? `bg-blue-500 hover:bg-blue-600 focus:bg-blue-700`
+      : type === "success"
+      ? `bg-green-500 hover:bg-green-600 focus:bg-green-700`
+      : "bg-green-500 hover:bg-green-600 focus:bg-green-700";
+
   return (
     <MyDialog isOpen={isOpen} onClose={onClose}>
       <div className="p-5 flex flex-col gap-5 sm:min-w-[15rem]">
@@ -358,11 +323,16 @@ export const DoubleCheckDialog = ({
         <div className="flex flex-col sm:grid grid-cols-2 gap-3 sm:gap-10">
           <MyButton
             onClick={onSure}
-            classnames="text-white bg-green-500 hover:bg-green-600 focus:bg-green-700"
+            classnames={`text-white h-[40px] ${onSureBtnStyle}`}
+            disabled={isLoading}
           >
-            確認
+            {isLoading ? <CircularProgress size={20} /> : "確認"}
           </MyButton>
-          <MyButton onClick={onClose} classnames="hover:bg-gray-300">
+          <MyButton
+            disabled={isLoading}
+            onClick={onClose}
+            classnames="hover:bg-gray-300"
+          >
             取消
           </MyButton>
         </div>
@@ -371,7 +341,7 @@ export const DoubleCheckDialog = ({
   );
 };
 
-const ImageDialog = ({
+export const ImageDialog = ({
   imageURL,
   isOpen,
   onClose,

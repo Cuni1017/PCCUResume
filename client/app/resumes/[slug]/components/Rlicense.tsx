@@ -1,10 +1,12 @@
+"use client";
+
 import React, { ChangeEvent, useEffect, useState } from "react";
 import Card from "../../../components/Card";
 import ResumeItemHeader from "./shared/ResumeItemHeader";
 import ResumeItemContent from "./shared/ResumeItemContent";
 import HeaderController from "./shared/HeaderController";
 import DeleteCheckModal from "./shared/DeleteCheckModal";
-import TextFiled from "./shared/TextFiled";
+import TextFiled from "./shared/TextField";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
@@ -14,6 +16,7 @@ import {
   usePostResumeDetail,
   usePutResumeDetail,
 } from "@/hooks/Resume/useResumeDetail";
+import ResumeDetailActions from "./shared/ResumeDetailActions";
 
 // 證照
 
@@ -28,10 +31,11 @@ interface Props {
   userId: string;
   resumeId: string;
   license: License[];
+  isEditMode: boolean;
 }
 
-const Rlicense = ({ userId, resumeId, license }: Props) => {
-  const [data, setData] = useState<License[]>([]);
+const Rlicense = ({ userId, resumeId, license, isEditMode }: Props) => {
+  const [data, setData] = useState<License[]>(license);
   const [isNewing, setIsNewing] = useState(false);
 
   useEffect(() => {
@@ -39,10 +43,6 @@ const Rlicense = ({ userId, resumeId, license }: Props) => {
       setData(license);
     }
   }, [license]);
-
-  const handleNew = () => {
-    setIsNewing(true);
-  };
 
   const renderedLicense = () => {
     if (data.length > 0) {
@@ -52,6 +52,7 @@ const Rlicense = ({ userId, resumeId, license }: Props) => {
           license={license}
           resumeId={resumeId}
           userId={userId}
+          isEditMode={isEditMode}
         />
       ));
     } else {
@@ -69,11 +70,12 @@ const Rlicense = ({ userId, resumeId, license }: Props) => {
           setIsEditing={() => {
             setIsNewing(!isNewing);
           }}
+          isEditMode={isEditMode}
         />
       </ResumeItemHeader>
       <ResumeItemContent>
         <div className="flex flex-col w-full justify-center gap-2">
-          {isNewing !== false ? (
+          {isNewing !== false && isEditMode ? (
             <NewLicenseCard
               setIsNewing={setIsNewing}
               userId={userId}
@@ -106,7 +108,7 @@ const NewLicenseCard = ({
 
   const { mutate: PostMutate } = usePostResumeDetail(resumeId);
 
-  const onSave = () => {
+  const handleSave = () => {
     PostMutate({
       userId,
       resumeId,
@@ -115,9 +117,6 @@ const NewLicenseCard = ({
         name: license.name,
       },
     });
-    setIsNewing(false);
-  };
-  const onCancel = () => {
     setIsNewing(false);
   };
 
@@ -136,10 +135,11 @@ const NewLicenseCard = ({
         onChange={handleTextChange}
       />
       <SaveCheck
+        classnames="mt-2"
+        onSave={handleSave}
+        onCancel={() => setIsNewing(false)}
         disabled={license.name === ""}
-        onSave={onSave}
-        onCancel={onCancel}
-      ></SaveCheck>
+      />
     </>
   );
 };
@@ -148,11 +148,14 @@ const LicenseCard = ({
   license,
   userId,
   resumeId,
+  isEditMode,
 }: {
   userId: string;
   resumeId: string;
   license: License;
+  isEditMode: boolean;
 }) => {
+  const [hovered, setHovered] = useState(false);
   const [data, setData] = useState(license);
   const [open, setOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -161,7 +164,6 @@ const LicenseCard = ({
   const { mutate: DeleteMutate } = useDeleteResumeDetail(license.resumeId);
 
   const handleSave = () => {
-
     PutMutate({
       userId,
       resumeId,
@@ -189,9 +191,18 @@ const LicenseCard = ({
   };
 
   return (
-    <div className="flex flex-col">
-      <div className="w-full flex mb-3">
-        {isEditing ? (
+    <div
+      className="flex flex-col gap-2"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <div className="w-full flex items-center min-h-[2rem]">
+        {!isEditMode ? (
+          <>
+            <span>證照名稱：</span>
+            <span className="font-bold">{license.name}</span>
+          </>
+        ) : isEditing ? (
           <TextFiled
             label="證照名稱："
             name="name"
@@ -206,35 +217,28 @@ const LicenseCard = ({
           </div>
         )}
 
-        <div className="flex justify-end items-center gap-3 text-gray-500 w-[100px]">
-          <div
-            className="cursor-pointer hover:text-gray-800"
-            onClick={() => setIsEditing(true)}
-          >
-            <EditIcon />
+        {isEditMode && hovered && !isEditing ? (
+          <div className="flex gap-3 text-gray-500">
+            <ResumeDetailActions
+              onEditClick={() => setIsEditing(true)}
+              onDelete={handleDelete}
+              onClose={() => setOpen(false)}
+            />
           </div>
-          <div
-            className="cursor-pointer hover:text-red-800"
-            onClick={() => setOpen(true)}
-          >
-            <DeleteIcon />
-          </div>
-        </div>
-        <DeleteCheckModal
-          open={open}
-          onDelete={handleDelete}
-          onClose={() => setOpen(false)}
-        />
-      </div>
-      <div className="w-full">
-        {isEditing ? (
-          <SaveCheck
-            disabled={data.name === ""}
-            onSave={handleSave}
-            onCancel={() => setIsEditing(false)}
-          ></SaveCheck>
         ) : null}
       </div>
+
+      {isEditMode ? (
+        <div className="w-full">
+          {isEditing ? (
+            <SaveCheck
+              disabled={data.name === ""}
+              onSave={handleSave}
+              onCancel={() => setIsEditing(false)}
+            ></SaveCheck>
+          ) : null}
+        </div>
+      ) : null}
     </div>
   );
 };

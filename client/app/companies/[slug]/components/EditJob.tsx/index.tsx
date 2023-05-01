@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useMemo } from "react";
 import SkillPicker from "../../components/SkillPicker";
 import {
   FormControl,
@@ -12,7 +12,7 @@ import {
 import Lexical, { initialJsonString } from "@/app/components/Lexical/App";
 import { EditorState } from "lexical/LexicalEditorState";
 import { LexicalEditor } from "lexical/LexicalEditor";
-import { Vacancy } from "@/app/components/SearchContainer/JobInfoCard";
+import { Vacancy } from "@/app/components/JobInfoCard";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MyButton from "@/app/components/MyButton";
 import { usePathname } from "next/navigation";
@@ -44,6 +44,7 @@ const initialVacancy: Vacancy = {
   vacanciesQuantity: 1, // 招募人數
   vacanciesCondition: "", // 面試流程
   skills: "", //所需技能
+  vacanciesView: 0,
   vacanciesWatchType: "公開",
 };
 
@@ -97,7 +98,11 @@ const EditJob = ({
   const [formData, setFormData] = useState<Vacancy>(
     vacancy ? vacancy : initialVacancy
   );
-  // const [skills, setSkills] = useState([{ skillId: 1, skillName: "React" }]); // !測試獨立useState
+  // skillPicker渲染成本太重，所以獨立出來
+  const [formDataSkills, setFormDataSkills] = useState(
+    vacancy ? vacancy.skills : []
+  );
+
   const [errors, setErrors] = useState(initialErrors);
 
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -105,10 +110,7 @@ const EditJob = ({
   };
 
   const handleSkillChange = useCallback((skillArray: Skill[]) => {
-    setFormData({
-      ...formData,
-      skills: skillArray,
-    });
+    setFormDataSkills(skillArray);
   }, []);
 
   const handleSubmit = () => {
@@ -127,15 +129,20 @@ const EditJob = ({
     });
     setErrors(errorsObj);
 
+    if (formDataSkills.length <= 0) {
+      errorsObj["skills"] = true;
+      return;
+    }
     let hasError = Object.values(errorsObj).some((value) => value === true);
     if (hasError) {
       console.log("有錯誤");
       return;
     }
+    const submitFormData = { ...formData, skills: formDataSkills };
 
     vacancy && jobId
-      ? PutMutate({ companyName, formData, jobId })
-      : PostMutate({ companyName, formData });
+      ? PutMutate({ companyName, formData: submitFormData, jobId })
+      : PostMutate({ companyName, formData: submitFormData });
   };
 
   const LexicalRegex = /"text":"([^"]*)"/g;
@@ -158,7 +165,7 @@ const EditJob = ({
     vacanciesRequirement,
     vacanciesQuantity,
     vacanciesCondition,
-    skills,
+    // skills,
     vacanciesWatchType,
   } = formData;
 
@@ -426,7 +433,7 @@ const EditJob = ({
         <div>
           <SkillPicker
             error={errors.skills}
-            techs={skills} //skills
+            techs={formDataSkills}
             handleSkillChange={handleSkillChange}
           />
         </div>

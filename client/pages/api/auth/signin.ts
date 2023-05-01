@@ -38,7 +38,7 @@ export default async function handler(
     }
 
     let token: null | string = null;
-    let user: any;
+    let user: any = null;
     try {
       const response = await axiosInstance.post("/login", {
         username,
@@ -52,44 +52,39 @@ export default async function handler(
       let role = object.role;
       let isValid: boolean = true;
       // 未經認證的STD或CPN，role會是USER，但data的key會不一樣
-      if (object.role === "USER") {
-        if (object.id[0] === "S") {
-          role = "STUDENT"
-        } else if (object.id[0] === "C") {
-          role = "COMPANY"
-        }
-        isValid = false
-      }
 
-      switch (role) {
-        case "STUDENT":
+      // 1: 學生, 2: 公司, 3.教師
+      let roleNum = role.includes("STUDENT") ? 1 : role.includes("COMPANY") ? 2 : role.includes("TEACHER") ? 3 : 0
+
+      switch (roleNum) {
+        case 1:
           user = {
             id: object.studentId,
             username: object.studentUsername,
             name: object.studentName,
             role: object.role,
             imageURL: object.studentImageUrl,
-            isValid
+            isValid: role === "STUDENT"
           }
           break
-        case "COMPANY":
+        case 2:
           user = {
             id: object.companyId,
             username: object.companyUsername,
             name: object.companyName,
             role: object.role,
             imageURL: object.companyImageUrl,
-            isValid
+            isValid: role === "COMPANY"
           }
           break
-        case "TEACHER":
+        case 3:
           user = {
             id: object.teacherId,
             username: object.teacherUsername,
             name: object.teacherName,
             role: object.role,
             imageURL: object.teacherImageUrl,
-            isValid
+            isValid: role === "TEACHER"
           }
           break
       }
@@ -97,8 +92,9 @@ export default async function handler(
       console.log(error);
       return res.status(401).json({ errorMessage: error });
     }
+
     if (token) {
-      setCookie("JWT", token, { req, res, maxAge: 24 * 60 * 60 * 1 }); //maxAge單位好像是秒
+      setCookie("JWT", token, { req, res, maxAge: 24 * 60 * 60 * 30 * 3 }); //maxAge單位好像是秒
       const decoded = jwt.decode(token) as {
         id: string;
         username: string;

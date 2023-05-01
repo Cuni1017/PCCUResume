@@ -1,3 +1,5 @@
+"use client";
+
 import React, { ChangeEvent, useEffect, useState } from "react";
 import Card from "../../../components/Card";
 import ResumeItemHeader from "./shared/ResumeItemHeader";
@@ -26,16 +28,26 @@ interface Props {
   userId: string;
   resumeId: string;
   autobiography: AutoBiography | null;
+  isEditMode: boolean;
 }
 
-const Rautobiography = ({ userId, resumeId, autobiography }: Props) => {
-  const [data, setData] = useState<AutoBiography>({
-    chineseAutobiography: "",
-    englishAutobiography: "",
-    id: "",
-    resumeId: "",
-    userId: "",
-  });
+const initailAutoBiography = {
+  chineseAutobiography: "",
+  englishAutobiography: "",
+  id: "",
+  resumeId: "",
+  userId: "",
+};
+
+const Rautobiography = ({
+  userId,
+  resumeId,
+  autobiography,
+  isEditMode,
+}: Props) => {
+  const [data, setData] = useState<AutoBiography>(
+    autobiography ? autobiography : initailAutoBiography
+  );
   const [isEditing, setIsEditing] = useState(false);
 
   const handleEdit = () => {
@@ -78,11 +90,12 @@ const Rautobiography = ({ userId, resumeId, autobiography }: Props) => {
           setIsEditing={() => {
             setIsEditing(!isEditing);
           }}
+          isEditMode={isEditMode}
         />
       </ResumeItemHeader>
       <ResumeItemContent>
         <div className="flex flex-col w-full">
-          {isEditing ? (
+          {isEditing && isEditMode ? (
             <AutoBiographyEditCard
               userId={userId}
               resumeId={resumeId}

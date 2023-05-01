@@ -41,7 +41,7 @@ async function putResumeDetail({
   userId,
 }: {
   endpoint: string;
-  endpointId: string;
+  endpointId?: string; //resume skills不需要Id
   formData: any;
   resumeId: string;
   userId: string;

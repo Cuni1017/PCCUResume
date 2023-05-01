@@ -4,11 +4,14 @@ interface Props {
   onSave: () => void;
   onCancel: () => void;
   disabled: boolean;
+  classnames?: string;
 }
 
-const SaveCheck = ({ onSave, onCancel, disabled }: Props) => {
+const SaveCheck = ({ onSave, onCancel, disabled, classnames }: Props) => {
   return (
-    <div className="flex gap-24 justify-center">
+    <div
+      className={`flex gap-24 justify-center ${classnames ? classnames : ""}`}
+    >
       <MyButton
         disabled={disabled}
         onClick={onSave}

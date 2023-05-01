@@ -8,7 +8,7 @@ import {
   usePutApply,
   usePutApplyTime,
 } from "@/hooks/useApplicants";
-import { Vacancy } from "@/app/components/SearchContainer/JobInfoCard";
+import { Vacancy } from "@/app/components/JobInfoCard";
 import ContentAction from "../components/CompanyContent/ContentAction";
 import ApplyActionDialog, { ApplyType } from "./components/ApplyActionDialog";
 import Link from "next/link";
@@ -33,6 +33,7 @@ export interface ApplyUser {
   applyBeforeTalk: string;
   applyStartTime: string;
   applyEndTime: string;
+  applyUpdateTime: string;
   userId: string;
   vacanciesId: string;
 }
@@ -49,13 +50,15 @@ export interface Company {
   companyImageUrl: string | null;
 }
 
+export type FullVacanciesDto = Company & {
+  vacancies: Vacancy;
+  skills: string;
+  county: string;
+};
+
 export interface Apply {
   applyUserDto: ApplyUser[];
-  fullVacanciesDto: Company & {
-    vacancies: Vacancy;
-    skills: string;
-    county: string;
-  };
+  fullVacanciesDto: FullVacanciesDto;
 }
 
 const ApplicantsPage = (props: any) => {

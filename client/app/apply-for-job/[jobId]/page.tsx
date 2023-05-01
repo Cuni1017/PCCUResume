@@ -14,6 +14,7 @@ import MyButton from "@/app/components/MyButton";
 import SuccessCheck from "@/app/components/SuccessCheck";
 import MyDialog from "@/app/components/MyDialog";
 import UnAuthorizedPage from "@/app/components/UnAuthorizedPage";
+import CloseIcon from "@mui/icons-material/Close";
 
 export interface Resume {
   resumeId: string;
@@ -51,42 +52,48 @@ const ApplyForJobPage = (props: any) => {
   const [resumes, setResumes] = useState<Resume[]>([]);
 
   const [isPostSuccess, setIsPostSuccess] = useState(false); //控制寄送成功後的Modal
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     const fetchApplyInfo = async () => {
       if (user.role !== "STUDENT") return;
 
-      const res = await axiosInstance.get(
-        `students/${user.username}/apply-for-job/vacancies/${jobId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${getCookie("JWT")}`,
-          },
-        }
-      );
-      if (res.status === 200) {
-        const {
-          data: {
-            data: {
-              applyCompanyDto,
-              resumes,
-              studentId,
-              studentEmail,
-              studentNumber,
-              studentUsername,
-              studentImageUrl,
+      try {
+        const res = await axiosInstance.get(
+          `students/${user.username}/apply-for-job/vacancies/${jobId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${getCookie("JWT")}`,
             },
-          },
-        } = res;
-        setJobInfo({ ...applyCompanyDto });
-        setSTDInfo({
-          studentId,
-          studentEmail,
-          studentNumber,
-          studentUsername,
-          studentImageUrl,
-        });
-        setResumes(resumes);
+          }
+        );
+
+        if (res.status === 200) {
+          const {
+            data: {
+              data: {
+                applyCompanyDto,
+                resumes,
+                studentId,
+                studentEmail,
+                studentNumber,
+                studentUsername,
+                studentImageUrl,
+              },
+            },
+          } = res;
+          setJobInfo({ ...applyCompanyDto });
+          setSTDInfo({
+            studentId,
+            studentEmail,
+            studentNumber,
+            studentUsername,
+            studentImageUrl,
+          });
+          setResumes(resumes);
+        }
+      } catch (error) {
+        console.log(error);
       }
     };
     if (user.username) fetchApplyInfo();
@@ -112,22 +119,28 @@ const ApplyForJobPage = (props: any) => {
   }) => {
     dispatch(setIsAppLoading({ isLoading: true }));
 
-    const res = await axiosInstance.post(
-      `students/${user.id}/${formData.resumeId}/apply-for-job/${companyId}/${jobId}`,
-      {
-        applyNumber: formData.phone,
-        applyEmail: formData.email,
-        applyBeforeTalk: formData.letter,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${getCookie("JWT")}`,
+    try {
+      const res = await axiosInstance.post(
+        `students/${user.id}/${formData.resumeId}/apply-for-job/${companyId}/${jobId}`,
+        {
+          applyNumber: formData.phone,
+          applyEmail: formData.email,
+          applyBeforeTalk: formData.letter,
         },
+        {
+          headers: {
+            Authorization: `Bearer ${getCookie("JWT")}`,
+          },
+        }
+      );
+      if (res.status === 200) {
+        // router.replace("/dashboard/applications-jobs");
+        setIsPostSuccess(true);
+      } else {
       }
-    );
-    if (res.status === 200) {
-      // router.replace("/dashboard/applications-jobs");
-      setIsPostSuccess(true);
+    } catch (error: any) {
+      setErrorMessage(error.response.data.message);
+      // alert(error.response.data.message);
     }
 
     dispatch(cancelAppIsLoading());
@@ -135,6 +148,19 @@ const ApplyForJobPage = (props: any) => {
 
   return (
     <div>
+      <MyDialog isOpen={!!errorMessage} onClose={() => setErrorMessage("")}>
+        <div className="p-3 w-[70vw] sm:w-[400px]">
+          <div
+            className="absolute top-2 right-2 hover:bg-gray-300 cursor-pointer flex items-center justify-center"
+            onClick={() => setErrorMessage("")}
+          >
+            <CloseIcon />
+          </div>
+          <div className="text-xl font-bold text-center">錯誤</div>
+          <hr className="w-full" />
+          <div className="indent-8 mb-6">{errorMessage}。</div>
+        </div>
+      </MyDialog>
       <MyDialog isOpen={isPostSuccess} onClose={() => {}}>
         <div className="py-10 px-20 flex flex-col gap-2 justify-center items-center">
           <div className="text-2xl font-bold">成功寄出履歷</div>

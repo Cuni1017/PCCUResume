@@ -1,6 +1,5 @@
 import React, {
   useState,
-  memo,
   useEffect,
   useRef,
   useMemo,
@@ -15,12 +14,6 @@ import ExpandMoreOutlinedIcon from "@mui/icons-material/ExpandMoreOutlined";
 import { axiosInstance } from "@/axiosInstance.ts";
 import { useGetSkills } from "@/hooks/useSkills";
 import SearchBar from "@/app/components/SearchContainer/SearchFilter/shared/SearchBar";
-
-const style = {
-  width: "100%",
-  // maxWidth: 360,
-  bgcolor: "background.paper",
-};
 
 export interface Skill {
   skillId: number;
@@ -114,8 +107,15 @@ const SkillPicker = ({
         setChipData={handleSkillChange}
       />
       <List
-        sx={style}
-        className="border-solid border border-gray-300 p-0 absolute z-10 bottom-[-29rem]"
+        sx={{
+          width: "100%",
+          bgcolor: "background.paper",
+          position: "absolute",
+          bottom: "-29rem",
+          zIndex: "10",
+          padding: "0",
+        }}
+        className="border-solid border border-gray-300"
         component="nav"
         aria-label="skills"
         style={{ display: isOpen ? "block" : "none" }}
@@ -129,12 +129,6 @@ const SkillPicker = ({
           />
         </div>
         <div className="flex flex-col h-[390px] overflow-auto">
-          {}
-          {/* <SkillListItems
-            skills={skills}
-            searchTerm={searchTerm}
-            onClick={handleOptionsClick}
-          /> */}
           {renderedListItem}
         </div>
         {/* divider、light */}

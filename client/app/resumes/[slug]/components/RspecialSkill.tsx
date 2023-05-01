@@ -1,3 +1,5 @@
+"use client";
+
 import React, { ChangeEvent, useEffect, useState } from "react";
 import Card from "../../../components/Card";
 import ResumeItemHeader from "./shared/ResumeItemHeader";
@@ -8,14 +10,14 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteCheckModal from "./shared/DeleteCheckModal";
 import SaveCheck from "./shared/SaveCheck";
-import TextFiled from "./shared/TextFiled";
+import TextFiled from "./shared/TextField";
 import {
   useDeleteResumeDetail,
   usePostResumeDetail,
   usePutResumeDetail,
 } from "@/hooks/Resume/useResumeDetail";
 
-// 專長
+// 特殊技能
 
 interface SpeicalSkill {
   name: string;
@@ -30,15 +32,17 @@ interface Props {
   userId: string;
   resumeId: string;
   specialSkills: SpeicalSkill[];
+  isEditMode: boolean;
 }
 
-const RspecialSkill = ({ userId, resumeId, specialSkills }: Props) => {
-  const [data, setData] = useState<SpeicalSkill[]>([]);
+const RspecialSkill = ({
+  userId,
+  resumeId,
+  specialSkills,
+  isEditMode,
+}: Props) => {
+  const [data, setData] = useState<SpeicalSkill[]>(specialSkills);
   const [isEditing, setIsEditing] = useState<null | number>(null); // 編輯data裡第幾個或無
-
-  const handleNew = () => {
-    setIsEditing(data.length);
-  };
 
   useEffect(() => {
     if (specialSkills) setData(specialSkills);
@@ -52,12 +56,13 @@ const RspecialSkill = ({ userId, resumeId, specialSkills }: Props) => {
           specialSkill={SS}
           setIsEditing={setIsEditing}
           index={index}
+          isEditMode={isEditMode}
         />
       ));
     } else {
       return (
         <div className="text-center w-full col-span-2">
-          填寫與別人不同的專長，讓公司看見你！
+          填寫特殊技能，更公司更了解你！
         </div>
       );
     }
@@ -65,7 +70,7 @@ const RspecialSkill = ({ userId, resumeId, specialSkills }: Props) => {
 
   return (
     <Card>
-      <ResumeItemHeader label="專長">
+      <ResumeItemHeader label="特殊技能">
         <HeaderController
           text="新增"
           Icon={AddIcon}
@@ -74,19 +79,11 @@ const RspecialSkill = ({ userId, resumeId, specialSkills }: Props) => {
             if (isEditing === null) setIsEditing(data.length);
             else setIsEditing(null);
           }}
+          isEditMode={isEditMode}
         />
-        {/* {isEditing !== null ? null : (
-          <span
-            onClick={handleNew}
-            className="text-end text-sm flex items-center justify-end text-gray-500 hover:text-gray-800 cursor-pointer absolute top-1 right-5"
-          >
-            <AddIcon />
-            新增
-          </span>
-        )} */}
       </ResumeItemHeader>
       <ResumeItemContent>
-        {isEditing !== null ? (
+        {isEditing !== null && isEditMode ? (
           <SSEditCard
             userId={userId}
             resumeId={resumeId}
@@ -134,7 +131,6 @@ const SSEditCard = ({
   const { mutate: PutMutate } = usePutResumeDetail(resumeId);
 
   const handleSave = () => {
-
     if (!data.id) {
       PostMutate({
         userId,
@@ -166,13 +162,13 @@ const SSEditCard = ({
   return (
     <div className="w-full flex flex-col gap-2">
       <TextFiled
-        label="專長名稱："
+        label="技能名稱："
         value={data.name}
         name="name"
         onChange={handleTextChange}
       />
       <TextFiled
-        label="專長敘述："
+        label="技能敘述："
         value={data.talk}
         name="talk"
         multiline
@@ -202,10 +198,12 @@ const SpeicalSkillCard = ({
   specialSkill,
   setIsEditing,
   index,
+  isEditMode,
 }: {
   specialSkill: SpeicalSkill;
   setIsEditing: React.Dispatch<React.SetStateAction<number | null>>;
   index: number;
+  isEditMode: boolean;
 }) => {
   const [hovered, setHovered] = useState(false);
 
@@ -240,7 +238,7 @@ const SpeicalSkillCard = ({
           </div>
         </Card>
       </div>
-      {hovered ? (
+      {hovered && isEditMode ? (
         <div className="absolute top-2 right-2 flex gap-2">
           <div
             className="cursor-pointer text-gray-500 hover:text-gray-800"
@@ -256,11 +254,13 @@ const SpeicalSkillCard = ({
           </div>
         </div>
       ) : null}
-      <DeleteCheckModal
-        open={open}
-        onDelete={handleDelete}
-        onClose={() => setOpen(false)}
-      />
+      {isEditMode ? (
+        <DeleteCheckModal
+          open={open}
+          onDelete={handleDelete}
+          onClose={() => setOpen(false)}
+        />
+      ) : null}
     </div>
   );
 };

@@ -1,6 +1,4 @@
-import JobInfoCard, {
-  Vacancy,
-} from "@/app/components/SearchContainer/JobInfoCard";
+import JobInfoCard, { Vacancy } from "@/app/components/JobInfoCard";
 import NotFoundCard from "@/app/components/SearchContainer/NotFoundCard";
 import PaginationBar from "../../components/SearchContainer/PaginationBar";
 
@@ -46,6 +44,7 @@ const fetchJobs = async (searchParams: any) => {
       "Cache-Control": "no-store",
       "Content-Type": "application/json",
     },
+    cache: "no-store",
   });
 
   if (!res.ok) {

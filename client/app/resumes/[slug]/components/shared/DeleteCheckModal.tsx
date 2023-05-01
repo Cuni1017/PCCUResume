@@ -12,7 +12,7 @@ const style = {
   bgcolor: "background.paper",
   border: "1px solid #ddd",
   boxShadow: 24,
-  p: 4,
+  // p: 4,
 };
 
 interface Props {
@@ -26,9 +26,12 @@ const DeleteCheckModal = ({ open, onDelete, onClose }: Props) => {
     <Modal open={open} onClose={onClose}>
       <Box sx={style}>
         <div>
-          <div className="font-bold text-xl">確定刪除嗎？</div>
-          <div className="text-sm">資料刪除後無法還原喔！確定刪除？</div>
-          <div className="flex justify-center gap-10 mt-5">
+          <div className="font-bold text-xl text-center p-3">確定刪除嗎？</div>
+          <hr />
+          <div className="text-sm indent-8 p-3">
+            資料刪除後無法還原喔！確定刪除？
+          </div>
+          <div className="flex justify-center gap-10 p-3">
             <MyButton
               onClick={onDelete}
               classnames="bg-[#e25555] hover:bg-red-800 text-white w-[100px]"

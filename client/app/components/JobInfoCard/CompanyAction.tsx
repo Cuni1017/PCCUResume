@@ -13,8 +13,8 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import ReportProblemIcon from "@mui/icons-material/ReportProblem";
 import SnackBar from "@/app/components/SnackBar";
 import { Vacancy } from ".";
-import MyModal from "../../MyModal";
-import MyButton from "../../MyButton";
+import MyModal from "../MyModal";
+import MyButton from "../MyButton";
 import { useDeleteJob, usePutJobState } from "@/hooks/companyJob/useCompanyJob";
 import { useSelector } from "react-redux";
 import { Store } from "@/redux/store";
@@ -22,7 +22,7 @@ import { Store } from "@/redux/store";
 const CompanyAction = ({ vacancy }: { vacancy: Vacancy }) => {
   const { companyName, vacanciesName, vacanciesId, vacanciesWatchType } =
     vacancy;
-  const { name } = useSelector((store: Store) => store.user);
+  const { name, role } = useSelector((store: Store) => store.user);
 
   const {
     mutate: PutMutate,
@@ -51,7 +51,7 @@ const CompanyAction = ({ vacancy }: { vacancy: Vacancy }) => {
     setIsOpen(false);
   };
 
-  if (name !== companyName) return <></>;
+  if (name !== companyName || role !== "COMPANY") return <></>;
 
   return (
     <div className="bg-gray-100 h-[1.5rem] px-5 py-2 flex items-center justify-end">

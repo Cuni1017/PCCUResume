@@ -4,6 +4,7 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import AuthModalInputs from "./AuthModalInputs";
 import { useAuth } from "../../../hooks/useAuth";
+import { CircularProgress } from "@mui/material";
 
 const style = {
   position: "absolute" as "absolute",
@@ -35,7 +36,7 @@ export default function AuthModal({ isSignin }: { isSignin: boolean }) {
     loading: false,
     error: null,
   });
-  const { signin } = useAuth();
+  const { signin, isFetching } = useAuth();
 
   const renderedContent = (signinContent: string, signupContent: string) => {
     return isSignin ? signinContent : signupContent;
@@ -83,11 +84,22 @@ export default function AuthModal({ isSignin }: { isSignin: boolean }) {
               <Button
                 variant="contained"
                 fullWidth
-                className="mt-4 bg-[#DC2626] hover:bg-[#991B1B] text-lg disabled:bg-gray-300 h-12"
+                sx={{
+                  marginTop: "1rem",
+                  backgroundColor: "rgb(220,38,38)",
+                  "&:hover": {
+                    backgroundColor: "rgb(153,27,27)",
+                  },
+                }}
+                className="text-lg disabled:bg-gray-300 h-12"
                 type="submit"
-                disabled={false}
+                disabled={isFetching}
               >
-                {renderedContent("登入", "註冊")}
+                {isFetching ? (
+                  <CircularProgress />
+                ) : (
+                  renderedContent("登入", "註冊")
+                )}
               </Button>
             </div>
           </form>

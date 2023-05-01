@@ -2,15 +2,14 @@ import CompanyHeader from "../components/CompanyHeader/CompanyHeader";
 import ContentAction from "../components/CompanyContent/ContentAction";
 import ContentSearchBar from "../components/CompanyContent/ContentSearchBar";
 import JobStateCounter from "../components/CompanyContent/JobStateCounter";
-import JobInfoCard, {
-  Vacancy,
-} from "@/app/components/SearchContainer/JobInfoCard";
+import JobInfoCard, { Vacancy } from "@/app/components/JobInfoCard";
 import PaginationBar from "@/app/components/SearchContainer/PaginationBar";
 import Link from "next/link";
 import Image from "next/image";
 import MyButton from "@/app/components/MyButton";
 import Card from "@/app/components/Card";
 import { notFound } from "next/navigation";
+import JobNotFoundCard from "./components/JobNotFoundCard";
 
 const fetchJobs = async (companyName: string) => {
   const url = `http://localhost:8080/company/${companyName}/vacancies`;
@@ -74,17 +73,7 @@ const CompanyJobs = async (props: any) => {
                   </div>
                 </>
               ) : (
-                <Card classnames="p-5 flex flex-col items-center gap-2">
-                  <div className="relative w-[5rem] h-[5rem]">
-                    <Image src={"/error.png"} alt="error" fill sizes="100%" />
-                  </div>
-                  <div className="text-slate-500">沒有符合搜尋條件的結果。</div>
-                  <Link href={`/companies/${companyName}/jobs/new`}>
-                    <MyButton classnames="text-white bg-blue-500 hover:bg-blue-600 focus:bg-blue-700">
-                      新增職缺
-                    </MyButton>
-                  </Link>
-                </Card>
+                <JobNotFoundCard companyName={companyName} />
               )}
             </div>
           </div>

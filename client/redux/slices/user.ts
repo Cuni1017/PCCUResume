@@ -15,7 +15,7 @@ export interface User {
   id: string;
   username: string;
   name: string;
-  role: string;
+  role: "STUDENT_USER" | "COMPANY_USER" | "STUDENT" | "COMPANY" | "TEACHER";
   email: string;
   phone: string;
   imageURL: string;

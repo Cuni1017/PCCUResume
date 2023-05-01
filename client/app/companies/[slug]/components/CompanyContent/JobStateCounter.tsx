@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { Vacancy } from "@/app/components/SearchContainer/JobInfoCard";
+import { Vacancy } from "@/app/components/JobInfoCard";
 
 const JobStateCounter = ({ vacancies }: { vacancies: Vacancy[] }) => {
   const [openCount, hiddenCount, pauseCount] = useMemo(() => {

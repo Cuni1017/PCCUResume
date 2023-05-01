@@ -150,7 +150,6 @@ public class RegisterServiceImpl implements RegisterService {
                 .message("儲存成功")
                 .build();
         return restResponse;
-
     }
 
     public Object sendEmail(String email) {
@@ -168,7 +167,6 @@ public class RegisterServiceImpl implements RegisterService {
                 .message("亂數創造")
                 .build();
         return restResponse;
-
     }
 
 

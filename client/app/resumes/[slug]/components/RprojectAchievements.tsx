@@ -1,3 +1,5 @@
+"use client";
+
 import React, { ChangeEvent, useEffect, useState } from "react";
 import Card from "../../../components/Card";
 import EditIcon from "@mui/icons-material/Edit";
@@ -9,7 +11,7 @@ import ResumeItemContent from "./shared/ResumeItemContent";
 import HeaderController from "./shared/HeaderController";
 import MyButton from "../../../components/MyButton";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
-import TextFiled from "./shared/TextFiled";
+import TextFiled from "./shared/TextField";
 import { DateField } from "@mui/x-date-pickers/DateField";
 import dayjs, { Dayjs } from "dayjs";
 import Checkbox from "@mui/material/Checkbox";
@@ -20,6 +22,7 @@ import {
   usePostResumeDetail,
   usePutResumeDetail,
 } from "@/hooks/Resume/useResumeDetail";
+import ResumeDetailActions from "./shared/ResumeDetailActions";
 
 // 專案成就
 
@@ -38,14 +41,16 @@ interface Props {
   userId: string;
   resumeId: string;
   projectAchievements: ProjectAchievement[];
+  isEditMode: boolean;
 }
 
 const RprojectAchievements = ({
   userId,
   resumeId,
   projectAchievements,
+  isEditMode,
 }: Props) => {
-  const [data, setData] = useState<ProjectAchievement[]>([]);
+  const [data, setData] = useState<ProjectAchievement[]>(projectAchievements);
   const [isEditing, setIsEditing] = useState<null | number>(null); // 編輯data裡第幾個或無
 
   const handleNew = () => {
@@ -64,7 +69,6 @@ const RprojectAchievements = ({
     PAId: string, //空的表示要Post新的
     PA: ProjectAchievement
   ) => {
-
     // 表示New
     if (!PAId) {
       PostMutate({
@@ -99,7 +103,6 @@ const RprojectAchievements = ({
   };
 
   const handleDelete = (PAId: string) => {
-
     DeleteMutate({
       userId,
       resumeId,
@@ -123,6 +126,7 @@ const RprojectAchievements = ({
           handleEdit={handleEdit}
           handleDelete={handleDelete}
           index={index}
+          isEditMode={isEditMode}
         />
       ));
     } else {
@@ -141,16 +145,8 @@ const RprojectAchievements = ({
             if (isEditing === null) setIsEditing(data.length);
             else setIsEditing(null);
           }}
+          isEditMode={isEditMode}
         />
-        {/* {isEditing !== null ? null : (
-          <span
-            onClick={handleNew}
-            className="text-end text-sm flex items-center justify-end text-gray-500 hover:text-gray-800 cursor-pointer absolute top-1 right-5"
-          >
-            <AddIcon />
-            新增
-          </span>
-        )} */}
       </ResumeItemHeader>
       <ResumeItemContent>
         {isEditing !== null ? (
@@ -283,7 +279,7 @@ const PAEditCard = ({
             value={startTime}
             name="startTime"
             format={"YYYY／MM／DD"}
-            error={data.startTime > data.endTime ? true : undefined}
+            // error={data.startTime > data.endTime ? true : undefined}
             onChange={(newValue: any, context: any) => {
               if (context.validationError == null) {
                 setStartTime(newValue);
@@ -299,7 +295,7 @@ const PAEditCard = ({
             value={endTime}
             name="endTime"
             format={"YYYY／MM／DD"}
-            error={data.startTime > data.endTime ? true : undefined}
+            // error={data.startTime > data.endTime ? true : undefined}
             disabled={stillwork ? true : undefined}
             onChange={(newValue: any, context: any) => {
               if (context.validationError == null) {
@@ -356,15 +352,25 @@ interface PACardProps {
   handleEdit: (index: number) => void;
   handleDelete: (PAId: string) => void;
   index: number;
+  isEditMode: boolean;
 }
 
-const PACard = ({ PA, handleEdit, handleDelete, index }: PACardProps) => {
+const PACard = ({
+  PA,
+  handleEdit,
+  handleDelete,
+  index,
+  isEditMode,
+}: PACardProps) => {
+  const [hovered, setHovered] = useState(false);
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
 
   return (
-    <div className="flex w-full">
+    <div
+      className="flex w-full"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
       <div className="w-full grow">
         <div className="font-bold text-lg">{PA.name}</div>
         <div className="font-bold">{PA.talk}</div>
@@ -383,25 +389,19 @@ const PACard = ({ PA, handleEdit, handleDelete, index }: PACardProps) => {
           <div className="grow"></div>
         </div>
       </div>
-      <div className="flex justify-end items-center gap-3 text-gray-500">
-        <div
-          className="cursor-pointer hover:text-gray-800"
-          onClick={() => handleEdit(index)}
-        >
-          <EditIcon />
+      {isEditMode && hovered ? (
+        <div className="flex justify-end items-center gap-3 text-gray-500">
+          <ResumeDetailActions
+            onEditClick={() => handleEdit(index)}
+            onDelete={() => {
+              handleDelete(PA.id);
+              setOpen(false);
+              setHovered(false);
+            }}
+            onClose={() => setHovered(false)}
+          />
         </div>
-        <div className="cursor-pointer hover:text-red-800" onClick={handleOpen}>
-          <DeleteIcon />
-        </div>
-      </div>
-      <DeleteCheckModal
-        open={open}
-        onDelete={() => {
-          handleDelete(PA.id);
-          setOpen(false);
-        }}
-        onClose={handleClose}
-      />
+      ) : null}
     </div>
   );
 };
