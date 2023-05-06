@@ -46,6 +46,7 @@ public class SecurityConfiguration {
                         "/login",
                         "/swagger-ui/**",
                         "/vacancies",
+                        "/image/**",
 
                         "/vacancies/*"
                         //"/students/**"
