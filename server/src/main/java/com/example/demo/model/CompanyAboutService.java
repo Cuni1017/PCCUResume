@@ -36,9 +36,7 @@ public class CompanyAboutService {
     @Column(name = "company_instagram_url")
     private String companyInstagramUrl;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "company_id")
-    private Company company;
+
 
 
 }

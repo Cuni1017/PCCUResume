@@ -261,10 +261,7 @@ public class CompanyServiceImpl implements CompanyService {
         return  restDto;
     }
 
-    @Override
-    public Object findcompanyAboutByCompanyName(String companyName) {
-        return null;
-    }
+
 
     @Override
     public Object updateVacanciesWatchType(String vacanciesId, VacanciesWatchTypeCategory vacanciesWatchTypeCategory) {

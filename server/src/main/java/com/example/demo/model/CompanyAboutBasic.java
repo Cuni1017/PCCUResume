@@ -38,5 +38,8 @@ public class CompanyAboutBasic {
     private String companyAboutBackgroundSavePath;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
-    private Company company;
+    private CompanyAboutService companyAboutService;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id")
+    private CompanyAboutWelfare companyAboutWelfare;
 }

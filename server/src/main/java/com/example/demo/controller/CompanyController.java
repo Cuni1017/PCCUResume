@@ -27,13 +27,7 @@ public class CompanyController {
         return ResponseEntity.ok(companyService.findVacanciesByCompanyName(companyName,page,limit));
     }
     //C
-    @GetMapping("/company/{companyName}/company-about")
-    public ResponseEntity<Object> findcompanyAboutByCompanyName(
-            @PathVariable String companyName
 
-    ) {
-        return ResponseEntity.ok(companyService.findcompanyAboutByCompanyName(companyName));
-    }
 //    @PostMapping("/company/{companyName}/company-about")
 //    public ResponseEntity<Object> CreateCompanyAbout(
 //

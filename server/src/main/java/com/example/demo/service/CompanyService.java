@@ -19,7 +19,6 @@ public interface CompanyService {
 
     Object findCompanyByCompanyName(String companyName);
 
-    Object findcompanyAboutByCompanyName(String companyName);
 
     Object updateVacanciesWatchType(String vacanciesId, VacanciesWatchTypeCategory vacanciesWatchTypeCategory);
 }
