@@ -241,9 +241,9 @@ public class CompanyAboutServiceImpl implements CompanyAboutService {
         System.out.println(fileType);
         if (fileType.contains("logo")) {
 
-            savePath = "D:\\image\\company-logo";
+            savePath = "C:\\pccu-image\\company-logo";
         } else if (fileType.contains("background")) {
-            savePath = "D:\\image\\company-background";
+            savePath = "C:\\pccu-image\\company-background";
         } else {
             throw new RuntimeException("不支持");
         }
