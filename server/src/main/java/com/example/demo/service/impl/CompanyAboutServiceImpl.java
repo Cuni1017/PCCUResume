@@ -105,6 +105,10 @@ public class CompanyAboutServiceImpl implements CompanyAboutService {
     @Override
     public Object updateCompanyAboutBasic(String companyName, CompanyAboutBasicCategory companyAboutBasicCategory) {
         String companyId = findCompanyIdByCompanyName(companyName);
+        Company company =companyRepository.findById(companyId).orElseThrow(()->new RuntimeException("沒有此公司"));
+        company.setCompanyNumber(companyAboutBasicCategory.getCompanyNumber());
+        company.setCompanyName(companyAboutBasicCategory.getCompanyName());
+        companyRepository.save(company);
         CompanyAboutBasic companyAboutBasic = getCompanyAboutBasic(companyId,companyAboutBasicCategory);
         companyAboutBsicRepository.save(companyAboutBasic);
         return getRestDto(companyAboutBasic,"更新成功");
@@ -222,6 +226,7 @@ public class CompanyAboutServiceImpl implements CompanyAboutService {
                 .companyAboutEnvironment(companyAboutBasicCategory.getCompanyAboutEnvironment())
                 .companyAboutLogoSavePath(null)
                 .companyAboutBackgroundSavePath(null)
+                .companyAboutContactNumber(companyAboutBasicCategory.getCompanyAboutContactNumber())
                 .build();
         return companyAboutBasic;
     }

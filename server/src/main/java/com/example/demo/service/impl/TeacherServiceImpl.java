@@ -276,7 +276,8 @@ public class TeacherServiceImpl implements TeacherService {
             int selectOffset = getSelectOffset(page,limit);
             int selectLimit = getSelectLimit(page,limit);
             List<ApplyUserDto> applyUserDto = applyDao.findApplyVacanciesAndUserByapplyType(changeApplyType);
-        System.out.println(applyUserDto);
+             System.out.println(applyUserDto);
+
             List<String> vacanciesIds = applyUserDto.stream().map(a->a.getVacanciesId()).distinct().collect(Collectors.toList());
             for(String vacanciesId:vacanciesIds){
                 System.out.println(vacanciesId);

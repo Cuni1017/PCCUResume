@@ -11,6 +11,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 
 public class CompanyAboutBasicCategory {
+    private String companyName;
+    private int companyNumber;
+    private int companyAboutContactNumber;
     private String companyAboutUrl;
     private String companyAboutEmployeeQuantity;
     private Integer companyAboutHaveMoney;
