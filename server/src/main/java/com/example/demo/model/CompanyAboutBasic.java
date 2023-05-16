@@ -37,14 +37,12 @@ public class CompanyAboutBasic {
     @Column(name = "company_about_background_save_path")
     private String companyAboutBackgroundSavePath;
     @Column(name = "company_about_contact_number")
-    private int companyAboutContactNumber;
+    private Integer companyAboutContactNumber;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
     private CompanyAboutService companyAboutService;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
     private CompanyAboutWelfare companyAboutWelfare;
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "company_id")
-    private Company company;
+
 }

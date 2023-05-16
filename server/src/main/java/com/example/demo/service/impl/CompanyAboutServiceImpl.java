@@ -49,31 +49,32 @@ public class CompanyAboutServiceImpl implements CompanyAboutService {
     @Override
     public Object findAllCompanyAboutByCompanyName(String companyName) {
         String companyId = findCompanyIdByCompanyName(companyName);
-        CompanyAboutBasic companyAboutBasic = companyAboutBsicRepository.findById(companyId).orElse(new CompanyAboutBasic());
-        com.example.demo.model.CompanyAboutService companyAboutService = companyAboutServiceRepository.findById(companyId).orElse(new com.example.demo.model.CompanyAboutService());
-        CompanyAboutWelfare companyAboutWelfare = companyAboutWelfareRepository.findById(companyId).orElse(new CompanyAboutWelfare());
-        CompanyAboutDto dto = CompanyAboutDto.builder()
-                .companyId(companyId)
-                .aboutUrl(companyAboutBasic.getCompanyAboutUrl())
-                .employeeQuantity(companyAboutBasic.getCompanyAboutEmployeeQuantity())
-                .haveMoney(companyAboutBasic.getCompanyAboutHaveMoney())
-                .backgroundImageUrl(companyAboutBasic.getCompanyAboutBackgroundImageUrl())
-                .talk(companyAboutBasic.getCompanyAboutTalk())
-                .contactPerson(companyAboutBasic.getCompanyAboutContactPerson())
-                .logoImageUrl(companyAboutBasic.getCompanyAboutLogoImageUrl())
-                .environment(companyAboutBasic.getCompanyAboutEnvironment())
-                .logoSavePath(companyAboutBasic.getCompanyAboutLogoSavePath())
-                .backgroundSavePath(companyAboutBasic.getCompanyAboutBackgroundSavePath())
-                .service(companyAboutService.getCompanyAboutService())
-                .mission(companyAboutService.getCompanyAboutMission())
-                .media(companyAboutService.getCompanyAboutMedia())
-                .twitterUrl(companyAboutService.getCompanyTwitterUrl())
-                .facebookUrl(companyAboutService.getCompanyFacebookUrl())
-                .instagramUrl(companyAboutService.getCompanyInstagramUrl())
-                .welfare(companyAboutWelfare.getCompanyAboutWelfare())
-                .build();
+        Company company = companyRepository.findById(companyId).orElseThrow(()->new RuntimeException("每有此公司"));
+        System.out.println(company);
+        //        com.example.demo.model.CompanyAboutService companyAboutService = companyAboutServiceRepository.findById(companyId).orElse(new com.example.demo.model.CompanyAboutService());
+//        CompanyAboutWelfare companyAboutWelfare = companyAboutWelfareRepository.findById(companyId).orElse(new CompanyAboutWelfare());
+//        CompanyAboutDto dto = CompanyAboutDto.builder()
+//                .companyId(companyId)
+//                .aboutUrl(companyAboutBasic.getCompanyAboutUrl())
+//                .employeeQuantity(companyAboutBasic.getCompanyAboutEmployeeQuantity())
+//                .haveMoney(companyAboutBasic.getCompanyAboutHaveMoney())
+//                .backgroundImageUrl(companyAboutBasic.getCompanyAboutBackgroundImageUrl())
+//                .talk(companyAboutBasic.getCompanyAboutTalk())
+//                .contactPerson(companyAboutBasic.getCompanyAboutContactPerson())
+//                .logoImageUrl(companyAboutBasic.getCompanyAboutLogoImageUrl())
+//                .environment(companyAboutBasic.getCompanyAboutEnvironment())
+//                .logoSavePath(companyAboutBasic.getCompanyAboutLogoSavePath())
+//                .backgroundSavePath(companyAboutBasic.getCompanyAboutBackgroundSavePath())
+//                .service(companyAboutService.getCompanyAboutService())
+//                .mission(companyAboutService.getCompanyAboutMission())
+//                .media(companyAboutService.getCompanyAboutMedia())
+//                .twitterUrl(companyAboutService.getCompanyTwitterUrl())
+//                .facebookUrl(companyAboutService.getCompanyFacebookUrl())
+//                .instagramUrl(companyAboutService.getCompanyInstagramUrl())
+//                .welfare(companyAboutWelfare.getCompanyAboutWelfare())
+//                .build();
 
-        return getRestDto(dto,"查詢成功");
+        return getRestDto(company,"查詢成功");
     }
     @Override
     public Object uploadLogoImage(MultipartFile uploadFile, String companyName, HttpServletRequest httpServletRequest) {
@@ -89,8 +90,8 @@ public class CompanyAboutServiceImpl implements CompanyAboutService {
     @Override
     public Object findCompanyAboutBasicByCompanyName(String companyName) {
         String companyId = findCompanyIdByCompanyName(companyName);
-        CompanyAboutBasic companyAboutBasic = companyAboutBsicRepository.findById(companyId).orElse(new CompanyAboutBasic());
-        return getRestDto(companyAboutBasic,"查詢成功");
+        Company company = companyRepository.findById(companyId).orElseThrow(()->new RuntimeException("每有此公司"));
+        return getRestDto(company,"查詢成功");
     }
 
    
