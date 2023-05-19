@@ -30,6 +30,7 @@ const SearchBar = () => {
       setSerchTerm(decodeURI(pathname.replace("/jobs/", "")));
     else setSerchTerm("");
   }, [pathname]);
+  console.log(pathname, "here");
 
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSerchTerm(e.target.value);

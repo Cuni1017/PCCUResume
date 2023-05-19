@@ -21,7 +21,7 @@ public class CompanyAboutBasic {
     @Column(name = "company_about_employee_quantity")
     private String companyAboutEmployeeQuantity      ;
     @Column(name = "company_about_have_money")
-    private int    companyAboutHaveMoney             ;
+    private Integer    companyAboutHaveMoney             ;
     @Column(name = "company_about_background_image_url")
     private String    companyAboutBackgroundImageUrl   ;
     @Column(name = "company_about_talk")

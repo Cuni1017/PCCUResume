@@ -191,6 +191,10 @@ const ApplyCard = ({
               <div className="relative w-[5rem] h-[5rem]">
                 <Image src={Awaiting} alt="待學生同意中" sizes="100%" fill />
               </div>
+            ) : applyType === "實習中" ? (
+              <div className="relative w-[5rem] h-[5rem]">
+                <Image src={InternShip} alt="實習中" sizes="100%" fill />
+              </div>
             ) : null}
           </MyButton>
         </div>

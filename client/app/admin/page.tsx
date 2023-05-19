@@ -31,7 +31,9 @@ const AdminPage = () => {
         <StudentRegistCard key={student.studentId} student={student} />
       ));
     } else {
-      return <div>近五日無學生註冊申請</div>;
+      return (
+        <div className="text-center text-slate-500">近五日無學生註冊申請</div>
+      );
     }
   };
 
@@ -48,7 +50,9 @@ const AdminPage = () => {
         <CompanyRegistCard key={company.companyId} company={company} />
       ));
     } else {
-      return <div>近五日無公司註冊申請</div>;
+      return (
+        <div className="text-center text-slate-500">近五日無公司註冊申請</div>
+      );
     }
   };
 
@@ -65,7 +69,9 @@ const AdminPage = () => {
         <VacancyRegistCard key={vacancy.vacanciesId} vacancy={vacancy} />
       ));
     } else {
-      return <div>近五日無刊登職缺申請</div>;
+      return (
+        <div className="text-center text-slate-500">近五日無刊登職缺申請</div>
+      );
     }
   };
 
@@ -88,7 +94,9 @@ const AdminPage = () => {
         ));
       });
     } else {
-      return <div>近五日無學生應徵行為</div>;
+      return (
+        <div className="text-center text-slate-500">近五日無學生應徵行為</div>
+      );
     }
   };
 

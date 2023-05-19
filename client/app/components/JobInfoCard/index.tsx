@@ -35,7 +35,7 @@ export interface Vacancy {
   vacanciesSalaryType: "hour" | "month"; // 薪水型態(時or月)
   skills: string | Skill[]; // 技能需求
   county: string | string[]; // city
-  teacherValidType?: "審查中" | "審查通過" | "審查不通過";
+  teacherValidType?: "審核中" | "審核通過" | "審核不通過";
   vacanciesWatchType: "公開" | "隱藏" | "暫停";
 }
 

@@ -25,25 +25,25 @@ async function getPlatformNews() {
   return data.data;
 }
 
-async function getStudentsReview({ page }: { page: number }) {
+async function getStudentsReview({ page, searchTerm, isReviewed }: { page: number, searchTerm?: string, isReviewed: boolean }) {
   const { data } = await axiosInstance.get(
-    `v1/teacher/student-review?page=${page}&limit=10`,
+    `v1/teacher/student-${isReviewed ? "check" : "review"}?page=${page}&limit=10${searchTerm ? `&search=${searchTerm}` : ""}`,
     headers
   );
 
   return data.data;
 }
-async function getCompaniesReview({ page }: { page: number }) {
+async function getCompaniesReview({ page, searchTerm, isReviewed }: { page: number, searchTerm?: string, isReviewed: boolean }) {
   const { data } = await axiosInstance.get(
-    `v1/teacher/company-review?page=${page}&limit=10`,
+    `v1/teacher/company-${isReviewed ? "check" : "review"}?page=${page}&limit=10${searchTerm ? `&search=${searchTerm}` : ""}`,
     headers
   );
 
   return data.data;
 }
-async function getVacanciesReview({ page }: { page: number }) {
+async function getVacanciesReview({ page, searchTerm, isReviewed }: { page: number, searchTerm?: string, isReviewed: boolean }) {
   const { data } = await axiosInstance.get(
-    `v1/teacher/vacancies-review?page=${page}&limit=10`,
+    `v1/teacher/vacancies-${isReviewed ? "check" : "review"}?page=${page}&limit=10${searchTerm ? `&search=${searchTerm}` : ""}`,
     headers
   );
 
@@ -165,10 +165,10 @@ export function useGetPlatformNews() {
   return { data, isFetching };
 }
 
-export function useGetStudentsReview(page: number) {
+export function useGetStudentsReview({ page, searchTerm, isReviewed }: { page: number, searchTerm?: string, isReviewed: boolean }) {
   const query = useQuery({
-    queryKey: [queryKeys.studentsReview],
-    queryFn: () => getStudentsReview({ page }),
+    queryKey: searchTerm ? [queryKeys.studentsReview, `isReviewed=${isReviewed}`, searchTerm] : [queryKeys.studentsReview, `isReviewed=${isReviewed}`],
+    queryFn: () => getStudentsReview({ page, searchTerm, isReviewed }),
     staleTime: 200000,
   });
 
@@ -177,10 +177,10 @@ export function useGetStudentsReview(page: number) {
   return { data, isFetching };
 }
 
-export function useGetCompaniesReview(page: number) {
+export function useGetCompaniesReview({ page, searchTerm, isReviewed }: { page: number, searchTerm?: string, isReviewed: boolean }) {
   const query = useQuery({
-    queryKey: [queryKeys.companiesReview],
-    queryFn: () => getCompaniesReview({ page }),
+    queryKey: searchTerm ? [queryKeys.companiesReview, `isReviewed=${isReviewed}`, searchTerm] : [queryKeys.companiesReview, `isReviewed=${isReviewed}`],
+    queryFn: () => getCompaniesReview({ page, searchTerm, isReviewed }),
     staleTime: 200000,
   });
 
@@ -189,10 +189,10 @@ export function useGetCompaniesReview(page: number) {
   return { data, isFetching };
 }
 
-export function useGetVacanciesReview(page: number) {
+export function useGetVacanciesReview({ page, searchTerm, isReviewed }: { page: number, searchTerm?: string, isReviewed: boolean }) {
   const query = useQuery({
-    queryKey: [queryKeys.vacanciesReview],
-    queryFn: () => getVacanciesReview({ page }),
+    queryKey: searchTerm ? [queryKeys.vacanciesReview, `isReviewed=${isReviewed}`, searchTerm] : [queryKeys.vacanciesReview, `isReviewed=${isReviewed}`],
+    queryFn: () => getVacanciesReview({ page, searchTerm, isReviewed }),
     staleTime: 200000,
   });
 

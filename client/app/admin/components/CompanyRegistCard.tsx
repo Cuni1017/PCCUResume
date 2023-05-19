@@ -29,7 +29,13 @@ export interface Company {
   companyValidType: null | boolean; //這啥
 }
 
-const CompanyRegistCard = ({ company }: { company: Company }) => {
+const CompanyRegistCard = ({
+  company,
+  isReviewed,
+}: {
+  company: Company;
+  isReviewed?: boolean;
+}) => {
   const [isShowActions, setIsShowActions] = useState(false);
   const [isShowHeadshot, setIsShowHeadShot] = useState(false);
   const [isDeleteModalShow, setIsDeleteModalShow] = useState(false);
@@ -141,12 +147,14 @@ const CompanyRegistCard = ({ company }: { company: Company }) => {
           isShowActions ? "absolute" : "hidden"
         }`}
       >
-        <MyButton
-          onClick={handleAgree}
-          classnames="text-white bg-green-500 hover:bg-green-600 focus:bg-green-700 w-[10rem] h-[40px]"
-        >
-          同意
-        </MyButton>
+        {isReviewed ? null : (
+          <MyButton
+            onClick={handleAgree}
+            classnames="text-white bg-green-500 hover:bg-green-600 focus:bg-green-700 w-[10rem] h-[40px]"
+          >
+            同意
+          </MyButton>
+        )}
         <MyButton
           onClick={() => {
             setIsDeleteModalShow(true);

@@ -18,10 +18,17 @@ import MyButton from "../MyButton";
 import { useDeleteJob, usePutJobState } from "@/hooks/companyJob/useCompanyJob";
 import { useSelector } from "react-redux";
 import { Store } from "@/redux/store";
+import WarningAmberOutlinedIcon from "@mui/icons-material/WarningAmberOutlined";
+import HourglassEmptyOutlinedIcon from "@mui/icons-material/HourglassEmptyOutlined";
 
 const CompanyAction = ({ vacancy }: { vacancy: Vacancy }) => {
-  const { companyName, vacanciesName, vacanciesId, vacanciesWatchType } =
-    vacancy;
+  const {
+    companyName,
+    vacanciesName,
+    vacanciesId,
+    vacanciesWatchType,
+    teacherValidType,
+  } = vacancy;
   const { name, role } = useSelector((store: Store) => store.user);
 
   const {
@@ -54,7 +61,7 @@ const CompanyAction = ({ vacancy }: { vacancy: Vacancy }) => {
   if (name !== companyName || role !== "COMPANY") return <></>;
 
   return (
-    <div className="bg-gray-100 h-[1.5rem] px-5 py-2 flex items-center justify-end">
+    <div className="bg-gray-100 h-[1.5rem] px-5 py-2 flex items-center">
       {isPutStateSuccess ? (
         <SnackBar information="成功改變職缺狀態!" type="success" />
       ) : null}
@@ -68,7 +75,21 @@ const CompanyAction = ({ vacancy }: { vacancy: Vacancy }) => {
         <SnackBar information="刪除職缺時發生錯誤!" type="error" />
       ) : null}
 
-      <div className="flex items-center gap-1">
+      {teacherValidType === "審核不通過" ? (
+        <div className="text-red-500 text-sm flex items-center justify-center gap-1 mr-auto">
+          <WarningAmberOutlinedIcon />
+          審核不通過
+        </div>
+      ) : null}
+
+      {teacherValidType === "審核中" ? (
+        <div className="text-amber-500 text-sm flex items-center justify-center gap-1 mr-auto">
+          <HourglassEmptyOutlinedIcon />
+          審核中
+        </div>
+      ) : null}
+
+      <div className="flex items-center gap-1 ml-auto">
         {vacancieState === "隱藏" ? (
           <div className="w-[30px] border-solid border p-1 rounded text-sm text-[#aaa]">
             隱藏

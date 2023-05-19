@@ -8,7 +8,13 @@ import { useSelector } from "react-redux";
 import { usePutVacancy } from "@/hooks/useAdmin";
 import { Store } from "@/redux/store";
 
-const VacancyRegistCard = ({ vacancy }: { vacancy: Vacancy }) => {
+const VacancyRegistCard = ({
+  vacancy,
+  isReviewed,
+}: {
+  vacancy: Vacancy;
+  isReviewed?: boolean;
+}) => {
   const [isShowActions, setIsShowActions] = useState(false);
   const [isDeleteModalShow, setIsDeleteModalShow] = useState(false);
 
@@ -57,12 +63,14 @@ const VacancyRegistCard = ({ vacancy }: { vacancy: Vacancy }) => {
           isShowActions ? "absolute" : "hidden"
         }`}
       >
-        <MyButton
-          onClick={handleAgree}
-          classnames="text-white bg-green-500 hover:bg-green-600 focus:bg-green-700 w-[10rem] h-[40px]"
-        >
-          同意
-        </MyButton>
+        {isReviewed ? null : (
+          <MyButton
+            onClick={handleAgree}
+            classnames="text-white bg-green-500 hover:bg-green-600 focus:bg-green-700 w-[10rem] h-[40px]"
+          >
+            同意
+          </MyButton>
+        )}
         <MyButton
           onClick={() => {
             setIsDeleteModalShow(true);
