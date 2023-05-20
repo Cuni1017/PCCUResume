@@ -7,6 +7,8 @@ import Link from "next/link";
 import CompletenessCard from "./CompletenessCard";
 import { useGetCompanyAbout } from "@/hooks/useCompanyAbout";
 
+import { getIsFullfillLexicalRegex } from "@/util/getIsFullfillLexicalRegex";
+
 const CompanyInfoKeys = ["companyName", "companyNumber"];
 const CompanyBasicInfoKeys = [
   "companyAboutUrl",
@@ -27,8 +29,19 @@ const CompanyAboutInfoKeys = [
 ];
 const CompanyBenefitInfoKeys = ["companyAboutWelfare"];
 
+//應為富文本的key值
+const LexicalKeys = [
+  "companyAboutTalk",
+  "companyAboutEnvironment",
+  "companyAboutMedia",
+  "companyAboutMission",
+  "companyAboutService",
+  "companyAboutWelfare",
+];
+
 const CompanyEditNavbar = ({ companyName }: { companyName: string }) => {
   const { data } = useGetCompanyAbout({ companyName });
+
   const getCompletenessPercent = useCallback(() => {
     if (!data.companyId) return 0;
     let totalQuantity =
@@ -44,25 +57,36 @@ const CompanyEditNavbar = ({ companyName }: { companyName: string }) => {
 
     if (data.companyAboutBasic)
       CompanyBasicInfoKeys.forEach((key) => {
-        if (data.companyAboutBasic[key]) fulfillQuantity++;
+        if (data.companyAboutBasic[key])
+          LexicalKeys.includes(key)
+            ? getIsFullfillLexicalRegex(data.companyAboutBasic[key])
+              ? fulfillQuantity++
+              : null
+            : fulfillQuantity++;
       });
 
     if (data.companyAboutService)
       CompanyAboutInfoKeys.forEach((key) => {
-        if (data.companyAboutService[key]) fulfillQuantity++;
+        if (data.companyAboutService[key])
+          LexicalKeys.includes(key)
+            ? getIsFullfillLexicalRegex(data.companyAboutService[key])
+              ? fulfillQuantity++
+              : null
+            : fulfillQuantity++;
       });
 
     if (data.companyAboutWelfare)
       CompanyBenefitInfoKeys.forEach((key) => {
-        if (data.companyAboutWelfare[key]) fulfillQuantity++;
+        if (data.companyAboutWelfare[key])
+          LexicalKeys.includes(key)
+            ? getIsFullfillLexicalRegex(data.companyAboutWelfare[key])
+              ? fulfillQuantity++
+              : null
+            : fulfillQuantity++;
       });
 
     return Math.ceil((fulfillQuantity / totalQuantity) * 100);
   }, [data]);
-
-  {
-    getCompletenessPercent();
-  }
 
   return (
     <div className="flex flex-col gap-2">

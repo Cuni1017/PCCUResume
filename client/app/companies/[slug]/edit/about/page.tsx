@@ -194,6 +194,7 @@ const CompanyEditAboutPage = (props: any) => {
                 size="small"
                 // error={errors.}
                 value={companyTwitterUrl || ""}
+                placeholder="@MyTwitterHandle"
                 name="companyTwitterUrl"
                 onChange={handleTextChange}
               />
@@ -209,6 +210,7 @@ const CompanyEditAboutPage = (props: any) => {
                 size="small"
                 // error={errors.}
                 value={companyFacebookUrl || ""}
+                placeholder="https://www.facebook.com/..."
                 name="companyFacebookUrl"
                 onChange={handleTextChange}
               />
@@ -224,6 +226,7 @@ const CompanyEditAboutPage = (props: any) => {
                 size="small"
                 // error={errors.companyInstagramUrl}
                 value={companyInstagramUrl || ""}
+                placeholder="https://www.instagram.com/..."
                 name="companyInstagramUrl"
                 onChange={handleTextChange}
               />

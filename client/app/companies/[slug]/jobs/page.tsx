@@ -32,6 +32,7 @@ const CompanyJobs = async (props: any) => {
   const searchTerm = searchParams.q || "";
 
   const data = await fetchJobs(companyName);
+
   const totalJobs = data.data.total;
   const eachPageJobNumber = data.data.size;
   const vacancies = data.data.companyVacanciesDto;
@@ -54,6 +55,7 @@ const CompanyJobs = async (props: any) => {
                 <ContentAction companyName={companyName} />
               </div>
             </div>
+
             <JobStateCounter vacancies={vacancies} />
             <div className="flex gap-3 w-full md:max-w-[16rem]">
               <ContentSearchBar />
@@ -76,16 +78,9 @@ const CompanyJobs = async (props: any) => {
                   <JobNotFoundCard companyName={companyName} />
                 )}
               </div>
-              <div className="flex flex-col gap-2 w-full md:w-[25%]">
-                <CompanyInfoCard
-                  companyAbout={{
-                    haveMoney: 200,
-                    employeeQuantity: "1000人",
-                    aboutUrl: "https://www.example.com",
-                    address: "台北市大同區測試路",
-                  }}
-                />
-              </div>
+              {/* <div className="flex flex-col gap-2 w-full md:w-[25%]">
+                <CompanyInfoCard companyInfo={companyInfo} />
+              </div> */}
             </div>
           </div>
         </div>

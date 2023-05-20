@@ -2,31 +2,23 @@ import CompanyHeader from "./components/CompanyHeader/CompanyHeader";
 import ContentAction from "./components/CompanyContent/ContentAction";
 import { notFound } from "next/navigation";
 import CompanyInfoCard from "./components/CompanyContent/CompanyInfoCard";
-import Card from "@/app/components/Card";
+import CompanyAboutContent from "./components/CompanyContent/AboutContent";
+import { Company } from "@/app/admin/components/CompanyRegistCard";
+import {
+  CompanyAboutBasic,
+  CompanyAboutService,
+  CompanyAboutWelfare,
+} from "./edit/page";
+import CompanyContentNavbar from "./components/CompanyContent/CompanyContentNavbar";
 
-export interface CompanyAbout {
-  companyId: string | null;
-  aboutUrl: string | null;
-  employeeQuantity: string | null;
-  haveMoney: number | null;
-  backgroundImageUrl: string | null;
-  talk: string | null;
-  contactPerson: string | null;
-  logoImageUrl: string | null;
-  environment: string | null;
-  logoSavePath: string | null;
-  backgroundSavePath: string | null;
-  service: string | null;
-  mission: string | null;
-  media: string | null;
-  twitterUrl: string | null;
-  facebookUrl: string | null;
-  instagramUrl: string | null;
-  welfare: string | null;
-}
+export type CompanyAbout = Company & {
+  companyAboutBasic: CompanyAboutBasic;
+  companyAboutService: CompanyAboutService;
+  companyAboutWelfare: CompanyAboutWelfare;
+};
 
 const fetchCompany = async (companyName: string) => {
-  const url = `http://localhost:8080/company/${companyName}`; //company-about
+  const url = `http://localhost:8080/company/${companyName}/company-about`;
   const res = await fetch(url, {
     method: "GET",
     headers: {
@@ -48,13 +40,12 @@ const CompanyPage = async (props: any) => {
     params: { slug: companyName },
   } = props;
 
-  const data = await fetchCompany(companyName);
-  // console.log(data);
+  const { data: companyInfo } = await fetchCompany(companyName);
 
   return (
     <div className="flex flex-col gap-4">
       <CompanyHeader companyName={companyName} />
-      <div className="px-3 md:p-0 flex flex-col gap-4">
+      <div className="px-3 md:p-0 flex flex-col gap-4 w-full md:max-w-[860px] lg:max-w-[1140px] m-auto">
         <div className="flex justify-between items-center text-lg">
           <div>關於</div>
           <div className="text-sm flex gap-1 sm:gap-2">
@@ -63,24 +54,11 @@ const CompanyPage = async (props: any) => {
         </div>
         <div className="w-full flex flex-col md:flex-row gap-6">
           <div className="flex flex-col gap-2 w-full md:w-[75%]">
-            {/* {decodeURI(companyName)} 公司介紹頁面 */}
-            <Card classnames="p-4 flex flex-col gap-3">
-              <div className="text-slate-500">公司介紹</div>
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Libero
-              reprehenderit, aliquid aperiam dolore accusantium cumque
-              repudiandae voluptatem asperiores necessitatibus vitae corporis
-              optio illum dignissimos sint quisquam saepe, quae sed ab!
-            </Card>
+            <CompanyAboutContent companyInfo={companyInfo} />
           </div>
           <div className="flex flex-col gap-2 w-full md:w-[25%]">
-            <CompanyInfoCard
-              companyAbout={{
-                haveMoney: 200,
-                employeeQuantity: "1000人",
-                aboutUrl: "https://www.example.com",
-                address: "台北市大同區測試路",
-              }}
-            />
+            <CompanyInfoCard companyInfo={companyInfo} />
+            <CompanyContentNavbar companyInfo={companyInfo} />
           </div>
         </div>
       </div>

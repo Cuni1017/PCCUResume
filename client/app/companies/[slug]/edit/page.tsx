@@ -21,7 +21,8 @@ import {
 } from "@/hooks/useCompanyAbout";
 import SnackBar from "@/app/components/SnackBar";
 
-interface CompanyAboutBasic {
+
+export interface CompanyAboutBasic {
   companyId: string;
   companyAboutUrl: string | null;
   companyAboutEmployeeQuantity: string | null;
@@ -35,10 +36,10 @@ interface CompanyAboutBasic {
   companyAboutBackgroundSavePath: string | null;
   // companyAboutService: companyAboutService | null;
   // companyAboutWelfare: companyAboutWelfare | null;
-  company: Company | null;
+  // company: Company | null;
 }
 
-interface companyAboutService {
+export interface CompanyAboutService {
   companyId: string;
   companyAboutService: string | null;
   companyAboutMission: string | null;
@@ -48,7 +49,7 @@ interface companyAboutService {
   companyInstagramUrl: string | null;
 }
 
-interface companyAboutWelfare {
+export interface CompanyAboutWelfare {
   companyId: string;
   companyAboutWelfare: string | null;
 }

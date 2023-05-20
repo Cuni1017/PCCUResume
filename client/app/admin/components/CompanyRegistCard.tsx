@@ -26,7 +26,7 @@ export interface Company {
   companyDistrict: string;
   companyAddress: string;
   companyCreateTime: string; //YYYY-MM-DD
-  companyValidType: null | boolean; //這啥
+  companyValidType: null | boolean;
 }
 
 const CompanyRegistCard = ({

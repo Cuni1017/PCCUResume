@@ -32,6 +32,7 @@ import PlaygroundEditorTheme from "./themes/PlaygroundEditorTheme";
 import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
 
 export const initialJsonString = `{"root":{"children":[{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1}],"direction":null,"format":"","indent":0,"type":"root","version":1}}`;
+export const LexicalRegex = /"text":"([^"]*)"/g;
 
 const App = ({
   value,
