@@ -6,7 +6,7 @@ import { queryKeys } from "@/tanstack-query/constant";
 
 const JWT = getCookie("JWT");
 
-const headers = {
+const defaultHeaders = {
   headers: {
     Authorization: `Bearer ${JWT}`,
     "Content-Type": "Application/json"
@@ -16,7 +16,7 @@ const headers = {
 async function getCompanyAbout({ companyName, type }: { companyName: string, type?: "basic" | "service" | "welfare" }) {
   const { data } = await axiosInstance.get(
     `company/${companyName}/company-about${type ? `-${type}` : ""}`,
-    headers
+    defaultHeaders
   );
 
   return data.data;
@@ -26,7 +26,7 @@ async function postCompanyAbout({ companyName, type, formData }: { companyName: 
   const { data } = await axiosInstance.post(
     `company/${companyName}/company-about-${type}`,
     { ...formData },
-    headers
+    defaultHeaders
   );
 
   return data.data;
@@ -36,7 +36,7 @@ async function putCompanyAbout({ companyName, type, formData }: { companyName: s
   const { data } = await axiosInstance.put(
     `company/${companyName}/company-about-${type}`,
     { ...formData },
-    headers
+    defaultHeaders
   );
 
   return data.data;
@@ -44,7 +44,7 @@ async function putCompanyAbout({ companyName, type, formData }: { companyName: s
 
 export function useGetCompanyAbout({ companyName, type }: { companyName: string, type?: "basic" | "service" | "welfare" }) {
   const query = useQuery({
-    queryKey: [companyName, type],
+    queryKey: type ? [companyName, type] : [companyName],
     queryFn: () => getCompanyAbout({ companyName, type }),
     staleTime: 200000,
   });
@@ -74,6 +74,38 @@ export function usePutCompanyAbout({ companyName, type }: { companyName: string,
     onSuccess: () => {
       queryClient.invalidateQueries([companyName]);
       queryClient.invalidateQueries([companyName, type]);
+    },
+  });
+
+  return mutation;
+}
+
+
+
+// 圖片上傳
+const imageHeaders = {
+  headers: {
+    Authorization: `Bearer ${JWT}`,
+    "Content-Type": "multipart/form-data; boundary=<calculated when request is sent>"
+  }
+}
+
+async function postCompanyImage({ companyName, formData, type }: { companyName: string, formData: any, type: "logo" | "background" }) {
+  const { data } = await axiosInstance.post(
+    `company/${companyName}/image/company-${type}`,
+    formData,
+    imageHeaders
+  );
+
+  return data.data;
+}
+
+export function usePostCompanyImage({ companyName }: { companyName: string }) {
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: postCompanyImage,
+    onSuccess: () => {
+      queryClient.invalidateQueries([companyName]);
     },
   });
 

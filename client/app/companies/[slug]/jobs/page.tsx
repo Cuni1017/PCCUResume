@@ -46,8 +46,8 @@ const CompanyJobs = async (props: any) => {
   return (
     <div className="flex flex-col gap-4">
       <CompanyHeader companyName={companyName} />
-      <div className="w-full">
-        <div className="max-w-[24rem] sm:max-w-[36rem] md:max-w-none m-auto relative">
+      <div className="w-full md:max-w-[860px] lg:max-w-[1140px] m-auto">
+        <div className="px-3 md:px-0 max-w-[24rem] sm:max-w-[36rem] md:max-w-none m-auto relative">
           <div className="flex flex-col gap-2">
             <div className="flex justify-between items-center text-lg">
               <div>職缺</div>

@@ -45,7 +45,7 @@ const CompanyPage = async (props: any) => {
   return (
     <div className="flex flex-col gap-4">
       <CompanyHeader companyName={companyName} />
-      <div className="px-3 md:p-0 flex flex-col gap-4 w-full md:max-w-[860px] lg:max-w-[1140px] m-auto">
+      <div className="px-3 box-border md:p-0 flex flex-col gap-4 w-full md:max-w-[860px] lg:max-w-[1140px] m-auto">
         <div className="flex justify-between items-center text-lg">
           <div>關於</div>
           <div className="text-sm flex gap-1 sm:gap-2">
@@ -53,7 +53,7 @@ const CompanyPage = async (props: any) => {
           </div>
         </div>
         <div className="w-full flex flex-col md:flex-row gap-6">
-          <div className="flex flex-col gap-2 w-full md:w-[75%]">
+          <div className="flex flex-col gap-2 w-full md:w-[75%] order-last md:order-none">
             <CompanyAboutContent companyInfo={companyInfo} />
           </div>
           <div className="flex flex-col gap-2 w-full md:w-[25%]">

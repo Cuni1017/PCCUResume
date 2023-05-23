@@ -89,13 +89,13 @@ const CompanyInfoCard = ({ companyInfo }: { companyInfo: CompanyAbout }) => {
         </div>
       </div>
       {companyAboutBasic?.companyAboutUrl ? (
-        <div className="flex items-center gap-2 text-sm">
+        <div className="flex items-center gap-2 text-sm ">
           <Tooltip title="網站">
             <div className="cursor-pointer flex items-center">
               <LanguageOutlinedIcon />
             </div>
           </Tooltip>
-          <div>
+          <div style={{ wordBreak: "break-word" }}>
             <a
               className="text-blue-500 hover:underline"
               href={companyAboutBasic.companyAboutUrl}

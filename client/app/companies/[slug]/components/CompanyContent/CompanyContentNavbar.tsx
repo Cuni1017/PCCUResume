@@ -21,85 +21,106 @@ const CompanyContentNavbar = ({
   const { companyAboutService, companyAboutWelfare, companyAboutBasic } =
     companyInfo;
 
-  // console.log(isPastEle);
-  // console.log(eleRef);
-
   useEffect(() => {
-    const detectScreen = (e: any) => {
-      // console.log(window.scrollY);
-      if (!eleRef.current?.offsetTop) return;
+    if (!eleRef.current) return;
+    const target = eleRef.current;
 
-      if (window.scrollY > eleRef.current?.offsetTop) setIsPastEle(true);
-      else setIsPastEle(false);
-    };
-    document.addEventListener("scroll", detectScreen);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+
+        !entry.isIntersecting &&
+        window.innerWidth >= 900 &&
+        window.scrollY >= 600
+          ? setIsPastEle(true)
+          : setIsPastEle(false);
+      },
+      {
+        rootMargin: "-84px 0px 0px 0px",
+        threshold: 0.99,
+      }
+    );
+    observer.observe(target);
+
     return () => {
-      document.removeEventListener("scroll", detectScreen);
+      if (target) observer.unobserve(target);
     };
   }, []);
 
   return (
-    <div className="flex flex-col text-sm text-slate-500" ref={eleRef}>
-      {companyAboutBasic ? (
-        <>
-          {companyAboutBasic.companyAboutTalk &&
-          getIsFullfillLexicalRegex(companyAboutBasic.companyAboutTalk) ? (
-            <CompanyContentNavbarItem
-              label="公司介紹"
-              linkId="companyAboutTalk"
-            />
-          ) : null}
-          {companyAboutBasic.companyAboutEnvironment &&
-          getIsFullfillLexicalRegex(
-            companyAboutBasic.companyAboutEnvironment
-          ) ? (
-            <CompanyContentNavbarItem
-              label="公司環境"
-              linkId="companyAboutEnvironment"
-              classnames="order-last"
-            />
-          ) : null}
-        </>
-      ) : null}
-      {companyAboutService ? (
-        <>
-          {companyAboutService.companyAboutService &&
-          getIsFullfillLexicalRegex(companyAboutService.companyAboutService) ? (
-            <CompanyContentNavbarItem
-              label="產品或服務"
-              linkId="companyAboutService"
-            />
-          ) : null}
-          {companyAboutService.companyAboutMission &&
-          getIsFullfillLexicalRegex(companyAboutService.companyAboutMission) ? (
-            <CompanyContentNavbarItem
-              label="使命"
-              linkId="companyAboutMission"
-            />
-          ) : null}
-          {companyAboutService.companyAboutMedia &&
-          getIsFullfillLexicalRegex(companyAboutService.companyAboutMedia) ? (
-            <CompanyContentNavbarItem
-              label="媒體曝光"
-              linkId="companyAboutMedia"
-            />
-          ) : null}
-        </>
-      ) : null}
+    <div ref={eleRef}>
+      <div
+        className={`flex flex-col text-sm text-slate-500 md:pt-4 ${
+          isPastEle ? "fixed top-[84px] w-full " : ""
+        }`}
+      >
+        {companyAboutBasic ? (
+          <>
+            {companyAboutBasic.companyAboutTalk &&
+            getIsFullfillLexicalRegex(companyAboutBasic.companyAboutTalk) ? (
+              <CompanyContentNavbarItem
+                label="公司介紹"
+                linkId="companyAboutTalk"
+              />
+            ) : null}
+            {companyAboutBasic.companyAboutEnvironment &&
+            getIsFullfillLexicalRegex(
+              companyAboutBasic.companyAboutEnvironment
+            ) ? (
+              <CompanyContentNavbarItem
+                label="公司環境"
+                linkId="companyAboutEnvironment"
+                classnames="order-last"
+              />
+            ) : null}
+          </>
+        ) : null}
+        {companyAboutService ? (
+          <>
+            {companyAboutService.companyAboutService &&
+            getIsFullfillLexicalRegex(
+              companyAboutService.companyAboutService
+            ) ? (
+              <CompanyContentNavbarItem
+                label="產品或服務"
+                linkId="companyAboutService"
+              />
+            ) : null}
+            {companyAboutService.companyAboutMission &&
+            getIsFullfillLexicalRegex(
+              companyAboutService.companyAboutMission
+            ) ? (
+              <CompanyContentNavbarItem
+                label="使命"
+                linkId="companyAboutMission"
+              />
+            ) : null}
+            {companyAboutService.companyAboutMedia &&
+            getIsFullfillLexicalRegex(companyAboutService.companyAboutMedia) ? (
+              <CompanyContentNavbarItem
+                label="媒體曝光"
+                linkId="companyAboutMedia"
+              />
+            ) : null}
+          </>
+        ) : null}
 
-      {companyAboutWelfare ? (
-        <>
-          {companyAboutWelfare.companyAboutWelfare &&
-          getIsFullfillLexicalRegex(companyAboutWelfare.companyAboutWelfare) ? (
-            <CompanyContentNavbarItem
-              label="員工福利"
-              linkId="companyAboutWelfare"
-            />
-          ) : null}
-        </>
-      ) : null}
+        {companyAboutWelfare ? (
+          <>
+            {companyAboutWelfare.companyAboutWelfare &&
+            getIsFullfillLexicalRegex(
+              companyAboutWelfare.companyAboutWelfare
+            ) ? (
+              <CompanyContentNavbarItem
+                label="員工福利"
+                linkId="companyAboutWelfare"
+              />
+            ) : null}
+          </>
+        ) : null}
 
-      {/* <div onClick={scrollToTop}>至頂</div> */}
+        {/* <div onClick={scrollToTop}>至頂</div> */}
+      </div>
     </div>
   );
 };

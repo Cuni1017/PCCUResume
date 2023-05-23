@@ -93,20 +93,19 @@ const CompanyEditAboutPage = (props: any) => {
           介紹公司的產品或服務，幫助求職者更快認識您的公司。（如果有不同語言的介紹，建議可以都附上。）
         </div>
       </div>
-      {!isUseEffectUpdated ? (
-        <div>Loading...</div>
-      ) : (
-        <div className="flex flex-col gap-3 my-4">
-          <div className="flex flex-col gap-1">
-            <div className="text-sm text-gray-500 flex gap-1">產品或服務</div>
-            <div
-              className={`border-solid border rounded ${
-                companyAboutService?.length > EditorMaxLength
-                  ? // || errors.companyAboutService
-                    "border-red-300"
-                  : "border-gray-300"
-              }`}
-            >
+
+      <div className="flex flex-col gap-3 my-4">
+        <div className="flex flex-col gap-1">
+          <div className="text-sm text-gray-500 flex gap-1">產品或服務</div>
+          <div
+            className={`border-solid border rounded ${
+              companyAboutService?.length > EditorMaxLength
+                ? // || errors.companyAboutService
+                  "border-red-300"
+                : "border-gray-300"
+            }`}
+          >
+            {isUseEffectUpdated && (
               <Lexical
                 value={
                   companyAboutService
@@ -123,19 +122,21 @@ const CompanyEditAboutPage = (props: any) => {
                 }}
                 editable={true}
               />
-            </div>
+            )}
           </div>
+        </div>
 
-          <div className="flex flex-col gap-1">
-            <div className="text-sm text-gray-500 flex gap-1">使命</div>
-            <div
-              className={`border-solid border rounded ${
-                companyAboutMission?.length > EditorMaxLength
-                  ? // || errors.companyAboutMission
-                    "border-red-300"
-                  : "border-gray-300"
-              }`}
-            >
+        <div className="flex flex-col gap-1">
+          <div className="text-sm text-gray-500 flex gap-1">使命</div>
+          <div
+            className={`border-solid border rounded ${
+              companyAboutMission?.length > EditorMaxLength
+                ? // || errors.companyAboutMission
+                  "border-red-300"
+                : "border-gray-300"
+            }`}
+          >
+            {isUseEffectUpdated && (
               <Lexical
                 value={
                   companyAboutMission
@@ -152,19 +153,21 @@ const CompanyEditAboutPage = (props: any) => {
                 }}
                 editable={true}
               />
-            </div>
+            )}
           </div>
+        </div>
 
-          <div className="flex flex-col gap-1">
-            <div className="text-sm text-gray-500 flex gap-1">媒體曝光</div>
-            <div
-              className={`border-solid border rounded ${
-                companyAboutMedia?.length > EditorMaxLength
-                  ? // || errors.companyAboutMedia
-                    "border-red-300"
-                  : "border-gray-300"
-              }`}
-            >
+        <div className="flex flex-col gap-1">
+          <div className="text-sm text-gray-500 flex gap-1">媒體曝光</div>
+          <div
+            className={`border-solid border rounded ${
+              companyAboutMedia?.length > EditorMaxLength
+                ? // || errors.companyAboutMedia
+                  "border-red-300"
+                : "border-gray-300"
+            }`}
+          >
+            {isUseEffectUpdated && (
               <Lexical
                 value={
                   companyAboutMedia
@@ -181,59 +184,53 @@ const CompanyEditAboutPage = (props: any) => {
                 }}
                 editable={true}
               />
-            </div>
+            )}
           </div>
-
-          <label className="flex flex-col gap-1">
-            <div className="text-sm text-gray-500 flex gap-1">
-              Twitter handle
-            </div>
-            <div>
-              <OutlinedInput
-                fullWidth
-                size="small"
-                // error={errors.}
-                value={companyTwitterUrl || ""}
-                placeholder="@MyTwitterHandle"
-                name="companyTwitterUrl"
-                onChange={handleTextChange}
-              />
-            </div>
-          </label>
-          <label className="flex flex-col gap-1">
-            <div className="text-sm text-gray-500 flex gap-1">
-              Facebook 網址
-            </div>
-            <div>
-              <OutlinedInput
-                fullWidth
-                size="small"
-                // error={errors.}
-                value={companyFacebookUrl || ""}
-                placeholder="https://www.facebook.com/..."
-                name="companyFacebookUrl"
-                onChange={handleTextChange}
-              />
-            </div>
-          </label>
-          <label className="flex flex-col gap-1">
-            <div className="text-sm text-gray-500 flex gap-1">
-              Instagram 網址
-            </div>
-            <div>
-              <OutlinedInput
-                fullWidth
-                size="small"
-                // error={errors.companyInstagramUrl}
-                value={companyInstagramUrl || ""}
-                placeholder="https://www.instagram.com/..."
-                name="companyInstagramUrl"
-                onChange={handleTextChange}
-              />
-            </div>
-          </label>
         </div>
-      )}
+
+        <label className="flex flex-col gap-1">
+          <div className="text-sm text-gray-500 flex gap-1">Twitter handle</div>
+          <div>
+            <OutlinedInput
+              fullWidth
+              size="small"
+              // error={errors.}
+              value={companyTwitterUrl || ""}
+              placeholder="@MyTwitterHandle"
+              name="companyTwitterUrl"
+              onChange={handleTextChange}
+            />
+          </div>
+        </label>
+        <label className="flex flex-col gap-1">
+          <div className="text-sm text-gray-500 flex gap-1">Facebook 網址</div>
+          <div>
+            <OutlinedInput
+              fullWidth
+              size="small"
+              // error={errors.}
+              value={companyFacebookUrl || ""}
+              placeholder="https://www.facebook.com/..."
+              name="companyFacebookUrl"
+              onChange={handleTextChange}
+            />
+          </div>
+        </label>
+        <label className="flex flex-col gap-1">
+          <div className="text-sm text-gray-500 flex gap-1">Instagram 網址</div>
+          <div>
+            <OutlinedInput
+              fullWidth
+              size="small"
+              // error={errors.companyInstagramUrl}
+              value={companyInstagramUrl || ""}
+              placeholder="https://www.instagram.com/..."
+              name="companyInstagramUrl"
+              onChange={handleTextChange}
+            />
+          </div>
+        </label>
+      </div>
       <div className="mt-5">
         <MyButton
           onClick={handleSave}

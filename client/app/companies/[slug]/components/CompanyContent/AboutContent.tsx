@@ -86,8 +86,6 @@ const CompanyAboutContent = ({
           ) : null}
         </>
       ) : null}
-
-      <div className="my-[100rem]">my-100rem</div>
     </>
   );
 };
@@ -108,7 +106,9 @@ const AboutContentItem = ({
   return (
     <Card
       id={id}
-      classnames={`p-4 flex flex-col gap-3 ${classnames ? classnames : ""}`}
+      classnames={`p-4 flex flex-col gap-3 overflow-auto ${
+        classnames ? classnames : ""
+      }`}
     >
       <div className="text-slate-500">{label}</div>
       {children}
