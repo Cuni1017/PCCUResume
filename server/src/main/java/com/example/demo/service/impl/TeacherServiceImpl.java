@@ -1,9 +1,6 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.category.ApplyCategory;
-import com.example.demo.category.ChangeApplyTypeCategory;
-import com.example.demo.category.RoleCategory;
-import com.example.demo.category.TeacherValidTypeCategory;
+import com.example.demo.category.*;
 import com.example.demo.category.resume.post.SearchCategory;
 import com.example.demo.dao.*;
 import com.example.demo.dao.apply.ApplyDao;
@@ -21,13 +18,16 @@ import com.example.demo.model.resume.Resume;
 import com.example.demo.model.vacancies.Vacancies;
 import com.example.demo.service.TeacherService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,7 +44,7 @@ public class TeacherServiceImpl implements TeacherService {
     private final VacanciesDao vacanciesDao ;
     private final TeacherRepository teacherRepository;
     private final ResumeRepository resumeRepository;
-
+    private final TeacherDao teacherDao;
     private final RWorkHopeRepository rWorkHopeRepository;
     private final RSpecialSkillRepository rSpecialSkillRepository;
     private final RLicenseRepository rLicenseRepository;
@@ -58,6 +58,7 @@ public class TeacherServiceImpl implements TeacherService {
     private final   HistoryApplyRepository historyApplyRepository;
     private final  StudentDao studentDao;
     private final CompanyDao companyDao;
+    private final TeacherFileRepository teacherFileRepository;
     @Override
     public Object findById(String teacherId) {
         Teacher teacher = teacherRepository.findByTeacherId(teacherId).orElseThrow(()->new RuntimeException("沒有此教師"));
@@ -258,6 +259,9 @@ public class TeacherServiceImpl implements TeacherService {
                 .build();
         return getRestDto(pageVacanciesDto,"查詢成功");
     }
+
+
+
     @Override
     public Object UpdateVacanciesByTeacherValidType(String teacherId, String vacanciesId, TeacherValidTypeCategory teacherValidTypeCategory) {
         Vacancies vacancies = vacanciesRepository.findById(vacanciesId).orElseThrow(()->new RuntimeException("沒有此職缺"));
@@ -308,6 +312,25 @@ public class TeacherServiceImpl implements TeacherService {
         CheckApplyType(changeApplyTypeCategory.getApplyType(), apply, student,vacancies,applyId);
         return getRestDto(apply,"更新成功");
     }
+    @Override
+    public Object findTeacherFile(String fileType, int page, int limit) {
+        int selectOffset = getSelectOffset(page,limit);
+        int selectLimit = getSelectLimit(page,limit);
+        List<TeacherFile> teacherFiles = teacherDao.findByFileType(fileType, selectLimit, selectOffset);
+        RestDto restDto = getRestDto(teacherFiles,"查詢成功");
+        return restDto;
+    }
+
+    @Override
+    public Object createTeacherFile(TeacherFileCategory teacherFileCategory, String teacherId) {
+        String teacherFileId = getId(teacherRepository,"TF",2);
+        TeacherFile teacherFile = getTeacherFile(teacherFileCategory,teacherId,teacherFileId);
+        teacherFile.setCreateTime(LocalDate.now());
+        teacherFile.setUpdateTime(LocalDate.now());
+        teacherFileRepository.save(teacherFile);
+        return getRestDto(teacherFile,"創造成功");
+    }
+
     private Apply changeApplyType(Apply apply,String applyType) {
         apply.setApplyType(applyType);
         apply.setApplyUpdateTime(LocalDate.now());
@@ -368,7 +391,28 @@ public class TeacherServiceImpl implements TeacherService {
         userRepository.save(user);
 
     }
-
+    private String getId(JpaRepository repository , String idType , int x){
+        long userCount = repository.count();
+        Date dNow = new Date( );
+        SimpleDateFormat ft = new SimpleDateFormat ("yyyyMMdd");
+        String today =ft.format(dNow);
+        int intToday = Integer.valueOf(today);
+        intToday *=100;
+        intToday +=userCount;
+        idType = idType.substring(0,x);
+        String studentId = idType + intToday;
+        return studentId;
+    }
+    private TeacherFile getTeacherFile(TeacherFileCategory teacherFileCategory, String teacherId,String teacherFileId){
+        TeacherFile teacherFile = TeacherFile.builder()
+                .teacherFileId(teacherFileId)
+                .teacherId(teacherId)
+                .teacherFileName(teacherFileCategory.getTeacherFileName())
+                .teacherFileTalk(teacherFileCategory.getTeacherFileTalk())
+                .teacherFileType(teacherFileCategory.getTeacherFileType())
+                .build();
+        return teacherFile;
+    }
 
     private RestDto getRestDto(Object o, String message){
         RestDto restDto = RestDto.builder()

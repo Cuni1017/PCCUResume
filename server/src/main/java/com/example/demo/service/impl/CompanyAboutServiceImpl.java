@@ -99,6 +99,7 @@ public class CompanyAboutServiceImpl implements CompanyAboutService {
     public Object createCompanyAboutBasic(String companyName, CompanyAboutBasicCategory companyAboutBasicCategory) {
         String companyId = findCompanyIdByCompanyName(companyName);
         CompanyAboutBasic companyAboutBasic = getCompanyAboutBasic(companyId,companyAboutBasicCategory);
+        System.out.println(companyAboutBasic);
         companyAboutBsicRepository.save(companyAboutBasic);
         return getRestDto(companyAboutBasic,"新增成功");
     }
@@ -110,7 +111,7 @@ public class CompanyAboutServiceImpl implements CompanyAboutService {
         company.setCompanyNumber(companyAboutBasicCategory.getCompanyNumber());
         company.setCompanyName(companyAboutBasicCategory.getCompanyName());
         companyRepository.save(company);
-        CompanyAboutBasic companyAboutBasic = getCompanyAboutBasic(companyId,companyAboutBasicCategory);
+        CompanyAboutBasic companyAboutBasic = getUpdateCompanyAboutBasic(company,companyAboutBasicCategory);
         companyAboutBsicRepository.save(companyAboutBasic);
         return getRestDto(companyAboutBasic,"更新成功");
     }
@@ -227,6 +228,24 @@ public class CompanyAboutServiceImpl implements CompanyAboutService {
                 .companyAboutEnvironment(companyAboutBasicCategory.getCompanyAboutEnvironment())
                 .companyAboutLogoSavePath(null)
                 .companyAboutBackgroundSavePath(null)
+                .companyAboutContactNumber(companyAboutBasicCategory.getCompanyAboutContactNumber())
+                .build();
+        return companyAboutBasic;
+    }
+    private CompanyAboutBasic getUpdateCompanyAboutBasic(Company company,CompanyAboutBasicCategory companyAboutBasicCategory) {
+
+        CompanyAboutBasic companyAboutBasic = CompanyAboutBasic.builder()
+                .companyId(company.getCompanyId())
+                .companyAboutUrl(companyAboutBasicCategory.getCompanyAboutUrl())
+                .companyAboutEmployeeQuantity(companyAboutBasicCategory.getCompanyAboutEmployeeQuantity())
+                .companyAboutHaveMoney(companyAboutBasicCategory.getCompanyAboutHaveMoney())
+                .companyAboutBackgroundImageUrl(company.getCompanyAboutBasic().getCompanyAboutBackgroundImageUrl())
+                .companyAboutTalk(companyAboutBasicCategory.getCompanyAboutTalk())
+                .companyAboutContactPerson(companyAboutBasicCategory.getCompanyAboutContactPerson())
+                .companyAboutLogoImageUrl(company.getCompanyAboutBasic().getCompanyAboutLogoImageUrl())
+                .companyAboutEnvironment(companyAboutBasicCategory.getCompanyAboutEnvironment())
+                .companyAboutLogoSavePath(company.getCompanyAboutBasic().getCompanyAboutLogoSavePath())
+                .companyAboutBackgroundSavePath(company.getCompanyAboutBasic().getCompanyAboutBackgroundSavePath())
                 .companyAboutContactNumber(companyAboutBasicCategory.getCompanyAboutContactNumber())
                 .build();
         return companyAboutBasic;

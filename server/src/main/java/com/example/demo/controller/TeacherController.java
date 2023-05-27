@@ -2,8 +2,10 @@ package com.example.demo.controller;
 
 import com.example.demo.category.ChangeApplyTypeCategory;
 import com.example.demo.category.RoleCategory;
+import com.example.demo.category.TeacherFileCategory;
 import com.example.demo.category.TeacherValidTypeCategory;
 import com.example.demo.category.resume.post.SearchCategory;
+import com.example.demo.model.TeacherFile;
 import com.example.demo.model.TeacherValidType;
 import com.example.demo.service.TeacherService;
 import lombok.RequiredArgsConstructor;
@@ -136,6 +138,21 @@ public class TeacherController {
 
     ) {
         return ResponseEntity.ok(teacherService.updateApply(teacherId,applyId,changeApplyTypeCategory));
+    }
+    @GetMapping("/v1/teacher/teacher-file")
+    public ResponseEntity<Object> findTeacherFile(
+            @RequestParam(required = false,defaultValue = "1" ) int page,
+            @RequestParam(required = false,defaultValue = "10" ) int limit,
+            @RequestParam(required = false) String fileType
+    ) {
+        return ResponseEntity.ok(teacherService.findTeacherFile(fileType,page,limit));
+    }
+    @PostMapping("/v1/teacher/{teacherId}/teacher-file")
+    public ResponseEntity<Object> createTeacherFile(
+            @RequestBody TeacherFileCategory teacherFileCategory,
+            @PathVariable String teacherId
+            ) {
+        return ResponseEntity.ok(teacherService.createTeacherFile(teacherFileCategory,teacherId));
     }
 //    @PutMapping("/v1/teacher/{teacherId}/company-review/{studentId}")
 //    public ResponseEntity<Object> updateStudentReview(
