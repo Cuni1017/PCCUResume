@@ -6,6 +6,7 @@ import Switch from "@mui/material/Switch";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { useRouter, usePathname } from "next/navigation";
+import SearchBar from "./SearchBar";
 
 const AdminNavbar = () => {
   const router = useRouter();
@@ -30,8 +31,18 @@ const AdminNavbar = () => {
     }
   }, [pathname]);
 
+  const searchBarPlaceholder = pathname?.includes("/students")
+    ? "搜尋學生姓名、學號"
+    : pathname?.includes("/companies")
+    ? "搜尋公司名稱"
+    : pathname?.includes("/vacancies")
+    ? "搜尋公司名稱、職缺名稱"
+    : pathname?.includes("/applies")
+    ? "搜尋學生姓名、公司名稱、職缺名稱"
+    : "";
+
   return (
-    <Card classnames="p-3 mt-5">
+    <Card classnames="p-3 my-5">
       <div className="flex flex-col gap-3">
         <div className="w-full grid grid-cols-2 md:grid-cols-4 gap-3">
           <div>
@@ -81,6 +92,8 @@ const AdminNavbar = () => {
             </FormGroup>
           </div>
         </div>
+
+        <SearchBar placeholder={searchBarPlaceholder} />
       </div>
     </Card>
   );

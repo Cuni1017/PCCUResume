@@ -26,7 +26,13 @@ export interface Student {
   studentCreateTime: string; //YYYY-MM-DD
 }
 
-const StudentRegistCard = ({ student }: { student: Student }) => {
+const StudentRegistCard = ({
+  student,
+  isReviewed,
+}: {
+  student: Student;
+  isReviewed?: boolean;
+}) => {
   const [isShowActions, setIsShowActions] = useState(false);
   const [isShowHeadshot, setIsShowHeadShot] = useState(false);
   const [isDeleteModalShow, setIsDeleteModalShow] = useState(false);
@@ -116,12 +122,14 @@ const StudentRegistCard = ({ student }: { student: Student }) => {
           isShowActions ? "absolute" : "hidden"
         }`}
       >
-        <MyButton
-          onClick={handleAgree}
-          classnames="text-white bg-green-500 hover:bg-green-600 focus:bg-green-700 w-[10rem] h-[40px]"
-        >
-          同意
-        </MyButton>
+        {isReviewed ? null : (
+          <MyButton
+            onClick={handleAgree}
+            classnames="text-white bg-green-500 hover:bg-green-600 focus:bg-green-700 w-[10rem] h-[40px]"
+          >
+            同意
+          </MyButton>
+        )}
         <MyButton
           onClick={() => {
             setIsDeleteModalShow(true);

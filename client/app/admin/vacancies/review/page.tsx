@@ -1,18 +1,32 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useGetVacanciesReview } from "@/hooks/useAdmin";
 import Skeleton from "@mui/material/Skeleton";
 import VacancyRegistCard from "../../components/VacancyRegistCard";
 import { Vacancy } from "@/app/components/JobInfoCard";
 import PaginationBar from "@/app/components/SearchContainer/PaginationBar";
+import { useRouter } from "next/navigation";
+import NotFoundCard from "@/app/components/NotFoundCard";
 
 const VacanciesReview = (props: any) => {
-  const { searchParams } = props;
+  const router = useRouter();
+  const {
+    searchParams: { page, q },
+  } = props;
+  const [isInit, setIsInit] = useState(true);
+
+  useEffect(() => {
+    isInit ? setIsInit(false) : router.refresh();
+  }, [isInit, page, q, router]);
 
   const {
-    data: { companyVacanciesDto: vacancies, page, total },
-  } = useGetVacanciesReview(1);
+    data: { companyVacanciesDto: vacancies, total },
+  } = useGetVacanciesReview({
+    page: page ? page : 1,
+    searchTerm: q,
+    isReviewed: false,
+  });
 
   const renderedVacancies = () => {
     if (!vacancies)
@@ -27,6 +41,7 @@ const VacanciesReview = (props: any) => {
         <VacancyRegistCard key={vacancy.vacanciesId} vacancy={vacancy} />
       ));
     } else {
+      if (q) return <NotFoundCard />;
       return <div>目前無職缺申請</div>;
     }
   };
@@ -39,7 +54,7 @@ const VacanciesReview = (props: any) => {
           <div className="mt-2 flex items-center justify-center">
             <PaginationBar
               count={Math.ceil(total / 10)}
-              page={searchParams.page ? parseInt(searchParams.page) : 1}
+              page={page ? parseInt(page) : 1}
             />
           </div>
         ) : null

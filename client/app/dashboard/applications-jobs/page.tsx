@@ -81,8 +81,6 @@ const ApplyCard = ({ apply }: { apply: Apply }) => {
     applyId,
   } = apply.apply[0];
 
-  console.log(userId);
-
   const {
     companyEmail,
     companyName,

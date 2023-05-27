@@ -40,7 +40,7 @@ const CardFooter = ({ resume, userId }: { resume: Resume; userId: string }) => {
           編輯
         </MyButton>
       </Link>
-      <Link href={`/resumes/${resume.resumeId}/editor`}>
+      <Link href={`/resumes/${resume.resumeId}`}>
         <MyButton classnames="hover:bg-gray-200">檢視</MyButton>
       </Link>
       <div className="ml-auto flex gap-2">

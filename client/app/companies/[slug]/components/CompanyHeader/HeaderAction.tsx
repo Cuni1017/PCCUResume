@@ -6,9 +6,18 @@ import MyButton from "../../../../components/MyButton";
 import AddIcon from "@mui/icons-material/Add";
 import { useSelector } from "react-redux";
 import { Store } from "@/redux/store";
+import { CompanyAbout } from "../../page";
 
-const HeaderAction = ({ companyName }: { companyName: string }) => {
+const HeaderAction = ({
+  companyName,
+  companyInfo,
+}: {
+  companyName: string;
+  companyInfo: CompanyAbout;
+}) => {
   const { name } = useSelector((store: Store) => store.user);
+
+  const { companyId } = companyInfo; //給追蹤
 
   return (
     <>

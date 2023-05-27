@@ -109,7 +109,7 @@ const ApplicantsPage = (props: any) => {
         <SnackBar information={"成功處理要求！"} type="success" />
       )}
       <CompanyHeader companyName={companyName} />
-      <div className="px-3 md:p-0">
+      <div className="px-3 md:p-0 box-border w-full md:max-w-[860px] lg:max-w-[1140px] m-auto">
         <div className="flex justify-between items-center text-lg">
           <div>職缺應徵列表</div>
           <div className="text-sm flex gap-1 sm:gap-2">

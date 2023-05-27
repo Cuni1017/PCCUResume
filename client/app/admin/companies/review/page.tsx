@@ -1,17 +1,31 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useGetCompaniesReview } from "@/hooks/useAdmin";
 import Skeleton from "@mui/material/Skeleton";
 import CompanyRegistCard, { Company } from "../../components/CompanyRegistCard";
 import PaginationBar from "@/app/components/SearchContainer/PaginationBar";
+import { useRouter } from "next/navigation";
+import NotFoundCard from "@/app/components/NotFoundCard";
 
 const CompaniesReview = (props: any) => {
-  const { searchParams } = props;
+  const router = useRouter();
+  const {
+    searchParams: { page, q },
+  } = props;
+  const [isInit, setIsInit] = useState(true);
 
   const {
     data: { companyDto: companies, total },
-  } = useGetCompaniesReview(1);
+  } = useGetCompaniesReview({
+    page: page ? page : 1,
+    searchTerm: q,
+    isReviewed: false,
+  });
+
+  useEffect(() => {
+    isInit ? setIsInit(false) : router.refresh();
+  }, [isInit, page, q, router]);
 
   const renderedCompanyRegists = () => {
     if (!companies)
@@ -26,6 +40,7 @@ const CompaniesReview = (props: any) => {
         <CompanyRegistCard key={company.companyId} company={company} />
       ));
     } else {
+      if (q) return <NotFoundCard />;
       return <div>目前無公司註冊申請</div>;
     }
   };
@@ -39,7 +54,7 @@ const CompaniesReview = (props: any) => {
           <div className="mt-2 flex items-center justify-center">
             <PaginationBar
               count={Math.ceil(total / 10)}
-              page={searchParams.page ? parseInt(searchParams.page) : 1}
+              page={page ? parseInt(page) : 1}
             />
           </div>
         ) : null

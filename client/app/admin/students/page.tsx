@@ -1,7 +1,70 @@
-import React from "react";
+"use client";
 
-const StudentsReviewed = () => {
-  return <div>StudentsReviewed</div>;
+import React, { useEffect, useState } from "react";
+import { useGetStudentsReview } from "@/hooks/useAdmin";
+import StudentRegistCard, { Student } from "../components/StudentRegistCard";
+import Skeleton from "@mui/material/Skeleton";
+import PaginationBar from "@/app/components/SearchContainer/PaginationBar";
+import { useRouter } from "next/navigation";
+import NotFoundCard from "@/app/components/NotFoundCard";
+
+const StudentsReviewed = (props: any) => {
+  const router = useRouter();
+  const [isInit, setIsInit] = useState(true);
+  const {
+    searchParams: { page, q },
+  } = props;
+
+  const {
+    data: { studentDtos: students, total },
+  } = useGetStudentsReview({
+    page: page ? page : 1,
+    searchTerm: q ? q : null,
+    isReviewed: true,
+  });
+
+  useEffect(() => {
+    isInit ? setIsInit(false) : router.refresh();
+  }, [isInit, page, q, router]);
+
+  const renderedStudentRegists = () => {
+    if (!students)
+      return (
+        <div>
+          <Skeleton variant="rectangular" width={210} height={118} />
+        </div>
+      );
+
+    if (students.length > 0) {
+      return students.map((student: Student) => (
+        <StudentRegistCard
+          key={student.studentId}
+          student={student}
+          isReviewed
+        />
+      ));
+    } else {
+      if (q) return <NotFoundCard />;
+      return <div>目前無註冊完成的學生</div>;
+    }
+  };
+
+  return (
+    <div className="pb-10">
+      <div className="flex flex-col gap-3">{renderedStudentRegists()}</div>
+
+      {students ? (
+        students.length > 0 ? (
+          <div className="mt-2 flex items-center justify-center">
+            <PaginationBar
+              count={Math.ceil(total / 10)}
+              page={page ? parseInt(page) : 1}
+            />
+          </div>
+        ) : null
+      ) : null}
+    </div>
+  );
 };
 
 export default StudentsReviewed;

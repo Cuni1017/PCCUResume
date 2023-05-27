@@ -43,7 +43,7 @@ const initialVacancy: Vacancy = {
   vacanciesRequirement: "", // 職務需求
   vacanciesQuantity: 1, // 招募人數
   vacanciesCondition: "", // 面試流程
-  skills: "", //所需技能
+  skills: " ", //所需技能
   vacanciesView: 0,
   vacanciesWatchType: "公開",
 };
@@ -133,13 +133,14 @@ const EditJob = ({
       errorsObj["skills"] = true;
       return;
     }
+
     let hasError = Object.values(errorsObj).some((value) => value === true);
     if (hasError) {
       console.log("有錯誤");
       return;
     }
-    const submitFormData = { ...formData, skills: formDataSkills };
 
+    const submitFormData = { ...formData, skills: formDataSkills };
     vacancy && jobId
       ? PutMutate({ companyName, formData: submitFormData, jobId })
       : PostMutate({ companyName, formData: submitFormData });
@@ -179,7 +180,7 @@ const EditJob = ({
       ) : null}
 
       <div className="mb-1">基本資訊</div>
-      <div>
+      <label>
         <div className="text-sm flex gap-1">
           職務名稱 <div className="text-xs text-red-500">*</div>
         </div>
@@ -193,8 +194,8 @@ const EditJob = ({
             onChange={handleTextChange}
           />
         </div>
-      </div>
-      <div>
+      </label>
+      <label>
         <div className="text-sm flex gap-1">
           職務部門 <div className="text-xs text-red-500">*</div>
         </div>
@@ -208,8 +209,8 @@ const EditJob = ({
             onChange={handleTextChange}
           />
         </div>
-      </div>
-      <div>
+      </label>
+      <label>
         <div className="text-sm flex gap-1">
           工作時間 <div className="text-xs text-red-500">*</div>
         </div>
@@ -224,7 +225,7 @@ const EditJob = ({
             placeholder="每星期至少三天.."
           />
         </div>
-      </div>
+      </label>
       <div>
         <div className="text-sm flex gap-1">
           薪資 <div className="text-xs text-red-500">*</div>
@@ -299,7 +300,7 @@ const EditJob = ({
           </FormControl>
         </div>
       </div>
-      <div>
+      <label>
         <div className="text-sm flex gap-1">
           教育程度 <div className="text-xs text-red-500">*</div>
         </div>
@@ -330,8 +331,8 @@ const EditJob = ({
             </Select>
           </FormControl>
         </div>
-      </div>
-      <div>
+      </label>
+      <label>
         <div className="text-sm flex gap-1">
           需求人數 <div className="text-xs text-red-500">*</div>
         </div>
@@ -354,8 +355,8 @@ const EditJob = ({
             }
           />
         </div>
-      </div>
-      <div>
+      </label>
+      <label>
         <div className="text-sm flex gap-1">
           工作地點 <div className="text-xs text-red-500">*</div>
         </div>
@@ -389,8 +390,8 @@ const EditJob = ({
             />
           </Grid>
         </div>
-      </div>
-      <div>
+      </label>
+      <label>
         <div className="text-sm flex gap-1">
           工作經歷 <div className="text-xs text-red-500">*</div>
         </div>
@@ -425,8 +426,8 @@ const EditJob = ({
         <div className="text-xs text-slate-500 mt-1">
           若不限年資（無經驗也可以應徵）請填寫 0。
         </div>
-      </div>
-      <div>
+      </label>
+      <label>
         <div className="text-sm flex gap-1">
           技能 <div className="text-xs text-red-500">*</div>
         </div>
@@ -437,7 +438,7 @@ const EditJob = ({
             handleSkillChange={handleSkillChange}
           />
         </div>
-      </div>
+      </label>
       <div>
         <div className="text-sm flex gap-1">
           職缺描述 <div className="text-xs text-red-500">*</div>
@@ -512,7 +513,7 @@ const EditJob = ({
           </div>
         </div>
       </div>
-      <div>
+      <label>
         <div className="text-sm flex gap-1">
           工作保險 <div className="text-xs text-red-500">*</div>
         </div>
@@ -526,8 +527,8 @@ const EditJob = ({
             onChange={handleTextChange}
           />
         </div>
-      </div>
-      <div>
+      </label>
+      <label>
         <div className="text-sm flex gap-1">
           面試流程 <div className="text-xs text-red-500">*</div>
         </div>
@@ -541,8 +542,8 @@ const EditJob = ({
             onChange={handleTextChange}
           />
         </div>
-      </div>
-      <div>
+      </label>
+      <label>
         <div className="text-sm flex gap-1">其他事項</div>
         <div>
           <OutlinedInput
@@ -553,8 +554,8 @@ const EditJob = ({
             onChange={handleTextChange}
           />
         </div>
-      </div>
-      <div>
+      </label>
+      <label>
         <div className="text-sm flex gap-1">
           職缺狀態 <div className="text-xs text-red-500">*</div>
         </div>
@@ -581,7 +582,7 @@ const EditJob = ({
             </Select>
           </FormControl>
         </div>
-      </div>
+      </label>
       <div className="flex justify-end gap-2">
         <Link href={companyPathname}>
           <MyButton classnames="">取消</MyButton>
