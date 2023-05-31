@@ -14,7 +14,7 @@ import java.util.Map;
 
 @Repository
 public interface ApplyRepository extends JpaRepository<Apply,String> {
-    List<Apply> findByVacanciesId(String vacanciesId);
+    List<Apply> findByVacanciesIdAndUserId(String vacanciesId,String UserId);
 
 
     List<Apply> findByUserId(String userId);

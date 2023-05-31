@@ -6,6 +6,8 @@ import com.example.demo.category.TeacherFileCategory;
 import com.example.demo.category.TeacherValidTypeCategory;
 import com.example.demo.category.resume.post.SearchCategory;
 import com.example.demo.model.TeacherValidType;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface TeacherService {
     Object findNewsById();
@@ -43,4 +45,12 @@ public interface TeacherService {
     Object findTeacherFile(String fileType, int page, int limit);
 
     Object createTeacherFile(TeacherFileCategory teacherFileCategory, String teacherId);
+
+    Object uploadTeacherFile(MultipartFile uploadFile, String teacherId, HttpServletRequest httpServletRequest);
+
+    Object uploadUpdateTeacherFile(MultipartFile uploadFile, String teacherId, String teacherFileId, HttpServletRequest httpServletRequest);
+
+    Object updateTeacherFile(TeacherFileCategory teacherFileCategory, String teacherId, String teacherFileId);
+
+    Object deleteTeacherFile(String teacherId, String teacherFileId);
 }

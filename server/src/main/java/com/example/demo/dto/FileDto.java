@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ImageDto {
+public class FileDto {
     private String url;
     private String path;
 }

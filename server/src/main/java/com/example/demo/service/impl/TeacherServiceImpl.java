@@ -1,7 +1,6 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.category.*;
-import com.example.demo.category.resume.post.SearchCategory;
 import com.example.demo.dao.*;
 import com.example.demo.dao.apply.ApplyDao;
 import com.example.demo.dao.company.CompanyDao;
@@ -12,11 +11,11 @@ import com.example.demo.dto.*;
 import com.example.demo.dto.applyforjob.AllApplyDto;
 import com.example.demo.dto.vacancies.FullVacanciesDto;
 import com.example.demo.dto.vacancies.PageVacanciesDto;
-import com.example.demo.dto.vacancies.VacanciesDto;
 import com.example.demo.model.*;
 import com.example.demo.model.resume.Resume;
 import com.example.demo.model.vacancies.Vacancies;
 import com.example.demo.service.TeacherService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.mail.MailException;
@@ -24,12 +23,16 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -329,6 +332,111 @@ public class TeacherServiceImpl implements TeacherService {
         teacherFile.setUpdateTime(LocalDate.now());
         teacherFileRepository.save(teacherFile);
         return getRestDto(teacherFile,"創造成功");
+    }
+    @Override
+    public Object updateTeacherFile(TeacherFileCategory teacherFileCategory, String teacherId, String teacherFileId) {
+        TeacherFile teacherFile = getTeacherFile(teacherFileCategory,teacherId,teacherFileId);
+        teacherFile.setUpdateTime(LocalDate.now());
+        return getRestDto(teacherFile,"更新成功");
+    }
+
+    @Override
+    public Object deleteTeacherFile(String teacherId, String teacherFileId) {
+        return null;
+    }
+
+    @Override
+    public Object uploadTeacherFile(MultipartFile uploadFile, String teacherId, HttpServletRequest httpServletRequest) {
+        String uri = httpServletRequest.getRequestURI();
+        System.out.println(uri);
+        String path = "C:\\pccu-image\\teacher-file";
+        Path path1 = Paths.get(path);
+        try {
+            TeacherFile teacherFile = uploadFile(path1,uploadFile,teacherId,httpServletRequest);
+            String TeacherFileId = getId(teacherFileRepository,"TF",2);
+            System.out.println(TeacherFileId);
+            teacherFile.setTeacherFileId(TeacherFileId);
+            teacherFile.setTeacherId(teacherId);
+            teacherFile.setUpdateTime(LocalDate.now());
+            teacherFile.setCreateTime(LocalDate.now());
+            teacherFileRepository.save(teacherFile);
+            return  getRestDto(teacherFile,"上傳成功");
+
+
+        } catch (IOException ex) {
+            throw new RuntimeException("上船失敗", ex);
+        }
+
+
+    }
+
+    @Override
+    public Object uploadUpdateTeacherFile(MultipartFile uploadFile, String teacherId, String teacherFileId, HttpServletRequest httpServletRequest) {
+        String uri = httpServletRequest.getRequestURI();
+        System.out.println(uri);
+        String path = "C:\\pccu-image\\teacher-file";
+        Path path1 = Paths.get(path);
+        TeacherFile saveTeacherFile;
+        try {
+            TeacherFile selectTeacherFile = teacherFileRepository.findById(teacherFileId).orElseThrow(()->new RuntimeException("沒有慈檔案"));
+            System.out.println(selectTeacherFile.getTeacherFilePath());
+            if(selectTeacherFile.getTeacherFilePath()!=null){
+                deleteFile(selectTeacherFile.getTeacherFilePath());
+            }
+
+            TeacherFile teacherFile = uploadFile(path1,uploadFile,teacherId,httpServletRequest);
+            selectTeacherFile.setTeacherFileUrl(teacherFile.getTeacherFileUrl());
+            selectTeacherFile.setTeacherFilePath(teacherFile.getTeacherFilePath());
+            selectTeacherFile.setUpdateTime(teacherFile.getUpdateTime());
+            teacherFileRepository.save(selectTeacherFile);
+            return  getRestDto(selectTeacherFile,"上傳成功");
+
+
+        } catch (IOException ex) {
+            throw new RuntimeException("上船失敗", ex);
+        }
+    }
+
+
+
+    private TeacherFile uploadFile(Path path1, MultipartFile uploadFile, String teacherId, HttpServletRequest httpServletRequest) throws IOException {
+        FileDto fileDto = fileTransferTo(path1, uploadFile, httpServletRequest);
+        TeacherFile teacherFile = TeacherFile.builder()
+                .teacherFileUrl(fileDto.getUrl())
+                .teacherFilePath(fileDto.getPath())
+                .build();
+        return teacherFile;
+    }
+
+
+    private FileDto fileTransferTo(Path path, MultipartFile uploadFile, HttpServletRequest httpServlet) throws IOException {
+
+        String name = uploadFile.getOriginalFilename();
+        String prefix = name.lastIndexOf(".") != -1 ? name.substring(name.lastIndexOf(".")) : ".txt";
+        String NewFileName = UUID.randomUUID().toString().replace("-", "") + prefix;
+
+        if (!Files.exists(path)) {
+            Files.createDirectories(path);
+        }
+        File newFilePath = new File(path.toString(),NewFileName);
+        String url = httpServlet.getScheme()+"://" + httpServlet.getServerName()+":"+httpServlet.getServerPort()+"/teacher-file/"+path.toString().substring(path.toString().lastIndexOf("\\")+1)+"/"+NewFileName;
+
+        uploadFile.transferTo(newFilePath);
+        return FileDto.builder()
+                .url(url)
+                .path(newFilePath.toString())
+                .build();
+
+    }
+
+    private void deleteFile(String imageRealPath) {
+        System.out.println(imageRealPath);
+        File file = new File(imageRealPath);
+        System.out.println("File:"+file);
+        if(file.exists()){
+            file.delete();
+        }
+
     }
 
     private Apply changeApplyType(Apply apply,String applyType) {

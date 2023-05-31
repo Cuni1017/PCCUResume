@@ -129,7 +129,7 @@ public class ApplyForJobServiceImpl implements ApplyForJobService {
         List<String> vacanciesIds = applies.stream().map((s)->s.getVacanciesId()).distinct().collect(Collectors.toList());
         List<ApplytypeVacnciesDto> applytypeVacnciesDtoLinkedList = new LinkedList<>();
         for(String vacanciesId :vacanciesIds){
-            List<Apply> apply = applyRepository.findByVacanciesId(vacanciesId);
+            List<Apply> apply = applyRepository.findByVacanciesIdAndUserId(vacanciesId,studentId);
             FullVacanciesDto fullVacanciesDto = vacanciesDao.findFullVacanciesById(vacanciesId);
             ApplytypeVacnciesDto applytypeVacnciesDto=ApplytypeVacnciesDto.builder()
                     .apply(apply)

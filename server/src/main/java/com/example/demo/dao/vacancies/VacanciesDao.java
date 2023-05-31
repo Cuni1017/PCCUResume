@@ -45,6 +45,7 @@ public class VacanciesDao {
                 namedParameterJdbcTemplate.queryForObject(sql,map,new FullVacanciesRowMapper());
     }
 
+
     public List<CompanyVacanciesDto> findPageVacancies(List<String> county,List<String> technology, String salaryType, Long salaryMax, int salaryMin, String order,int selectLimit, int selectOffset){
         String sql ="SELECT c.company_id, c.company_name, c.company_image_url,\n"+
                 "v.vacancies_id, v.teacher_id, v.vacancies_name, v.vacancies_time, v.vacancies_description,v.vacancies_requirement,\n"+

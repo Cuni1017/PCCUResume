@@ -7,8 +7,7 @@ import com.example.demo.dao.CompanyAboutBsicRepository;
 import com.example.demo.dao.CompanyAboutServiceRepository;
 import com.example.demo.dao.CompanyAboutWelfareRepository;
 import com.example.demo.dao.CompanyRepository;
-import com.example.demo.dto.CompanyAboutDto;
-import com.example.demo.dto.ImageDto;
+import com.example.demo.dto.FileDto;
 import com.example.demo.dto.RestDto;
 import com.example.demo.model.Company;
 import com.example.demo.model.CompanyAboutBasic;
@@ -17,7 +16,6 @@ import com.example.demo.service.CompanyAboutService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,15 +28,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Optional;
-import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class CompanyAboutServiceImpl implements CompanyAboutService {
@@ -288,14 +278,14 @@ public class CompanyAboutServiceImpl implements CompanyAboutService {
                     deleteFile(companyAboutBasic.getCompanyAboutBackgroundSavePath());
                 }
 
-                ImageDto imageDto = fileTransferTo(savePath, uploadFile, httpServletRequest);
+                FileDto imageDto = fileTransferTo(savePath, uploadFile, httpServletRequest);
                 updateCompanyImage( companyAboutBasic,  fileType,  imageDto);
             } catch (IOException ex) {
                 throw new RuntimeException("上船失敗", ex);
             }
         }else {
             try {
-                ImageDto imageDto = fileTransferTo(savePath, uploadFile, httpServletRequest);
+                FileDto imageDto = fileTransferTo(savePath, uploadFile, httpServletRequest);
 
                 createCompanyImage( companyId,  fileType,  imageDto);
             } catch (IOException ex) {
@@ -320,7 +310,7 @@ public class CompanyAboutServiceImpl implements CompanyAboutService {
 
     }
 
-    private void updateCompanyImage(CompanyAboutBasic companyAboutBasic, String fileType, ImageDto imageDto) {
+    private void updateCompanyImage(CompanyAboutBasic companyAboutBasic, String fileType, FileDto imageDto) {
         if (fileType.contains("logo")) {
             companyAboutBasic.setCompanyAboutLogoImageUrl(imageDto.getUrl());
             companyAboutBasic.setCompanyAboutLogoSavePath(imageDto.getPath());
@@ -330,7 +320,7 @@ public class CompanyAboutServiceImpl implements CompanyAboutService {
         }
         companyAboutBsicRepository.save(companyAboutBasic);
     }
-    private void createCompanyImage(String companyId, String fileType, ImageDto imageDto) {
+    private void createCompanyImage(String companyId, String fileType, FileDto imageDto) {
         CompanyAboutBasic companyAboutBasic = CompanyAboutBasic.builder()
                 .companyId(companyId)
                 .build();
@@ -343,7 +333,7 @@ public class CompanyAboutServiceImpl implements CompanyAboutService {
         }
         companyAboutBsicRepository.save(companyAboutBasic);
     }
-    private ImageDto fileTransferTo(String path, MultipartFile uploadFile, HttpServletRequest httpServlet) throws IOException {
+    private FileDto fileTransferTo(String path, MultipartFile uploadFile, HttpServletRequest httpServlet) throws IOException {
         Path path1 = Paths.get(path);
         String name = uploadFile.getOriginalFilename();
         String prefix = name.lastIndexOf(".") != -1 ? name.substring(name.lastIndexOf(".")) : ".jpg";
@@ -356,7 +346,7 @@ public class CompanyAboutServiceImpl implements CompanyAboutService {
         String url = httpServlet.getScheme()+"://" + httpServlet.getServerName()+":"+httpServlet.getServerPort()+"/image/"+path.substring(path.lastIndexOf("\\")+1)+"/"+NewFileName;
 
         uploadFile.transferTo(newFilePath);
-        return ImageDto.builder()
+        return FileDto.builder()
                 .url(url)
                 .path(newFilePath.toString())
                 .build();

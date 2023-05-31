@@ -8,9 +8,11 @@ import com.example.demo.category.resume.post.SearchCategory;
 import com.example.demo.model.TeacherFile;
 import com.example.demo.model.TeacherValidType;
 import com.example.demo.service.TeacherService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -139,7 +141,7 @@ public class TeacherController {
     ) {
         return ResponseEntity.ok(teacherService.updateApply(teacherId,applyId,changeApplyTypeCategory));
     }
-    @GetMapping("/v1/teacher/teacher-file")
+    @GetMapping("/v1/teacher/teacher-file-form")
     public ResponseEntity<Object> findTeacherFile(
             @RequestParam(required = false,defaultValue = "1" ) int page,
             @RequestParam(required = false,defaultValue = "10" ) int limit,
@@ -147,12 +149,45 @@ public class TeacherController {
     ) {
         return ResponseEntity.ok(teacherService.findTeacherFile(fileType,page,limit));
     }
-    @PostMapping("/v1/teacher/{teacherId}/teacher-file")
+    @PostMapping("/v1/teacher/{teacherId}/teacher-file-form")
     public ResponseEntity<Object> createTeacherFile(
             @RequestBody TeacherFileCategory teacherFileCategory,
             @PathVariable String teacherId
             ) {
         return ResponseEntity.ok(teacherService.createTeacherFile(teacherFileCategory,teacherId));
+    }
+    @PutMapping("/v1/teacher/{teacherId}/teacher-file-form/{teacherFileId}")
+    public ResponseEntity<Object> updateTeacherFile(
+            @RequestBody TeacherFileCategory teacherFileCategory,
+            @PathVariable String teacherId,
+            @PathVariable String teacherFileId
+    ) {
+        return ResponseEntity.ok(teacherService.updateTeacherFile(teacherFileCategory,teacherId,teacherFileId));
+    }
+    @DeleteMapping("/v1/teacher/{teacherId}/teacher-file-form/{teacherFileId}")
+    public ResponseEntity<Object> deleteTeacherFile(
+            @PathVariable String teacherId,
+            @PathVariable String teacherFileId
+    ) {
+        return ResponseEntity.ok(teacherService.deleteTeacherFile(teacherId,teacherFileId));
+    }
+    @PostMapping("/v1/teacher/{teacherId}/teacher-file")
+    public ResponseEntity<Object> uploadTeacherFile(
+            @RequestPart("file") MultipartFile uploadFile,
+            @PathVariable String teacherId,
+            HttpServletRequest HttpServletRequest
+    ) {
+        return ResponseEntity.ok(teacherService.uploadTeacherFile(uploadFile,teacherId,HttpServletRequest));
+    }
+
+    @PutMapping("/v1/teacher/{teacherId}/teacher-file/{teacherFileId}")
+    public ResponseEntity<Object> uploadUpdateTeacherFile(
+            @RequestPart("file") MultipartFile uploadFile,
+            @PathVariable String teacherId,
+            @PathVariable String teacherFileId,
+            HttpServletRequest HttpServletRequest
+    ) {
+        return ResponseEntity.ok(teacherService.uploadUpdateTeacherFile(uploadFile,teacherId,teacherFileId,HttpServletRequest));
     }
 //    @PutMapping("/v1/teacher/{teacherId}/company-review/{studentId}")
 //    public ResponseEntity<Object> updateStudentReview(
