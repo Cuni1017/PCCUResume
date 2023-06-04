@@ -1,20 +1,16 @@
 package com.example.demo.service;
 
-import com.example.demo.category.ChangeApplyTypeCategory;
-import com.example.demo.category.RoleCategory;
-import com.example.demo.category.TeacherFileCategory;
-import com.example.demo.category.TeacherValidTypeCategory;
+import com.example.demo.category.*;
 import com.example.demo.category.resume.post.SearchCategory;
 import com.example.demo.model.TeacherValidType;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface TeacherService {
     Object findNewsById();
-
-
     Object updateStudentRole(String teacherId, String studentId, RoleCategory roleCategory);
-
     Object findStudentByRole(int page , int limit,String search);
 
     Object findCompanyByRole(int page , int limit,String search);
@@ -42,15 +38,21 @@ public interface TeacherService {
 
     Object findVacanciesCheckByTeacherValidType(int page, int limit, String search);
 
-    Object findTeacherFile(String fileType, int page, int limit);
+    Object findTeacherFileForm(String fileType, int page, int limit);
 
-    Object createTeacherFile(TeacherFileCategory teacherFileCategory, String teacherId);
+    Object createTeacherFileForm(TeacherFileCategory teacherFileCategory, String teacherId);
 
     Object uploadTeacherFile(MultipartFile uploadFile, String teacherId, HttpServletRequest httpServletRequest);
 
     Object uploadUpdateTeacherFile(MultipartFile uploadFile, String teacherId, String teacherFileId, HttpServletRequest httpServletRequest);
 
-    Object updateTeacherFile(TeacherFileCategory teacherFileCategory, String teacherId, String teacherFileId);
+    Object updateTeacherFileForm(TeacherFileCategory teacherFileCategory, String teacherId, String teacherFileId);
+
+    Object deleteTeacherFileForm(String teacherId, String teacherFileId);
+
+    ResponseEntity<Object> downloadTeacherFile(String teacherId, String teacherFileId, HttpServletResponse response );
 
     Object deleteTeacherFile(String teacherId, String teacherFileId);
+
+    Object updateApplyTime(String applyId, ApplyTimeCategory applyTimeCategory);
 }

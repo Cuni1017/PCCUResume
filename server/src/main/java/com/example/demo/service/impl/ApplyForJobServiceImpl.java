@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -43,14 +44,19 @@ public class ApplyForJobServiceImpl implements ApplyForJobService {
     private final VacanciesDao vacanciesDao;
     private final HistoryApplyRepository historyApplyRepository;
     private final JavaMailSender mailSender;
+    private final UserLikeRepository userLikeRepository;
+
+
 
     @Override
     public Object findUserResume(String studentName, String vacanciesId) {
         Vacancies vacancies = vacanciesRepository.findById(vacanciesId).orElseThrow(()->new RuntimeException("找不到工作"+vacanciesId));
         System.out.println(vacancies.getTeacherValidType());
         System.out.println(TeacherValidType.審核通過);
+
         checkVacancies(vacancies);
         Student student = studentRepository.findByStudentUsername(studentName).orElseThrow(() -> new RuntimeException("找不倒學生"));
+        isApplyOutTime(student.getStudentId());
         List<Resume> resumes = resumeRepository.findByUserId(student.getStudentId());
         ApplyCompanyDto applyCompanyDto = applyForJobDao.findByVacanciesId(vacanciesId);
 
@@ -69,6 +75,7 @@ public class ApplyForJobServiceImpl implements ApplyForJobService {
                 .build();
         return  restDto;
     }
+
 
     @Override
     public Object createApply(String userId,String companyId, String resumeId,  String vacanciesId, ApplyCategory applyCategory) {
@@ -117,6 +124,9 @@ public class ApplyForJobServiceImpl implements ApplyForJobService {
             if (apply.getVacanciesId().equals(vacanciesId)) {
                 throw new RuntimeException("不得重複申請該職位");
             }
+            else if(apply.getApplyType().equals(ApplyType.實習中)){
+                throw new RuntimeException("已在實習中不得應徵其他職位");
+            }
         }
     }
 
@@ -126,6 +136,7 @@ public class ApplyForJobServiceImpl implements ApplyForJobService {
         List<Apply> applies = applyRepository.findByUserId(studentId);
         checkIsIntern(applies);
         checkIsHandle(applies);
+        isApplyOutTime(studentId);
         List<String> vacanciesIds = applies.stream().map((s)->s.getVacanciesId()).distinct().collect(Collectors.toList());
         List<ApplytypeVacnciesDto> applytypeVacnciesDtoLinkedList = new LinkedList<>();
         for(String vacanciesId :vacanciesIds){
@@ -143,6 +154,55 @@ public class ApplyForJobServiceImpl implements ApplyForJobService {
                 .build();
         return restDto;
     }
+    @Override
+    public Object findUserLike(String studentUserName) {
+        Student student = studentRepository.findByStudentUsername(studentUserName).orElseThrow(() -> new RuntimeException("找不倒學生"));
+        List<UserLike> userLikes = userLikeRepository.findByUserId(student.getStudentId());
+        List<FullVacanciesDto> FullVacanciesDtoList = new ArrayList<>();
+        for(UserLike userLike : userLikes){
+            FullVacanciesDto fullVacanciesDto = vacanciesDao.findFullVacanciesById(userLike.getVacanciesId());
+            FullVacanciesDtoList.add(fullVacanciesDto);
+        }
+        return getRestDto(FullVacanciesDtoList,"查詢成功");
+    }
+
+    @Override
+    public Object createUserLike(String studentUserName, String vacanciesId) {
+        Student student = studentRepository.findByStudentUsername(studentUserName).orElseThrow(() -> new RuntimeException("找不倒學生"));
+        Vacancies vacancies = vacanciesRepository.findById(vacanciesId).orElseThrow(()->new RuntimeException("找不到工作"+vacanciesId));
+        String UserLikeId = getId(userLikeRepository,"UL",2);
+        UserLike userLike  = UserLike.builder()
+                .userLikeId(UserLikeId)
+                .userId(student.getStudentId())
+                .companyId(vacancies.getCompanyId())
+                .vacanciesId(vacancies.getVacanciesId())
+                .build();
+        userLikeRepository.save(userLike);
+        return getRestDto(userLike,"新增成功");
+    }
+
+    @Override
+    public Object deleteUserLike(String userLikeId) {
+        userLikeRepository.deleteById(userLikeId);
+        return getRestDto(userLikeId,"刪除成功");
+    }
+
+
+
+    private void isApplyOutTime(String studentId) {
+        List<Apply> applies = applyRepository.findByUserId(studentId);
+        for(Apply apply:applies) {
+            if(apply.getApplyType().equals(ApplyType.實習中)){
+                if(apply.getApplyStartTime().isEqual(apply.getApplyEndTime())){
+                    apply.setApplyType("實習結束");
+                    HistoryApply historyApply = getHistoryApply(apply);
+                    historyApplyRepository.save(historyApply);
+                    applyRepository.deleteById(apply.getApplyId());
+                }
+            }
+        }
+    }
+
 
     private void checkIsHandle(List<Apply> applies) {
         applies.stream().filter((a)->a.getCreateTime().plusMonths(1).isAfter(LocalDate.now())).collect(Collectors.toList());
@@ -220,6 +280,13 @@ public class ApplyForJobServiceImpl implements ApplyForJobService {
                 .applyEndTime(apply.getApplyEndTime())
                 .dieTime(now)
                 .build();
+    }
+    private RestDto getRestDto(Object o,String message){
+        RestDto restDto = RestDto.builder()
+                .message(message)
+                .data(o)
+                .build();
+        return restDto;
     }
 
 }

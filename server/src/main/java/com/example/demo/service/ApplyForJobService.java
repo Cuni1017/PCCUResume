@@ -8,4 +8,10 @@ public interface ApplyForJobService {
     Object createApply(String userId,String companyId, String resumeId,  String vacanciesId, ApplyCategory applyCategory);
 
     Object findUserApply(String studentId);
+
+    Object createUserLike(String studentUserName, String vacanciesId);
+
+    Object deleteUserLike(String userLikeId);
+
+    Object findUserLike(String studentUserName);
 }

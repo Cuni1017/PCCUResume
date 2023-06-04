@@ -16,8 +16,13 @@ import com.example.demo.model.resume.Resume;
 import com.example.demo.model.vacancies.Vacancies;
 import com.example.demo.service.TeacherService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -27,6 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -316,7 +322,16 @@ public class TeacherServiceImpl implements TeacherService {
         return getRestDto(apply,"更新成功");
     }
     @Override
-    public Object findTeacherFile(String fileType, int page, int limit) {
+    public Object updateApplyTime(String applyId, ApplyTimeCategory applyTimeCategory) {
+        Apply apply = applyRepository.findById(applyId).orElseThrow(()->new RuntimeException("沒有此apply"));
+        apply.setApplyStartTime(applyTimeCategory.getApplyStartTime());
+        apply.setApplyEndTime(applyTimeCategory.getApplyEndTime());
+        apply.setApplyUpdateTime(LocalDate.now());
+        applyRepository.save(apply);
+        return getRestDto(apply,"更新成功");
+    }
+    @Override
+    public Object findTeacherFileForm(String fileType, int page, int limit) {
         int selectOffset = getSelectOffset(page,limit);
         int selectLimit = getSelectLimit(page,limit);
         List<TeacherFile> teacherFiles = teacherDao.findByFileType(fileType, selectLimit, selectOffset);
@@ -325,7 +340,7 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public Object createTeacherFile(TeacherFileCategory teacherFileCategory, String teacherId) {
+    public Object createTeacherFileForm(TeacherFileCategory teacherFileCategory, String teacherId) {
         String teacherFileId = getId(teacherRepository,"TF",2);
         TeacherFile teacherFile = getTeacherFile(teacherFileCategory,teacherId,teacherFileId);
         teacherFile.setCreateTime(LocalDate.now());
@@ -334,16 +349,42 @@ public class TeacherServiceImpl implements TeacherService {
         return getRestDto(teacherFile,"創造成功");
     }
     @Override
-    public Object updateTeacherFile(TeacherFileCategory teacherFileCategory, String teacherId, String teacherFileId) {
+    public Object updateTeacherFileForm(TeacherFileCategory teacherFileCategory, String teacherId, String teacherFileId) {
         TeacherFile teacherFile = getTeacherFile(teacherFileCategory,teacherId,teacherFileId);
         teacherFile.setUpdateTime(LocalDate.now());
         return getRestDto(teacherFile,"更新成功");
     }
 
     @Override
-    public Object deleteTeacherFile(String teacherId, String teacherFileId) {
-        return null;
+    public Object deleteTeacherFileForm(String teacherId, String teacherFileId) {
+        TeacherFile teacherFile = teacherFileRepository.findById(teacherFileId).orElseThrow(()->new RuntimeException("每有此教師上傳檔案"));
+        System.out.println(teacherFileId);
+        deleteFile(teacherFile.getTeacherFilePath());
+        teacherFileRepository.deleteById(teacherFile.getTeacherFileId());
+        return getRestDto(teacherFile.getTeacherId(),"刪除成功");
     }
+
+    @Override
+    public ResponseEntity<Object> downloadTeacherFile(String teacherId, String teacherFileId, HttpServletResponse response ) {
+        TeacherFile teacherFile = teacherFileRepository.findById(teacherFileId).orElseThrow(()->new RuntimeException("沒有此檔案"));
+        String filePath = teacherFile.getTeacherFilePath();
+        String filename  = filePath.substring(filePath.lastIndexOf("\\"));
+        File file = new File(filePath);
+        FileSystemResource resource = new FileSystemResource(file);
+
+        if (resource.exists()) {
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename);
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .contentLength(file.length())
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .body(resource);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 
     @Override
     public Object uploadTeacherFile(MultipartFile uploadFile, String teacherId, HttpServletRequest httpServletRequest) {
@@ -397,6 +438,18 @@ public class TeacherServiceImpl implements TeacherService {
         }
     }
 
+    @Override
+    public Object deleteTeacherFile(String teacherId, String teacherFileId) {
+        System.out.println(teacherFileId);
+        TeacherFile teacherFile = teacherFileRepository.findById(teacherFileId).orElseThrow(()->new RuntimeException("每有此教師上傳檔案"));
+        deleteFile(teacherFile.getTeacherFilePath());
+        teacherFile.setTeacherFilePath(null);
+        teacherFile.setTeacherFileUrl(null);
+        teacherFileRepository.save(teacherFile);
+        return getRestDto(teacherFile.getTeacherFileId(),"檔案刪除成功");
+    }
+
+
 
 
     private TeacherFile uploadFile(Path path1, MultipartFile uploadFile, String teacherId, HttpServletRequest httpServletRequest) throws IOException {
@@ -419,8 +472,12 @@ public class TeacherServiceImpl implements TeacherService {
             Files.createDirectories(path);
         }
         File newFilePath = new File(path.toString(),NewFileName);
-        String url = httpServlet.getScheme()+"://" + httpServlet.getServerName()+":"+httpServlet.getServerPort()+"/teacher-file/"+path.toString().substring(path.toString().lastIndexOf("\\")+1)+"/"+NewFileName;
-
+        System.out.println(httpServlet.getScheme());
+        System.out.println(httpServlet.getServerName());
+        System.out.println(httpServlet.getServerPort());
+        System.out.println(path.toString().substring(path.toString().lastIndexOf("\\")+1));
+        String url = httpServlet.getScheme()+"://" + httpServlet.getServerName()+":"+httpServlet.getServerPort()+"/"+path.toString().substring(path.toString().lastIndexOf("\\")+1)+"/"+NewFileName;
+        System.out.println(url);
         uploadFile.transferTo(newFilePath);
         return FileDto.builder()
                 .url(url)

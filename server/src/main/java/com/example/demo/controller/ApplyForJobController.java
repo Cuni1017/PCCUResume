@@ -17,12 +17,32 @@ public class ApplyForJobController {
     private final JavaMailSender mailSender;
     private  final CompanyForJobService companyForJobService;
 
-    @GetMapping("/students/{studentName}/apply-for-job/vacancies/{vacanciesId}")
+    @GetMapping("/students/{studentUserName}/apply-for-job/vacancies/{vacanciesId}")
     public ResponseEntity<Object> findUserResume(
-            @PathVariable String studentName,
+            @PathVariable String studentUserName,
             @PathVariable String vacanciesId
     ){
-        return ResponseEntity.ok(applyForJobService.findUserResume(studentName,vacanciesId));
+        return ResponseEntity.ok(applyForJobService.findUserResume(studentUserName,vacanciesId));
+    }
+    @GetMapping("/v1/students/{studentUserName}/user-like")
+    public ResponseEntity<Object> findUserLike(
+            @PathVariable String studentUserName
+
+    ){
+        return ResponseEntity.ok(applyForJobService.findUserLike(studentUserName));
+    }
+    @PostMapping("/v1/students/{studentUserName}/user-like/{vacanciesId}")
+    public ResponseEntity<Object> createUserLike(
+            @PathVariable String studentUserName,
+            @PathVariable String vacanciesId
+    ){
+        return ResponseEntity.ok(applyForJobService.createUserLike(studentUserName,vacanciesId));
+    }
+    @DeleteMapping("/v1/students/user-like/{userLikeId}")
+    public ResponseEntity<Object> deleteUserLike(
+            @PathVariable String userLikeId
+    ){
+        return ResponseEntity.ok(applyForJobService.deleteUserLike(userLikeId));
     }
     @PostMapping("/students/{userId}/{resumeId}/apply-for-job/{companyId}/{vacanciesId}")
     public ResponseEntity<Object> createApply(
