@@ -9,4 +9,7 @@ import java.util.Optional;
 
 public interface UserLikeRepository extends JpaRepository<UserLike, String> {
     List<UserLike> findByUserId(String userId);
+
+
+    void deleteByVacanciesId(String  vacanciesId);
 }

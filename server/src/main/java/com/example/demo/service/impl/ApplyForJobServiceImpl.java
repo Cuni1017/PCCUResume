@@ -170,9 +170,7 @@ public class ApplyForJobServiceImpl implements ApplyForJobService {
     public Object createUserLike(String studentUserName, String vacanciesId) {
         Student student = studentRepository.findByStudentUsername(studentUserName).orElseThrow(() -> new RuntimeException("找不倒學生"));
         Vacancies vacancies = vacanciesRepository.findById(vacanciesId).orElseThrow(()->new RuntimeException("找不到工作"+vacanciesId));
-        String UserLikeId = getId(userLikeRepository,"UL",2);
         UserLike userLike  = UserLike.builder()
-                .userLikeId(UserLikeId)
                 .userId(student.getStudentId())
                 .companyId(vacancies.getCompanyId())
                 .vacanciesId(vacancies.getVacanciesId())
@@ -182,9 +180,9 @@ public class ApplyForJobServiceImpl implements ApplyForJobService {
     }
 
     @Override
-    public Object deleteUserLike(String userLikeId) {
-        userLikeRepository.deleteById(userLikeId);
-        return getRestDto(userLikeId,"刪除成功");
+    public Object deleteUserLike(String vacanciesId) {
+        userLikeRepository.deleteByVacanciesId(vacanciesId);
+        return getRestDto(vacanciesId,"刪除成功");
     }
 
 

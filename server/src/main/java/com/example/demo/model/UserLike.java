@@ -16,13 +16,13 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "user_like")
 public class UserLike {
-    @Id
-    @Column(name = "user_like_id" )
-    private String userLikeId;
+
+
     @Column(name = "user_id" )
     private String userId     ;
     @Column(name = "company_id" )
     private String companyId  ;
+    @Id
     @Column(name = "vacancies_id" )
     private String vacanciesId;
 }

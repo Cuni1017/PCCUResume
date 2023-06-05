@@ -293,24 +293,29 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public ResponseEntity<Object> downloadTeacherFile(String companyName, String teacherFileId, HttpServletResponse response) {
+    public ResponseEntity<Object> downloadTeacherFile(String studentUsername, String teacherFileId, HttpServletResponse response) {
         TeacherFile teacherFile = teacherFileRepository.findById(teacherFileId).orElseThrow(()->new RuntimeException("沒有此檔案"));
         String filePath = teacherFile.getTeacherFilePath();
-        String filename  = filePath.substring(filePath.lastIndexOf("\\"));
-        File file = new File(filePath);
-        FileSystemResource resource = new FileSystemResource(file);
+        if(filePath!=null){
+            String filename  = filePath.substring(filePath.lastIndexOf("\\"));
+            File file = new File(filePath);
+            FileSystemResource resource = new FileSystemResource(file);
 
-        if (resource.exists()) {
-            HttpHeaders headers = new HttpHeaders();
-            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename);
-            return ResponseEntity.ok()
-                    .headers(headers)
-                    .contentLength(file.length())
-                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                    .body(resource);
-        } else {
-            return ResponseEntity.notFound().build();
+            if (resource.exists()) {
+                HttpHeaders headers = new HttpHeaders();
+                headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename);
+                return ResponseEntity.ok()
+                        .headers(headers)
+                        .contentLength(file.length())
+                        .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                        .body(resource);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        }else{
+            throw new RuntimeException("沒有此檔案");
         }
+
     }
 
 
