@@ -2,6 +2,8 @@ package com.example.demo.service;
 
 import com.example.demo.category.VacanciesCategory;
 import com.example.demo.category.VacanciesWatchTypeCategory;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,4 +23,8 @@ public interface CompanyService {
 
 
     Object updateVacanciesWatchType(String vacanciesId, VacanciesWatchTypeCategory vacanciesWatchTypeCategory);
+
+    Object findTeacherFileForm(String fileType, int page, int limit);
+
+    ResponseEntity<Object> downloadTeacherFile(String companyName, String teacherFileId, HttpServletResponse response);
 }

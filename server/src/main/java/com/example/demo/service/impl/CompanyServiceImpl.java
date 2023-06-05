@@ -2,10 +2,7 @@ package com.example.demo.service.impl;
 
 import com.example.demo.category.VacanciesCategory;
 import com.example.demo.category.VacanciesWatchTypeCategory;
-import com.example.demo.dao.CompanyRepository;
-import com.example.demo.dao.CountyRepository;
-import com.example.demo.dao.SkillRepository;
-import com.example.demo.dao.UserRepository;
+import com.example.demo.dao.*;
 import com.example.demo.dao.company.CompanyDao;
 import com.example.demo.dao.vacancies.VacanciesCountyRepository;
 import com.example.demo.dao.vacancies.VacanciesDao;
@@ -17,16 +14,23 @@ import com.example.demo.dto.CompanyVacanciesDto;
 import com.example.demo.dto.vacancies.PageVacanciesDto;
 import com.example.demo.dto.vacancies.VacanciesDto;
 import com.example.demo.model.Company;
+import com.example.demo.model.TeacherFile;
 import com.example.demo.model.User;
 import com.example.demo.model.vacancies.*;
 import com.example.demo.service.CompanyService;
 
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -46,6 +50,8 @@ public class CompanyServiceImpl implements CompanyService {
     private final CompanyDao companyDao;
     private final VacanciesDao vacanciesDao;
     public static final String NOT_CHECK = "審核中";
+    private final TeacherDao teacherDao;
+    private final TeacherFileRepository teacherFileRepository;
     @Override
     public Object createVacancies(String companyName,VacanciesCategory vacanciesCategory) {
         String vacanciesId = getId(vacanciesRepository,"V",1);
@@ -277,6 +283,36 @@ public class CompanyServiceImpl implements CompanyService {
         return  restDto;
     }
 
+    @Override
+    public Object findTeacherFileForm(String fileType, int page, int limit) {
+        int selectOffset = getSelectOffset(page,limit);
+        int selectLimit = getSelectLimit(page,limit);
+        List<TeacherFile> teacherFiles = teacherDao.findByFileType(fileType, selectLimit, selectOffset);
+        RestDto restDto = getRestDto(teacherFiles,"查詢成功");
+        return restDto;
+    }
+
+    @Override
+    public ResponseEntity<Object> downloadTeacherFile(String companyName, String teacherFileId, HttpServletResponse response) {
+        TeacherFile teacherFile = teacherFileRepository.findById(teacherFileId).orElseThrow(()->new RuntimeException("沒有此檔案"));
+        String filePath = teacherFile.getTeacherFilePath();
+        String filename  = filePath.substring(filePath.lastIndexOf("\\"));
+        File file = new File(filePath);
+        FileSystemResource resource = new FileSystemResource(file);
+
+        if (resource.exists()) {
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename);
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .contentLength(file.length())
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .body(resource);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 
     private String getId(JpaRepository repository , String idType , int x){
         long userCount = repository.count();
@@ -289,6 +325,13 @@ public class CompanyServiceImpl implements CompanyService {
         idType = idType.substring(0,x);
         String studentId = idType + intToday;
         return studentId;
+    }
+    private RestDto getRestDto(Object o, String message){
+        RestDto restDto = RestDto.builder()
+                .message(message)
+                .data(o)
+                .build();
+        return restDto;
     }
     private int getSelectOffset(int page,int limit){
         return (page-1)*limit;

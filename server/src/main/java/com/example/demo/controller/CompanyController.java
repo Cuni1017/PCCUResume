@@ -4,6 +4,7 @@ import com.example.demo.category.VacanciesCategory;
 import com.example.demo.category.VacanciesWatchTypeCategory;
 import com.example.demo.model.VacanciesWatchType;
 import com.example.demo.service.CompanyService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,22 @@ public class CompanyController {
             @PathVariable String companyName
     ) {
         return ResponseEntity.ok(companyService.findCompanyByCompanyName(companyName));
+    }
+    @GetMapping("/v1/company/{companyName}/teacher-file")
+    public ResponseEntity<Object> findVacancies(
+            @RequestParam(required = false,defaultValue = "1" ) int page,
+            @RequestParam(required = false,defaultValue = "10" ) int limit,
+            @RequestParam(required = false) String fileType
+    ) {
+        return ResponseEntity.ok(companyService.findTeacherFileForm(fileType,page,limit));
+    }
+    @GetMapping("/v1/company/{companyName}/teacher-file/{teacherFileId}")
+    public ResponseEntity<Object> downloadTeacherFile(
+            @PathVariable String companyName,
+            @PathVariable String teacherFileId,
+            HttpServletResponse response
+    ) {
+        return companyService.downloadTeacherFile(companyName,teacherFileId,response);
     }
     @GetMapping("/company/{companyName}/vacancies")
     public ResponseEntity<Object> findVacancies(

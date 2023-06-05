@@ -2,6 +2,8 @@ package com.example.demo.service.impl;
 
 import com.example.demo.config.error.UserNotFoundException;
 import com.example.demo.dao.StudentRepository;
+import com.example.demo.dao.TeacherDao;
+import com.example.demo.dao.TeacherFileRepository;
 import com.example.demo.dao.UserRepository;
 import com.example.demo.dao.resume.ResumeRepository;
 import com.example.demo.dto.FileDto;
@@ -9,14 +11,20 @@ import com.example.demo.dto.RestDto;
 import com.example.demo.dto.StudentDto;
 import com.example.demo.model.CompanyAboutBasic;
 import com.example.demo.model.Student;
+import com.example.demo.model.TeacherFile;
 import com.example.demo.model.User;
 import com.example.demo.model.resume.Resume;
 
 import com.example.demo.reponse.student.StudentResponse;
 import com.example.demo.service.StudentService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -37,6 +45,8 @@ public class StudentServiceImpl implements StudentService {
     private final UserRepository userRepository;
     private final StudentRepository studentRepository;
     private final ResumeRepository resumeRepository;
+    private final TeacherDao teacherDao;
+    private final TeacherFileRepository teacherFileRepository;
     @Override
     public Object findUserById(String studentUsername) {
         User user =userRepository.findByUsername(studentUsername).orElseThrow(() -> new UserNotFoundException("studentId:查無使用者"));
@@ -87,6 +97,37 @@ public class StudentServiceImpl implements StudentService {
         return getRestDto(student,"刪除成功");
     }
 
+    @Override
+    public Object findTeacherFileForm(String fileType, int page, int limit) {
+        int selectOffset = getSelectOffset(page,limit);
+        int selectLimit = getSelectLimit(page,limit);
+        List<TeacherFile> teacherFiles = teacherDao.findByFileType(fileType, selectLimit, selectOffset);
+        RestDto restDto = getRestDto(teacherFiles,"查詢成功");
+        return restDto;
+
+    }
+
+    @Override
+    public ResponseEntity<Object> downloadTeacherFile(String studentUsername, String teacherFileId, HttpServletResponse response) {
+        TeacherFile teacherFile = teacherFileRepository.findById(teacherFileId).orElseThrow(()->new RuntimeException("沒有此檔案"));
+        String filePath = teacherFile.getTeacherFilePath();
+        String filename  = filePath.substring(filePath.lastIndexOf("\\"));
+        File file = new File(filePath);
+        FileSystemResource resource = new FileSystemResource(file);
+
+        if (resource.exists()) {
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename);
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .contentLength(file.length())
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .body(resource);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     private FileDto fileTransferTo(String path, MultipartFile uploadFile, HttpServletRequest httpServlet) throws IOException {
             Path path1 = Paths.get(path);
             String name = uploadFile.getOriginalFilename();
@@ -115,6 +156,7 @@ public class StudentServiceImpl implements StudentService {
         }
 
     }
+
         private String getId(JpaRepository repository , String idType , int x){
             long userCount = repository.count();
             Date dNow = new Date( );
@@ -133,6 +175,12 @@ public class StudentServiceImpl implements StudentService {
                 .data(o)
                 .build();
         return restDto;
+    }
+    private int getSelectOffset(int page,int limit){
+        return (page-1)*limit;
+    }
+    private int getSelectLimit(int page,int limit){
+        return page*limit;
     }
 
 }
