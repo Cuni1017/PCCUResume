@@ -18,6 +18,8 @@ public class   WebConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/image/company-background/**").addResourceLocations("file:"+ "C:\\pccu-image\\company-background\\");
         registry.addResourceHandler("/image/company-logo/**").addResourceLocations("file:"+ "C:\\pccu-image\\company-logo\\");
         registry.addResourceHandler("/teacher-file/**").addResourceLocations("file:"+ "C:\\pccu-image\\teacher-file\\");
+        registry.addResourceHandler("/image/student-image/**").addResourceLocations("file:"+ "C:\\pccu-image\\student-image\\");
+
 
     }
 

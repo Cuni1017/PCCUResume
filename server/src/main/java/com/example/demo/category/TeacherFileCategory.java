@@ -15,7 +15,7 @@ public class TeacherFileCategory {
 
 
 
-    private String teacherFileName;
+    private String teacherFileTitle;
 
     private String teacherFileTalk;
 

@@ -12,4 +12,5 @@ import lombok.RequiredArgsConstructor;
 public class FileDto {
     private String url;
     private String path;
+    private String name;
 }

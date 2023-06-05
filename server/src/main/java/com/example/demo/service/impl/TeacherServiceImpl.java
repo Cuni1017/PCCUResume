@@ -341,7 +341,7 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public Object createTeacherFileForm(TeacherFileCategory teacherFileCategory, String teacherId) {
-        String teacherFileId = getId(teacherRepository,"TF",2);
+        String teacherFileId = getId(teacherFileRepository,"TF",2);
         TeacherFile teacherFile = getTeacherFile(teacherFileCategory,teacherId,teacherFileId);
         teacherFile.setCreateTime(LocalDate.now());
         teacherFile.setUpdateTime(LocalDate.now());
@@ -352,6 +352,7 @@ public class TeacherServiceImpl implements TeacherService {
     public Object updateTeacherFileForm(TeacherFileCategory teacherFileCategory, String teacherId, String teacherFileId) {
         TeacherFile teacherFile = getTeacherFile(teacherFileCategory,teacherId,teacherFileId);
         teacherFile.setUpdateTime(LocalDate.now());
+        teacherFileRepository.save(teacherFile);
         return getRestDto(teacherFile,"更新成功");
     }
 
@@ -393,7 +394,8 @@ public class TeacherServiceImpl implements TeacherService {
         String path = "C:\\pccu-image\\teacher-file";
         Path path1 = Paths.get(path);
         try {
-            TeacherFile teacherFile = uploadFile(path1,uploadFile,teacherId,httpServletRequest);
+            FileDto fileDto = uploadFile(path1,uploadFile,teacherId,httpServletRequest);
+            TeacherFile teacherFile = teacherFileSaveFile(fileDto);
             String TeacherFileId = getId(teacherFileRepository,"TF",2);
             System.out.println(TeacherFileId);
             teacherFile.setTeacherFileId(TeacherFileId);
@@ -417,18 +419,20 @@ public class TeacherServiceImpl implements TeacherService {
         System.out.println(uri);
         String path = "C:\\pccu-image\\teacher-file";
         Path path1 = Paths.get(path);
-        TeacherFile saveTeacherFile;
         try {
+
             TeacherFile selectTeacherFile = teacherFileRepository.findById(teacherFileId).orElseThrow(()->new RuntimeException("沒有慈檔案"));
             System.out.println(selectTeacherFile.getTeacherFilePath());
             if(selectTeacherFile.getTeacherFilePath()!=null){
                 deleteFile(selectTeacherFile.getTeacherFilePath());
             }
 
-            TeacherFile teacherFile = uploadFile(path1,uploadFile,teacherId,httpServletRequest);
+            FileDto fileDto = uploadFile(path1,uploadFile,teacherId,httpServletRequest);
+            TeacherFile teacherFile = teacherFileSaveFile(fileDto);
             selectTeacherFile.setTeacherFileUrl(teacherFile.getTeacherFileUrl());
             selectTeacherFile.setTeacherFilePath(teacherFile.getTeacherFilePath());
-            selectTeacherFile.setUpdateTime(teacherFile.getUpdateTime());
+            selectTeacherFile.setTeacherFileName(teacherFile.getTeacherFileName());
+            selectTeacherFile.setUpdateTime(LocalDate.now());
             teacherFileRepository.save(selectTeacherFile);
             return  getRestDto(selectTeacherFile,"上傳成功");
 
@@ -452,19 +456,25 @@ public class TeacherServiceImpl implements TeacherService {
 
 
 
-    private TeacherFile uploadFile(Path path1, MultipartFile uploadFile, String teacherId, HttpServletRequest httpServletRequest) throws IOException {
+    private FileDto uploadFile(Path path1, MultipartFile uploadFile, String teacherId, HttpServletRequest httpServletRequest) throws IOException {
         FileDto fileDto = fileTransferTo(path1, uploadFile, httpServletRequest);
+        return fileDto;
+    }
+
+    private TeacherFile teacherFileSaveFile(FileDto fileDto) {
         TeacherFile teacherFile = TeacherFile.builder()
                 .teacherFileUrl(fileDto.getUrl())
                 .teacherFilePath(fileDto.getPath())
+                .teacherFileName(fileDto.getName())
                 .build();
-        return teacherFile;
+        return  teacherFile;
     }
 
 
     private FileDto fileTransferTo(Path path, MultipartFile uploadFile, HttpServletRequest httpServlet) throws IOException {
 
         String name = uploadFile.getOriginalFilename();
+        System.out.println(name);
         String prefix = name.lastIndexOf(".") != -1 ? name.substring(name.lastIndexOf(".")) : ".txt";
         String NewFileName = UUID.randomUUID().toString().replace("-", "") + prefix;
 
@@ -482,6 +492,7 @@ public class TeacherServiceImpl implements TeacherService {
         return FileDto.builder()
                 .url(url)
                 .path(newFilePath.toString())
+                .name(name)
                 .build();
 
     }
@@ -569,14 +580,26 @@ public class TeacherServiceImpl implements TeacherService {
         return studentId;
     }
     private TeacherFile getTeacherFile(TeacherFileCategory teacherFileCategory, String teacherId,String teacherFileId){
-        TeacherFile teacherFile = TeacherFile.builder()
-                .teacherFileId(teacherFileId)
-                .teacherId(teacherId)
-                .teacherFileName(teacherFileCategory.getTeacherFileName())
-                .teacherFileTalk(teacherFileCategory.getTeacherFileTalk())
-                .teacherFileType(teacherFileCategory.getTeacherFileType())
-                .build();
-        return teacherFile;
+        if(teacherFileRepository.findById(teacherFileId).get() == null){
+
+            TeacherFile teacherFile = TeacherFile.builder()
+                    .teacherFileId(teacherFileId)
+                    .teacherId(teacherId)
+                    .teacherFileTitle(teacherFileCategory.getTeacherFileTitle())
+                    .teacherFileTalk(teacherFileCategory.getTeacherFileTalk())
+                    .teacherFileType(teacherFileCategory.getTeacherFileType())
+                    .build();
+            return teacherFile;
+        }else{
+            TeacherFile teacherFile = teacherFileRepository.findById(teacherFileId).orElseThrow(()->new RuntimeException("沒有此檔案"));
+            teacherFile.setTeacherFileTitle(teacherFileCategory.getTeacherFileTitle());
+            teacherFile.setTeacherFileTalk(teacherFileCategory.getTeacherFileTalk());
+            teacherFile.setTeacherFileType(teacherFileCategory.getTeacherFileType());
+            System.out.println(teacherFile);
+            return teacherFile;
+        }
+
+
     }
 
     private RestDto getRestDto(Object o, String message){

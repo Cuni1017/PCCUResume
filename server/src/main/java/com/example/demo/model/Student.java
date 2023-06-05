@@ -32,8 +32,8 @@ public class Student {
     private String studentImageUrl;
     @Column(name = "student_image_old_name")
     private String studentImageOldName;
-    @Column(name = "student_image_new_name")
-    private String studentImageNewName;
+    @Column(name = "student_image_path")
+    private String studentImagePath;
     @Column(name = "pccu_id")
     private String pccuId;
     @Column(name = "student_create_time")

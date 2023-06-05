@@ -25,6 +25,8 @@ public class TeacherFile {
    private String teacherId;
     @Column(name = "teacher_file_path")
    private String teacherFilePath;
+    @Column(name = "teacher_file_title")
+    private String teacherFileTitle;
     @Column(name = "teacher_file_name")
    private String teacherFileName;
     @Column(name = "teacher_file_talk")
