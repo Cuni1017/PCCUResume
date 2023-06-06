@@ -11,11 +11,10 @@ import com.example.demo.dao.vacancies.VacanciesSkillRepository;
 import com.example.demo.dto.CompanyDto;
 import com.example.demo.dto.RestDto;
 import com.example.demo.dto.CompanyVacanciesDto;
+import com.example.demo.dto.vacancies.FullVacanciesDto;
 import com.example.demo.dto.vacancies.PageVacanciesDto;
 import com.example.demo.dto.vacancies.VacanciesDto;
-import com.example.demo.model.Company;
-import com.example.demo.model.TeacherFile;
-import com.example.demo.model.User;
+import com.example.demo.model.*;
 import com.example.demo.model.vacancies.*;
 import com.example.demo.service.CompanyService;
 
@@ -34,6 +33,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -41,6 +41,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CompanyServiceImpl implements CompanyService {
     private final CompanyRepository companyRepository;
+    private final UserLikeRepository userLikeRepository;
     private final VacanciesRepository vacanciesRepository;
     private final VacanciesCountyRepository vacanciesCountyRepository;
     private final VacanciesSkillRepository vacanciesSkillRepository;
@@ -319,8 +320,15 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public Object findUserLike(String studentUserName) {
-        return null;
+    public Object findUserLike(String companyName) {
+        Company company = companyRepository.findByCompanyName(companyName).orElseThrow(() -> new RuntimeException("沒有此公司"));
+        List<UserLike> userLikes = userLikeRepository.findByUserId(company.getCompanyId());
+        List<FullVacanciesDto> FullVacanciesDtoList = new ArrayList<>();
+        for(UserLike userLike : userLikes){
+            FullVacanciesDto fullVacanciesDto = vacanciesDao.findFullVacanciesById(userLike.getVacanciesId());
+            FullVacanciesDtoList.add(fullVacanciesDto);
+        }
+        return getRestDto(FullVacanciesDtoList,"查詢成功");
     }
 
 
