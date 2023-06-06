@@ -619,6 +619,14 @@ public class TeacherServiceImpl implements TeacherService {
     }
     private TeacherFile getTeacherFile(TeacherFileCategory teacherFileCategory, String teacherId,String teacherFileId){
         if(teacherFileRepository.findById(teacherFileId).isPresent()){
+            TeacherFile teacherFile = teacherFileRepository.findById(teacherFileId).orElseThrow(()->new RuntimeException("沒有此檔案"));
+            teacherFile.setTeacherFileTitle(teacherFileCategory.getTeacherFileTitle());
+            teacherFile.setTeacherFileTalk(teacherFileCategory.getTeacherFileTalk());
+            teacherFile.setTeacherFileType(teacherFileCategory.getTeacherFileType());
+            System.out.println(teacherFile);
+            return teacherFile;
+
+        }else{
 
             TeacherFile teacherFile = TeacherFile.builder()
                     .teacherFileId(teacherFileId)
@@ -627,13 +635,6 @@ public class TeacherServiceImpl implements TeacherService {
                     .teacherFileTalk(teacherFileCategory.getTeacherFileTalk())
                     .teacherFileType(teacherFileCategory.getTeacherFileType())
                     .build();
-            return teacherFile;
-        }else{
-            TeacherFile teacherFile = teacherFileRepository.findById(teacherFileId).orElseThrow(()->new RuntimeException("沒有此檔案"));
-            teacherFile.setTeacherFileTitle(teacherFileCategory.getTeacherFileTitle());
-            teacherFile.setTeacherFileTalk(teacherFileCategory.getTeacherFileTalk());
-            teacherFile.setTeacherFileType(teacherFileCategory.getTeacherFileType());
-            System.out.println(teacherFile);
             return teacherFile;
         }
 
