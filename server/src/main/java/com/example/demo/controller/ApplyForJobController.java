@@ -27,7 +27,6 @@ public class ApplyForJobController {
     @GetMapping("/v1/students/{studentUserName}/user-like")
     public ResponseEntity<Object> findUserLike(
             @PathVariable String studentUserName
-
     ){
         return ResponseEntity.ok(applyForJobService.findUserLike(studentUserName));
     }
@@ -38,11 +37,12 @@ public class ApplyForJobController {
     ){
         return ResponseEntity.ok(applyForJobService.createUserLike(studentUserName,vacanciesId));
     }
-    @DeleteMapping("/v1/students/user-like/{vacanciesId}")
+    @DeleteMapping("/v1/students/{studentUsername}/user-like/{vacanciesId}")
     public ResponseEntity<Object> deleteUserLike(
+            @PathVariable String studentUserName,
             @PathVariable String vacanciesId
     ){
-        return ResponseEntity.ok(applyForJobService.deleteUserLike(vacanciesId));
+        return ResponseEntity.ok(applyForJobService.deleteUserLike(studentUserName,vacanciesId));
     }
     @PostMapping("/students/{userId}/{resumeId}/apply-for-job/{companyId}/{vacanciesId}")
     public ResponseEntity<Object> createApply(

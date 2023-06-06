@@ -180,8 +180,9 @@ public class ApplyForJobServiceImpl implements ApplyForJobService {
     }
 
     @Override
-    public Object deleteUserLike(String vacanciesId) {
-        userLikeRepository.deleteByVacanciesId(vacanciesId);
+    public Object deleteUserLike(String studentUserName,String vacanciesId) {
+        Student student = studentRepository.findByStudentUsername(studentUserName).orElseThrow(() -> new RuntimeException("找不倒學生"));
+        userLikeRepository.deleteByVacanciesIdAndUserId(vacanciesId,student.getStudentId());
         return getRestDto(vacanciesId,"刪除成功");
     }
 

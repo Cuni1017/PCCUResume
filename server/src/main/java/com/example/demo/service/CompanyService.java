@@ -27,4 +27,6 @@ public interface CompanyService {
     Object findTeacherFileForm(String fileType, int page, int limit);
 
     ResponseEntity<Object> downloadTeacherFile(String companyName, String teacherFileId, HttpServletResponse response);
+
+    Object findUserLike(String companyName);
 }

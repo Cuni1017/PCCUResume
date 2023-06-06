@@ -19,6 +19,12 @@ public class CompanyController {
     ) {
         return ResponseEntity.ok(companyService.findCompanyByCompanyName(companyName));
     }
+    @GetMapping("/v1/company/{companyName}/user-like")
+    public ResponseEntity<Object> findUserLike(
+            @PathVariable String companyName
+    ){
+        return ResponseEntity.ok(companyService.findUserLike(companyName));
+    }
     @GetMapping("/v1/company/{companyName}/teacher-file")
     public ResponseEntity<Object> findVacancies(
             @RequestParam(required = false,defaultValue = "1" ) int page,

@@ -318,6 +318,11 @@ public class CompanyServiceImpl implements CompanyService {
 
     }
 
+    @Override
+    public Object findUserLike(String studentUserName) {
+        return null;
+    }
+
 
     private String getId(JpaRepository repository , String idType , int x){
         long userCount = repository.count();

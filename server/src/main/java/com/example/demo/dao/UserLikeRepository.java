@@ -12,5 +12,5 @@ public interface UserLikeRepository extends JpaRepository<UserLike, String> {
     List<UserLike> findByUserId(String userId);
 
     @Transactional
-    void deleteByVacanciesId(String  vacanciesId);
+    void deleteByVacanciesIdAndUserId(String  vacanciesId,String userId);
 }
