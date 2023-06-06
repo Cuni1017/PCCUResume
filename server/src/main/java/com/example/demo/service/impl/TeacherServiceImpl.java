@@ -618,7 +618,7 @@ public class TeacherServiceImpl implements TeacherService {
         return studentId;
     }
     private TeacherFile getTeacherFile(TeacherFileCategory teacherFileCategory, String teacherId,String teacherFileId){
-        if(teacherFileRepository.findById(teacherFileId).get() == null){
+        if(teacherFileRepository.findById(teacherFileId).isPresent()){
 
             TeacherFile teacherFile = TeacherFile.builder()
                     .teacherFileId(teacherFileId)
