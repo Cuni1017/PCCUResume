@@ -68,6 +68,7 @@ public class TeacherServiceImpl implements TeacherService {
     private final  StudentDao studentDao;
     private final CompanyDao companyDao;
     private final TeacherFileRepository teacherFileRepository;
+    private final UserLikeRepository userLikeRepository;
     @Override
     public Object findById(String teacherId) {
         Teacher teacher = teacherRepository.findByTeacherId(teacherId).orElseThrow(()->new RuntimeException("沒有此教師"));
@@ -330,6 +331,38 @@ public class TeacherServiceImpl implements TeacherService {
         applyRepository.save(apply);
         return getRestDto(apply,"更新成功");
     }
+
+    @Override
+    public Object findUserLike(String teacherId) {
+        Teacher teacher = teacherRepository.findByTeacherId(teacherId).orElseThrow(() -> new RuntimeException("找不倒教師"));
+        List<UserLike> userLikes = userLikeRepository.findByUserId(teacher.getTeacherId());
+        List<FullVacanciesDto> FullVacanciesDtoList = new ArrayList<>();
+        for(UserLike userLike : userLikes){
+            FullVacanciesDto fullVacanciesDto = vacanciesDao.findFullVacanciesById(userLike.getVacanciesId());
+            FullVacanciesDtoList.add(fullVacanciesDto);
+        }
+        return getRestDto(FullVacanciesDtoList,"查詢成功");
+    }
+
+    @Override
+    public Object createUserLike(String teacherId, String vacanciesId) {
+        Teacher teacher = teacherRepository.findByTeacherId(teacherId).orElseThrow(() -> new RuntimeException("找不倒教師"));
+        Vacancies vacancies = vacanciesRepository.findById(vacanciesId).orElseThrow(()->new RuntimeException("找不到工作"+vacanciesId));
+        UserLike userLike  = UserLike.builder()
+                .userId(teacher.getTeacherId())
+                .companyId(vacancies.getCompanyId())
+                .vacanciesId(vacancies.getVacanciesId())
+                .build();
+        userLikeRepository.save(userLike);
+        return getRestDto(userLike,"新增成功");
+    }
+
+    @Override
+    public Object deleteUserLike(String teacherId, String vacanciesId) {
+        userLikeRepository.deleteByVacanciesIdAndUserId(vacanciesId,teacherId);
+        return getRestDto(vacanciesId,"刪除成功");
+    }
+
     @Override
     public Object findTeacherFileForm(String fileType, int page, int limit) {
         int selectOffset = getSelectOffset(page,limit);

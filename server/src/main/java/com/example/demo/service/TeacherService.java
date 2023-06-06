@@ -55,4 +55,10 @@ public interface TeacherService {
     Object deleteTeacherFile(String teacherId, String teacherFileId);
 
     Object updateApplyTime(String applyId, ApplyTimeCategory applyTimeCategory);
+
+    Object findUserLike(String teacherId);
+
+    Object createUserLike(String teacherId, String vacanciesId);
+
+    Object deleteUserLike(String teacherId, String vacanciesId);
 }

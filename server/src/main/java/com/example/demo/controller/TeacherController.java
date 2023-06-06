@@ -22,7 +22,26 @@ public class TeacherController {
     ) {
         return ResponseEntity.ok(teacherService.findById(teacherId));
     }
-
+    @GetMapping("/v1/teacher/{teacherId}/user-like")
+    public ResponseEntity<Object> findUserLike(
+            @PathVariable String teacherId
+    ){
+        return ResponseEntity.ok(teacherService.findUserLike(teacherId));
+    }
+    @PostMapping("/v1/teacher/{teacherId}/user-like/{vacanciesId}")
+    public ResponseEntity<Object> createUserLike(
+            @PathVariable String teacherId,
+            @PathVariable String vacanciesId
+    ){
+        return ResponseEntity.ok(teacherService.createUserLike(teacherId,vacanciesId));
+    }
+    @DeleteMapping("/v1/students/{teacherId}/user-like/{vacanciesId}")
+    public ResponseEntity<Object> deleteUserLike(
+            @PathVariable String teacherId,
+            @PathVariable String vacanciesId
+    ){
+        return ResponseEntity.ok(teacherService.deleteUserLike(teacherId,vacanciesId));
+    }
     @GetMapping("/v1/teacher/news")
     public ResponseEntity<Object> findNewsById(
 
@@ -147,6 +166,7 @@ public class TeacherController {
     ) {
         return ResponseEntity.ok(teacherService.updateApplyTime(applyId,applyTimeCategory));
     }
+
     @GetMapping("/v1/teacher/teacher-file-form")
     public ResponseEntity<Object> findTeacherFileForm(
             @RequestParam(required = false,defaultValue = "1" ) int page,
