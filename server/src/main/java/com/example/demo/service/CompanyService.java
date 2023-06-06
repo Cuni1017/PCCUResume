@@ -29,4 +29,8 @@ public interface CompanyService {
     ResponseEntity<Object> downloadTeacherFile(String companyName, String teacherFileId, HttpServletResponse response);
 
     Object findUserLike(String companyName);
+
+    Object createUserLike(String companyName, String vacanciesId);
+
+    Object deleteUserLike(String companyName, String vacanciesId);
 }

@@ -331,6 +331,27 @@ public class CompanyServiceImpl implements CompanyService {
         return getRestDto(FullVacanciesDtoList,"查詢成功");
     }
 
+    @Override
+    public Object createUserLike(String companyName, String vacanciesId) {
+        Company company = companyRepository.findByCompanyName(companyName).orElseThrow(() -> new RuntimeException("沒有此公司"));
+        Vacancies vacancies = vacanciesRepository.findById(vacanciesId).orElseThrow(()->new RuntimeException("找不到工作"+vacanciesId));
+        UserLike userLike  = UserLike.builder()
+                .userId(company.getCompanyId())
+                .companyId(vacancies.getCompanyId())
+                .vacanciesId(vacancies.getVacanciesId())
+                .build();
+        userLikeRepository.save(userLike);
+        return getRestDto(userLike,"新增成功");
+
+    }
+
+    @Override
+    public Object deleteUserLike(String companyName, String vacanciesId) {
+        Company company = companyRepository.findByCompanyName(companyName).orElseThrow(() -> new RuntimeException("沒有此公司"));
+        userLikeRepository.deleteByVacanciesIdAndUserId(vacanciesId,company.getCompanyId());
+        return getRestDto(vacanciesId,"刪除成功");
+    }
+
 
     private String getId(JpaRepository repository , String idType , int x){
         long userCount = repository.count();

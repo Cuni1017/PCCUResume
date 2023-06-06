@@ -25,6 +25,22 @@ public class CompanyController {
     ){
         return ResponseEntity.ok(companyService.findUserLike(companyName));
     }
+    @PostMapping("/v1/company/{companyName}/user-like/{vacanciesId}")
+    public ResponseEntity<Object> createUserLike(
+            @PathVariable String companyName,
+            @PathVariable String vacanciesId
+    ){
+        return ResponseEntity.ok(companyService.createUserLike(companyName,vacanciesId));
+    }
+
+    @DeleteMapping("/v1/company/{companyName}/user-like/{vacanciesId}")
+    public ResponseEntity<Object> deleteUserLike(
+            @PathVariable String companyName,
+            @PathVariable String vacanciesId
+    ){
+        return ResponseEntity.ok(companyService.deleteUserLike(companyName,vacanciesId));
+    }
+
     @GetMapping("/v1/company/{companyName}/teacher-file")
     public ResponseEntity<Object> findVacancies(
             @RequestParam(required = false,defaultValue = "1" ) int page,
