@@ -55,6 +55,7 @@ import YouTubePlugin from "./plugins/YouTubePlugin";
 import PlaygroundEditorTheme from "./themes/PlaygroundEditorTheme";
 import ContentEditable from "./ui/ContentEditable";
 import Placeholder from "./ui/Placeholder";
+import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 
 import DisplayLexical from "./DisplayLexical";
 
@@ -63,6 +64,8 @@ export default function Editor({
 }: {
   editable: boolean;
 }): JSX.Element {
+  const [editor] = useLexicalComposerContext();
+
   const { historyState } = useSharedHistoryContext();
   const {
     settings: {
@@ -117,7 +120,9 @@ export default function Editor({
     };
   }, [isSmallWidthViewport]);
 
-  if (editable === false) return <DisplayLexical />;
+  if (editable === false) {
+    return <DisplayLexical />;
+  }
 
   return (
     <>

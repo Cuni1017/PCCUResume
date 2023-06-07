@@ -25,15 +25,21 @@ const NavigationBar = () => {
 
   const myLinks: MyLink[] = [
     { linkLabel: "個人檔案", href: `${url}` },
-    { linkLabel: "履歷", href: `${url}/resumes` },
     { linkLabel: "作品集", href: `${url}/portfolios` },
   ];
 
   const jobLinks: MyLink[] = [
-    { linkLabel: "已應徵職缺", href: `${url}/applications-jobs` },
     { linkLabel: "儲存的職缺", href: `${url}/favorite-jobs` },
     { linkLabel: "追蹤的企業", href: `${url}/following-companies` },
   ];
+
+  if (role.includes("STUDENT")) {
+    myLinks.splice(0, 0, { linkLabel: "履歷", href: `${url}/resumes` });
+    jobLinks.splice(0, 0, {
+      linkLabel: "已應徵職缺",
+      href: `${url}/applications-jobs`,
+    });
+  }
 
   const companiesLink: MyLink[] = [
     { linkLabel: "徵才專頁", href: `${url}/companies` },
@@ -48,7 +54,6 @@ const NavigationBar = () => {
           links={myLinks}
           LabelIcon={PersonOutlineIcon}
         />
-        {/* {role === "STUDENT" && ( */}
         <>
           <hr />
           <NavigationBarItem
@@ -57,17 +62,16 @@ const NavigationBar = () => {
             LabelIcon={BusinessCenterIcon}
           />
         </>
-        {/* )} */}
-        {/* {role === "COMPANY" && ( */}
-        <>
-          <hr />
-          <NavigationBarItem
-            label={"招募"}
-            links={companiesLink}
-            LabelIcon={BusinessIcon}
-          />
-        </>
-        {/* )} */}
+        {role.includes("COMPANY") && (
+          <>
+            <hr />
+            <NavigationBarItem
+              label={"招募"}
+              links={companiesLink}
+              LabelIcon={BusinessIcon}
+            />
+          </>
+        )}
       </ul>
     </Card>
   );

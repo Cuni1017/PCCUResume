@@ -13,6 +13,7 @@ import InstagramIcon from "@mui/icons-material/Instagram";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import Tooltip from "@mui/material/Tooltip";
 import Link from "next/link";
+import { useGetCompanyAbout } from "@/hooks/company/useCompanyAbout";
 
 function formatNumber(number: number) {
   var formattedNumber = parseFloat(number.toFixed(2)).toString();
@@ -29,8 +30,12 @@ const getMoneyText = (money: number) => {
 const CompanyUrlClassnames =
   "p-1 bg-inherit hover:bg-gray-300 flex items-center jusitfy-center rounded";
 
-// CompanyAbout
-const CompanyInfoCard = ({ companyInfo }: { companyInfo: CompanyAbout }) => {
+// { companyInfo }: { companyInfo: CompanyAbout }
+const CompanyInfoCard = ({ companyName }: { companyName: string }) => {
+  const { data: companyInfo, isFetching } = useGetCompanyAbout({
+    companyName: decodeURI(companyName),
+  });
+
   const {
     companyTitle, //行業類別
     companyCounty,
@@ -41,6 +46,8 @@ const CompanyInfoCard = ({ companyInfo }: { companyInfo: CompanyAbout }) => {
   } = companyInfo;
 
   const fullAddress = `${companyCounty}${companyDistrict}${companyAddress}`;
+
+  if (isFetching) return null;
 
   return (
     <Card classnames="p-4 flex flex-col gap-3">

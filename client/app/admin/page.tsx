@@ -1,6 +1,6 @@
 "use client";
 
-import { useGetPlatformNews } from "@/hooks/useAdmin";
+import { useGetPlatformNews } from "@/hooks/teacher/useAdmin";
 import React from "react";
 import Skeleton from "@mui/material/Skeleton";
 import StudentRegistCard, { Student } from "./components/StudentRegistCard";
@@ -9,14 +9,11 @@ import { Apply, ApplyUser } from "../companies/[slug]/applicants/page";
 import ApplyCard from "./components/ApplyCard";
 import { Vacancy } from "../components/JobInfoCard";
 import VacancyRegistCard from "./components/VacancyRegistCard";
-import AdminNavbar from "./components/AdminNavbar";
 
 const AdminPage = () => {
   const {
-    data,
     data: { students, companies, allApplyDtoList, companyVacanciesDto },
   } = useGetPlatformNews();
-  console.log(data);
 
   const renderedStudentRegists = () => {
     if (!students)

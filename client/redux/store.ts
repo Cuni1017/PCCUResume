@@ -1,16 +1,19 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { User, userReducer } from "./slices/user";
 import { AppLoading, appLoadingReducer } from "./slices/appLoading";
+import { FavoriteJobs, favoriteJobsReducer } from "./slices/favoriteJobs"
 
 export interface Store {
   user: User;
   appLoading: AppLoading
+  favoriteJobs: FavoriteJobs
 }
 
 const store = configureStore({
   reducer: {
     user: userReducer,
-    appLoading: appLoadingReducer
+    appLoading: appLoadingReducer,
+    favoriteJobs: favoriteJobsReducer
   },
 });
 

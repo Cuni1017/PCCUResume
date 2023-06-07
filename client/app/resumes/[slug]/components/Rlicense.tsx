@@ -15,7 +15,7 @@ import {
   useDeleteResumeDetail,
   usePostResumeDetail,
   usePutResumeDetail,
-} from "@/hooks/Resume/useResumeDetail";
+} from "@/hooks/resume/useResumeDetail";
 import ResumeDetailActions from "./shared/ResumeDetailActions";
 
 // 證照

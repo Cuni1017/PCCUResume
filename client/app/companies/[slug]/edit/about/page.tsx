@@ -10,7 +10,7 @@ import {
   useGetCompanyAbout,
   usePostCompanyAbout,
   usePutCompanyAbout,
-} from "@/hooks/useCompanyAbout";
+} from "@/hooks/company/useCompanyAbout";
 import SnackBar from "@/app/components/SnackBar";
 
 const EditorMaxLength = 150000; // 給Lexical
@@ -31,13 +31,16 @@ const CompanyEditAboutPage = (props: any) => {
     companyId: "",
   });
 
-  const { data } = useGetCompanyAbout({ companyName: slug, type: "service" });
+  const { data } = useGetCompanyAbout({
+    companyName: decodeURI(slug),
+    type: "service",
+  });
   const { mutate: PostMutate, isSuccess: isPostSuccess } = usePostCompanyAbout({
-    companyName: slug,
+    companyName: decodeURI(slug),
     type: "service",
   });
   const { mutate: PutMutate, isSuccess: isPutSuccess } = usePutCompanyAbout({
-    companyName: slug,
+    companyName: decodeURI(slug),
     type: "service",
   });
 

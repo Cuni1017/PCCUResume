@@ -15,7 +15,7 @@ import SaveCheck from "./shared/SaveCheck";
 import {
   usePostResumeDetail,
   usePutResumeDetail,
-} from "@/hooks/Resume/useResumeDetail";
+} from "@/hooks/resume/useResumeDetail";
 
 interface Skill {
   rskillId?: string;
@@ -37,9 +37,16 @@ const ListItem = styled("li")(({ theme }) => ({
 const Rskills = ({ userId, resumeId, skills, isEditMode }: Props) => {
   const [isEditing, setIsEditing] = useState(false);
 
-  const renderedSkills = skills.map((skill) => (
-    <SkillCard key={skill.skillId} skill={skill} />
-  ));
+  const renderedSkills =
+    skills.length > 0 ? (
+      <div className="flex gap-2 flex-wrap">
+        {skills.map((skill) => (
+          <SkillCard key={skill.skillId} skill={skill} />
+        ))}
+      </div>
+    ) : (
+      <div className="text-center w-full">填寫自身語言能力！</div>
+    );
 
   return (
     <Card>
@@ -53,9 +60,7 @@ const Rskills = ({ userId, resumeId, skills, isEditMode }: Props) => {
         />
       </ResumeItemHeader>
       <ResumeItemContent>
-        {!isEditing ? (
-          <div className="flex gap-2 flex-wrap">{renderedSkills}</div>
-        ) : null}
+        {!isEditing ? <>{renderedSkills}</> : null}
         {isEditMode ? (
           <SkillEditCard
             userId={userId}
@@ -119,6 +124,7 @@ const SkillEditCard = ({
             flexWrap: "wrap",
             listStyle: "none",
             width: "100%",
+            minHeight: "40px",
             boxShadow: 0.02,
             p: 0.5,
             m: 0,

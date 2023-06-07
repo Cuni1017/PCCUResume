@@ -7,7 +7,7 @@ import { CompanyAbout } from "../../page";
 import { useSelector } from "react-redux";
 import { Store } from "@/redux/store";
 import ImageUploader from "@/app/components/ImageUploader";
-import { usePostCompanyImage } from "@/hooks/useCompanyAbout";
+import { usePostCompanyImage } from "@/hooks/company/useCompanyAbout";
 
 const HeaderLogo = ({
   companyInfo,

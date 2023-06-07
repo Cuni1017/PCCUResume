@@ -37,7 +37,7 @@ const CompaniesEditLayout = ({
       </div>
       <div className="flex gap-6 flex-col md:flex-row">
         <div className="w-full md:w-[28%]">
-          <CompanyEditNavbar companyName={slug} />
+          <CompanyEditNavbar companyName={decodeURI(slug)} />
         </div>
         <div className="w-full md:w-[72%]">
           <Card classnames="p-4 md:p-6">{children}</Card>

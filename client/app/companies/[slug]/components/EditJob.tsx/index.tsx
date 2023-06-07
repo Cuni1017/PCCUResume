@@ -21,7 +21,7 @@ import { Skill } from "../../components/SkillPicker";
 import AddressPicker from "@/app/components/AddressPicker";
 import TaiwanPostalCode from "@/data/TaiwanPostalCode.json";
 import Grid from "@mui/material/Unstable_Grid2"; //v2
-import { usePostJob, usePutJob } from "@/hooks/companyJob/useCompanyJob";
+import { usePostJob, usePutJob } from "@/hooks/company/useCompanyJob";
 import SnackBar from "@/app/components/SnackBar";
 
 const initialVacancy: Vacancy = {

@@ -13,7 +13,6 @@ import { CircularProgress } from "@mui/material";
 import Button from "@mui/material/Button";
 import AuthModal from "../AuthModal/AuthModal";
 import Profile from "./Profile";
-import TanstackLinearProgress from "./TanstackLinearProgress";
 import AppLinearIndeterminate from "./AppLinearProgress";
 
 import { axiosInstanceNext } from "@/axiosInstance.ts";
@@ -26,7 +25,6 @@ const Navbar = () => {
   const router = useRouter();
 
   const user = useSelector((state: Store) => state.user);
-  const appLoading = useSelector((state: Store) => state.appLoading);
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(true); //jwt
@@ -86,7 +84,10 @@ const Navbar = () => {
     { label: "刊登", link: `/companies/${user.name}/jobs/new` },
   ];
 
-  const TCHLinks = [{ label: "教師管理", link: "/admin" }];
+  const TCHLinks = [
+    { label: "實習資訊", link: "/information" },
+    { label: "教師管理", link: "/admin" },
+  ];
 
   return (
     <>
@@ -98,8 +99,15 @@ const Navbar = () => {
             </div>
             <div className="hidden md:flex gap-4 h-full items-center">
               <NavbarItem label="找實習" link="/jobs" />
-              <NavbarItemMenu label="公司" links={CPNLinks} />
-              <NavbarItemMenu label="教師" links={TCHLinks} />
+              <NavbarItem label="找公司" link="/companies" />
+              {user.role.includes("COMPANY") && (
+                <NavbarItemMenu label="公司" links={CPNLinks} />
+              )}
+              {user.role === "TEACHER" ? (
+                <NavbarItemMenu label="教師" links={TCHLinks} />
+              ) : (
+                <NavbarItem label="實習資訊" link="/information" />
+              )}
             </div>
           </div>
           <div className="mr-3 flex gap-2 h-full items-center relative">
@@ -133,9 +141,12 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-      <TanstackLinearProgress />
-      {appLoading.isLoading ? <AppLinearIndeterminate /> : null}
-      <MobileMenu isMenuShow={isMenuShow} setIsMenuShow={setIsMenuShow} />
+      <AppLinearIndeterminate />
+      <MobileMenu
+        user={user}
+        isMenuShow={isMenuShow}
+        setIsMenuShow={setIsMenuShow}
+      />
     </>
   );
 };

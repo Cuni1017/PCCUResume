@@ -8,7 +8,7 @@ import Link from "next/link";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { Resume } from "../page";
-import { useDeleteResume } from "../../../../hooks/Resume/useResume";
+import { useDeleteResume } from "../../../../hooks/resume/useResume";
 
 const style = {
   position: "absolute",

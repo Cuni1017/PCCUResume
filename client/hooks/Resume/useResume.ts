@@ -1,9 +1,7 @@
 import { axiosInstanceNext } from "@/axiosInstance.ts";
-import { getCookie } from "cookies-next";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { queryKeys } from "@/tanstack-query/constant";
-
-const JWT = getCookie("JWT");
+import { defaultSelfTokenHeaders } from "../shared";
 
 interface Resume {
   resumeId: string;
@@ -21,11 +19,7 @@ async function fetchResumeById(userId: string, resumeId: string) {
 
   const { data } = await axiosInstanceNext.get(
     `/api/students/${userId}/resumes/${resumeId}`,
-    {
-      headers: {
-        Authorization: `Bearer ${JWT}`,
-      },
-    }
+    defaultSelfTokenHeaders
   );
   return data.data;
 }
@@ -35,11 +29,7 @@ async function fetchResumes(userId: string) {
 
   const { data } = await axiosInstanceNext.get(
     `/api/students/${userId}/resumes`,
-    {
-      headers: {
-        Authorization: `Bearer ${JWT}`,
-      },
-    }
+    defaultSelfTokenHeaders
   );
   return data.data.resume;
 }
@@ -54,11 +44,7 @@ async function newResume({
   const { data } = await axiosInstanceNext.post(
     `/api/students/${userId}/resumes`,
     { ...formData },
-    {
-      headers: {
-        Authorization: `Bearer ${JWT}`,
-      },
-    }
+    defaultSelfTokenHeaders
   );
   return data;
 }
@@ -72,11 +58,7 @@ async function deleteResume({
 }) {
   const { data } = await axiosInstanceNext.delete(
     `/api/students/${userId}/resumes/${resumeId}`,
-    {
-      headers: {
-        Authorization: `Bearer ${JWT}`,
-      },
-    }
+    defaultSelfTokenHeaders
   );
   return data;
 }

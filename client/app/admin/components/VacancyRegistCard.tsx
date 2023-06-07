@@ -5,7 +5,7 @@ import JobInfoCard, { Vacancy } from "@/app/components/JobInfoCard";
 import MyButton from "@/app/components/MyButton";
 import { DoubleCheckDialog } from "@/app/companies/[slug]/applicants/components/ApplyActionDialog";
 import { useSelector } from "react-redux";
-import { usePutVacancy } from "@/hooks/useAdmin";
+import { usePutVacancy } from "@/hooks/teacher/useAdmin";
 import { Store } from "@/redux/store";
 
 const VacancyRegistCard = ({

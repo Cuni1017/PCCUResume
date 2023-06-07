@@ -13,6 +13,7 @@ const UserCard = ({
   };
 }) => {
   const { name, email, phone, headshot, AQ } = userInfo;
+  
   return (
     <Card classnames="relative">
       <div className="w-full h-[25vw] md:h-[15rem] relative">

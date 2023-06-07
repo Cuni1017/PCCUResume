@@ -1,34 +1,24 @@
 import { axiosInstance } from "@/axiosInstance.ts";
-import { getCookie } from "cookies-next";
-import { useRouter } from "next/navigation";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { queryKeys } from "@/tanstack-query/constant";
 import { ApplyType } from "@/app/companies/[slug]/applicants/components/ApplyActionDialog";
-
-const JWT = getCookie("JWT");
-
-const headers = {
-  headers: {
-    Authorization: `Bearer ${JWT}`,
-    "Content-Type": "Application/json"
-  },
-}
-
+import { defaultSelfTokenHeaders } from "../shared";
 
 // 拿近五日的學生、廠商註冊，學生應徵、廠商職缺申請
 async function getPlatformNews() {
   const { data } = await axiosInstance.get(
     `/v1/teacher/news`,
-    headers
+    defaultSelfTokenHeaders
   );
 
   return data.data;
 }
 
+// 拿各個物件的資料，isReviewed: 是否審核過
 async function getStudentsReview({ page, searchTerm, isReviewed }: { page: number, searchTerm?: string, isReviewed: boolean }) {
   const { data } = await axiosInstance.get(
     `v1/teacher/student-${isReviewed ? "check" : "review"}?page=${page}&limit=10${searchTerm ? `&search=${searchTerm}` : ""}`,
-    headers
+    defaultSelfTokenHeaders
   );
 
   return data.data;
@@ -36,7 +26,7 @@ async function getStudentsReview({ page, searchTerm, isReviewed }: { page: numbe
 async function getCompaniesReview({ page, searchTerm, isReviewed }: { page: number, searchTerm?: string, isReviewed: boolean }) {
   const { data } = await axiosInstance.get(
     `v1/teacher/company-${isReviewed ? "check" : "review"}?page=${page}&limit=10${searchTerm ? `&search=${searchTerm}` : ""}`,
-    headers
+    defaultSelfTokenHeaders
   );
 
   return data.data;
@@ -44,7 +34,7 @@ async function getCompaniesReview({ page, searchTerm, isReviewed }: { page: numb
 async function getVacanciesReview({ page, searchTerm, isReviewed }: { page: number, searchTerm?: string, isReviewed: boolean }) {
   const { data } = await axiosInstance.get(
     `v1/teacher/vacancies-${isReviewed ? "check" : "review"}?page=${page}&limit=10${searchTerm ? `&search=${searchTerm}` : ""}`,
-    headers
+    defaultSelfTokenHeaders
   );
 
   return data.data;
@@ -52,7 +42,7 @@ async function getVacanciesReview({ page, searchTerm, isReviewed }: { page: numb
 async function getAppliesReview({ page }: { page: number }) {
   const { data } = await axiosInstance.get(
     `v1/teacher/apply-review?page=${page}&limit=10`,
-    headers
+    defaultSelfTokenHeaders
   );
 
   return data.data;
@@ -72,14 +62,14 @@ async function putStudent({
     const { data } = await axiosInstance.put(
       `/v1/teacher/${teacherId}/student-review/${studentId}`,
       { role },
-      headers
+      defaultSelfTokenHeaders
     );
 
     return data.data;
   } else if (role === "DELETE") {
     const { data } = await axiosInstance.delete(
       `/v1/teacher/${teacherId}/student-review/${studentId}`,
-      headers
+      defaultSelfTokenHeaders
     );
 
     return data.data;
@@ -100,14 +90,14 @@ async function putCompany({
     const { data } = await axiosInstance.put(
       `/v1/teacher/${teacherId}/company-review/${companyId}`,
       { role },
-      headers
+      defaultSelfTokenHeaders
     );
 
     return data.data;
   } else if (role === "DELETE") {
     const { data } = await axiosInstance.delete(
       `/v1/teacher/${teacherId}/company-review/${companyId}`,
-      headers
+      defaultSelfTokenHeaders
     );
 
     return data.data;
@@ -127,7 +117,7 @@ async function putVacancy({
   const { data } = await axiosInstance.put(
     `/v1/teacher/${teacherId}/vacancies-review/${vacancyId}`,
     { teacherValidType },
-    headers
+    defaultSelfTokenHeaders
   );
 
   return data.data;
@@ -146,7 +136,7 @@ async function putApplyType({
   const { data } = await axiosInstance.put(
     `/v1/teacher/${teacherId}/apply-review/${applyId}`,
     { applyType },
-    headers
+    defaultSelfTokenHeaders
   );
 
   return data.data;

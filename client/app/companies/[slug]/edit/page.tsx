@@ -18,9 +18,8 @@ import {
   useGetCompanyAbout,
   usePostCompanyAbout,
   usePutCompanyAbout,
-} from "@/hooks/useCompanyAbout";
+} from "@/hooks/company/useCompanyAbout";
 import SnackBar from "@/app/components/SnackBar";
-
 
 export interface CompanyAboutBasic {
   companyId: string;
@@ -63,7 +62,7 @@ const CompanyEditPage = (props: any) => {
   } = props;
   const [isUseEffectUpdated, setIsUseEffectUpdated] = useState(false);
   const { data } = useGetCompanyAbout({
-    companyName: slug,
+    companyName: decodeURI(slug),
     type: "basic",
   });
   const [companyBasicInfo, setCompanyBasicInfo] = useState({
@@ -73,23 +72,23 @@ const CompanyEditPage = (props: any) => {
     companyAboutEmployeeQuantity: "", //員工人數
     companyAboutHaveMoney: "", //資本額
     companyAboutTalk: "", //公司介紹
+    companyAboutEnvironment: "", //環境
     companyAboutContactPerson: "", //聯絡人姓名
     companyAboutContactNumber: "", //聯絡人電話
-    companyAboutEnvironment: "", //環境
-    companyAboutBasic: "",
+    // companyAboutBasic: "",
   });
 
   const { mutate: PostMutate, isSuccess: isPostSuccess } = usePostCompanyAbout({
-    companyName: slug,
+    companyName: decodeURI(slug),
     type: "basic",
   });
   const { mutate: PutMutate, isSuccess: isPutSuccess } = usePutCompanyAbout({
-    companyName: slug,
+    companyName: decodeURI(slug),
     type: "basic",
   });
 
   useEffect(() => {
-    if (data.companyId) {
+    if (data.companyAboutBasic) {
       setCompanyBasicInfo({
         ...companyBasicInfo,
         ...data.companyAboutBasic,
@@ -110,11 +109,10 @@ const CompanyEditPage = (props: any) => {
     companyAboutContactPerson,
     companyAboutContactNumber,
     companyAboutEnvironment,
-    companyAboutBasic,
   } = companyBasicInfo;
 
   const handleSave = () => {
-    companyAboutBasic
+    data.companyAboutBasic
       ? PutMutate({
           companyName: slug,
           type: "basic",

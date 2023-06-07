@@ -1,15 +1,6 @@
-import { axiosInstance, axiosInstanceNext } from "@/axiosInstance.ts";
-import { getCookie } from "cookies-next";
+import { axiosInstanceNext } from "@/axiosInstance.ts";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { queryKeys } from "@/tanstack-query/constant";
-
-const JWT = getCookie("JWT");
-
-const options = {
-  headers: {
-    Authorization: `Bearer ${JWT}`,
-  },
-};
+import { defaultSelfTokenHeaders } from "../shared";
 
 async function postResumeDetail({
   userId,
@@ -28,7 +19,7 @@ async function postResumeDetail({
       formData,
       endpoint,
     },
-    options
+    defaultSelfTokenHeaders
   );
   return data.data;
 }
@@ -53,7 +44,7 @@ async function putResumeDetail({
       endpoint,
       endpointId,
     },
-    options
+    defaultSelfTokenHeaders
   );
   return data.data;
 }
@@ -72,7 +63,7 @@ async function deleteResumeDetail({
   const { data } = await axiosInstanceNext.delete(
     `/api/students/${userId}/resumes/${resumeId}/details`,
     {
-      ...options,
+      ...defaultSelfTokenHeaders,
       data: {
         endpoint,
         endpointId,

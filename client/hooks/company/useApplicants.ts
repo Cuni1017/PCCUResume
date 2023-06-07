@@ -1,19 +1,11 @@
 import { axiosInstance } from "@/axiosInstance.ts";
-import { getCookie } from "cookies-next";
-import { useRouter } from "next/navigation";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { queryKeys } from "@/tanstack-query/constant";
-
-const JWT = getCookie("JWT");
+import { defaultSelfTokenHeaders } from "../shared";
 
 async function getApplies(companyName: string) {
   const { data } = await axiosInstance.get(
     `/company/${companyName}/company-for-job`,
-    {
-      headers: {
-        Authorization: `Bearer ${JWT}`,
-      },
-    }
+    defaultSelfTokenHeaders
   );
 
   return data.data;
@@ -29,11 +21,7 @@ async function putApply({
   const { data } = await axiosInstance.put(
     `/company/company-for-job/${applyId}`,
     { applyType },
-    {
-      headers: {
-        Authorization: `Bearer ${JWT}`,
-      },
-    }
+    defaultSelfTokenHeaders
   );
   return data;
 }
@@ -51,11 +39,7 @@ async function putApplyTime({
   const { data } = await axiosInstance.put(
     `/company/company-for-job/${applyId}/insert-apply-time`,
     { applyStartTime, applyEndTime },
-    {
-      headers: {
-        Authorization: `Bearer ${JWT}`,
-      },
-    }
+    defaultSelfTokenHeaders
   );
   return data;
 }

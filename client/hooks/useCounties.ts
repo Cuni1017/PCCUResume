@@ -2,7 +2,6 @@ import { axiosInstance } from "@/axiosInstance.ts";
 import { useQuery } from "@tanstack/react-query";
 import { queryKeys } from "@/tanstack-query/constant";
 
-
 interface County {
   countyId: number;
   countyName: string;

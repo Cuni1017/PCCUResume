@@ -11,7 +11,7 @@ export default async function handler(
   if (req.method === "GET") {
     try {
       const response = await axiosInstance.get(
-        `/students/${userId}/resumes/${resumeId}`,
+        `/v1/resumes/${resumeId}`,
         {
           headers: {
             Authorization: bearerToken,

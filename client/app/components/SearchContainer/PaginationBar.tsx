@@ -1,4 +1,5 @@
 "use client";
+
 import Pagination from "@mui/material/Pagination";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useMemo, useEffect } from "react";

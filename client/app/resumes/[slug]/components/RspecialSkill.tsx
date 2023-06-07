@@ -15,7 +15,7 @@ import {
   useDeleteResumeDetail,
   usePostResumeDetail,
   usePutResumeDetail,
-} from "@/hooks/Resume/useResumeDetail";
+} from "@/hooks/resume/useResumeDetail";
 
 // 特殊技能
 

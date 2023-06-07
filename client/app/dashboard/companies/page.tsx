@@ -1,7 +1,7 @@
 "use client";
 
 import Card from "@/app/components/Card";
-import { useGetCompany } from "@/hooks/companyJob/useCompanyJob";
+import { useGetCompanyAbout } from "@/hooks/company/useCompanyAbout";
 import { Store } from "@/redux/store";
 import React from "react";
 import { useSelector } from "react-redux";
@@ -15,7 +15,7 @@ const CompaniesPage = () => {
   if (role !== "COMPANY") return <UnAuthorizedPage />;
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const { data } = useGetCompany(name);
+  const { data } = useGetCompanyAbout({ companyName: name });
   const {
     companyCounty,
     companyDistrict,

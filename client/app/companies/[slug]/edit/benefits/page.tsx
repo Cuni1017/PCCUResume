@@ -9,7 +9,7 @@ import {
   useGetCompanyAbout,
   usePostCompanyAbout,
   usePutCompanyAbout,
-} from "@/hooks/useCompanyAbout";
+} from "@/hooks/company/useCompanyAbout";
 import SnackBar from "@/app/components/SnackBar";
 
 const EditorMaxLength = 150000; // 給Lexical
@@ -27,13 +27,16 @@ const CompanyEditBenefitPage = (props: any) => {
 
   const { companyId, companyAboutWelfare } = companyWelfareInfo;
 
-  const { data } = useGetCompanyAbout({ companyName: slug, type: "welfare" });
+  const { data } = useGetCompanyAbout({
+    companyName: decodeURI(slug),
+    type: "welfare",
+  });
   const { mutate: PostMutate, isSuccess: isPostSuccess } = usePostCompanyAbout({
-    companyName: slug,
+    companyName: decodeURI(slug),
     type: "welfare",
   });
   const { mutate: PutMutate, isSuccess: isPutSuccess } = usePutCompanyAbout({
-    companyName: slug,
+    companyName: decodeURI(slug),
     type: "welfare",
   });
 

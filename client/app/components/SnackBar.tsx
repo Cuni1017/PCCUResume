@@ -41,20 +41,23 @@ export default function CustomizedSnackbars(props: Props) {
   }, []);
 
   return (
-    <Stack spacing={2} sx={{ width: "100%" }}>
-      <Snackbar
-        open={open}
-        autoHideDuration={duration ? duration : 3000}
-        onClose={handleClose}
-      >
-        <Alert onClose={handleClose} severity={type} sx={{ width: "100%" }}>
-          {information}
-        </Alert>
-      </Snackbar>
-      {/* <Alert severity="error">This is an error message!</Alert>
-      <Alert severity="warning">This is a warning message!</Alert>
-      <Alert severity="info">This is an information message!</Alert>
-      <Alert severity="success">This is a success message!</Alert> */}
-    </Stack>
+    <Snackbar
+      open={open}
+      autoHideDuration={duration ? duration : 2000}
+      onClose={handleClose}
+    >
+      <Alert onClose={handleClose} severity={type} sx={{ width: "100%" }}>
+        {information}
+      </Alert>
+    </Snackbar>
   );
+}
+
+{
+  /* <Stack spacing={2} sx={{ width: "100%" }}>
+<Alert severity="error">This is an error message!</Alert>
+<Alert severity="warning">This is a warning message!</Alert>
+<Alert severity="info">This is an information message!</Alert>
+<Alert severity="success">This is a success message!</Alert>
+</Stack> */
 }

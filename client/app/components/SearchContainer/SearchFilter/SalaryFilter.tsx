@@ -80,7 +80,7 @@ const SalaryFilter = () => {
             encodeURI(`salary_range[max]=${salaryRange[1]}`)
           );
 
-      console.log("salaryFilter router push");
+      // console.log("salaryFilter router push");
       router.push(`${pathname}?${newSearchParamsList?.sort()?.join("&")}`);
     }, 300),
     [pathname, searchParamsList]

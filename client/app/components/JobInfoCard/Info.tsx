@@ -33,9 +33,7 @@ const VacancyInfo = ({ vacancy }: { vacancy: Vacancy }) => {
       <Tooltip title="觀看人數">
         <div className="flex items-center gap-1 cursor-pointer">
           <RemoveRedEyeOutlinedIcon fontSize="small" />
-          {vacanciesView >= 20
-            ? `${Math.floor(vacanciesView / 10) * 10}+`
-            : "10+"}
+          {`${Math.floor(vacanciesView / 10) * 10}+`}
         </div>
       </Tooltip>
       <Tooltip title="應徵人數">

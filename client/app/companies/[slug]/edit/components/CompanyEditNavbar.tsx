@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
 import Card from "@/app/components/Card";
 import Link from "next/link";
 import CompletenessCard from "./CompletenessCard";
-import { useGetCompanyAbout } from "@/hooks/useCompanyAbout";
+import { useGetCompanyAbout } from "@/hooks/company/useCompanyAbout";
 
 import { getIsFullfillLexicalRegex } from "@/util/getIsFullfillLexicalRegex";
 
@@ -41,6 +41,7 @@ const LexicalKeys = [
 
 const CompanyEditNavbar = ({ companyName }: { companyName: string }) => {
   const { data } = useGetCompanyAbout({ companyName });
+  const [completenessPercent, setCompletenessPercent] = useState(0);
 
   const getCompletenessPercent = useCallback(() => {
     if (!data.companyId) return 0;
@@ -88,10 +89,15 @@ const CompanyEditNavbar = ({ companyName }: { companyName: string }) => {
     return Math.ceil((fulfillQuantity / totalQuantity) * 100);
   }, [data]);
 
+  useEffect(() => {
+    if (!data.companyId) return;
+    setCompletenessPercent(getCompletenessPercent());
+  }, [data, getCompletenessPercent]);
+
   return (
     <div className="flex flex-col gap-2">
       <Card classnames="p-5 flex gap-2">
-        <CompletenessCard value={getCompletenessPercent()} />
+        <CompletenessCard value={completenessPercent} />
         <div className="flex flex-col gap-1">
           <div className="text-sm text-blue-500">公司資訊完整度</div>
           <div className="text-xs text-slate-500">

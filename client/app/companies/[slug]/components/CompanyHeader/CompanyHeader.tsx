@@ -5,16 +5,9 @@ import HeaderBackground from "./HeaderBackground";
 import HeaderLogo from "./HeaderLogo";
 import HeaderAction from "./HeaderAction";
 import HeaderNavigationBar from "./HeaderNavigationBar";
-import { CompanyAbout } from "../../page";
-import { useGetCompanyAbout } from "@/hooks/useCompanyAbout";
+import { useGetCompanyAbout } from "@/hooks/company/useCompanyAbout";
 
-const CompanyHeader = ({
-  companyName,
-}: // companyInfo,
-{
-  companyName: string;
-  // companyInfo: CompanyAbout;
-}) => {
+const CompanyHeader = ({ companyName }: { companyName: string }) => {
   const { data: companyInfo } = useGetCompanyAbout({
     companyName: decodeURI(companyName),
   });
@@ -47,7 +40,7 @@ const CompanyHeader = ({
         <div
           className={`box-border w-full overflow-hidden shadow-md bg-white fixed top-0 z-10`}
         >
-          <div className="box-border w-full md:h-[84px] bg-white relative md:max-w-[860px] lg:max-w-[1140px] m-auto">
+          <div className="w-full md:h-[84px] bg-white relative md:max-w-[860px] lg:max-w-[1140px] m-auto">
             <div
               className={`max-w-[24rem] sm:max-w-[36rem] md:max-w-none m-auto relative`}
             >
@@ -81,9 +74,7 @@ const CompanyHeader = ({
       >
         <HeaderBackground companyInfo={companyInfo} />
         <div className="box-border w-full md:h-[84px] bg-white relative md:max-w-[860px] lg:max-w-[1140px] m-auto">
-          <div
-            className={`max-w-[24rem] sm:max-w-[36rem] md:max-w-none m-auto relative px-3`}
-          >
+          <div className={`max-w-[36rem] md:max-w-none m-auto relative px-3`}>
             <HeaderLogo companyInfo={companyInfo} isPastEle={isPastEle} />
             <div
               className={`p-0 md:pl-[140px] pt-2 flex flex-col gap-[0.4rem]`}

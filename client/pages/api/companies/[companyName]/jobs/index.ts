@@ -21,7 +21,7 @@ export default async function handler(
   formData.county = [countyId];
   formData.skill = skills.map((tech: Skill) => tech.skillId)
   delete formData.skills
-  console.log(formData)
+  // console.log(formData)
 
   const options = {
     headers: {

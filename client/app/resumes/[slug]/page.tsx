@@ -14,36 +14,21 @@ import Rsubjects from "./components/Rsubjects";
 import { notFound } from "next/navigation";
 import UserCard from "./components/UserCard";
 import Rskills from "./components/Rskills";
+import { defaultTokenHeaders } from "@/hooks/shared";
 
 const fetchResumeById = async (resumeId: string) => {
-  const res = await fetch(
-    `http://localhost:8080/students/S2023030820/resumes/${resumeId}`,
-    {
-      method: "GET",
-      headers: {
-        "Cache-Control": "no-store",
-        "Content-Type": "application/json",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiU1RVREVOVCIsImlkIjoiUzIwMjMwMzA4MjAiLCJ1c2VybmFtZSI6ImNvcnkiLCJzdWIiOiJjb3J5IiwiaWF0IjoxNjgwODYzNDM1LCJleHAiOjE2NzkxNjA0Njd9.tKWBTuGFs1GoD2xnM1hxWlXoztjsfbWSKBA5eJQaVc0",
-      },
-      cache: "no-store",
-    }
-  );
+  const res = await fetch(`http://localhost:8080/v1/resumes/${resumeId}`, {
+    method: "GET",
+    ...defaultTokenHeaders,
+    cache: "no-store",
+  });
 
   if (!res.ok) {
-    throw new Error("Failed to fetch");
+    // throw new Error("Failed to fetch");
+    notFound();
   }
 
   return res.json();
-};
-
-const userInfo = {
-  name: "劉大偉",
-  email: "sbliu@gmail.com",
-  phone: "912345678",
-  headshot:
-    "https://images.unsplash.com/photo-1533738363-b7f9aef128ce?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80",
-  AQ: "中國文化大學", //academic qualifications 學歷
 };
 
 const ResumePage = async ({ params }: { params: any }) => {
@@ -53,7 +38,10 @@ const ResumePage = async ({ params }: { params: any }) => {
   const resume = res.data;
 
   const {
+    name,
     number, //電話號碼
+    email, //! 沒給
+    imageUrl,
     school, //學校
     userId,
     rworkHope, //期望工作
@@ -65,6 +53,14 @@ const ResumePage = async ({ params }: { params: any }) => {
     rworkExperience, //工作經驗
     rsubject, //在校成績
   } = resume;
+
+  const userInfo = {
+    name,
+    email,
+    phone: number,
+    headshot: imageUrl,
+    AQ: school, //academic qualifications 學歷
+  };
 
   // console.log(resume);
   // console.log(resumeId);

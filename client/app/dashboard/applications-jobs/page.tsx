@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useGetApplies } from "@/hooks/studentJob/useStudentJob";
+import { useGetApplies } from "@/hooks/student/useStudentJob";
 import { Store } from "@/redux/store";
 import { useSelector } from "react-redux";
 import { Company } from "@/app/companies/[slug]/applicants/page";
@@ -18,7 +18,7 @@ import {
 } from "@/app/companies/[slug]/applicants/components/ApplyActionDialog";
 import { Tooltip } from "@mui/material";
 import MyDialog from "@/app/components/MyDialog";
-import { usePutApply } from "@/hooks/useApplicants";
+import { usePutApply } from "@/hooks/company/useApplicants";
 import CloseIcon from "@mui/icons-material/Close";
 import SnackBar from "@/app/components/SnackBar";
 

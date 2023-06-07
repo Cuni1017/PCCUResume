@@ -50,7 +50,7 @@ const CompanyContentNavbar = ({
   return (
     <div ref={eleRef}>
       <div
-        className={`flex flex-col text-sm text-slate-500 md:pt-4 ${
+        className={`hidden md:flex flex-col text-sm text-slate-500 md:pt-4 ${
           isPastEle ? "fixed top-[84px] w-full " : ""
         }`}
       >

@@ -8,7 +8,7 @@ import MyButton from "@/app/components/MyButton";
 import { DoubleCheckDialog } from "@/app/companies/[slug]/applicants/components/ApplyActionDialog";
 import { ImageDialog } from "@/app/companies/[slug]/applicants/components/ApplyActionDialog";
 import IconButton from "@mui/material/IconButton";
-import { usePutStudent } from "@/hooks/useAdmin";
+import { usePutStudent } from "@/hooks/teacher/useAdmin";
 import { useSelector } from "react-redux";
 import { Store } from "@/redux/store";
 

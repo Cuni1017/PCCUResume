@@ -13,7 +13,7 @@ const Profile = ({
   isProfileMenuShow: boolean;
 }) => {
   const { signout } = useAuth();
-  const { name, imageURL } = user;
+  const { role, name, imageURL } = user;
 
   return (
     <div
@@ -40,14 +40,37 @@ const Profile = ({
                   <div>主控台</div>
                 </Link>
               </ProfileMenuItem>
+              {role.includes("STUDENT") && (
+                <>
+                  <ProfileMenuItem>
+                    <Link href="/dashboard/resumes">
+                      <div>我的履歷</div>
+                    </Link>
+                  </ProfileMenuItem>
+                  <ProfileMenuItem>
+                    <Link href="/dashboard/applications-jobs">
+                      <div>應徵的職缺</div>
+                    </Link>
+                  </ProfileMenuItem>
+                </>
+              )}
+              {role.includes("COMPANY") && (
+                <ProfileMenuItem>
+                  <Link href="/dashboard/companies">
+                    <div>我的公司</div>
+                  </Link>
+                </ProfileMenuItem>
+              )}
+              {role === "TEACHER" && (
+                <ProfileMenuItem>
+                  <Link href="/admin">
+                    <div>教師管理</div>
+                  </Link>
+                </ProfileMenuItem>
+              )}
               <ProfileMenuItem>
-                <Link href="/dashboard/resumes">
-                  <div>我的履歷</div>
-                </Link>
-              </ProfileMenuItem>
-              <ProfileMenuItem>
-                <Link href="/dashboard/companies">
-                  <div>我的公司</div>
+                <Link href="/dashboard/favorite-jobs">
+                  <div>儲存的職缺</div>
                 </Link>
               </ProfileMenuItem>
               <ProfileMenuItem>

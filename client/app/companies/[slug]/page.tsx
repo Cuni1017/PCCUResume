@@ -10,6 +10,7 @@ import {
   CompanyAboutWelfare,
 } from "./edit/page";
 import CompanyContentNavbar from "./components/CompanyContent/CompanyContentNavbar";
+import { defaultTokenHeaders } from "@/hooks/shared";
 
 export type CompanyAbout = Company & {
   companyAboutBasic: CompanyAboutBasic;
@@ -21,11 +22,7 @@ const fetchCompany = async (companyName: string) => {
   const url = `http://localhost:8080/company/${companyName}/company-about`;
   const res = await fetch(url, {
     method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiU1RVREVOVCIsImlkIjoiUzIwMjMwMzA4MjAiLCJ1c2VybmFtZSI6ImNvcnkiLCJzdWIiOiJjb3J5IiwiaWF0IjoxNjgwODYzNDM1LCJleHAiOjE2NzkxNjA0Njd9.tKWBTuGFs1GoD2xnM1hxWlXoztjsfbWSKBA5eJQaVc0",
-    },
+    ...defaultTokenHeaders,
   });
   if (!res.ok) {
     notFound();
@@ -45,7 +42,7 @@ const CompanyPage = async (props: any) => {
   return (
     <div className="flex flex-col gap-4">
       <CompanyHeader companyName={companyName} />
-      <div className="px-3 box-border md:p-0 flex flex-col gap-4 w-full md:max-w-[860px] lg:max-w-[1140px] m-auto">
+      <div className="px-3 box-border sm:p-0 flex flex-col gap-4 w-full md:max-w-[860px] lg:max-w-[1140px] max-w-[36rem] m-auto">
         <div className="flex justify-between items-center text-lg">
           <div>關於</div>
           <div className="text-sm flex gap-1 sm:gap-2">
@@ -57,7 +54,7 @@ const CompanyPage = async (props: any) => {
             <CompanyAboutContent companyInfo={companyInfo} />
           </div>
           <div className="flex flex-col gap-2 w-full md:w-[25%]">
-            <CompanyInfoCard companyInfo={companyInfo} />
+            <CompanyInfoCard companyName={companyName} />
             <CompanyContentNavbar companyInfo={companyInfo} />
           </div>
         </div>
