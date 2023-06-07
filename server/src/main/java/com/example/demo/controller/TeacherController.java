@@ -35,7 +35,7 @@ public class TeacherController {
     ){
         return ResponseEntity.ok(teacherService.createUserLike(teacherId,vacanciesId));
     }
-    @DeleteMapping("/v1/students/{teacherId}/user-like/{vacanciesId}")
+    @DeleteMapping("/v1/teacher/{teacherId}/user-like/{vacanciesId}")
     public ResponseEntity<Object> deleteUserLike(
             @PathVariable String teacherId,
             @PathVariable String vacanciesId

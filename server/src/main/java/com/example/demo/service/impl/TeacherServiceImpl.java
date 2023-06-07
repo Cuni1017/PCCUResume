@@ -368,7 +368,24 @@ public class TeacherServiceImpl implements TeacherService {
         int selectOffset = getSelectOffset(page,limit);
         int selectLimit = getSelectLimit(page,limit);
         List<TeacherFile> teacherFiles = teacherDao.findByFileType(fileType, selectLimit, selectOffset);
-        RestDto restDto = getRestDto(teacherFiles,"查詢成功");
+        List<TeacherFileDto> teacherFileDtos = new ArrayList<>();
+        for(TeacherFile teacherFile : teacherFiles){
+            Teacher teacher = teacherRepository.findById(teacherFile.getTeacherId()).orElseThrow(()->new RuntimeException("沒有此教師"));
+            TeacherDto teacherDto = TeacherDto.builder()
+                    .teacherId(teacher.getTeacherId())
+                    .teacherEmail(teacher.getTeacherEmail())
+                    .teacherImageUrl(teacher.getTeacherImageUrl())
+                    .teacherName(teacher.getTeacherName())
+                    .teacherNumber(teacher.getTeacherNumber())
+                    .teacherUsername(teacher.getTeacherUsername())
+                    .build();
+            TeacherFileDto teacherFileDto = TeacherFileDto.builder()
+                    .teacherDto(teacherDto)
+                    .teacherFile(teacherFile)
+                    .build();
+            teacherFileDtos.add(teacherFileDto);
+        }
+        RestDto restDto = getRestDto(teacherFileDtos,"查詢成功");
         return restDto;
     }
 
@@ -484,7 +501,9 @@ public class TeacherServiceImpl implements TeacherService {
     public Object deleteTeacherFile(String teacherId, String teacherFileId) {
         System.out.println(teacherFileId);
         TeacherFile teacherFile = teacherFileRepository.findById(teacherFileId).orElseThrow(()->new RuntimeException("每有此教師上傳檔案"));
-        deleteFile(teacherFile.getTeacherFilePath());
+        if (teacherFile.getTeacherFileType() != null && teacherFile.getTeacherFilePath() != null) {
+            deleteFile(teacherFile.getTeacherFilePath());
+        }
         teacherFile.setTeacherFilePath(null);
         teacherFile.setTeacherFileUrl(null);
         teacherFileRepository.save(teacherFile);
@@ -634,6 +653,8 @@ public class TeacherServiceImpl implements TeacherService {
                     .teacherFileTitle(teacherFileCategory.getTeacherFileTitle())
                     .teacherFileTalk(teacherFileCategory.getTeacherFileTalk())
                     .teacherFileType(teacherFileCategory.getTeacherFileType())
+                    .updateTime(LocalDate.now())
+                    .createTime(LocalDate.now())
                     .build();
             return teacherFile;
         }

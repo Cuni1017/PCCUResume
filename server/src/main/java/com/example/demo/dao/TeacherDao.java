@@ -42,6 +42,18 @@ public class TeacherDao {
             teacherFile.setTeacherFileTalk(rs.getString("teacher_file_talk"));
             teacherFile.setTeacherFileType(rs.getString("teacher_file_type"));
             teacherFile.setTeacherFileUrl(rs.getString("teacher_file_url"));
+            teacherFile.setTeacherFileTitle(rs.getString("teacher_file_title"));
+            if(rs.getDate("update_time") != null){
+                teacherFile.setUpdateTime(rs.getDate("update_time").toLocalDate());
+            }else{
+                teacherFile.setUpdateTime(null);
+            }
+            if(rs.getDate("create_time") != null){
+                teacherFile.setCreateTime(rs.getDate("create_time").toLocalDate());
+            }else{
+                teacherFile.setCreateTime(null);
+            }
+
             return teacherFile;
         });
 
