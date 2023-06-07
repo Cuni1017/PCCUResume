@@ -379,13 +379,21 @@ public class TeacherServiceImpl implements TeacherService {
                     .teacherNumber(teacher.getTeacherNumber())
                     .teacherUsername(teacher.getTeacherUsername())
                     .build();
+
             TeacherFileDto teacherFileDto = TeacherFileDto.builder()
                     .teacherDto(teacherDto)
                     .teacherFile(teacherFile)
                     .build();
             teacherFileDtos.add(teacherFileDto);
         }
-        RestDto restDto = getRestDto(teacherFileDtos,"查詢成功");
+        long total = teacherFileDtos.stream().count();
+        PageTeacherFileDto pageTeacherFileDto = PageTeacherFileDto.builder()
+                .teacherFileDtos(teacherFileDtos)
+                .total(total)
+                .page(page)
+                .limit(limit)
+                .build();
+        RestDto restDto = getRestDto(pageTeacherFileDto,"查詢成功");
         return restDto;
     }
 
@@ -555,11 +563,14 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     private void deleteFile(String imageRealPath) {
-        System.out.println(imageRealPath);
-        File file = new File(imageRealPath);
-        System.out.println("File:"+file);
-        if(file.exists()){
-            file.delete();
+        if(imageRealPath!=null){
+            System.out.println(imageRealPath);
+            File file = new File(imageRealPath);
+            System.out.println("File:"+file);
+            if(file.exists()){
+                file.delete();
+            }
+
         }
 
     }
