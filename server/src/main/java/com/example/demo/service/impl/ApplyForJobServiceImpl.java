@@ -161,6 +161,7 @@ public class ApplyForJobServiceImpl implements ApplyForJobService {
         List<FullVacanciesDto> FullVacanciesDtoList = new ArrayList<>();
         for(UserLike userLike : userLikes){
             FullVacanciesDto fullVacanciesDto = vacanciesDao.findFullVacanciesById(userLike.getVacanciesId());
+            fullVacanciesDto.setUserLikeId(userLike.getUserLikeId());
             FullVacanciesDtoList.add(fullVacanciesDto);
         }
         return getRestDto(FullVacanciesDtoList,"查詢成功");
@@ -168,22 +169,25 @@ public class ApplyForJobServiceImpl implements ApplyForJobService {
 
     @Override
     public Object createUserLike(String studentUserName, String vacanciesId) {
+        String userLikeId  = getId(userLikeRepository,"UL",2);
+        System.out.println(userLikeId);
         Student student = studentRepository.findByStudentUsername(studentUserName).orElseThrow(() -> new RuntimeException("找不倒學生"));
         Vacancies vacancies = vacanciesRepository.findById(vacanciesId).orElseThrow(()->new RuntimeException("找不到工作"+vacanciesId));
-        UserLike userLike  = UserLike.builder()
-                .userId(student.getStudentId())
-                .companyId(vacancies.getCompanyId())
-                .vacanciesId(vacancies.getVacanciesId())
-                .build();
+       UserLike userLike = UserLike.builder()
+                       .userLikeId(userLikeId)
+                       .userId(student.getStudentId())
+                       .companyId(vacancies.getCompanyId())
+                       .vacanciesId(vacancies.getVacanciesId())
+                       .build();
         userLikeRepository.save(userLike);
         return getRestDto(userLike,"新增成功");
     }
 
     @Override
-    public Object deleteUserLike(String studentUserName,String vacanciesId) {
+    public Object deleteUserLike(String studentUserName,String userLikeId) {
         Student student = studentRepository.findByStudentUsername(studentUserName).orElseThrow(() -> new RuntimeException("找不倒學生"));
-        userLikeRepository.deleteByVacanciesIdAndUserId(vacanciesId,student.getStudentId());
-        return getRestDto(vacanciesId,"刪除成功");
+        userLikeRepository.deleteById(userLikeId);
+        return getRestDto(userLikeId,"刪除成功");
     }
 
 

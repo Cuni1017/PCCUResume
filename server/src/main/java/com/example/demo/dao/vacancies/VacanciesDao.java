@@ -76,7 +76,9 @@ public class VacanciesDao {
                 sql = sql + " AND v.teacher_valid_type = '審核通過'";
                 sql = sql + " AND v.vacancies_watch_type = '公開'";
                 sql = sql + " group by v.vacancies_id";
-                sql = sql + " order by :order";
+                sql = sql + " LIMIT :limit";
+                sql = sql + " OFFSET :offset";
+
 
 
         Map<String,Object> map= new HashMap<>();

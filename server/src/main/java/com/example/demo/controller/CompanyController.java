@@ -33,12 +33,12 @@ public class CompanyController {
         return ResponseEntity.ok(companyService.createUserLike(companyName,vacanciesId));
     }
 
-    @DeleteMapping("/v1/company/{companyName}/user-like/{vacanciesId}")
+    @DeleteMapping("/v1/company/{companyName}/user-like/{userLikeId}")
     public ResponseEntity<Object> deleteUserLike(
             @PathVariable String companyName,
-            @PathVariable String vacanciesId
+            @PathVariable String userLikeId
     ){
-        return ResponseEntity.ok(companyService.deleteUserLike(companyName,vacanciesId));
+        return ResponseEntity.ok(companyService.deleteUserLike(companyName,userLikeId));
     }
 
     @GetMapping("/v1/company/{companyName}/teacher-file")

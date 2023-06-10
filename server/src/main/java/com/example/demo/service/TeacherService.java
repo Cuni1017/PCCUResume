@@ -60,5 +60,5 @@ public interface TeacherService {
 
     Object createUserLike(String teacherId, String vacanciesId);
 
-    Object deleteUserLike(String teacherId, String vacanciesId);
+    Object deleteUserLike(String teacherId, String userLikeId);
 }

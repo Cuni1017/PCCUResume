@@ -326,6 +326,7 @@ public class CompanyServiceImpl implements CompanyService {
         List<FullVacanciesDto> FullVacanciesDtoList = new ArrayList<>();
         for(UserLike userLike : userLikes){
             FullVacanciesDto fullVacanciesDto = vacanciesDao.findFullVacanciesById(userLike.getVacanciesId());
+            fullVacanciesDto.setUserLikeId(userLike.getUserLikeId());
             FullVacanciesDtoList.add(fullVacanciesDto);
         }
         return getRestDto(FullVacanciesDtoList,"查詢成功");
@@ -333,9 +334,11 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public Object createUserLike(String companyName, String vacanciesId) {
+        String userLikeId  = getId(userLikeRepository,"UL",2);
         Company company = companyRepository.findByCompanyName(companyName).orElseThrow(() -> new RuntimeException("沒有此公司"));
         Vacancies vacancies = vacanciesRepository.findById(vacanciesId).orElseThrow(()->new RuntimeException("找不到工作"+vacanciesId));
         UserLike userLike  = UserLike.builder()
+                .userLikeId(userLikeId)
                 .userId(company.getCompanyId())
                 .companyId(vacancies.getCompanyId())
                 .vacanciesId(vacancies.getVacanciesId())
@@ -346,10 +349,10 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public Object deleteUserLike(String companyName, String vacanciesId) {
+    public Object deleteUserLike(String companyName, String userLikeId) {
         Company company = companyRepository.findByCompanyName(companyName).orElseThrow(() -> new RuntimeException("沒有此公司"));
-        userLikeRepository.deleteByVacanciesIdAndUserId(vacanciesId,company.getCompanyId());
-        return getRestDto(vacanciesId,"刪除成功");
+        userLikeRepository.deleteById(userLikeId);
+        return getRestDto(userLikeId,"刪除成功");
     }
 
 

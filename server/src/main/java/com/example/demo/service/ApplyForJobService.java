@@ -11,7 +11,7 @@ public interface ApplyForJobService {
 
     Object createUserLike(String studentUserName, String vacanciesId);
 
-    Object deleteUserLike(String studentUserName,String vacanciesId);
+    Object deleteUserLike(String studentUserName,String userLikeId);
 
     Object findUserLike(String studentUserName);
 }

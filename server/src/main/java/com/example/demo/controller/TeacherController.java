@@ -35,12 +35,12 @@ public class TeacherController {
     ){
         return ResponseEntity.ok(teacherService.createUserLike(teacherId,vacanciesId));
     }
-    @DeleteMapping("/v1/teacher/{teacherId}/user-like/{vacanciesId}")
+    @DeleteMapping("/v1/teacher/{teacherId}/user-like/{userLikeId}")
     public ResponseEntity<Object> deleteUserLike(
             @PathVariable String teacherId,
-            @PathVariable String vacanciesId
+            @PathVariable String userLikeId
     ){
-        return ResponseEntity.ok(teacherService.deleteUserLike(teacherId,vacanciesId));
+        return ResponseEntity.ok(teacherService.deleteUserLike(teacherId,userLikeId));
     }
     @GetMapping("/v1/teacher/news")
     public ResponseEntity<Object> findNewsById(

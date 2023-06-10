@@ -339,6 +339,7 @@ public class TeacherServiceImpl implements TeacherService {
         List<FullVacanciesDto> FullVacanciesDtoList = new ArrayList<>();
         for(UserLike userLike : userLikes){
             FullVacanciesDto fullVacanciesDto = vacanciesDao.findFullVacanciesById(userLike.getVacanciesId());
+            fullVacanciesDto.setUserLikeId(userLike.getUserLikeId());
             FullVacanciesDtoList.add(fullVacanciesDto);
         }
         return getRestDto(FullVacanciesDtoList,"查詢成功");
@@ -346,9 +347,11 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public Object createUserLike(String teacherId, String vacanciesId) {
+        String userLikeId  = getId(userLikeRepository,"UL",2);
         Teacher teacher = teacherRepository.findByTeacherId(teacherId).orElseThrow(() -> new RuntimeException("找不倒教師"));
         Vacancies vacancies = vacanciesRepository.findById(vacanciesId).orElseThrow(()->new RuntimeException("找不到工作"+vacanciesId));
         UserLike userLike  = UserLike.builder()
+                .userLikeId(userLikeId)
                 .userId(teacher.getTeacherId())
                 .companyId(vacancies.getCompanyId())
                 .vacanciesId(vacancies.getVacanciesId())
@@ -358,9 +361,9 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public Object deleteUserLike(String teacherId, String vacanciesId) {
-        userLikeRepository.deleteByVacanciesIdAndUserId(vacanciesId,teacherId);
-        return getRestDto(vacanciesId,"刪除成功");
+    public Object deleteUserLike(String teacherId, String userLikeId) {
+        userLikeRepository.deleteById(userLikeId);
+        return getRestDto(userLikeId,"刪除成功");
     }
 
     @Override

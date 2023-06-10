@@ -32,5 +32,5 @@ public interface CompanyService {
 
     Object createUserLike(String companyName, String vacanciesId);
 
-    Object deleteUserLike(String companyName, String vacanciesId);
+    Object deleteUserLike(String companyName, String userLikeId);
 }

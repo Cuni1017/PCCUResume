@@ -26,5 +26,6 @@ public class FullVacanciesDto {
    private Vacancies vacancies;
    private String skills;
    private String county;
+   private String userLikeId;
 }
 
