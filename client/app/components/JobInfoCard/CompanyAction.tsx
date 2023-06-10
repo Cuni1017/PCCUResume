@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import Tooltip from "@mui/material/Tooltip";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
@@ -15,7 +15,7 @@ import SnackBar from "@/app/components/SnackBar";
 import { Vacancy } from ".";
 import MyModal from "../MyModal";
 import MyButton from "../MyButton";
-import { useDeleteJob, usePutJobState } from "@/hooks/companyJob/useCompanyJob";
+import { useDeleteJob, usePutJobState } from "@/hooks/company/useCompanyJob";
 import { useSelector } from "react-redux";
 import { Store } from "@/redux/store";
 import WarningAmberOutlinedIcon from "@mui/icons-material/WarningAmberOutlined";
@@ -58,10 +58,10 @@ const CompanyAction = ({ vacancy }: { vacancy: Vacancy }) => {
     setIsOpen(false);
   };
 
-  if (name !== companyName || role !== "COMPANY") return <></>;
+  if (name !== companyName || role !== "COMPANY") return null;
 
   return (
-    <>
+    <React.Fragment>
       {isPutStateSuccess ? (
         <SnackBar information="成功改變職缺狀態!" type="success" />
       ) : null}
@@ -189,7 +189,7 @@ const CompanyAction = ({ vacancy }: { vacancy: Vacancy }) => {
           </MyModal>
         </div>
       </div>
-    </>
+    </React.Fragment>
   );
 };
 

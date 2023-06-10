@@ -24,6 +24,7 @@ const AdminNavbar = () => {
     }
     setIsReviewed(event.target.checked);
   };
+  console.log(pathname);
 
   useEffect(() => {
     if (pathname === "/admin" || pathname === "/admin/applies/review") {
@@ -47,22 +48,54 @@ const AdminNavbar = () => {
         <div className="w-full grid grid-cols-2 md:grid-cols-4 gap-3">
           <div>
             <Link href={`/admin/students${isReviewed ? "" : "/review"}`}>
-              <MyButton classnames="hover:bg-gray-300 w-full">學生</MyButton>
+              <MyButton
+                classnames={`${
+                  pathname?.includes("students")
+                    ? "text-white bg-blue-500 hover:bg-blue-600"
+                    : "hover:bg-gray-300"
+                } w-full`}
+              >
+                學生
+              </MyButton>
             </Link>
           </div>
           <div>
             <Link href={`/admin/companies${isReviewed ? "" : "/review"}`}>
-              <MyButton classnames="hover:bg-gray-300 w-full">公司</MyButton>
+              <MyButton
+                classnames={`${
+                  pathname?.includes("companies")
+                    ? "text-white bg-blue-500 hover:bg-blue-600"
+                    : "hover:bg-gray-300"
+                } w-full`}
+              >
+                公司
+              </MyButton>
             </Link>
           </div>
           <div>
             <Link href={`/admin/vacancies${isReviewed ? "" : "/review"}`}>
-              <MyButton classnames="hover:bg-gray-300 w-full">職缺</MyButton>
+              <MyButton
+                classnames={`${
+                  pathname?.includes("vacancies")
+                    ? "text-white bg-blue-500 hover:bg-blue-600"
+                    : "hover:bg-gray-300"
+                } w-full`}
+              >
+                職缺
+              </MyButton>
             </Link>
           </div>
           <div>
             <Link href={`/admin/applies/review`}>
-              <MyButton classnames="hover:bg-gray-300 w-full">應徵</MyButton>
+              <MyButton
+                classnames={`${
+                  pathname?.includes("applies")
+                    ? "text-white bg-blue-500 hover:bg-blue-600"
+                    : "hover:bg-gray-300"
+                } w-full`}
+              >
+                應徵
+              </MyButton>
             </Link>
           </div>
         </div>
@@ -70,7 +103,15 @@ const AdminNavbar = () => {
         <div className="flex gap-3">
           <div className="w-full">
             <Link href={`/admin`}>
-              <MyButton classnames="hover:bg-gray-300 w-full">近期</MyButton>
+              <MyButton
+                classnames={`${
+                  pathname === "/admin"
+                    ? "text-white bg-blue-500 hover:bg-blue-600"
+                    : "hover:bg-gray-300"
+                } w-full`}
+              >
+                近期
+              </MyButton>
             </Link>
           </div>
           <div className="ml-auto">

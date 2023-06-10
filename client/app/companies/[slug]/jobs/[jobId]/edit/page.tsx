@@ -4,15 +4,13 @@ import jwt from "jsonwebtoken";
 import Card from "@/app/components/Card";
 import EditJob from "../../../components/EditJob.tsx";
 import UnAuthorizedPage from "@/app/components/UnAuthorizedPage";
+import { defaultTokenHeaders } from "@/hooks/shared";
 
 const fetchJobById = async (vacancyId: string) => {
   const url = `http://localhost:8080/vacancies/${vacancyId}`;
   const res = await fetch(url, {
     method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiU1RVREVOVCIsImlkIjoiUzIwMjMwMzA4MjAiLCJ1c2VybmFtZSI6ImNvcnkiLCJzdWIiOiJjb3J5IiwiaWF0IjoxNjgwODYzNDM1LCJleHAiOjE2NzkxNjA0Njd9.tKWBTuGFs1GoD2xnM1hxWlXoztjsfbWSKBA5eJQaVc0`,
-    },
+    ...defaultTokenHeaders,
   });
   if (!res.ok) throw new Error("Failed to fetch");
 

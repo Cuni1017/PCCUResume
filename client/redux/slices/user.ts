@@ -11,11 +11,13 @@ const initialState = {
   isValid: false
 };
 
+export type Role = "STUDENT_USER" | "COMPANY_USER" | "STUDENT" | "COMPANY" | "TEACHER"
+
 export interface User {
   id: string;
   username: string;
   name: string;
-  role: "STUDENT_USER" | "COMPANY_USER" | "STUDENT" | "COMPANY" | "TEACHER";
+  role: Role
   email: string;
   phone: string;
   imageURL: string;

@@ -10,7 +10,7 @@ import { DoubleCheckDialog } from "@/app/companies/[slug]/applicants/components/
 import { ImageDialog } from "@/app/companies/[slug]/applicants/components/ApplyActionDialog";
 import Link from "next/link";
 import { useSelector } from "react-redux";
-import { usePutCompany } from "@/hooks/useAdmin";
+import { usePutCompany } from "@/hooks/teacher/useAdmin";
 import { Store } from "@/redux/store";
 
 export interface Company {

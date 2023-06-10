@@ -13,9 +13,6 @@ import { canvasPreview } from "./canvasPreview";
 import { useDebounceEffect } from "@/util/useDebounceEffect";
 import "react-image-crop/dist/ReactCrop.css";
 import Slider from "@mui/material/Slider";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Switch from "@mui/material/Switch";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import InsertPhotoIcon from "@mui/icons-material/InsertPhoto";
@@ -60,7 +57,7 @@ const ImageUploader = ({
   const [completedCrop, setCompletedCrop] = useState<PixelCrop>();
   const [scale, setScale] = useState<number>(1);
   const [rotate, setRotate] = useState(0);
-  const [aspect, setAspect] = useState<number | undefined>(undefined);
+  const [aspect, setAspect] = useState<number | undefined>(1 / 1);
 
   const [alignment, setAlignment] = React.useState("web");
 
@@ -275,18 +272,6 @@ const ImageUploader = ({
                   <ToggleButton value={3 / 1}>3：1</ToggleButton>
                   <ToggleButton value={16 / 9}>16：9</ToggleButton>
                 </ToggleButtonGroup>
-
-                {/* <FormGroup>
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        onClick={() => handleToggleAspectClick(16, 9)}
-                        disabled={!imgSrc}
-                      />
-                    }
-                    label={aspect ? aspect : "自訂義"}
-                  />
-                </FormGroup> */}
               </div>
             </>
           ) : (

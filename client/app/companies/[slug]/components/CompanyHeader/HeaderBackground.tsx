@@ -7,7 +7,7 @@ import { CompanyAbout } from "../../page";
 import { useSelector } from "react-redux";
 import { Store } from "@/redux/store";
 import ImageUploader from "@/app/components/ImageUploader";
-import { usePostCompanyImage } from "@/hooks/useCompanyAbout";
+import { usePostCompanyImage } from "@/hooks/company/useCompanyAbout";
 
 const HeaderBackground = ({ companyInfo }: { companyInfo: CompanyAbout }) => {
   const [hovered, setHovered] = useState(false);
@@ -26,6 +26,7 @@ const HeaderBackground = ({ companyInfo }: { companyInfo: CompanyAbout }) => {
     mutate({ companyName, formData, type: "background" });
     setIsImageUploaderOpen(false);
   };
+
 
   return (
     <div

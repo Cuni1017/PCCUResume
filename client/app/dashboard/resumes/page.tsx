@@ -5,7 +5,7 @@ import ResumeCard from "./components/ResumeCard";
 import NewResume from "./components/NewResume";
 import { Store } from "@/redux/store";
 import { useSelector } from "react-redux";
-import { useGetResumes } from "../../../hooks/Resume/useResume";
+import { useGetResumes } from "../../../hooks/resume/useResume";
 import Button from "@mui/material/Button";
 
 export interface Resume {

@@ -7,21 +7,18 @@ import TinyJobInfoCard from "@/app/components/SearchContainer/TinyJobInfoCard";
 import Mybutton from "../../../../components/MyButton";
 import Detail from "@/app/components/JobInfoCard/Detail";
 import SkillTag from "@/app/components/JobInfoCard/SkillTag";
-import { SaveButton } from "@/app/components/JobInfoCard/Action";
+import SaveButton from "@/app/components/JobInfoCard/SaveButton";
 import MyButton from "../../../../components/MyButton";
 import { Vacancy } from "@/app/components/JobInfoCard";
 import Lexical from "@/app/components/Lexical/App";
 import { notFound } from "next/navigation";
+import { defaultTokenHeaders } from "@/hooks/shared";
 
 const fetchJobById = async (vacancyId: string) => {
   const url = `http://localhost:8080/vacancies/${vacancyId}`;
   const res = await fetch(url, {
     method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiU1RVREVOVCIsImlkIjoiUzIwMjMwMzA4MjAiLCJ1c2VybmFtZSI6ImNvcnkiLCJzdWIiOiJjb3J5IiwiaWF0IjoxNjgwODYzNDM1LCJleHAiOjE2NzkxNjA0Njd9.tKWBTuGFs1GoD2xnM1hxWlXoztjsfbWSKBA5eJQaVc0",
-    },
+    ...defaultTokenHeaders,
   });
   if (!res.ok) notFound();
 
@@ -100,7 +97,7 @@ const CompanyJobPage = async (props: any) => {
             </div>
           </div>
           <div className="grid grid-flow-col gap-2 my-5 md:hidden">
-            <SaveButton />
+            <SaveButton vacancyId={vacanciesId as string} />
             <Link
               href={`/apply-for-job/${vacanciesId}`}
               className="flex items-center justify-center"
@@ -140,7 +137,7 @@ const CompanyJobPage = async (props: any) => {
         </div>
         <div className="w-full md:w-[30%] flex flex-col gap-2">
           <div className="gap-2 hidden md:flex">
-            <SaveButton />
+            <SaveButton vacancyId={vacanciesId as string} />
             <Link href={`/apply-for-job/${vacanciesId}`}>
               <MyButton classnames="bg-blue-500 hover:bg-blue-400 text-white text-base">
                 立即應徵

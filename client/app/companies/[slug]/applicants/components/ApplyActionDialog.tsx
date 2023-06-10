@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import MyButton from "@/app/components/MyButton";
 import MyDialog from "@/app/components/MyDialog";
 import { ApplyUser } from "../page";
-import Avatar from "@mui/material/Avatar";
 import Link from "next/link";
 import Image from "next/image";
 import CloseIcon from "@mui/icons-material/Close";
@@ -15,7 +14,7 @@ const applyActions = {
   拒絕應徵: { description: "拒絕該學生應徵此職缺。", outcome: "應徵失敗" },
   接受應徵: {
     description:
-      "學生將進到面試中的分類，並且平台將自動發送履歷至該學生信箱通知通過審核，在此動作後，請再自行與學生溝通面試時間及流程等詳細資訊。",
+      "學生將進到面試中的分類，並且平台將自動發送Email至該學生信箱通知通過審核，在此動作後，請再自行與學生溝通面試時間及流程等詳細資訊。",
     outcome: "面試中",
   },
   面試通過: {
@@ -142,8 +141,6 @@ const ApplyActionDialog = ({
       </div>
 
       <ApplyCoverLetter applyUser={applyUser}>
-
-
         <div className="flex justify-end">
           <Link href={`/resumes/${resumeId}`} target="_blank">
             <MyButton classnames="hover:bg-gray-300">前往觀看履歷</MyButton>

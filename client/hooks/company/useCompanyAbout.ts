@@ -1,22 +1,11 @@
 import { axiosInstance } from "@/axiosInstance.ts";
-import { getCookie } from "cookies-next";
-import { useRouter } from "next/navigation";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { queryKeys } from "@/tanstack-query/constant";
-
-const JWT = getCookie("JWT");
-
-const defaultHeaders = {
-  headers: {
-    Authorization: `Bearer ${JWT}`,
-    "Content-Type": "Application/json"
-  },
-}
+import { defaultTokenHeaders, defaultSelfTokenHeaders, fileHeaders } from "../shared";
 
 async function getCompanyAbout({ companyName, type }: { companyName: string, type?: "basic" | "service" | "welfare" }) {
   const { data } = await axiosInstance.get(
     `company/${companyName}/company-about${type ? `-${type}` : ""}`,
-    defaultHeaders
+    defaultTokenHeaders
   );
 
   return data.data;
@@ -26,7 +15,7 @@ async function postCompanyAbout({ companyName, type, formData }: { companyName: 
   const { data } = await axiosInstance.post(
     `company/${companyName}/company-about-${type}`,
     { ...formData },
-    defaultHeaders
+    defaultSelfTokenHeaders
   );
 
   return data.data;
@@ -36,7 +25,7 @@ async function putCompanyAbout({ companyName, type, formData }: { companyName: s
   const { data } = await axiosInstance.put(
     `company/${companyName}/company-about-${type}`,
     { ...formData },
-    defaultHeaders
+    defaultSelfTokenHeaders
   );
 
   return data.data;
@@ -68,6 +57,7 @@ export function usePostCompanyAbout({ companyName, type }: { companyName: string
 }
 
 export function usePutCompanyAbout({ companyName, type }: { companyName: string, type: "basic" | "service" | "welfare" }) {
+  console.log(companyName)
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: putCompanyAbout,
@@ -83,18 +73,11 @@ export function usePutCompanyAbout({ companyName, type }: { companyName: string,
 
 
 // 圖片上傳
-const imageHeaders = {
-  headers: {
-    Authorization: `Bearer ${JWT}`,
-    "Content-Type": "multipart/form-data; boundary=<calculated when request is sent>"
-  }
-}
-
 async function postCompanyImage({ companyName, formData, type }: { companyName: string, formData: any, type: "logo" | "background" }) {
   const { data } = await axiosInstance.post(
     `company/${companyName}/image/company-${type}`,
     formData,
-    imageHeaders
+    fileHeaders
   );
 
   return data.data;

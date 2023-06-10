@@ -7,16 +7,13 @@ import PaginationBar from "@/app/components/SearchContainer/PaginationBar";
 import { notFound } from "next/navigation";
 import JobNotFoundCard from "./components/JobNotFoundCard";
 import CompanyInfoCard from "../components/CompanyContent/CompanyInfoCard";
+import { defaultTokenHeaders } from "@/hooks/shared";
 
 const fetchJobs = async (companyName: string) => {
   const url = `http://localhost:8080/company/${companyName}/vacancies`;
   const res = await fetch(url, {
     method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiU1RVREVOVCIsImlkIjoiUzIwMjMwMzA4MjAiLCJ1c2VybmFtZSI6ImNvcnkiLCJzdWIiOiJjb3J5IiwiaWF0IjoxNjgwODYzNDM1LCJleHAiOjE2NzkxNjA0Njd9.tKWBTuGFs1GoD2xnM1hxWlXoztjsfbWSKBA5eJQaVc0",
-    },
+    ...defaultTokenHeaders,
     cache: "no-store",
   });
   if (!res.ok) notFound();
@@ -78,9 +75,9 @@ const CompanyJobs = async (props: any) => {
                   <JobNotFoundCard companyName={companyName} />
                 )}
               </div>
-              {/* <div className="flex flex-col gap-2 w-full md:w-[25%]">
-                <CompanyInfoCard companyInfo={companyInfo} />
-              </div> */}
+              <div className="flex-col gap-2 w-full md:w-[25%] hidden md:flex">
+                <CompanyInfoCard companyName={companyName} />
+              </div>
             </div>
           </div>
         </div>

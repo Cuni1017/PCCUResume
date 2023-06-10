@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useGetCompaniesReview } from "@/hooks/useAdmin";
+import { useGetCompaniesReview } from "@/hooks/teacher/useAdmin";
 import Skeleton from "@mui/material/Skeleton";
 import CompanyRegistCard, { Company } from "../../components/CompanyRegistCard";
 import PaginationBar from "@/app/components/SearchContainer/PaginationBar";

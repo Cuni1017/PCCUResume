@@ -2,9 +2,9 @@ import { axiosInstanceNext } from "../axiosInstance.ts";
 import { useSelector, useDispatch } from "react-redux";
 import { Store, setUser, cleanUser, User } from "@/redux/store";
 import { FormData } from "../app/register/components/RegisterForm";
-import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface UseAuth {
   signin: (
@@ -62,8 +62,7 @@ export function useAuth(): UseAuth {
         const { data } = res;
         dispatch(setUser(data));
         handleClose();
-        // if (user.role === "USER") router.replace("/regiter");
-        // else router.replace("/");
+        window.location.reload()
       }
     } catch (error) {
       console.log(error, "useAuth");

@@ -13,7 +13,7 @@ import SaveCheck from "./shared/SaveCheck";
 import {
   usePostResumeDetail,
   usePutResumeDetail,
-} from "@/hooks/Resume/useResumeDetail";
+} from "@/hooks/resume/useResumeDetail";
 
 // 工作期望
 
@@ -58,6 +58,7 @@ const RWorkHope = ({ userId, resumeId, workHope, isEditMode }: Props) => {
               workHope={data}
               setIsEditing={setIsEditing}
               userId={userId}
+              resumeId={resumeId}
             />
           ) : (
             <WorkHopeCard workHope={data} />
@@ -70,25 +71,28 @@ const RWorkHope = ({ userId, resumeId, workHope, isEditMode }: Props) => {
 
 const WorkHopeEditCard = ({
   userId,
+  resumeId,
   workHope,
   setIsEditing,
 }: {
   userId: string;
+  resumeId: string;
   workHope: WorkHope;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [data, setData] = useState(workHope);
+
   const [types, setTypes] = useState<string[]>([]);
   const [dates, setDates] = useState<string[]>([]);
 
-  const { mutate: PostMutate } = usePostResumeDetail(data.resumeId);
-  const { mutate: PutMutate } = usePutResumeDetail(data.resumeId);
+  const { mutate: PostMutate } = usePostResumeDetail(resumeId);
+  const { mutate: PutMutate } = usePutResumeDetail(resumeId);
 
   const handleSave = () => {
-    if (data.id !== "") {
+    if (data.id) {
       PutMutate({
         userId,
-        resumeId: data.resumeId,
+        resumeId: resumeId,
         endpoint: "work-hope",
         endpointId: data.id,
         formData: {
@@ -99,7 +103,7 @@ const WorkHopeEditCard = ({
     } else {
       PostMutate({
         userId,
-        resumeId: data.resumeId,
+        resumeId: resumeId,
         endpoint: "work-hope",
         formData: {
           date: data.date,
@@ -138,11 +142,11 @@ const WorkHopeEditCard = ({
   }, [types]);
 
   useEffect(() => {
-    if (workHope.type) {
+    if (workHope?.type) {
       const initialTypes = workHope.type.split("、");
       setTypes(initialTypes);
     }
-    if (workHope.date) {
+    if (workHope?.date) {
       const initialDate = workHope.date.split("、");
       setDates(initialDate);
     }
@@ -202,7 +206,7 @@ const WorkHopeEditCard = ({
         <SaveCheck
           onSave={handleSave}
           onCancel={() => setIsEditing(false)}
-          disabled={!data.date || !data.type}
+          disabled={!data?.date || !data?.type}
         />
       </div>
     </div>
@@ -211,7 +215,7 @@ const WorkHopeEditCard = ({
 
 const WorkHopeCard = ({ workHope }: { workHope: WorkHope }) => {
   const renderedContent = () => {
-    if (!workHope.date && !workHope.type) {
+    if (!workHope?.date && !workHope?.type) {
       return (
         <div className="w-full text-center">填寫課表之餘的天數與期望職類！</div>
       );

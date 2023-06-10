@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useGetAppliesReview } from "@/hooks/useAdmin";
+import { useGetAppliesReview } from "@/hooks/teacher/useAdmin";
 import Skeleton from "@mui/material/Skeleton";
 import CompanyRegistCard, { Company } from "../../components/CompanyRegistCard";
 import PaginationBar from "@/app/components/SearchContainer/PaginationBar";

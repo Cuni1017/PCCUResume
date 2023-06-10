@@ -30,6 +30,7 @@ import PlaygroundNodes from "./nodes/PlaygroundNodes";
 import { TableContext } from "./plugins/TablePlugin";
 import PlaygroundEditorTheme from "./themes/PlaygroundEditorTheme";
 import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
+import { useMemo, useCallback } from "react";
 
 export const initialJsonString = `{"root":{"children":[{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1}],"direction":null,"format":"","indent":0,"type":"root","version":1}}`;
 export const LexicalRegex = /"text":"([^"]*)"/g;
@@ -57,6 +58,14 @@ const App = ({
     theme: PlaygroundEditorTheme,
     editable: editable,
   };
+
+  // const render = useCallback(() => {
+  //   console.log(value.length);
+  // }, [value]);
+
+  // React.useEffect(() => {
+  //   render();
+  // }, [value]);
 
   return (
     <LexicalComposer initialConfig={initialConfig}>

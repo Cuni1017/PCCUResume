@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useGetVacanciesReview } from "@/hooks/useAdmin";
+import { useGetVacanciesReview } from "@/hooks/teacher/useAdmin";
 import Skeleton from "@mui/material/Skeleton";
 import VacancyRegistCard from "../../components/VacancyRegistCard";
 import { Vacancy } from "@/app/components/JobInfoCard";

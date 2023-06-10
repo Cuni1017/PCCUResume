@@ -22,7 +22,7 @@ const SearchFilterContainer = () => {
   const debounceRouterPush = useCallback(
     debounce((searchParamsList: string[]) => {
       const href = `${pathname}?` + searchParamsList.sort().join("&");
-      console.log("index router push");
+      // console.log("index router push");
       router.push(href, { forceOptimisticNavigation: true });
     }, 800),
     [pathname]

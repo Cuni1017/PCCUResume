@@ -3,7 +3,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Store } from "@/redux/store";
-import { useGetResume } from "../../../../hooks/Resume/useResume";
+import { useGetResume } from "../../../../hooks/resume/useResume";
 import UserCard from "../components/UserCard";
 import Rlicense from "../components/Rlicense";
 import RprojectAchievements from "../components/RprojectAchievements";

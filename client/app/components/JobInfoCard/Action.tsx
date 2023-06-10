@@ -9,6 +9,7 @@ import Tooltip from "@mui/material/Tooltip";
 import { Vacancy } from ".";
 import Link from "next/link";
 import { getDayDiff } from "@/util/getDaydiff";
+import SaveButton from "./SaveButton";
 
 const Action = ({ vacancy }: { vacancy: Vacancy }) => {
   const {
@@ -42,13 +43,14 @@ const Action = ({ vacancy }: { vacancy: Vacancy }) => {
     : "";
 
   return (
-    <div className="flex gap-3">
-      <SaveButton />
+    <div className="flex gap-3 items-center">
+      <SaveButton vacancyId={vacanciesId as string} />
       <Link
         href={`/companies/${companyName}/jobs/${vacanciesId}`}
         target="_blank"
+        className="h-[40px]"
       >
-        <MyButton classnames="bg-blue-400 hover:bg-blue-500 text-white text-base">
+        <MyButton classnames="h-full bg-blue-400 hover:bg-blue-500 text-white text-sm lg:text-base">
           立即應徵
         </MyButton>
       </Link>
@@ -57,15 +59,3 @@ const Action = ({ vacancy }: { vacancy: Vacancy }) => {
 };
 
 export default Action;
-
-export const SaveButton = (props: any) => {
-  return (
-    <MyButton
-      classnames="hover:bg-gray-300 flex items-center text-sm md:text-base justify-center gap-1"
-      {...props}
-    >
-      <BookmarkBorderOutlinedIcon />
-      儲存
-    </MyButton>
-  );
-};

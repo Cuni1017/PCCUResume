@@ -11,7 +11,7 @@ const DisplayLexical = () => {
       const htmlString = $generateHtmlFromNodes(editor);
       setHtmlString(htmlString);
     });
-  }, []);
+  }, [editor]);
 
   return <div dangerouslySetInnerHTML={{ __html: htmlString }}></div>;
 };

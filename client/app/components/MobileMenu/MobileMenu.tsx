@@ -2,11 +2,14 @@ import Link from "next/link";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { User } from "@/redux/store";
 
 const MobileMenu = ({
+  user,
   isMenuShow,
   setIsMenuShow,
 }: {
+  user: User;
   isMenuShow: boolean;
   setIsMenuShow: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
@@ -16,10 +19,13 @@ const MobileMenu = ({
 
   const CPNLinks = [
     { label: "徵才", href: "/search" },
-    { label: "刊登", href: "/jobs/new" },
+    { label: "刊登", href: `/companies/${user.name}/jobs/new` },
   ];
 
-  const TCHLinks = [{ label: "教師管理", href: "/admin" }];
+  const TCHLinks = [
+    { label: "教師管理", href: "/admin" },
+    { label: "實習資訊", href: "/information" },
+  ];
 
   return (
     <motion.div
@@ -35,30 +41,45 @@ const MobileMenu = ({
             <div className="h-full text-xl pl-5">找實習</div>
           </Link>
         </li>
-        <MobileMenuItem
-          label={"廠商"}
-          isShow={CPNIsShow}
-          setIsShow={setCPNIsShow}
-          setIsMenuShow={setIsMenuShow}
-        >
-          <div className="mt-1 px-10 flex flex-col cursor-auto">
-            {CPNLinks.map((link) => (
-              <MobileMenuLink key={link.label} link={link} />
-            ))}
-          </div>
-        </MobileMenuItem>
-        <MobileMenuItem
-          label={"教師"}
-          isShow={TCHIsShow}
-          setIsShow={setTCHIsShow}
-          setIsMenuShow={setIsMenuShow}
-        >
-          <div className="mt-1 px-10 flex flex-col cursor-auto">
-            {TCHLinks.map((link) => (
-              <MobileMenuLink key={link.label} link={link} />
-            ))}
-          </div>
-        </MobileMenuItem>
+        <li className="border-0 border-b border-gray-100 border-solid py-2">
+          <Link href="/companies">
+            <div className="h-full text-xl pl-5">找公司</div>
+          </Link>
+        </li>
+        {user.role.includes("COMPANY") && (
+          <MobileMenuItem
+            label={"廠商"}
+            isShow={CPNIsShow}
+            setIsShow={setCPNIsShow}
+            setIsMenuShow={setIsMenuShow}
+          >
+            <div className="mt-1 px-10 flex flex-col cursor-auto">
+              {CPNLinks.map((link) => (
+                <MobileMenuLink key={link.label} link={link} />
+              ))}
+            </div>
+          </MobileMenuItem>
+        )}
+        {user.role === "TEACHER" ? (
+          <MobileMenuItem
+            label={"教師"}
+            isShow={TCHIsShow}
+            setIsShow={setTCHIsShow}
+            setIsMenuShow={setIsMenuShow}
+          >
+            <div className="mt-1 px-10 flex flex-col cursor-auto">
+              {TCHLinks.map((link) => (
+                <MobileMenuLink key={link.label} link={link} />
+              ))}
+            </div>
+          </MobileMenuItem>
+        ) : (
+          <li className="border-0 border-b border-gray-100 border-solid py-2">
+            <Link href="/information">
+              <div className="h-full text-xl pl-5">實習資訊</div>
+            </Link>
+          </li>
+        )}
       </ul>
     </motion.div>
   );

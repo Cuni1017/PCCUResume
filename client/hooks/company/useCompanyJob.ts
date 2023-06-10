@@ -1,41 +1,8 @@
-import { axiosInstance, axiosInstanceNext } from "@/axiosInstance.ts";
-import { getCookie } from "cookies-next";
+import { axiosInstanceNext } from "@/axiosInstance.ts";
 import { useRouter } from "next/navigation";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { queryKeys } from "@/tanstack-query/constant";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { defaultSelfTokenHeaders } from "../shared";
 
-
-const JWT = getCookie("JWT");
-
-// -------company
-async function getCompany({
-  companyName
-}: {
-  companyName: string
-}) {
-  const { data } = await axiosInstance.get(
-    `company/${companyName}`,
-    {
-      headers: {
-        Authorization: `Bearer ${JWT}`,
-      },
-    }
-  );
-  return data.data;
-}
-
-export function useGetCompany(companyName: string) {
-  const query = useQuery({
-    queryKey: [companyName],
-    queryFn: () => getCompany({ companyName }),
-    staleTime: 200000,
-  });
-  const { data = [], isFetching } = query;
-  return { data, isFetching };
-}
-
-
-// -------companyJob
 async function postJob({
   companyName,
   formData,
@@ -46,11 +13,7 @@ async function postJob({
   const { data } = await axiosInstanceNext.post(
     `/api/companies/${companyName}/jobs`,
     { ...formData },
-    {
-      headers: {
-        Authorization: `Bearer ${JWT}`,
-      },
-    }
+    defaultSelfTokenHeaders
   );
   return data;
 }
@@ -67,11 +30,7 @@ async function putJob({
   const { data } = await axiosInstanceNext.put(
     `/api/companies/${companyName}/jobs/${jobId}`,
     { ...formData },
-    {
-      headers: {
-        Authorization: `Bearer ${JWT}`,
-      },
-    }
+    defaultSelfTokenHeaders
   );
   return data;
 }
@@ -88,11 +47,7 @@ async function putJobState({
   const { data } = await axiosInstanceNext.put(
     `/api/companies/${companyName}/jobs/${jobId}/jobState`,
     { jobState },
-    {
-      headers: {
-        Authorization: `Bearer ${JWT}`,
-      },
-    }
+    defaultSelfTokenHeaders
   );
   return data;
 }
@@ -106,11 +61,7 @@ async function deleteJob({
 }) {
   const { data } = await axiosInstanceNext.delete(
     `/api/companies/${companyName}/jobs/${jobId}`,
-    {
-      headers: {
-        Authorization: `Bearer ${JWT}`,
-      },
-    }
+    defaultSelfTokenHeaders
   );
   return data;
 }

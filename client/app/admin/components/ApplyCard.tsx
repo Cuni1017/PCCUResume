@@ -27,7 +27,7 @@ import Interviewing from "@/public/admin/businessman-paper-of-the-application-fo
 import Awaiting from "@/public/admin/performance.png"; // 待學生同意中 (appointment
 import InternShip from "@/public/admin/id-card.png"; // 實習中 (id-card (1), employee
 import ApplyCoverLetter from "@/app/companies/[slug]/applicants/components/ApplyCoverLetter";
-import { usePutApplyType } from "@/hooks/useAdmin";
+import { usePutApplyType } from "@/hooks/teacher/useAdmin";
 import { useSelector } from "react-redux";
 import { Store } from "@/redux/store";
 
@@ -168,7 +168,7 @@ const ApplyCard = ({
               classnames="bg-inherit hover:bg-gray-300"
               onClick={() => setIsShowCoverLetter(true)}
             >
-              求職信
+              {applyType === "實習中" ? "實習時間" : "求職信"}
             </MyButton>
           </div>
         </div>
