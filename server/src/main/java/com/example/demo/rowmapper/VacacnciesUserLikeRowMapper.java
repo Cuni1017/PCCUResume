@@ -6,7 +6,7 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class CompanyVacanciesRowMapper implements RowMapper<CompanyVacanciesDto> {
+public class VacacnciesUserLikeRowMapper implements RowMapper<CompanyVacanciesDto> {
     @Override
     public CompanyVacanciesDto mapRow(ResultSet rs, int rowNum) throws SQLException {
         CompanyVacanciesDto companyVacanciesDto = new CompanyVacanciesDto();
@@ -35,7 +35,7 @@ public class CompanyVacanciesRowMapper implements RowMapper<CompanyVacanciesDto>
         companyVacanciesDto .setSkills(rs.getString("skills"));
         companyVacanciesDto .setCounty(rs.getString("county"));
         companyVacanciesDto .setVacanciesUpdateTime(rs.getDate("vacancies_update_time").toLocalDate());
-
+        companyVacanciesDto .setUserLikeId(rs.getString("user_like_id"));
         return companyVacanciesDto ;
     }
 }

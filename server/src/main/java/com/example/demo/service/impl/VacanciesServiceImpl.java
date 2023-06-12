@@ -4,16 +4,23 @@
 
     import com.example.demo.dao.CountyRepository;
     import com.example.demo.dao.SkillRepository;
+    import com.example.demo.dao.UserRepository;
     import com.example.demo.dao.vacancies.VacanciesDao;
     import com.example.demo.dao.vacancies.VacanciesRepository;
     import com.example.demo.dto.CompanyVacanciesDto;
     import com.example.demo.dto.RestDto;
     import com.example.demo.dto.vacancies.FullVacanciesDto;
     import com.example.demo.dto.vacancies.PageVacanciesDto;
+    import com.example.demo.model.User;
     import com.example.demo.model.vacancies.Vacancies;
+    import com.example.demo.service.JwtService;
     import com.example.demo.service.VacanciesService;
+    import jakarta.servlet.http.HttpServletRequest;
     import lombok.RequiredArgsConstructor;
 
+    import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+    import org.springframework.security.core.context.SecurityContextHolder;
+    import org.springframework.security.core.userdetails.UserDetails;
     import org.springframework.stereotype.Service;
 
     import java.util.List;
@@ -26,23 +33,34 @@
         private final SkillRepository skillRepository;
         private final CountyRepository countyRepository;
         private final VacanciesDao vacanciesDao;
+        private final UserRepository userRepository;
+        private final JwtService jwtService;
 
         @Override
-        public Object findPageVacancies( List<String> county,List<String> technology, String salaryType, Long salaryMax, int salaryMin, String order, int page, int limit) {
-            int selectOffset = getSelectOffset(page,limit);
-            int selectLimit = getSelectLimit(page,limit);
-            List<CompanyVacanciesDto> companyVacanciesDto =vacanciesDao.findPageVacancies( county, technology, salaryType, salaryMax,salaryMin,order, selectLimit, selectOffset);
-            Integer count = vacanciesDao.findPageVacanciesCount(county, technology, salaryType, salaryMax,salaryMin,order, selectLimit, selectOffset);
+        public Object findPageVacancies(List<String> county, List<String> technology, String salaryType, Long salaryMax, int salaryMin, String order, int page, int limit, User user) {
+            int selectOffset = getSelectOffset(page, limit);
+            int selectLimit = getSelectLimit(page, limit);
+
+            List<CompanyVacanciesDto> companyVacanciesDto; // 声明变量
+
+            if (user == null) {
+                companyVacanciesDto = vacanciesDao.findPageVacancies(county, technology, salaryType, salaryMax, salaryMin, order, selectLimit, selectOffset);
+            } else {
+                companyVacanciesDto = vacanciesDao.findPageVacancies(county, technology, salaryType, salaryMax, salaryMin, order, selectLimit, selectOffset, user.getId());
+            }
+
+            long count = companyVacanciesDto.stream().count();
+            int intCount = (int)count;
             PageVacanciesDto pageVacanciesDto = PageVacanciesDto.builder()
                     .companyVacanciesDto(companyVacanciesDto)
                     .page(page)
                     .size(limit)
-                    .total(count)
+                    .total(intCount)
                     .build();
-            System.out.println(county);
+
             RestDto restDto = RestDto.builder()
                     .data(pageVacanciesDto)
-                    .message("查詢成功")
+                    .message("查询成功")
                     .build();
             return restDto;
         }
@@ -82,6 +100,7 @@
             return  countyRepository.findCountyName();
 
         }
+
         private int getSelectOffset(int page,int limit){
             return (page-1)*limit;
         }

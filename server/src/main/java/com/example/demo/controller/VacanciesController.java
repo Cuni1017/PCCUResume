@@ -1,12 +1,14 @@
 package com.example.demo.controller;
 
+import com.example.demo.dao.UserRepository;
+import com.example.demo.model.User;
+import com.example.demo.service.JwtService;
 import com.example.demo.service.VacanciesService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.lang.NonNull;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -14,6 +16,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class VacanciesController {
     private final VacanciesService VacanciesService;
+    private final JwtService jwtService;
+    private final UserRepository userRepository;
     @GetMapping("/vacancies")
     public ResponseEntity<Object> findPageVacancies(
            @RequestParam(required = false) List<String> technology,
@@ -23,9 +27,11 @@ public class VacanciesController {
            @RequestParam(defaultValue = "1" ,required = false) int salaryMin,
            @RequestParam(defaultValue = "vacancies_id",required = false ) String order,
            @RequestParam(defaultValue = "1" ,required = false  ) int page,
-           @RequestParam(defaultValue = "10",required = false ) int limit
+           @RequestParam(defaultValue = "10",required = false ) int limit,
+           @NonNull HttpServletRequest request
            ) {
-            return ResponseEntity.ok(VacanciesService.findPageVacancies(county,technology,salaryType,salaryMax,salaryMin,order,page,limit));
+            User user= getUser(request);
+                return ResponseEntity.ok(VacanciesService.findPageVacancies(county,technology,salaryType,salaryMax,salaryMin,order,page,limit,user));
     }
     @GetMapping("/vacancies/{vacanciesId}")
     public ResponseEntity<Object> findVacanciesById(
@@ -42,5 +48,30 @@ public class VacanciesController {
     public ResponseEntity<Object> findCounties(
     ) {
         return ResponseEntity.ok(VacanciesService.findCounties());
+    }
+    private User getUser(HttpServletRequest request) {
+        final String authHeader = request.getHeader("Authorization");
+        if(authHeader==null){
+            return  null;
+        }
+
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            throw new IllegalArgumentException("Invalid Authorization header");
+        }
+
+        String jwt = authHeader.substring(7); // 提取 JWT Token
+        if (jwt.length() < 7) {
+            throw new IllegalArgumentException("Invalid JWT Token");
+        }
+
+        String username = jwtService.extractUsername(jwt); // 根据 JWT 提取用户名
+        if (username == null) {
+            throw new IllegalArgumentException("Invalid JWT Token");
+        }
+
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("没有此學生"));
+
+        return user;
     }
 }

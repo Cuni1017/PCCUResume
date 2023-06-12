@@ -40,4 +40,5 @@ public class    CompanyVacanciesDto {
     private String vacanciesDistrict;
     private String skills;
     private String county;
+    private String userLikeId;
 }
