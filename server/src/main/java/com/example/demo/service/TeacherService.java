@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
-public interface TeacherService {
+public interface TeacherService extends BasicService{
     Object findNewsById();
     Object updateStudentRole(String teacherId, String studentId, RoleCategory roleCategory);
     Object findStudentByRole(int page , int limit,String search);

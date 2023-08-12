@@ -5,7 +5,7 @@ import com.example.demo.category.RSkillCategory;
 import com.example.demo.category.resume.post.*;
 
 
-public interface ResumeService {
+public interface ResumeService extends BasicService{
     Object createBasicResume(ResumeRequest Request, String studentId);
     Object createSpecialSkill(RSpecialSkillRequest Request, String studentId,String resumeId) ;
     Object createLicense(RlicenseRequest Request, String studentId, String resumeId) ;

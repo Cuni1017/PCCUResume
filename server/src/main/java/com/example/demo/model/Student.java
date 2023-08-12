@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Entity
 @Table(name = "student")
-public class Student {
+public class Student  extends BasicModel{
     @Id
     @Column(name = "student_id")
     private String studentId;

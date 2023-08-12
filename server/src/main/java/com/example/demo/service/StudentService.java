@@ -5,7 +5,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
-public interface StudentService {
+public interface StudentService extends BasicService{
 
     Object findUserById(String studentUsername);
 

@@ -4,7 +4,7 @@ import com.example.demo.category.StudentRegisterCategory;
 import com.example.demo.category.CompanyRegisterCategory;
 import com.example.demo.category.TeacherRegisterCategory;
 
-public interface RegisterService {
+public interface RegisterService extends BasicService{
     //String checkEmail(String studentId, JpaRepository jpaRepository, checkEmailDto request);
     Object studentRegister(StudentRegisterCategory request);
     Object companyRegister(CompanyRegisterCategory request);

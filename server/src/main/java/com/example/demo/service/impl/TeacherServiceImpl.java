@@ -565,18 +565,7 @@ public class TeacherServiceImpl implements TeacherService {
 
     }
 
-    private void deleteFile(String imageRealPath) {
-        if(imageRealPath!=null){
-            System.out.println(imageRealPath);
-            File file = new File(imageRealPath);
-            System.out.println("File:"+file);
-            if(file.exists()){
-                file.delete();
-            }
 
-        }
-
-    }
 
     private Apply changeApplyType(Apply apply,String applyType) {
         apply.setApplyType(applyType);
@@ -638,18 +627,7 @@ public class TeacherServiceImpl implements TeacherService {
         userRepository.save(user);
 
     }
-    private String getId(JpaRepository repository , String idType , int x){
-        long userCount = repository.count();
-        Date dNow = new Date( );
-        SimpleDateFormat ft = new SimpleDateFormat ("yyyyMMdd");
-        String today =ft.format(dNow);
-        int intToday = Integer.valueOf(today);
-        intToday *=100;
-        intToday +=userCount;
-        idType = idType.substring(0,x);
-        String studentId = idType + intToday;
-        return studentId;
-    }
+
     private TeacherFile getTeacherFile(TeacherFileCategory teacherFileCategory, String teacherId,String teacherFileId){
         if(teacherFileRepository.findById(teacherFileId).isPresent()){
             TeacherFile teacherFile = teacherFileRepository.findById(teacherFileId).orElseThrow(()->new RuntimeException("沒有此檔案"));
@@ -676,13 +654,7 @@ public class TeacherServiceImpl implements TeacherService {
 
     }
 
-    private RestDto getRestDto(Object o, String message){
-        RestDto restDto = RestDto.builder()
-                .message(message)
-                .data(o)
-                .build();
-        return restDto;
-    }
+
     private void sendApplyTypeMail(String physiognomy,String name ,String email,String message) throws MailException {
 
         MimeMessagePreparator messagePreparator = mimeMessage -> {
@@ -720,7 +692,7 @@ public class TeacherServiceImpl implements TeacherService {
         }else if (applyType.contains("實習")) {
             String message = "這裡很高興的通知";
             message = message + physiognomy;
-            message = message +",您應徵的實習職缺"+ vacanciesName+"通知您去面試,詳細情況公司會跟您確認";
+            message = message +",您應徵的實習職缺"+ vacanciesName+"通知您實習,詳細情況公司會跟您確認";
             return message;
         }else {
             String message = "這裡很高興的通知";
@@ -745,11 +717,6 @@ public class TeacherServiceImpl implements TeacherService {
                 .dieTime(now)
                 .build();
     }
-    private int getSelectOffset(int page,int limit){
-        return (page-1)*limit;
-    }
-    private int getSelectLimit(int page,int limit){
-        return page*limit;
-    }
+
 
 }

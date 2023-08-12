@@ -101,12 +101,12 @@
 
         }
 
-        private int getSelectOffset(int page,int limit){
-            return (page-1)*limit;
-        }
-        private int getSelectLimit(int page,int limit){
-            return page*limit;
-        }
+//        private int getSelectOffset(int page,int limit){
+//            return (page-1)*limit;
+//        }
+//        private int getSelectLimit(int page,int limit){
+//            return page*limit;
+//        }
 
     //        if(county != null){
     //            county = " v.vacancies_county = " + "'"+county + "'";

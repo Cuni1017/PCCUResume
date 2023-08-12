@@ -612,16 +612,16 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
 
-    private String getId(JpaRepository repository , String idType ,int x){
-        long userCount = repository.count();
-        Date dNow = new Date( );
-        SimpleDateFormat ft = new SimpleDateFormat ("yyyyMMdd");
-        String today =ft.format(dNow);
-        int intToday = Integer.valueOf(today);
-        intToday *=100;
-        intToday +=userCount;
-        idType = idType.substring(0,x);
-        String studentId = idType + intToday;
-        return studentId;
-    }
+//    private String getId(JpaRepository repository , String idType ,int x){
+//        long userCount = repository.count();
+//        Date dNow = new Date( );
+//        SimpleDateFormat ft = new SimpleDateFormat ("yyyyMMdd");
+//        String today =ft.format(dNow);
+//        int intToday = Integer.valueOf(today);
+//        intToday *=100;
+//        intToday +=userCount;
+//        idType = idType.substring(0,x);
+//        String studentId = idType + intToday;
+//        return studentId;
+//    }
 }

@@ -240,13 +240,13 @@ public class CompanyAboutServiceImpl implements CompanyAboutService {
                 .build();
         return companyAboutBasic;
     }
-    private RestDto getRestDto(Object o,String message){
-        RestDto restDto = RestDto.builder()
-                .message(message)
-                .data(o)
-                .build();
-        return restDto;
-    }
+//    private RestDto getRestDto(Object o,String message){
+//        RestDto restDto = RestDto.builder()
+//                .message(message)
+//                .data(o)
+//                .build();
+//        return restDto;
+//    }
 
     private RestDto uploadImage(MultipartFile uploadFile, String companyId, HttpServletRequest httpServletRequest){
         String uri = httpServletRequest.getRequestURI();
@@ -300,15 +300,15 @@ public class CompanyAboutServiceImpl implements CompanyAboutService {
 
         return restDto;
     }
-    private void deleteFile(String imageRealPath) {
-        System.out.println(imageRealPath);
-        File file = new File(imageRealPath);
-        System.out.println("File:"+file);
-        if(file.exists()){
-            file.delete();
-        }
-
-    }
+//    private void deleteFile(String imageRealPath) {
+//        System.out.println(imageRealPath);
+//        File file = new File(imageRealPath);
+//        System.out.println("File:"+file);
+//        if(file.exists()){
+//            file.delete();
+//        }
+//
+//    }
 
     private void updateCompanyImage(CompanyAboutBasic companyAboutBasic, String fileType, FileDto imageDto) {
         if (fileType.contains("logo")) {
@@ -352,18 +352,18 @@ public class CompanyAboutServiceImpl implements CompanyAboutService {
                 .build();
 
     }
-    private String getId(JpaRepository repository , String idType , int x){
-        long userCount = repository.count();
-        Date dNow = new Date( );
-        SimpleDateFormat ft = new SimpleDateFormat ("yyyyMMdd");
-        String today =ft.format(dNow);
-        int intToday = Integer.valueOf(today);
-        intToday *=100;
-        intToday +=userCount;
-        idType = idType.substring(0,x);
-        String studentId = idType + intToday;
-        return studentId;
-    }
+//    private String getId(JpaRepository repository , String idType , int x){
+//        long userCount = repository.count();
+//        Date dNow = new Date( );
+//        SimpleDateFormat ft = new SimpleDateFormat ("yyyyMMdd");
+//        String today =ft.format(dNow);
+//        int intToday = Integer.valueOf(today);
+//        intToday *=100;
+//        intToday +=userCount;
+//        idType = idType.substring(0,x);
+//        String studentId = idType + intToday;
+//        return studentId;
+//    }
 
 
 }

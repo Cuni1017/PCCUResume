@@ -242,18 +242,7 @@ public class ApplyForJobServiceImpl implements ApplyForJobService {
         vacancies.setApplyCount(applyCount);
         vacanciesRepository.save(vacancies);
     }
-    private String getId(JpaRepository repository , String idType , int x){
-        long userCount = repository.count();
-        Date dNow = new Date( );
-        SimpleDateFormat ft = new SimpleDateFormat ("yyyyMMdd");
-        String today =ft.format(dNow);
-        int intToday = Integer.valueOf(today);
-        intToday *=100;
-        intToday +=userCount;
-        idType = idType.substring(0,x);
-        String studentId = idType + intToday;
-        return studentId;
-    }
+
     private void sendApplyEmail(Student student,String vacanciesName,String companyEmail, ApplyCategory applyCategory) throws MailException {
         MimeMessagePreparator messagePreparator = mimeMessage -> {
             String message =  "學生名稱:"+student.getStudentName()+"\n" +
@@ -284,12 +273,6 @@ public class ApplyForJobServiceImpl implements ApplyForJobService {
                 .dieTime(now)
                 .build();
     }
-    private RestDto getRestDto(Object o,String message){
-        RestDto restDto = RestDto.builder()
-                .message(message)
-                .data(o)
-                .build();
-        return restDto;
-    }
+
 
 }

@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
 
-public interface VacanciesService {
+public interface VacanciesService extends BasicService{
 
 
     Object findPageVacancies( List<String> county,List<String> technology,  String salaryType, Long salaryMax, int salaryMin, String order, int page, int limit , User user);

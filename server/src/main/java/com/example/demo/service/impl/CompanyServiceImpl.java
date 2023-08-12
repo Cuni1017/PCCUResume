@@ -356,29 +356,29 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
 
-    private String getId(JpaRepository repository , String idType , int x){
-        long userCount = repository.count();
-        Date dNow = new Date( );
-        SimpleDateFormat ft = new SimpleDateFormat ("yyyyMMdd");
-        String today =ft.format(dNow);
-        int intToday = Integer.valueOf(today);
-        intToday *=100;
-        intToday +=userCount;
-        idType = idType.substring(0,x);
-        String studentId = idType + intToday;
-        return studentId;
-    }
-    private RestDto getRestDto(Object o, String message){
-        RestDto restDto = RestDto.builder()
-                .message(message)
-                .data(o)
-                .build();
-        return restDto;
-    }
-    private int getSelectOffset(int page,int limit){
-        return (page-1)*limit;
-    }
-    private int getSelectLimit(int page,int limit){
-        return page*limit;
-    }
+//    private String getId(JpaRepository repository , String idType , int x){
+//        long userCount = repository.count();
+//        Date dNow = new Date( );
+//        SimpleDateFormat ft = new SimpleDateFormat ("yyyyMMdd");
+//        String today =ft.format(dNow);
+//        int intToday = Integer.valueOf(today);
+//        intToday *=100;
+//        intToday +=userCount;
+//        idType = idType.substring(0,x);
+//        String studentId = idType + intToday;
+//        return studentId;
+//    }
+////    private RestDto getRestDto(Object o, String message){
+////        RestDto restDto = RestDto.builder()
+////                .message(message)
+////                .data(o)
+////                .build();
+////        return restDto;
+////    }
+//    private int getSelectOffset(int page,int limit){
+//        return (page-1)*limit;
+//    }
+//    private int getSelectLimit(int page,int limit){
+//        return page*limit;
+//    }
 }

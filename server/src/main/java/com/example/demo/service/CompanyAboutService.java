@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-public interface CompanyAboutService {
+public interface CompanyAboutService extends BasicService{
 
     Object uploadLogoImage(MultipartFile uploadFile, String companyName, HttpServletRequest httpServletRequest);
 

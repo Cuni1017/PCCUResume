@@ -6,7 +6,7 @@ import com.example.demo.model.ApplyType;
 
 import java.time.LocalDate;
 
-public interface CompanyForJobService {
+public interface CompanyForJobService extends BasicService{
 
 
     Object changeApply(String applyId, ChangeApplyTypeCategory changeApplyTypeCategory);

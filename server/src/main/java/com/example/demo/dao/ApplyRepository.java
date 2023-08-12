@@ -19,7 +19,5 @@ public interface ApplyRepository extends JpaRepository<Apply,String> {
 
     List<Apply> findByUserId(String userId);
     List<Apply> findByApplyUpdateTimeAfter(LocalDate ApplyUpdateTime);
-
-
     void deleteByCompanyId(String companyId);
 }

@@ -195,13 +195,6 @@ public class CompanyForJobServiceImpl implements CompanyForJobService {
     /*
       回傳統一格式
    */
-    private RestDto getRestDto(Object o,String message){
-        RestDto restDto = RestDto.builder()
-                .message(message)
-                .data(o)
-                .build();
-        return restDto;
-    }
     /*
      寄信
   */
