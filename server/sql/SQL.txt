@@ -1,0 +1,353 @@
+create table apply
+(
+    apply_id                  varchar(30)  not null comment '應徵id'
+        primary key,
+    vacancies_id              varchar(30)  not null comment '職缺id',
+    user_id                   varchar(30)  not null comment '使用者id',
+    create_time               date         not null comment '創造時間',
+    apply_type                varchar(30)  not null comment '應徵型態(例如:應徵中,面試中,待使用者同意職缺)',
+    company_id                varchar(30)  null comment '公司id',
+    resume_id                 varchar(30)  not null,
+    apply_before_talk         varchar(600) null,
+    apply_number              int          null,
+    apply_email               varchar(100) null,
+    apply_start_time          date         null,
+    apply_end_time            date         null,
+    apply_interruption_reason varchar(500) null,
+    teacher_id                varchar(30)  null,
+    apply_update_time         date         null
+);
+
+create table company
+(
+    company_id          varchar(30)                  not null comment '公司id'
+        primary key,
+    company_name        varchar(100) charset utf8mb3 not null comment '公司名稱',
+    company_title       varchar(30)                  not null comment '公司行業',
+    company_username    varchar(50)                  not null comment '公司帳號',
+    company_password    varchar(100)                 not null comment '公司密碼',
+    company_number      int                          not null comment '公司電話',
+    company_county      varchar(45)                  not null comment '公司城市',
+    company_district    varchar(100) charset utf8mb3 not null comment '公司區域',
+    company_address     varchar(100) charset utf8mb3 not null comment '公司id地址',
+    company_email       varchar(80)                  not null comment '公司email',
+    company_image_url   varchar(300)                 null comment '公司照片',
+    company_valid_type  varchar(30)                  null comment '教師驗證情況(例如:審核通過,審核中,審核不通過)',
+    company_create_time date                         null
+);
+
+create table company_about_basic
+(
+    company_id                         varchar(30)  not null,
+    company_about_url                  varchar(200) null,
+    company_about_employee_quantity    varchar(80)  null,
+    company_about_have_money           int          null,
+    company_about_background_image_url varchar(300) null,
+    company_about_talk                 text         null,
+    company_about_contact_person       varchar(20)  null,
+    company_about_logo_image_url       varchar(300) null,
+    company_about_environment          text         null,
+    company_about_logo_save_path       varchar(300) null,
+    company_about_background_save_path varchar(300) null,
+    company_about_contact_number       int          null,
+    constraint company_about_basic_company__fk
+        foreign key (company_id) references company (company_id)
+);
+
+create table company_about_service
+(
+    company_id            varchar(30) not null,
+    company_about_service text        null,
+    company_about_mission text        null,
+    company_about_media   text        null,
+    company_twitter_url   varchar(80) null,
+    company_facebook_url  varchar(80) null,
+    company_instagram_url varchar(80) null,
+    constraint company_about_service_ibfk_1
+        foreign key (company_id) references company (company_id)
+);
+
+create index company_id
+    on company_about_service (company_id);
+
+create table company_about_welfare
+(
+    company_id            varchar(30) not null,
+    company_about_Welfare text        null,
+    constraint company_about_welfare_ibfk_1
+        foreign key (company_id) references company (company_id)
+);
+
+create index company_id
+    on company_about_welfare (company_id);
+
+create table company_chat_teacher
+(
+    company_id                 varchar(30)  not null,
+    teacher_id                 varchar(30)  not null,
+    company_chat_teacher_talk  varchar(800) not null,
+    company_chat_teacher_type  varchar(105) not null,
+    company_chat_student_value varchar(45)  null,
+    create_time                date         not null,
+    constraint company_chat_teacher_ibfk_1
+        foreign key (company_id) references company (company_id)
+);
+
+create index company_id
+    on company_chat_teacher (company_id);
+
+create table county
+(
+    county_id   int auto_increment comment '城市id'
+        primary key,
+    county_name varchar(55) not null comment '城市名稱'
+);
+
+create table history_apply
+(
+    apply_id         varchar(30) not null comment '應徵id'
+        primary key,
+    vacancies_id     varchar(30) not null comment '職缺id',
+    user_id          varchar(30) not null comment '使用者id',
+    create_time      date        not null comment '創造時間',
+    apply_type       varchar(30) not null comment '應徵型態(例如:應徵中,面試中,待使用者同意職缺)',
+    company_id       varchar(30) null comment '公司id',
+    resume_id        varchar(30) not null,
+    apply_start_time date        null,
+    apply_end_time   date        null,
+    die_time         date        null
+);
+
+create table history_user_move
+(
+    user_id      varchar(30) null,
+    move_type    varchar(20) null,
+    vacancies_id varchar(30) null,
+    create_time  date        null
+);
+
+create table r_autobiography
+(
+    autobiography_id      varchar(30) charset utf8mb3   not null comment '自傳id'
+        primary key,
+    chinese_autobiography varchar(5000) charset utf8mb3 null comment '中文自傳',
+    english_autobiography varchar(5000) charset utf8mb3 null comment '英文自傳',
+    user_id               varchar(30)                   null comment '使用者id',
+    resume_id             varchar(30)                   null comment '履歷id'
+);
+
+create table r_license
+(
+    license_id varchar(30) charset utf8mb3   not null comment '執照id'
+        primary key,
+    name       varchar(1000) charset utf8mb3 not null comment '執照名稱',
+    user_id    varchar(30)                   null comment '使用者id',
+    resume_id  varchar(30)                   null comment '履歷id'
+);
+
+create table r_project_achievements
+(
+    project_achievements_id varchar(30)  not null comment '專案成就id'
+        primary key,
+    name                    varchar(100) not null comment '專案成就名稱',
+    start_time              date         not null comment '專案成就開始時間',
+    end_time                varchar(50)  not null comment '專案成就結束時間',
+    talk                    varchar(200) not null comment '專案成就討論',
+    url                     varchar(150) null comment '專案成就網址',
+    user_id                 varchar(30)  not null comment '使用者id',
+    resume_id               varchar(30)  not null comment '履歷id'
+);
+
+create table r_special_skill
+(
+    special_skill_id varchar(30) charset utf8mb3   not null comment '特殊技能id'
+        primary key,
+    name             varchar(1000) charset utf8mb3 not null comment '特殊技能名稱',
+    talk             varchar(1000) charset utf8mb3 not null comment '特殊技能描述',
+    special          varchar(1000) charset utf8mb3 not null comment '特殊技能跟別人不一樣的特殊之處',
+    user_id          varchar(30)                   null comment '使用者id',
+    resume_id        varchar(30)                   null comment '履歷id'
+);
+
+create table r_subject
+(
+    resume_id            varchar(30)  null comment '履歷id',
+    user_id              varchar(30)  null comment '使用者id',
+    subject_id           varchar(30)  null comment '科目id',
+    subject_name         varchar(50)  null comment '科目名稱',
+    subject_score        int          null comment '科目成績',
+    subject_rank         int          null comment '科目排名',
+    subject_talk         varchar(900) null,
+    subject_total_people int          null
+);
+
+create table r_work_experience
+(
+    work_experience_id varchar(30)  not null comment '工作經驗id'
+        primary key,
+    name               varchar(100) not null comment '工作經驗名稱',
+    department         varchar(80)  not null comment '工作經驗工作部門',
+    company_name       varchar(50)  null comment '工作經驗工作公司',
+    user_id            varchar(30)  null comment '使用者id',
+    resume_id          varchar(30)  null comment '履歷id',
+    start_time         date         null comment '工作經驗工作開始時間',
+    end_time           varchar(50)  null comment '工作經驗工作結束時間'
+);
+
+create table r_work_hope
+(
+    work_hope_id varchar(80)  not null comment '希望工作id'
+        primary key,
+    type         varchar(30)  not null comment '希望工作型態',
+    date         varchar(100) not null comment '希望工作時間',
+    user_id      varchar(30)  null comment '使用者id',
+    resume_id    varchar(30)  null comment '履歷id'
+);
+
+create table resume
+(
+    id          varchar(30)  not null comment '履歷id'
+        primary key,
+    user_id     varchar(30)  not null comment '使用者',
+    number      varchar(15)  not null comment '履歷電話',
+    school      varchar(100) null comment '履歷就讀學校',
+    name        varchar(50)  null comment '履歷名稱',
+    create_time date         null comment '履歷創造時間'
+);
+
+create table r_skill
+(
+    r_skill_id varchar(30) not null
+        primary key,
+    resume_id  varchar(30) not null,
+    skill_id   varchar(30) null,
+    constraint r_skill_ibfk_1
+        foreign key (resume_id) references resume (id)
+);
+
+create index resume_id
+    on r_skill (resume_id);
+
+create table skill
+(
+    skill_id   int auto_increment comment '技能id'
+        primary key,
+    skill_name varchar(40) not null comment '技能名稱'
+);
+
+create table student
+(
+    student_id             varchar(30)  not null comment '學生id'
+        primary key,
+    student_name           varchar(10)  not null comment '學生名稱',
+    student_username       varchar(50)  not null comment '學生帳號',
+    student_password       varchar(100) not null comment '學生密碼',
+    student_email          varchar(50)  not null comment '學生email',
+    pccu_id                varchar(12)  null comment '學生學號',
+    student_number         varchar(12)  null comment '學生手機號碼',
+    student_image_url      varchar(500) null comment '學生圖片網址',
+    student_image_old_name varchar(100) null comment '學生圖片舊稱',
+    student_image_path     varchar(100) null,
+    teacher_valid_type     varchar(30)  null comment '審核情況(例如:審核通過,暫停,審核不通過)',
+    student_create_time    date         null
+);
+
+create table teacher
+(
+    teacher_id        varchar(30)  not null comment 'id',
+    teacher_username  varchar(30)  not null comment '老師帳號名稱',
+    teacher_password  varchar(300) not null comment '老師帳號密碼',
+    teacher_name      varchar(8)   not null comment '老師真名',
+    teacher_email     varchar(40)  not null comment 'email',
+    teacher_image_url text         null,
+    teacher_number    int          null
+);
+
+create table teacher_file
+(
+    teacher_id         varchar(25)  not null comment '教師id',
+    teacher_file_id    varchar(30)  not null comment '老師檔案id',
+    teacher_file_path  varchar(300) null comment '檔案路徑',
+    teacher_file_name  varchar(15)  null comment '檔案名稱',
+    teacher_file_talk  text         null,
+    teacher_file_type  varchar(100) null,
+    teacher_file_url   varchar(300) null,
+    update_time        date         null,
+    create_time        date         null,
+    teacher_file_title varchar(500) null
+);
+
+create table token
+(
+    id         int auto_increment
+        primary key,
+    token      varchar(300) not null,
+    token_type varchar(50)  not null,
+    revoked    varchar(50)  not null,
+    expired    varchar(50)  not null,
+    user_id    varchar(30)  not null
+);
+
+create table user
+(
+    id       varchar(30)  not null comment '使用者ID'
+        primary key,
+    username varchar(30)  not null comment '使用者帳號',
+    email    varchar(30)  not null comment '使用者EMAIL',
+    password varchar(100) not null comment '使用者密碼',
+    role     varchar(100) not null comment '使用者權限',
+    name     varchar(20)  null
+);
+
+create table user_like
+(
+    user_id      varchar(30) not null,
+    company_id   varchar(30) not null,
+    vacancies_id varchar(30) not null,
+    user_like_id varchar(30) not null
+        primary key
+);
+
+create table vacancies
+(
+    company_id                varchar(30)  not null comment '公司id',
+    vacancies_id              varchar(30)  not null comment '職缺ID',
+    teacher_id                varchar(30)  null comment '教師ID',
+    vacancies_name            varchar(30)  not null comment '職缺名稱',
+    vacancies_time            varchar(30)  not null comment '職缺時間',
+    vacancies_work_experience varchar(100) not null comment '職缺工作經驗',
+    vacancies_Education       varchar(100) not null comment '職缺教育程度',
+    vacancies_department      varchar(30)  not null comment '職缺部門',
+    vacancies_other           varchar(50)  null comment '職缺其他',
+    vacancies_safe            varchar(50)  not null comment '職缺安全',
+    vacancies_create_time     date         null comment '職缺創造時間',
+    vacancies_end_time        date         null comment '職缺結束時間',
+    vacancies_district        varchar(100) null comment '職缺所在區',
+    vacancies_address         varchar(100) null comment '職缺地址',
+    vacancies_salary_type     varchar(30)  null comment '職缺薪水型態',
+    vacancies_top_salary      int          null comment '職缺薪水上限',
+    vacancies_down_salary     int          null comment '職缺薪水下限',
+    vacancies_description     text         null comment '職缺描述',
+    vacancies_requirement     text         null comment '職缺需求',
+    apply_count               int          null comment '應徵次數',
+    vacancies_quantity        int          null comment '職缺數量',
+    vacancies_view            int          null comment '職缺被觀看次數',
+    teacher_valid_type        varchar(50)  not null comment '教師觀看型態(例如:審核中,審核通過,審核不通過)',
+    vacancies_condition       varchar(100) null comment '職缺面試流程',
+    vacancies_watch_type      varchar(30)  null comment '職缺狀態(例如:公開,隱藏,停止)',
+    vacancies_update_time     date         null
+)
+    collate = utf8mb3_unicode_ci;
+
+create table vacancies_county
+(
+    vacancies_id varchar(30) not null comment '職缺id',
+    county_id    int         not null comment '城市id'
+);
+
+create table vacancies_skill
+(
+    vacancies_id varchar(30) not null comment '職缺id',
+    skill_id     int         not null comment '技能id'
+);
+
