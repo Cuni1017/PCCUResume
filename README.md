@@ -29,12 +29,12 @@
 ### 5. 開發工具
 - Visual Studio Code
   - 使用到擴充套件(詳細請至檔案觀看)
-    - redux 
-    - react
-    - typescript   
-    - nextjs
-    - tanstack-query
-    - lexical
+    - Redux 
+    - React
+    - TypeScript   
+    - NextJS
+    - Tanstack-query
+    - Lexical
     - mui
     - tailwindcss
     - framer-motion
